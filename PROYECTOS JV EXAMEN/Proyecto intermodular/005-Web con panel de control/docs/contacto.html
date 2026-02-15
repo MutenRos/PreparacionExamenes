@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contacto — Jose Vicente Carratalá</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="w-900 card flex fd-col g-16">
+    <div class="flex fd-col g-6">
+      <h1 style="font-size:32px">Jose Vicente Carratalá</h1>
+      <h2 class="fs-14 c-muted" style="font-weight:normal">Desarrollador, profesor y diseñador</h2>
+    </div>
+    <nav class="flex g-10 fa-center fw-wrap">
+      <a href="index.html" class="btn btn-ghost">Inicio</a>
+      <a href="about.html" class="btn btn-ghost">Sobre mí</a>
+      <a href="proyectos.html" class="btn btn-ghost">Proyectos</a>
+      <a href="contacto.html" class="btn btn-ghost" style="border-color:var(--brand);color:var(--brand)">Contacto</a>
+      <a href="blog.html" class="btn btn-brand">Blog</a>
+    </nav>
+  </header>
+
+  <main class="w-900 card flex fd-col g-20" style="margin-top:16px">
+    <h2 class="fs-22">Contacto</h2>
+
+    <form class="flex fd-col g-14" onsubmit="event.preventDefault();alert('Formulario estático de demostración')">
+      <label class="flex fd-col g-4">
+        <span class="fs-14 c-muted">Nombre</span>
+        <input type="text" class="input" placeholder="Tu nombre" required>
+      </label>
+      <label class="flex fd-col g-4">
+        <span class="fs-14 c-muted">Correo electrónico</span>
+        <input type="email" class="input" placeholder="correo@ejemplo.com" required>
+      </label>
+      <label class="flex fd-col g-4">
+        <span class="fs-14 c-muted">Mensaje</span>
+        <textarea class="input" rows="5" placeholder="Escribe tu mensaje…" required></textarea>
+      </label>
+      <button type="submit" class="btn btn-brand" style="align-self:flex-start">Enviar</button>
+    </form>
+  </main>
+
+  <footer class="w-900">© 2026 — Jocarsa</footer>
+
+</body>
+</html>

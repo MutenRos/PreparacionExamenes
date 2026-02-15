@@ -1,0 +1,8 @@
+// Plantilla JVpug básica de ejemplo (fase 001)
+html
+  head
+    title La web de Jose Vicente
+  body
+    h1 class="rojo" La web de Jose Vicente
+    h2 Profesor, diseñador, desarrollador en Valencia
+    p Esto es un texto de párrafo

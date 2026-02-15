@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <title>Gestión de Usuarios y Roles - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/aaaaa-animations.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <style>
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(var(--brand-primary-rgb), 0.4);
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+        .tabs-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .tab-button {
+            padding: 14px 28px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: #6c757d;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            bottom: -2px;
+        }
+        .tab-button:hover {
+            color: var(--brand-primary);
+        }
+        .tab-button.active {
+            color: var(--brand-primary);
+            border-bottom-color: var(--brand-primary);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .card-header h2 {
+            color: #2c3e50;
+            font-size: 22px;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table th {
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+            color: white;
+            padding: 16px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+            color: #495057;
+        }
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+        .table tbody tr:hover {
+            background: var(--gray-100);
+            box-shadow: inset 0 0 10px rgba(var(--brand-primary-rgb), 0.05);
+        }
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-activo {
+            background: #d4edda;
+            color: #155724;
+        }
+        .badge-inactivo {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .badge-admin {
+            background: #cfe2ff;
+            color: #084298;
+        }
+        .badge-sistema {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal.show {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .modal-header h2 {
+            color: #2c3e50;
+            font-size: 20px;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #adb5bd;
+            transition: color 0.3s ease;
+        }
+        .modal-close:hover {
+            color: #6c757d;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(var(--brand-primary-rgb), 0.1);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .permissions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+            padding: 15px;
+            background: var(--gray-100);
+            border-radius: 6px;
+        }
+        .permission-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        .permission-item:hover {
+            border-color: var(--brand-primary);
+            background: #f8f9ff;
+        }
+        .permission-item input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .permission-item label {
+            cursor: pointer;
+            margin: 0;
+            font-weight: 500;
+            color: #495057;
+        }
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .role-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .role-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-color: var(--brand-primary);
+        }
+        .role-card.selected {
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+            color: white;
+            border-color: var(--brand-primary);
+        }
+        .role-card h3 {
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        .role-card p {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-bottom: 10px;
+        }
+        .role-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            color: inherit;
+        }
+        .alert {
+            padding: 15px 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .alert.show {
+            display: block;
+        }
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--brand-primary);
+        }
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--brand-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .form-group.checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .form-group.checkbox input {
+            width: auto;
+        }
+        .form-group.checkbox label {
+            margin: 0;
+            cursor: pointer;
+        }
+        .role-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            .modal-content {
+                width: 95%;
+                padding: 25px;
+            }
+            .permissions-grid {
+                grid-template-columns: 1fr;
+            }
+            .roles-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    <link rel="stylesheet" href="/static/assistant.css">
+    <div class="container">
+        <div class="header">
+            <h1>👥 Gestión de Usuarios y Roles</h1>
+        </div>
+
+        <div class="content-card">
+            <div id="mensaje" style="margin-bottom: 20px;"></div>
+
+            <div class="tabs-container">
+                <button class="tab-button active" onclick="switchTab(event, 'usuarios')">👤 Usuarios</button>
+                <button class="tab-button" onclick="switchTab(event, 'roles')">⚙️ Roles</button>
+                <button class="tab-button" onclick="switchTab(event, 'permisos')">🔑 Permisos</button>
+            </div>
+
+            <!-- TAB: USUARIOS -->
+            <div id="usuarios" class="tab-content active">
+                <div class="card-header">
+                    <h2>Gestión de Usuarios</h2>
+                    <button class="btn btn-primary btn-small" onclick="openUsuarioModal()">+ Nuevo Usuario</button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Email</th>
+                                <th>Nombre</th>
+                                <th>Roles</th>
+                                <th>Admin</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usuariosTable">
+                            <tr><td colspan="7" class="loading"><div class="spinner"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB: ROLES -->
+            <div id="roles" class="tab-content">
+                <div class="card-header">
+                    <h2>Gestión de Roles</h2>
+                    <button class="btn btn-primary btn-small" onclick="openRoleModal()">+ Nuevo Rol</button>
+                </div>
+                <div id="rolesContainer"></div>
+            </div>
+
+            <!-- TAB: PERMISOS -->
+            <div id="permisos" class="tab-content">
+                <div class="card-header">
+                    <h2>Gestión de Permisos</h2>
+                    <button class="btn btn-primary btn-small" onclick="openPermisoModal()">+ Nuevo Permiso</button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th style="width: 100px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="permisosTable">
+                            <tr><td colspan="4" class="loading"><div class="spinner"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div id="usuarioModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nuevo Usuario</h2>
+                <button class="modal-close" onclick="closeUsuarioModal()">×</button>
+            </div>
+            <form onsubmit="guardarUsuario(event)">
+                <div class="form-group">
+                    <label>👤 Usuario</label>
+                    <input type="text" id="usuarioUsername" placeholder="nombre_usuario" required>
+                </div>
+                <div class="form-group">
+                    <label>📧 Email</label>
+                    <input type="email" id="usuarioEmail" placeholder="usuario@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>📝 Nombre Completo</label>
+                    <input type="text" id="usuarioNombre" placeholder="Juan Pérez">
+                </div>
+                <div class="form-group">
+                    <label>🔐 Contraseña</label>
+                    <input type="password" id="usuarioPassword" placeholder="••••••••" required>
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="usuarioAdmin">
+                    <label for="usuarioAdmin">👑 Es Administrador</label>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeUsuarioModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Usuario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="roleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nuevo Rol</h2>
+                <button class="modal-close" onclick="closeRoleModal()">×</button>
+            </div>
+            <form onsubmit="guardarRol(event)">
+                <div class="form-group">
+                    <label>📋 Nombre del Rol</label>
+                    <input type="text" id="roleNombre" placeholder="ej: Gerente de Ventas" required>
+                </div>
+                <div class="form-group">
+                    <label>📝 Descripción</label>
+                    <textarea id="roleDescripcion" placeholder="Descripción breve del rol..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>🔑 Asignar Permisos</label>
+                    <div id="rolePermisos" class="permissions-grid"></div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeRoleModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Crear Rol</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="permisoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nuevo Permiso</h2>
+                <button class="modal-close" onclick="closePermisoModal()">×</button>
+            </div>
+            <form onsubmit="guardarPermiso(event)">
+                <div class="form-group">
+                    <label>🔑 Código del Permiso</label>
+                    <input type="text" id="permisoCode" placeholder="ej: usuarios.crear" required>
+                </div>
+                <div class="form-group">
+                    <label>📋 Nombre</label>
+                    <input type="text" id="permisoNombre" placeholder="ej: Crear Usuarios" required>
+                </div>
+                <div class="form-group">
+                    <label>📝 Descripción</label>
+                    <textarea id="permisoDescripcion" placeholder="Descripción del permiso..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closePermisoModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Crear Permiso</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="rolesAsignModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Asignar Roles</h2>
+                <button class="modal-close" onclick="closeRolesAsignModal()">×</button>
+            </div>
+            <form onsubmit="guardarRolesUsuario(event)">
+                <div class="form-group">
+                    <label>🎯 Selecciona los roles para este usuario</label>
+                    <div id="rolesSeleccion" class="roles-grid"></div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeRolesAsignModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Roles</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let usuarioActualId = null;
+
+        function switchTab(e, tab) {
+            e.preventDefault();
+
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(tab).classList.add('active');
+            e.target.classList.add('active');
+
+            if (tab === 'usuarios') cargarUsuarios();
+            else if (tab === 'roles') cargarRoles();
+            else if (tab === 'permisos') cargarPermisos();
+        }
+
+        async function cargarUsuarios() {
+            try {
+                const response = await fetch('/api/usuarios/');
+                const usuarios = await response.json();
+
+                const tbody = document.getElementById('usuariosTable');
+                if (usuarios.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><div class="empty-state-icon">👤</div>No hay usuarios registrados</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = await Promise.all(usuarios.map(async u => {
+                    const rolesRes = await fetch(`/api/usuarios/${u.id}/roles`).catch(() => null);
+                    const roles = rolesRes ? await rolesRes.json() : [];
+                    const rolesHtml = roles.length > 0
+                        ? `<div class="role-list">${roles.map(r => `<span class="badge badge-sistema">${r.nombre}</span>`).join('')}</div>`
+                        : '<span style="color: var(--text-tertiary);">-</span>';
+
+                    return `
+                        <tr>
+                            <td><strong>${u.username}</strong></td>
+                            <td><small>${u.email}</small></td>
+                            <td>${u.nombre_completo || '-'}</td>
+                            <td>${rolesHtml}</td>
+                            <td>${u.es_admin ? '<span class="badge badge-admin">👑 Sí</span>' : '-'}</td>
+                            <td><span class="badge ${u.activo ? 'badge-activo' : 'badge-inactivo'}">${u.activo ? '✓ Activo' : '✗ Inactivo'}</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-primary btn-small" onclick="asignarRoles(${u.id})">Roles</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                })).then(rows => rows.join(''));
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('usuariosTable').innerHTML = '<tr><td colspan="7" class="empty-state"><div class="empty-state-icon">⚠️</div>Error al cargar usuarios</td></tr>';
+            }
+        }
+
+        async function cargarRoles() {
+            try {
+                const response = await fetch('/api/usuarios/roles');
+                const roles = await response.json();
+
+                const container = document.getElementById('rolesContainer');
+                if (roles.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚙️</div>No hay roles registrados</div>';
+                    return;
+                }
+
+                container.innerHTML = `
+                    <div class="roles-grid">
+                        ${roles.map(r => `
+                            <div class="role-card">
+                                <h3>${r.nombre}</h3>
+                                <p>${r.descripcion || 'Sin descripción'}</p>
+                                ${r.es_sistema ? '<span class="role-badge">Sistema</span>' : '<span class="role-badge">Personalizado</span>'}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('rolesContainer').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div>Error al cargar roles</div>';
+            }
+        }
+
+        async function cargarPermisos() {
+            try {
+                const response = await fetch('/api/usuarios/permisos');
+                const permisos = await response.json();
+
+                const tbody = document.getElementById('permisosTable');
+                if (permisos.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="empty-state"><div class="empty-state-icon">🔑</div>No hay permisos registrados</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = permisos.map(p => `
+                    <tr>
+                        <td><code>${p.codigo}</code></td>
+                        <td><strong>${p.nombre}</strong></td>
+                        <td>${p.descripcion || '-'}</td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn btn-danger btn-small" onclick="eliminarPermiso(${p.id})">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('permisosTable').innerHTML = '<tr><td colspan="4" class="empty-state"><div class="empty-state-icon">⚠️</div>Error al cargar permisos</td></tr>';
+            }
+        }
+
+        function openUsuarioModal() {
+            document.getElementById('usuarioUsername').value = '';
+            document.getElementById('usuarioEmail').value = '';
+            document.getElementById('usuarioNombre').value = '';
+            document.getElementById('usuarioPassword').value = '';
+            document.getElementById('usuarioAdmin').checked = false;
+            document.getElementById('usuarioModal').classList.add('show');
+        }
+
+        function closeUsuarioModal() {
+            document.getElementById('usuarioModal').classList.remove('show');
+        }
+
+        async function guardarUsuario(e) {
+            e.preventDefault();
+            try {
+                const response = await fetch('/api/usuarios/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: document.getElementById('usuarioUsername').value,
+                        email: document.getElementById('usuarioEmail').value,
+                        password: document.getElementById('usuarioPassword').value,
+                        nombre_completo: document.getElementById('usuarioNombre').value,
+                        es_admin: document.getElementById('usuarioAdmin').checked
+                    })
+                });
+                if (response.ok) {
+                    closeUsuarioModal();
+                    cargarUsuarios();
+                    mostrarMensaje('✓ Usuario creado correctamente', 'success');
+                }
+            } catch (error) {
+                mostrarMensaje('✗ Error al crear usuario', 'error');
+            }
+        }
+
+        function openRoleModal() {
+            document.getElementById('roleNombre').value = '';
+            document.getElementById('roleDescripcion').value = '';
+            cargarPermisosModal();
+            document.getElementById('roleModal').classList.add('show');
+        }
+
+        function closeRoleModal() {
+            document.getElementById('roleModal').classList.remove('show');
+        }
+
+        async function cargarPermisosModal() {
+            try {
+                const response = await fetch('/api/usuarios/permisos');
+                const permisos = await response.json();
+                const container = document.getElementById('rolePermisos');
+                container.innerHTML = permisos.map(p => `
+                    <div class="permission-item">
+                        <input type="checkbox" id="perm_${p.id}" value="${p.id}">
+                        <label for="perm_${p.id}">${p.codigo}</label>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function guardarRol(e) {
+            e.preventDefault();
+            try {
+                const response = await fetch('/api/usuarios/roles', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nombre: document.getElementById('roleNombre').value,
+                        descripcion: document.getElementById('roleDescripcion').value
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    mostrarMensaje('✗ Error: ' + (error.detail || 'No se pudo crear el rol'), 'error');
+                    return;
+                }
+
+                const nuevoRol = await response.json();
+
+                // Asignar permisos seleccionados al rol recién creado
+                const permissionIds = getSelectedPermisos();
+                if (permissionIds.length > 0) {
+                    await fetch(`/api/usuarios/roles/${nuevoRol.id}/permisos`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ permission_ids: permissionIds })
+                    });
+                }
+
+                closeRoleModal();
+                cargarRoles();
+                mostrarMensaje('✓ Rol creado y permisos asignados', 'success');
+            } catch (error) {
+                mostrarMensaje('✗ Error al crear rol', 'error');
+            }
+        }
+
+        function getSelectedPermisos() {
+            return Array.from(document.querySelectorAll('#rolePermisos input[type="checkbox"]:checked'))
+                .map(cb => parseInt(cb.value));
+        }
+
+        function openPermisoModal() {
+            document.getElementById('permisoCode').value = '';
+            document.getElementById('permisoNombre').value = '';
+            document.getElementById('permisoDescripcion').value = '';
+            document.getElementById('permisoModal').classList.add('show');
+        }
+
+        function closePermisoModal() {
+            document.getElementById('permisoModal').classList.remove('show');
+        }
+
+        async function guardarPermiso(e) {
+            e.preventDefault();
+            try {
+                const response = await fetch('/api/usuarios/permisos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        codigo: document.getElementById('permisoCode').value,
+                        nombre: document.getElementById('permisoNombre').value,
+                        descripcion: document.getElementById('permisoDescripcion').value
+                    })
+                });
+                if (response.ok) {
+                    closePermisoModal();
+                    cargarPermisos();
+                    mostrarMensaje('✓ Permiso creado correctamente', 'success');
+                } else {
+                    const error = await response.json();
+                    mostrarMensaje('✗ Error: ' + (error.detail || 'No se pudo crear el permiso'), 'error');
+                }
+            } catch (error) {
+                mostrarMensaje('✗ Error al crear permiso', 'error');
+            }
+        }
+
+        async function asignarRoles(usuarioId) {
+            usuarioActualId = usuarioId;
+            try {
+                const rolesRes = await fetch('/api/usuarios/roles');
+                const rolesDisponibles = await rolesRes.json();
+
+                const rolesActualesRes = await fetch(`/api/usuarios/${usuarioId}/roles`);
+                const rolesActuales = await rolesActualesRes.json();
+
+                const rolesIds = rolesActuales.map(r => r.id);
+
+                const container = document.getElementById('rolesSeleccion');
+                container.innerHTML = rolesDisponibles.map(r => `
+                    <div class="role-card ${rolesIds.includes(r.id) ? 'selected' : ''}"
+                         onclick="toggleRoleSelection(this, ${r.id})">
+                        <h3>${r.nombre}</h3>
+                        <p>${r.descripcion || 'Sin descripción'}</p>
+                    </div>
+                `).join('');
+
+                document.getElementById('rolesAsignModal').classList.add('show');
+            } catch (error) {
+                mostrarMensaje('✗ Error al cargar roles', 'error');
+            }
+        }
+
+        function toggleRoleSelection(element, roleId) {
+            element.classList.toggle('selected');
+        }
+
+        function closeRolesAsignModal() {
+            document.getElementById('rolesAsignModal').classList.remove('show');
+        }
+
+        async function guardarRolesUsuario(e) {
+            e.preventDefault();
+            try {
+                const selectedCards = document.querySelectorAll('#rolesSeleccion .role-card.selected');
+
+                for (const card of selectedCards) {
+                    const onclickAttr = card.getAttribute('onclick');
+                    const roleId = onclickAttr.match(/toggleRoleSelection\(this, (\d+)\)/)[1];
+
+                    await fetch(`/api/usuarios/${usuarioActualId}/roles`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ role_id: parseInt(roleId) })
+                    });
+                }
+
+                closeRolesAsignModal();
+                cargarUsuarios();
+                mostrarMensaje('✓ Roles asignados correctamente', 'success');
+            } catch (error) {
+                mostrarMensaje('✗ Error al asignar roles', 'error');
+            }
+        }
+
+        function eliminarPermiso(permisoId) {
+            if (confirm('¿Está seguro de que desea eliminar este permiso?')) {
+                mostrarMensaje('Funcionalidad próximamente', 'error');
+            }
+        }
+
+        function mostrarMensaje(msg, tipo) {
+            const el = document.getElementById('mensaje');
+            el.className = `alert alert-${tipo} show`;
+            el.textContent = msg;
+            setTimeout(() => el.classList.remove('show'), 5000);
+        }
+
+        cargarUsuarios();
+    </script>
+</body>
+<script defer src="/static/assistant.js"></script>
+<script defer src="/static/assistant-basic-panel.js"></script>
+</html>

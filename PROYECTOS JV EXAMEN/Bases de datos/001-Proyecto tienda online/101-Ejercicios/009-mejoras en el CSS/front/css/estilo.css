@@ -1,0 +1,584 @@
+/* ================================
+   RESET & BASE
+   ================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f5f5f7;
+  color: #111827;
+  line-height: 1.5;
+}
+
+/* ================================
+   LAYOUT GENERAL
+   ================================ */
+
+header {
+  position: relative;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+/* Imagen de cabecera como fondo suave */
+header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(120deg, rgba(37, 99, 235, 0.85), rgba(56, 189, 248, 0.8)),
+    url("../img/cabeceratienda.avif") center/cover no-repeat;
+  filter: brightness(1.05);
+  z-index: -1;
+}
+
+/* Suave desenfoque para dar sensación premium */
+header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(2px);
+  z-index: -1;
+}
+
+header a {
+  text-decoration: none;
+  color: inherit;
+}
+
+header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.header-actions {
+  margin-top: 0.9rem;
+  display: flex;
+  justify-content: center;
+}
+
+.carrito-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.badge {
+  min-width: 1.6rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #1d4ed8;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* contenedor principal de la página */
+main {
+  max-width: 1200px;
+  margin: 2rem auto 3rem;
+  padding: 2rem clamp(1rem, 3vw, 2.5rem);
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow:
+    0 18px 45px rgba(15, 23, 42, 0.10),
+    0 0 0 1px rgba(148, 163, 184, 0.12);
+}
+
+/* pie de página sencillo y discreto */
+footer {
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* ================================
+   CATÁLOGO (LISTADO DE PRODUCTOS)
+   ================================ */
+
+.catalogo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.75rem;
+}
+
+/* Tarjeta de producto en el catálogo */
+.catalogo article {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1rem 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow:
+    0 12px 30px rgba(15, 23, 42, 0.08),
+    0 0 0 1px rgba(226, 232, 240, 0.9);
+  transition:
+    transform 0.18s ease-out,
+    box-shadow 0.18s ease-out,
+    border-color 0.18s ease-out;
+}
+
+.catalogo article:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.14),
+    0 0 0 1px rgba(129, 140, 248, 0.4);
+}
+
+/* Imagen de producto en el catálogo (ya viene por inline-style en el div) */
+.catalogo .imagen {
+  width: 100%;
+  height: 190px;
+  border-radius: 12px;
+  margin-bottom: 0.9rem;
+  background-color: #e5e7eb;
+}
+
+/* Título, descripción y precio */
+.catalogo h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.catalogo p {
+  margin: 0.1rem 0;
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+/* el último <p> suele ser el precio */
+.catalogo p:last-of-type {
+  margin-top: 0.5rem;
+  font-weight: 700;
+  color: #111827;
+  font-size: 1rem;
+}
+
+/* Botón comprar (enlaces dentro del catálogo) */
+.catalogo article a {
+  margin-top: 0.9rem;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+  transition:
+    background 0.18s ease-out,
+    box-shadow 0.18s ease-out,
+    transform 0.12s ease-out;
+}
+
+.catalogo article a:hover {
+  background: linear-gradient(135deg, #1d4ed8, #0284c7);
+  box-shadow: 0 16px 32px rgba(37, 99, 235, 0.45);
+  transform: translateY(-1px);
+}
+
+.catalogo article a:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.4);
+}
+
+/* ================================
+   VISTA DE PRODUCTO
+   ================================ */
+
+.producto {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+/* Columna izquierda (imagen + formulario) */
+.producto .izquierda {
+  flex: 1 1 320px;
+  background: #f9fafb;
+  border-radius: 16px;
+  padding: 1.3rem 1.4rem 1.4rem;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+}
+
+.producto .izquierda img {
+  width: 100%;
+  max-width: 420px;
+  display: block;
+  margin: 0 auto 1rem;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+  object-fit: cover;
+}
+
+.producto .izquierda p {
+  margin: 0 0 0.7rem;
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+/* Formulario de selección de unidades */
+.producto form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.producto input[type="number"] {
+  width: 90px;
+  padding: 0.4rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid #cbd5f5;
+  font-size: 0.9rem;
+  color: #111827;
+  background: #ffffff;
+}
+
+.producto input[type="number"]:focus {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 1px;
+}
+
+/* Botón comprar en la ficha */
+.producto input[type="submit"] {
+  border: none;
+  border-radius: 999px;
+  padding: 0.5rem 1.1rem;
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+  transition:
+    background 0.18s ease-out,
+    box-shadow 0.18s ease-out,
+    transform 0.12s ease-out;
+}
+
+.producto input[type="submit"]:hover {
+  background: linear-gradient(135deg, #1d4ed8, #0284c7);
+  box-shadow: 0 16px 32px rgba(37, 99, 235, 0.45);
+  transform: translateY(-1px);
+}
+
+.producto input[type="submit"]:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.4);
+}
+
+/* Columna derecha (texto) */
+.producto .derecha {
+  flex: 1 1 280px;
+  padding-top: 0.5rem;
+}
+
+.producto .derecha h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.producto .derecha p {
+  margin: 0.25rem 0;
+  color: #4b5563;
+  font-size: 0.96rem;
+}
+
+/* Precio en la ficha */
+.producto .derecha p:last-of-type {
+  margin-top: 0.8rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* ================================
+   CARRITO
+   ================================ */
+
+.carrito {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+/* Formulario de datos de cliente */
+.carrito .izquierda {
+  flex: 0 1 340px;
+  background: #f9fafb;
+  border-radius: 18px;
+  padding: 1.4rem 1.5rem 1.6rem;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+}
+
+.carrito .izquierda h3 {
+  margin-top: 0;
+  margin-bottom: 0.9rem;
+  font-size: 1.15rem;
+}
+
+.carrito .izquierda p {
+  margin: 0 0 0.8rem;
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+/* Campos del formulario en el carrito */
+.carrito .izquierda form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+}
+
+.carrito .izquierda input[type="text"],
+.carrito .izquierda input[type="email"] {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid #cbd5f5;
+  font-size: 0.93rem;
+  background: #ffffff;
+}
+
+.carrito .izquierda input[type="text"]:focus,
+.carrito .izquierda input[type="email"]:focus {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 1px;
+}
+
+/* Botón de finalizar compra */
+.carrito .izquierda input[type="submit"] {
+  margin-top: 0.4rem;
+  border: none;
+  border-radius: 999px;
+  padding: 0.55rem 1.1rem;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(22, 163, 74, 0.35);
+  transition:
+    background 0.18s ease-out,
+    box-shadow 0.18s ease-out,
+    transform 0.12s ease-out;
+}
+
+.carrito .izquierda input[type="submit"]:hover {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  box-shadow: 0 16px 32px rgba(22, 163, 74, 0.45);
+  transform: translateY(-1px);
+}
+
+.carrito .izquierda input[type="submit"]:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 14px rgba(22, 163, 74, 0.4);
+}
+
+/* Columna derecha: tabla del carrito */
+.carrito .derecha {
+  flex: 1 1 380px;
+}
+
+.carrito .acciones {
+  margin-top: 1rem;
+}
+
+.boton-secundario {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  text-decoration: none;
+  font-weight: 600;
+  background: #ffffff;
+}
+
+.boton-secundario:hover {
+  border-color: #cbd5f5;
+  color: #1d4ed8;
+}
+
+.aviso {
+  padding: 0.9rem 1rem;
+  background: #fef3c7;
+  border-radius: 12px;
+  color: #92400e;
+  font-weight: 600;
+}
+
+/* ================================
+   TABLAS (LISTADO DE PRODUCTOS EN CARRITO)
+   ================================ */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+  font-size: 0.93rem;
+}
+
+thead {
+  background: #eff6ff;
+}
+
+thead th {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  font-weight: 600;
+  color: #1f2937;
+  border-bottom: 1px solid #d1d5db;
+}
+
+tbody td {
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tfoot td {
+  padding: 0.7rem 0.75rem;
+  background: #eff6ff;
+  font-weight: 700;
+  border-top: 1px solid #d1d5db;
+}
+
+.total-label {
+  text-align: right;
+  color: #1f2937;
+}
+
+.total-valor {
+  color: #111827;
+}
+
+/* ================================
+   FINALIZACIÓN
+   ================================ */
+
+.finalizacion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  padding: 2rem 0 0.5rem;
+}
+
+.finalizacion h3 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.finalizacion p {
+  margin: 0;
+  color: #4b5563;
+}
+
+/* Botón para volver al catálogo */
+.finalizacion a {
+  margin-top: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1.4rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+  transition:
+    background 0.18s ease-out,
+    box-shadow 0.18s ease-out,
+    transform 0.12s ease-out;
+}
+
+.finalizacion a:hover {
+  background: linear-gradient(135deg, #1d4ed8, #0284c7);
+  box-shadow: 0 16px 32px rgba(37, 99, 235, 0.45);
+  transform: translateY(-1px);
+}
+
+.finalizacion a:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.4);
+}
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+
+@media (max-width: 768px) {
+  main {
+    margin: 1.5rem 0 2rem;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  header {
+    padding: 2rem 1.2rem;
+  }
+
+  .producto,
+  .carrito {
+    gap: 1.6rem;
+  }
+
+  .carrito .izquierda,
+  .carrito .derecha,
+  .producto .izquierda,
+  .producto .derecha {
+    flex: 1 1 100%;
+  }
+}
+

@@ -1,0 +1,1 @@
+Y luego por ultimo quiero insert into tantos como haga falta para insertar datos de demostracion - ten en cuenta los FK para insertar primero datos en tablas que no tengan dependencias, y luego datos en las tablas que si que las contengan - las tablas están vacías, con lo cual asume que todos los PK empiezan en 1.

@@ -1,0 +1,19 @@
+FROM debian:bookworm-slim
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    bash \
+    ca-certificates \
+    curl \
+    git \
+    jq \
+    python3 \
+    ripgrep \
+  && rm -rf /var/lib/apt/lists/*
+
+# Drop all Linux capabilities for defense-in-depth.
+# The sandbox intentionally runs with a minimal privilege set.
+# Override --cap-add at `docker run` if a specific capability is required.
+CMD ["sleep", "infinity"]

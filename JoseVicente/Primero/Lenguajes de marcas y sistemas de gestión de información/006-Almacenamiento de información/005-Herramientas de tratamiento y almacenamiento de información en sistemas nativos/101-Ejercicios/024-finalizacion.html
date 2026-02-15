@@ -1,0 +1,1240 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Calendario</title>
+
+    <style>
+      :root{
+        --bg:#f6f7fb;
+        --card:#ffffff;
+        --stroke:#e7e9f2;
+        --text:#0f172a;
+        --muted:#64748b;
+        --shadow: 0 10px 30px rgba(15,23,42,.08);
+        --r: 16px;
+
+        /* escalas por vista */
+        --hour-h-month: 14px;  /* mes (compacto) */
+        --hour-h-panel: 42px;  /* semana/día (legible) */
+
+        --day-start: 8;  /* 08:00 */
+        --day-end: 22;   /* 22:00 */
+      }
+
+      *{ box-sizing:border-box; }
+      body{
+        margin:0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", Arial;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .app{
+        max-width: 1520px;
+        margin: 0 auto;
+        padding: 18px 16px 30px;
+      }
+
+      /* topbar */
+      .topbar{
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(246,247,251,.85);
+        backdrop-filter: blur(10px);
+        border:1px solid var(--stroke);
+        border-radius: var(--r);
+        box-shadow: var(--shadow);
+        padding: 14px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap: 12px;
+        flex-wrap:wrap;
+      }
+
+      .brand{
+        display:flex;
+        flex-direction:column;
+        gap: 2px;
+        min-width: 220px;
+      }
+      .brand .t{ font-weight:800; letter-spacing:.2px; }
+      .brand .s{ color: var(--muted); font-size: 12px; }
+
+      .grupo{
+        display:flex;
+        gap:10px;
+        align-items:center;
+        flex-wrap:wrap;
+      }
+
+      .btn{
+        border:1px solid var(--stroke);
+        background: #fff;
+        color: var(--text);
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-size: 13px;
+        cursor:pointer;
+        transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+      }
+      .btn:hover{ transform: translateY(-1px); box-shadow: 0 8px 18px rgba(15,23,42,.08); }
+      .btn:active{ transform: translateY(0px); }
+
+      .btn.primary{
+        background: #0ea5e9;
+        color: #fff;
+        border-color: rgba(14,165,233,.25);
+      }
+
+      .pill{
+        border:1px solid var(--stroke);
+        background: #fff;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .pill b{ color: var(--text); }
+
+      .acciones{
+        border:1px solid var(--stroke);
+        background: #fff;
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-size: 13px;
+        cursor:pointer;
+      }
+      .acciones.activa{
+        background:#0f172a;
+        color:#fff;
+        border-color:#0f172a;
+      }
+
+      /* categorías */
+      .personal{ --cat:#ef4444; }
+      .laboral{ --cat:#22c55e; }
+      .vacaciones{ --cat:#3b82f6; }
+
+      /* contenedores */
+      #jvcalendario{ margin-top: 14px; }
+      .oculto{ display:none !important; }
+
+      /* -------- VISTA AÑO -------- */
+      .vista_anual{
+        display:grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      @media (max-width: 1200px){
+        .vista_anual{ grid-template-columns: 1fr; }
+      }
+
+      .mes{
+        border:1px solid var(--stroke);
+        background: var(--card);
+        border-radius: var(--r);
+        box-shadow: var(--shadow);
+        overflow:hidden;
+      }
+      .cabecera_mes{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding: 12px 14px;
+        border-bottom:1px solid var(--stroke);
+      }
+      .cabecera_mes .nombre{ font-weight:800; }
+      .cabecera_mes .info{ color: var(--muted); font-size: 12px; }
+
+      /* -------- VISTA MES (grid 7 col) -------- */
+      .mes.grid{
+        display:grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+      }
+
+      .dia{
+        border-right:1px solid var(--stroke);
+        border-bottom:1px solid var(--stroke);
+        padding: 10px;
+        position:relative;
+        background:#fff;
+       
+      }
+      .dia:hover{ background:#fbfcff; }
+
+      .desactivado{
+        background: #fafafa;
+        color: rgba(15,23,42,.45);
+      }
+
+      .dia .numdia{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap: 10px;
+        font-weight:800;
+        cursor:pointer;
+        user-select:none;
+      }
+      .dia .numdia .mini{
+        font-weight:600;
+        font-size: 11px;
+        color: var(--muted);
+        border:1px solid var(--stroke);
+        padding: 3px 8px;
+        border-radius: 999px;
+        background:#fff;
+      }
+
+      /* timeline dentro del día */
+      .timeline{
+        margin-top: 8px;
+        position:relative;
+        height: calc((var(--day-end) - var(--day-start)) * var(--hour-h-month));
+        border:1px solid var(--stroke);
+        border-radius: 12px;
+        overflow: hidden;
+        background:
+          linear-gradient(#fff,#fff),
+          repeating-linear-gradient(
+            to bottom,
+            transparent,
+            transparent calc(var(--hour-h-month) - 1px),
+            rgba(15,23,42,.06) calc(var(--hour-h-month) - 1px),
+            rgba(15,23,42,.06) var(--hour-h-month)
+          );
+      }
+
+      .tick{
+        position:absolute;
+        left:0; right:0;
+        height: var(--hour-h-month);
+        cursor:pointer;
+      }
+      .tick:hover{ background: rgba(14,165,233,.05); }
+
+      /* evento absoluto */
+      .evento{
+        position:absolute;
+        left: 6px;
+        right: 6px;
+        border-radius: 12px;
+        padding: 6px 8px;
+        background: color-mix(in srgb, var(--cat) 92%, white 8%);
+        color:#fff;
+        border:1px solid color-mix(in srgb, var(--cat) 78%, white 22%);
+        box-shadow: 0 8px 18px rgba(15,23,42,.10);
+        font-size: 12px;
+        overflow:hidden;
+      }
+      .evento .t{
+        font-weight:700;
+        line-height: 1.2;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .evento .h{
+        margin-top: 2px;
+        font-size: 11px;
+        opacity:.92;
+      }
+      .evento[contenteditable="true"]{ outline:none; }
+      .evento:focus{
+        box-shadow: 0 10px 22px rgba(15,23,42,.16);
+      }
+
+      /* -------- PANEL SEMANA/DÍA -------- */
+      #panel_vista{
+        margin-top: 14px;
+        border:1px solid var(--stroke);
+        background: var(--card);
+        border-radius: var(--r);
+        box-shadow: var(--shadow);
+        overflow:hidden;
+      }
+      #panel_vista .panel_head{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding: 12px 14px;
+        border-bottom:1px solid var(--stroke);
+        gap:10px;
+        flex-wrap:wrap;
+      }
+      #panel_vista .panel_head .ttl{
+        font-weight:800;
+      }
+      #panel_vista .panel_body{
+        padding: 12px;
+      }
+
+      .grid_semana{
+        display:grid;
+        grid-template-columns: 72px repeat(7, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .celda_lbl{
+        font-size: 12px;
+        color: var(--muted);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      }
+      .dia_lbl{
+        border:1px solid var(--stroke);
+        border-radius: 12px;
+        background: #fbfcff;
+        padding: 10px 8px;
+        font-weight:800;
+        font-size: 12px;
+        text-align:center;
+      }
+
+      .col_dia{
+        border:1px solid var(--stroke);
+        border-radius: 14px;
+        overflow:hidden;
+        background:#fff;
+      }
+      .col_dia .timeline{
+        height: calc((var(--day-end) - var(--day-start)) * var(--hour-h-panel));
+        border:0;
+        border-radius:0;
+        background:
+          linear-gradient(#fff,#fff),
+          repeating-linear-gradient(
+            to bottom,
+            transparent,
+            transparent calc(var(--hour-h-panel) - 1px),
+            rgba(15,23,42,.06) calc(var(--hour-h-panel) - 1px),
+            rgba(15,23,42,.06) var(--hour-h-panel)
+          );
+      }
+      .col_dia .tick{ height: var(--hour-h-panel); }
+
+      .lista_dia{
+        display:flex;
+        gap: 14px;
+      }
+      .lista_dia .col_horas{
+        width: 72px;
+        color: var(--muted);
+        font-size: 12px;
+        display:flex;
+        flex-direction:column;
+        gap: 0;
+      }
+      .lista_dia .col_horas .hitem{
+        height: var(--hour-h-panel);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      }
+      .lista_dia .col_main{
+        flex:1;
+        border:1px solid var(--stroke);
+        border-radius: 14px;
+        overflow:hidden;
+        background:#fff;
+      }
+      .lista_dia .col_main .timeline{
+        height: calc((var(--day-end) - var(--day-start)) * var(--hour-h-panel));
+        border:0;
+        border-radius:0;
+      }
+      .lista_dia .col_main .tick{ height: var(--hour-h-panel); }
+
+      /* -------- MODAL -------- */
+      .modal_back{
+        position:fixed;
+        inset:0;
+        background: rgba(15,23,42,.40);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding: 18px;
+        z-index: 200;
+      }
+      .modal{
+        width: min(560px, 100%);
+        border:1px solid var(--stroke);
+        background: #fff;
+        border-radius: var(--r);
+        box-shadow: 0 20px 60px rgba(15,23,42,.22);
+        overflow:hidden;
+      }
+      .modal .mh{
+        padding: 14px 16px;
+        border-bottom:1px solid var(--stroke);
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:10px;
+      }
+      .modal .mh .ttl{ font-weight:800; }
+      .modal .mb{
+        padding: 16px;
+        display:flex;
+        flex-direction:column;
+        gap: 12px;
+      }
+      .row{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .field label{
+        display:block;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .field input, .field select, .field textarea{
+        width: 100%;
+        border:1px solid var(--stroke);
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 13px;
+        outline:none;
+        background:#fff;
+      }
+      .field textarea{ min-height: 90px; resize: vertical; }
+      .modal .mf{
+        padding: 14px 16px;
+        border-top:1px solid var(--stroke);
+        display:flex;
+        justify-content:flex-end;
+        gap: 10px;
+      }
+      .danger{
+        background:#ef4444;
+        color:#fff;
+        border-color: rgba(239,68,68,.25);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app">
+      <div class="topbar">
+        <div class="brand">
+          <div class="t">Calendario</div>
+          <div class="s" id="estado"></div>
+        </div>
+
+        <div class="grupo">
+          <button id="guardar" class="btn">Guardar</button>
+
+          <button id="descargar" class="btn primary">Descargar JSON</button>
+          <button id="cargar" class="btn">Cargar JSON</button>
+          <input id="file" type="file" accept="application/json" class="oculto"/>
+
+          <span class="pill">Activo: <b id="activo_lbl">personal</b></span>
+          <button class="btn personal">personal</button>
+          <button class="btn laboral">laboral</button>
+          <button class="btn vacaciones">vacaciones</button>
+        </div>
+
+        <div class="grupo">
+          <button class="acciones anio">Año</button>
+          <button class="acciones mes activa">Mes</button>
+          <button class="acciones semana">Semana</button>
+          <button class="acciones dia">Dia</button>
+        </div>
+      </div>
+
+      <div id="panel_vista" class="oculto">
+        <div class="panel_head">
+          <div class="ttl" id="panel_titulo">Vista</div>
+          <div class="grupo">
+            <button id="prev" class="btn">◀</button>
+            <button id="hoy" class="btn">Hoy</button>
+            <button id="next" class="btn">▶</button>
+          </div>
+        </div>
+        <div class="panel_body" id="panel_body"></div>
+      </div>
+
+      <div id="jvcalendario"></div>
+    </div>
+
+    <!-- MODAL -->
+    <div id="modal_back" class="modal_back oculto">
+      <div class="modal">
+        <div class="mh">
+          <div class="ttl">Nuevo evento</div>
+          <button id="modal_close" class="btn">Cerrar</button>
+        </div>
+
+        <div class="mb">
+          <div class="row">
+            <div class="field">
+              <label>Inicio</label>
+              <input id="m_ini" type="time" step="300" value="08:00">
+            </div>
+            <div class="field">
+              <label>Fin</label>
+              <input id="m_fin" type="time" step="300" value="09:00">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Texto</label>
+            <textarea id="m_txt" placeholder="Escribe el evento..."></textarea>
+          </div>
+
+          <div class="field">
+            <label>Categoría</label>
+            <select id="m_cat">
+              <option value="personal">personal</option>
+              <option value="laboral">laboral</option>
+              <option value="vacaciones">vacaciones</option>
+            </select>
+          </div>
+
+          <div class="pill" id="m_hint">—</div>
+        </div>
+
+        <div class="mf">
+          <button id="modal_delete" class="btn danger oculto">Eliminar</button>
+          <button id="modal_ok" class="btn primary">Guardar</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // -------------------------------
+      // utilidades
+      // -------------------------------
+      function pad2(n){ return String(n).padStart(2,"0"); }
+      function fechaKey(a,m,d){ return a+"-"+pad2(m)+"-"+pad2(d); }
+      function hhmmToMin(hhmm){
+        let p = (hhmm||"").split(":");
+        let h = Number(p[0]||0);
+        let m = Number(p[1]||0);
+        return (h*60+m);
+      }
+      function minToHHMM(min){
+        let h = Math.floor(min/60);
+        let m = min%60;
+        return pad2(h)+":"+pad2(m);
+      }
+      function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+
+      function readStorage(){
+        let raw = localStorage.getItem("jvcalendario");
+        if(!raw) return [];
+        try { return JSON.parse(raw) || []; } catch(e){ return []; }
+      }
+      function writeStorageFromDom(){
+        // en esta versión, el DOM es renderizado desde storage.
+        // el latido guarda el storage tal cual (y se actualiza cuando editas/eliminas).
+        // Para mantener tu estilo, dejamos también una función de "volcado" por si hiciera falta.
+        localStorage.setItem("jvcalendario", JSON.stringify(EVENTOS));
+      }
+
+      function eventoId(ev){
+        return [
+          ev.anio, ev.mes, ev.dia,
+          ev.start, ev.end,
+          (ev.tipo||""),
+          (ev.texto||"").trim()
+        ].join("|");
+      }
+
+      // -------------------------------
+      // estado general
+      // -------------------------------
+      let contenedor = document.querySelector("#jvcalendario");
+      let panel = document.querySelector("#panel_vista");
+      let panelBody = document.querySelector("#panel_body");
+      let panelTitulo = document.querySelector("#panel_titulo");
+      let estado = document.querySelector("#estado");
+
+      let anio = 2026;
+      let meses = 12;
+      let nombres_meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+      let calendario_activo = "personal";
+      let activo_lbl = document.querySelector("#activo_lbl");
+
+      let vista = "Mes"; // Año | Mes | Semana | Dia
+      let seleccion = { anio: anio, mes: 1, dia: 1 };
+      let semanaOffset = 0;
+      let diaOffset = 0;
+
+      // eventos en memoria (fuente de verdad)
+      let EVENTOS = readStorage();
+
+      // -------------------------------
+      // modal
+      // -------------------------------
+      let modalBack = document.querySelector("#modal_back");
+      let m_ini = document.querySelector("#m_ini");
+      let m_fin = document.querySelector("#m_fin");
+      let m_txt = document.querySelector("#m_txt");
+      let m_cat = document.querySelector("#m_cat");
+      let m_hint = document.querySelector("#m_hint");
+      let modal_ok = document.querySelector("#modal_ok");
+      let modal_close = document.querySelector("#modal_close");
+      let modal_delete = document.querySelector("#modal_delete");
+
+      let modalCtx = null; // { anio, mes, dia, startMin, scale, editId? }
+
+      function abrirModal(ctx){
+        modalCtx = ctx;
+
+        // defaults
+        let start = ctx.startMin || (8*60);
+        let end = Math.min(start+60, 22*60);
+
+        m_ini.value = minToHHMM(start);
+        m_fin.value = minToHHMM(end);
+        m_txt.value = ctx.texto || "";
+        m_cat.value = ctx.tipo || calendario_activo;
+
+        // edición
+        if(ctx.edit){
+          modal_delete.classList.remove("oculto");
+          document.querySelector(".modal .mh .ttl").textContent = "Editar evento";
+        }else{
+          modal_delete.classList.add("oculto");
+          document.querySelector(".modal .mh .ttl").textContent = "Nuevo evento";
+        }
+
+        actualizarHintModal();
+        modalBack.classList.remove("oculto");
+      }
+
+      function cerrarModal(){
+        modalBack.classList.add("oculto");
+        modalCtx = null;
+      }
+
+      function actualizarHintModal(){
+        if(!modalCtx) return;
+        let s = hhmmToMin(m_ini.value);
+        let e = hhmmToMin(m_fin.value);
+        let dur = Math.max(0, e - s);
+        m_hint.textContent = "Fecha: " + fechaKey(modalCtx.anio, modalCtx.mes, modalCtx.dia) + " · Duración: " + dur + " min";
+      }
+
+      m_ini.oninput = actualizarHintModal;
+      m_fin.oninput = actualizarHintModal;
+
+      modal_close.onclick = cerrarModal;
+      modalBack.addEventListener("click", function(e){
+        if(e.target === modalBack) cerrarModal();
+      });
+
+      modal_ok.onclick = function(){
+        if(!modalCtx) return;
+
+        let dayStart = 8*60;
+        let dayEnd = 22*60;
+
+        let s = clamp(hhmmToMin(m_ini.value), dayStart, dayEnd);
+        let e = clamp(hhmmToMin(m_fin.value), dayStart, dayEnd);
+
+        if(e <= s){
+          alert("El fin debe ser posterior al inicio.");
+          return;
+        }
+
+        let ev = {
+          anio: modalCtx.anio,
+          mes: modalCtx.mes,
+          dia: modalCtx.dia,
+          start: s,
+          end: e,
+          tipo: m_cat.value,
+          texto: m_txt.value || ""
+        };
+
+        if(modalCtx.editId){
+          // reemplaza
+          EVENTOS = EVENTOS.map(function(x){
+            return (eventoId(x)===modalCtx.editId) ? ev : x;
+          });
+        }else{
+          EVENTOS.push(ev);
+        }
+
+        localStorage.setItem("jvcalendario", JSON.stringify(EVENTOS));
+        renderAll();
+        cerrarModal();
+      };
+
+      modal_delete.onclick = function(){
+        if(!modalCtx || !modalCtx.editId) return;
+        if(!confirm("¿Eliminar este evento?")) return;
+
+        EVENTOS = EVENTOS.filter(function(x){
+          return eventoId(x)!==modalCtx.editId;
+        });
+
+        localStorage.setItem("jvcalendario", JSON.stringify(EVENTOS));
+        renderAll();
+        cerrarModal();
+      };
+
+      // -------------------------------
+      // categorías (botones)
+      // -------------------------------
+      document.querySelectorAll(".btn.personal, .btn.laboral, .btn.vacaciones").forEach(function(b){
+        b.onclick = function(){
+          calendario_activo = this.textContent.trim();
+          activo_lbl.textContent = calendario_activo;
+        };
+      });
+
+      // -------------------------------
+      // guardar manual
+      // -------------------------------
+      document.querySelector("#guardar").onclick = function(){
+        localStorage.setItem("jvcalendario", JSON.stringify(EVENTOS));
+      };
+
+      // -------------------------------
+      // descargar/cargar JSON
+      // -------------------------------
+      document.querySelector("#descargar").onclick = function(){
+        let data = JSON.stringify(EVENTOS, null, 2);
+        let blob = new Blob([data], {type:"application/json"});
+        let url = URL.createObjectURL(blob);
+
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = "jvcalendario_"+Date.now()+".json";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        URL.revokeObjectURL(url);
+      };
+
+      let fileInput = document.querySelector("#file");
+      document.querySelector("#cargar").onclick = function(){
+        fileInput.value = "";
+        fileInput.click();
+      };
+
+      fileInput.onchange = function(){
+        let f = fileInput.files && fileInput.files[0];
+        if(!f) return;
+
+        let reader = new FileReader();
+        reader.onload = function(){
+          let raw = String(reader.result||"");
+          let incoming = [];
+          try {
+            incoming = JSON.parse(raw) || [];
+            if(!Array.isArray(incoming)) incoming = [];
+          } catch(e){
+            alert("JSON inválido.");
+            return;
+          }
+
+          let modo = confirm("OK = REEMPLAZAR todo, Cancelar = AÑADIR (merge)");
+          if(modo){
+            EVENTOS = incoming;
+          }else{
+            // merge simple por id
+            let map = new Map();
+            EVENTOS.forEach(function(ev){ map.set(eventoId(ev), ev); });
+            incoming.forEach(function(ev){ map.set(eventoId(ev), ev); });
+            EVENTOS = Array.from(map.values());
+          }
+
+          localStorage.setItem("jvcalendario", JSON.stringify(EVENTOS));
+          renderAll();
+        };
+        reader.readAsText(f);
+      };
+
+      // -------------------------------
+      // render helpers
+      // -------------------------------
+      function bindEvento(el){
+        el.addEventListener("click", function(e){
+          e.stopPropagation();
+        });
+      }
+
+      function diasEnMes(year, month) {
+        return new Date(year, month, 0).getDate();
+      }
+      function primerDiaDelMes(year, month) {
+        return new Date(year, month - 1, 1).getDay();
+      }
+
+      function calcTopHeight(startMin, endMin, hourH){
+        let dayStart = 8*60;
+        let top = ((startMin - dayStart)/60) * hourH;
+        let height = ((endMin - startMin)/60) * hourH;
+        return { top: top, height: height };
+      }
+
+      function crearEventoDom(ev, hourH, classExtra){
+        let el = document.createElement("div");
+        el.classList.add("evento");
+        el.classList.add(ev.tipo || "personal");
+        if(classExtra) el.classList.add(classExtra);
+
+        // posicionamiento por duración
+        let p = calcTopHeight(Number(ev.start), Number(ev.end), hourH);
+        el.style.top = p.top + "px";
+        el.style.height = p.height + "px";
+
+        el.setAttribute("anio", ev.anio);
+        el.setAttribute("mes", ev.mes);
+        el.setAttribute("dia", ev.dia);
+        el.setAttribute("start", ev.start);
+        el.setAttribute("end", ev.end);
+        el.setAttribute("tipo", ev.tipo);
+
+        el.tabIndex = 0; // para foco
+        el.innerHTML = `
+          <div class="t"></div>
+          <div class="h"></div>
+        `;
+
+        el.querySelector(".t").textContent = (ev.texto||"").trim() || "(sin texto)";
+        el.querySelector(".h").textContent = minToHHMM(Number(ev.start)) + " - " + minToHHMM(Number(ev.end));
+
+        // abrir modal al click para editar
+        el.onclick = function(e){
+          e.stopPropagation();
+          abrirModal({
+            anio: Number(ev.anio),
+            mes: Number(ev.mes),
+            dia: Number(ev.dia),
+            startMin: Number(ev.start),
+            texto: ev.texto,
+            tipo: ev.tipo,
+            edit: true,
+            editId: eventoId(ev)
+          });
+        };
+
+        // delete rápido (del)
+        el.onkeydown = function(e){
+          if(e.key === "Delete" || e.code === "Delete"){
+            if(confirm("¿Eliminar este evento?")){
+              EVENTOS = EVENTOS.filter(function(x){ return eventoId(x)!==eventoId(ev); });
+              localStorage.setItem("jvcalendario", JSON.stringify(EVENTOS));
+              renderAll();
+            }
+          }
+        };
+
+        bindEvento(el);
+        return el;
+      }
+
+      function crearTimelineTicks(timeline, hourH, onClickHour){
+        let dayStart = 8;
+        let dayEnd = 22;
+        let hours = (dayEnd - dayStart);
+
+        for(let i=0;i<hours;i++){
+          let tick = document.createElement("div");
+          tick.classList.add("tick");
+          tick.style.top = (i*hourH) + "px";
+          tick.style.height = hourH + "px";
+          tick.setAttribute("hora", dayStart+i);
+          tick.onclick = function(){
+            onClickHour(dayStart+i);
+          };
+          timeline.appendChild(tick);
+        }
+      }
+
+      // -------------------------------
+      // VISTAS
+      // -------------------------------
+      function renderYearAndMonths(){
+        contenedor.innerHTML = "";
+
+        for(let i=1;i<=meses;i++){
+          let dias_en_mes = diasEnMes(anio,i);
+
+          let mes = document.createElement("div");
+          mes.classList.add("mes","grid");
+          mes.setAttribute("mes", nombres_meses[i-1]);
+          mes.setAttribute("mesnum", i);
+
+          // cabecera
+          let cab = document.createElement("div");
+          cab.classList.add("cabecera_mes");
+          cab.style.gridColumn = "1 / -1";
+          cab.innerHTML = `
+            <div class="nombre">${nombres_meses[i-1]}</div>
+            <div class="info">${anio}</div>
+          `;
+          mes.appendChild(cab);
+
+          // offset inicio (tu lógica)
+          let inicio_mes = primerDiaDelMes(anio, i) + 6;
+          for(let j=1;j<=inicio_mes;j++){
+            let dia = document.createElement("div");
+            dia.classList.add("dia","desactivado");
+            mes.appendChild(dia);
+          }
+
+          for(let j=1;j<=dias_en_mes;j++){
+            let dia = document.createElement("div");
+            dia.classList.add("dia");
+
+            let num = document.createElement("div");
+            num.classList.add("numdia");
+            num.innerHTML = `<span>${j}</span><span class="mini">${nombres_meses[i-1].slice(0,3)}</span>`;
+            dia.appendChild(num);
+
+            num.onclick = function(e){
+              e.stopPropagation();
+              seleccion = { anio: anio, mes: i, dia: j };
+              semanaOffset = 0;
+              diaOffset = 0;
+              estado.textContent = "Selección: " + fechaKey(seleccion.anio, seleccion.mes, seleccion.dia);
+              if(vista==="Semana") mostrarSemana();
+              if(vista==="Dia") mostrarDia();
+              if(vista==="Año"){
+                cambiarVista("Mes");
+                mostrarSoloMes(i);
+              }
+            };
+
+            // timeline mes
+            let timeline = document.createElement("div");
+            timeline.classList.add("timeline");
+            dia.appendChild(timeline);
+
+            // ticks clicables => abrir modal para crear (inicio = hora click)
+            let hourH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hour-h-month"));
+            crearTimelineTicks(timeline, hourH, function(h){
+              abrirModal({
+                anio: anio,
+                mes: i,
+                dia: j,
+                startMin: h*60,
+                tipo: calendario_activo
+              });
+            });
+
+            // eventos de ese día
+            EVENTOS.forEach(function(ev){
+              if(Number(ev.anio)!==Number(anio)) return;
+              if(Number(ev.mes)!==Number(i)) return;
+              if(Number(ev.dia)!==Number(j)) return;
+              let el = crearEventoDom(ev, hourH);
+              timeline.appendChild(el);
+            });
+
+            mes.appendChild(dia);
+          }
+
+          contenedor.appendChild(mes);
+        }
+      }
+
+      function mostrarSoloMes(mesNum){
+        let mesesDom = contenedor.querySelectorAll(".mes");
+        mesesDom.forEach(function(m){
+          if(Number(m.getAttribute("mesnum"))===Number(mesNum)){
+            m.classList.remove("oculto");
+          }else{
+            m.classList.add("oculto");
+          }
+        });
+        contenedor.classList.remove("vista_anual");
+      }
+
+      function mostrarTodosLosMeses(){
+        contenedor.querySelectorAll(".mes").forEach(function(m){ m.classList.remove("oculto"); });
+      }
+
+      function toDateObj(a,m,d){ return new Date(a, m-1, d); }
+
+      function startOfWeekMonday(dateObj){
+        let d = new Date(dateObj);
+        d.setHours(0,0,0,0);
+        let day = d.getDay();
+        let diff = (day===0 ? -6 : 1-day);
+        d.setDate(d.getDate()+diff);
+        return d;
+      }
+
+      function mostrarSemana(){
+        panel.classList.remove("oculto");
+        contenedor.classList.add("oculto");
+
+        let base = toDateObj(seleccion.anio, seleccion.mes, seleccion.dia);
+        base.setDate(base.getDate() + (semanaOffset*7));
+        let lunes = startOfWeekMonday(base);
+
+        panelTitulo.textContent = "Semana · " + lunes.toLocaleDateString("es-ES",{year:"numeric",month:"2-digit",day:"2-digit"});
+
+        panelBody.innerHTML = "";
+        let grid = document.createElement("div");
+        grid.classList.add("grid_semana");
+
+        // esquina
+        let corner = document.createElement("div");
+        corner.classList.add("celda_lbl");
+        corner.textContent = "";
+        grid.appendChild(corner);
+
+        // headers días
+        let cols = [];
+        for(let i=0;i<7;i++){
+          let dd = new Date(lunes);
+          dd.setDate(lunes.getDate()+i);
+
+          let hdr = document.createElement("div");
+          hdr.classList.add("dia_lbl");
+          hdr.textContent = dd.toLocaleDateString("es-ES",{weekday:"short",day:"2-digit",month:"2-digit"});
+          grid.appendChild(hdr);
+
+          // columna (timeline)
+          let col = document.createElement("div");
+          col.classList.add("col_dia");
+          cols.push({ date: dd, col: col });
+        }
+
+        // labels horas + columnas
+        let hourH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hour-h-panel"));
+        let dayStart = 8;
+        let dayEnd = 22;
+
+        for(let h=dayStart;h<dayEnd;h++){
+          let hl = document.createElement("div");
+          hl.classList.add("celda_lbl");
+          hl.style.height = "var(--hour-h-panel)";
+          hl.textContent = h+":00";
+          grid.appendChild(hl);
+
+          for(let i=0;i<7;i++){
+            if(h===dayStart){
+              // primera fila: insertamos el contenedor de timeline ocupando varias filas (truco simple: 1 por hora)
+              // para mantener tu estilo (sin CSS grid row spans), creamos ticks en cada celda.
+            }
+            let cell = document.createElement("div");
+            cell.classList.add("col_dia");
+
+            let dd = new Date(lunes);
+            dd.setDate(lunes.getDate()+i);
+            let a = dd.getFullYear();
+            let m = dd.getMonth()+1;
+            let d = dd.getDate();
+
+            let timeline = document.createElement("div");
+            timeline.classList.add("timeline");
+            cell.appendChild(timeline);
+
+            crearTimelineTicks(timeline, hourH, function(hh){
+              abrirModal({
+                anio:a, mes:m, dia:d,
+                startMin: hh*60,
+                tipo: calendario_activo
+              });
+            });
+
+            // eventos del día (render una sola vez por celda; es repetitivo pero visualmente ok)
+            EVENTOS.forEach(function(ev){
+              if(Number(ev.anio)!==Number(a)) return;
+              if(Number(ev.mes)!==Number(m)) return;
+              if(Number(ev.dia)!==Number(d)) return;
+              let el = crearEventoDom(ev, hourH);
+              timeline.appendChild(el);
+            });
+
+            // solo una fila "visual": usamos la celda por hora (compacto). Para no duplicar, rompemos aquí:
+            // (en semana es mejor una sola timeline por día; si quieres, te lo dejo refinado en el siguiente paso)
+            // -> para mantenerlo funcional sin reestructurar tu grid, cancelamos:
+            if(h===dayStart){
+              // reemplazamos la celda por una sola grande:
+              cell.style.gridRow = "span " + (dayEnd-dayStart);
+              timeline.style.height = "calc((var(--day-end) - var(--day-start)) * var(--hour-h-panel))";
+              // borramos las futuras celdas (no se crean porque hacemos return)
+            }else{
+              // celdas extra no se añaden
+              continue;
+            }
+
+            grid.appendChild(cell);
+          }
+
+          // solo creamos una fila real (la primera)
+          break;
+        }
+
+        panelBody.appendChild(grid);
+      }
+
+      function mostrarDia(){
+        panel.classList.remove("oculto");
+        contenedor.classList.add("oculto");
+
+        let base = toDateObj(seleccion.anio, seleccion.mes, seleccion.dia);
+        base.setDate(base.getDate() + diaOffset);
+
+        let a = base.getFullYear();
+        let m = base.getMonth()+1;
+        let d = base.getDate();
+
+        panelTitulo.textContent = "Día · " + base.toLocaleDateString("es-ES",{weekday:"long", year:"numeric", month:"long", day:"2-digit"});
+
+        panelBody.innerHTML = "";
+        let wrap = document.createElement("div");
+        wrap.classList.add("lista_dia");
+
+        let colH = document.createElement("div");
+        colH.classList.add("col_horas");
+        wrap.appendChild(colH);
+
+        let colM = document.createElement("div");
+        colM.classList.add("col_main");
+        wrap.appendChild(colM);
+
+        let timeline = document.createElement("div");
+        timeline.classList.add("timeline");
+        colM.appendChild(timeline);
+
+        let hourH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hour-h-panel"));
+
+        // hours labels
+        for(let h=8;h<22;h++){
+          let hi = document.createElement("div");
+          hi.classList.add("hitem");
+          hi.textContent = h+":00";
+          colH.appendChild(hi);
+        }
+
+        crearTimelineTicks(timeline, hourH, function(hh){
+          abrirModal({
+            anio:a, mes:m, dia:d,
+            startMin: hh*60,
+            tipo: calendario_activo
+          });
+        });
+
+        EVENTOS.forEach(function(ev){
+          if(Number(ev.anio)!==Number(a)) return;
+          if(Number(ev.mes)!==Number(m)) return;
+          if(Number(ev.dia)!==Number(d)) return;
+          let el = crearEventoDom(ev, hourH);
+          timeline.appendChild(el);
+        });
+
+        panelBody.appendChild(wrap);
+      }
+
+      // -------------------------------
+      // cambiar vista
+      // -------------------------------
+      function marcarAccionActiva(txt){
+        document.querySelectorAll(".acciones").forEach(function(b){
+          if(b.textContent.trim()===txt){ b.classList.add("activa"); }
+          else{ b.classList.remove("activa"); }
+        });
+      }
+
+      function cambiarVista(nueva){
+        vista = nueva;
+        marcarAccionActiva(nueva);
+
+        if(vista==="Año"){
+          panel.classList.add("oculto");
+          contenedor.classList.remove("oculto");
+          mostrarTodosLosMeses();
+          contenedor.classList.add("vista_anual");
+          estado.textContent = "Vista: Año · " + anio;
+        }
+
+        if(vista==="Mes"){
+          panel.classList.add("oculto");
+          contenedor.classList.remove("oculto");
+          contenedor.classList.remove("vista_anual");
+          mostrarTodosLosMeses();
+          estado.textContent = "Vista: Mes · click en una franja para crear evento";
+        }
+
+        if(vista==="Semana"){
+          contenedor.classList.remove("vista_anual");
+          mostrarSemana();
+          estado.textContent = "Vista: Semana · selección " + fechaKey(seleccion.anio, seleccion.mes, seleccion.dia);
+        }
+
+        if(vista==="Dia"){
+          contenedor.classList.remove("vista_anual");
+          mostrarDia();
+          estado.textContent = "Vista: Día · selección " + fechaKey(seleccion.anio, seleccion.mes, seleccion.dia);
+        }
+      }
+
+      document.querySelectorAll(".acciones").forEach(function(accion){
+        accion.onclick = function(){
+          cambiarVista(this.textContent.trim());
+        };
+      });
+
+      // navegación panel
+      document.querySelector("#prev").onclick = function(){
+        if(vista==="Semana"){ semanaOffset--; mostrarSemana(); }
+        if(vista==="Dia"){ diaOffset--; mostrarDia(); }
+      };
+      document.querySelector("#next").onclick = function(){
+        if(vista==="Semana"){ semanaOffset++; mostrarSemana(); }
+        if(vista==="Dia"){ diaOffset++; mostrarDia(); }
+      };
+      document.querySelector("#hoy").onclick = function(){
+        let now = new Date();
+        seleccion = { anio: now.getFullYear(), mes: now.getMonth()+1, dia: now.getDate() };
+        semanaOffset = 0;
+        diaOffset = 0;
+        if(vista==="Semana") mostrarSemana();
+        if(vista==="Dia") mostrarDia();
+        estado.textContent = "Selección: " + fechaKey(seleccion.anio, seleccion.mes, seleccion.dia);
+      };
+
+      // -------------------------------
+      // renderAll
+      // -------------------------------
+      function renderAll(){
+        // refresca EVENTOS desde storage (por coherencia)
+        EVENTOS = readStorage();
+
+        // rerender según vista
+        if(vista==="Semana"){ mostrarSemana(); return; }
+        if(vista==="Dia"){ mostrarDia(); return; }
+
+        renderYearAndMonths();
+      }
+
+      // -------------------------------
+      // latido (auto-save)
+      // -------------------------------
+      let temporizador = setTimeout("latido()",1000);
+      function latido(){
+        // tu requisito: guardar en latido (ok)
+        localStorage.setItem("jvcalendario", JSON.stringify(EVENTOS));
+        clearTimeout(temporizador);
+        temporizador = setTimeout("latido()",1000);
+      }
+
+      // -------------------------------
+      // init
+      // -------------------------------
+      activo_lbl.textContent = calendario_activo;
+      estado.textContent = "Vista: Mes · click en una franja para crear evento";
+      renderAll();
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,157 @@
+<!-- tour.html -->
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carolina Vega · Tour</title>
+  <meta name="description" content="Próximos conciertos de Carolina Vega: fechas, ciudades, salas y entradas disponibles.">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <main>
+
+    <section id="heroe" class="pagina" aria-label="Cabecera Tour">
+      <header>
+        <h1>Carolina<br>Vega</h1>
+
+        <nav aria-label="Navegación principal">
+          <a href="index.html#inicio">Inicio</a>
+          <a href="biografia.html">Biografía</a>
+          <a href="musica.html">Música</a>
+          <a href="tour.html" aria-current="page">Tour</a>
+          <a href="galeria.html">Galería</a>
+          <a href="contacto.html">Contacto</a>
+
+          <span></span>
+
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="X">x</a>
+          <a href="#" aria-label="YouTube">▶</a>
+        </nav>
+      </header>
+
+      <article id="destacado" class="destacado-pagina">
+        <p class="kicker">TOUR</p>
+        <h2>Próximos<br>conciertos</h2>
+        <p class="lead">Fechas, ciudades y acceso a entradas (texto editable).</p>
+        <p>
+          <a class="boton" href="#fechas">Ver fechas</a>
+          <a class="boton negro" href="contacto.html">Contratación</a>
+        </p>
+      </article>
+    </section>
+
+    <section id="contenido">
+      <section>
+
+        <section id="fechas" class="panel" aria-label="Fechas de tour">
+          <h4>FECHAS</h4>
+
+          <div class="tour-toolbar" aria-label="Filtros tour">
+            <input type="search" placeholder="Buscar ciudad o sala..." aria-label="Buscar">
+            <select aria-label="Filtrar por estado">
+              <option value="">Todas</option>
+              <option>Próximas</option>
+              <option>Agotado</option>
+              <option>Anunciado</option>
+            </select>
+          </div>
+
+          <div class="tabla-tour" role="table" aria-label="Tabla de conciertos">
+            <div class="fila cabecera" role="row">
+              <div role="columnheader">Fecha</div>
+              <div role="columnheader">Ciudad</div>
+              <div role="columnheader">Sala / Evento</div>
+              <div role="columnheader">Estado</div>
+              <div role="columnheader">Entradas</div>
+            </div>
+
+            <div class="fila" role="row">
+              <div role="cell">09 · MAR · 2026</div>
+              <div role="cell">Valencia</div>
+              <div role="cell">Sala Example</div>
+              <div role="cell"><span class="chip">Próximas</span></div>
+              <div role="cell"><a class="boton" href="#">Entradas</a></div>
+            </div>
+
+            <div class="fila" role="row">
+              <div role="cell">21 · MAR · 2026</div>
+              <div role="cell">Madrid</div>
+              <div role="cell">Teatro Example</div>
+              <div role="cell"><span class="chip">Anunciado</span></div>
+              <div role="cell"><a class="boton" href="#">Info</a></div>
+            </div>
+
+            <div class="fila" role="row">
+              <div role="cell">11 · ABR · 2026</div>
+              <div role="cell">Barcelona</div>
+              <div role="cell">Festival Example</div>
+              <div role="cell"><span class="chip agotado">Agotado</span></div>
+              <div role="cell"><a class="boton negro" href="#">Lista espera</a></div>
+            </div>
+
+            <div class="fila" role="row">
+              <div role="cell">25 · ABR · 2026</div>
+              <div role="cell">Sevilla</div>
+              <div role="cell">Sala Example</div>
+              <div role="cell"><span class="chip">Próximas</span></div>
+              <div role="cell"><a class="boton" href="#">Entradas</a></div>
+            </div>
+          </div>
+
+          <p class="nota">
+            Para contratación, festivales y eventos privados: <a href="contacto.html">contacto</a>.
+          </p>
+        </section>
+
+        <section class="panel" aria-label="Contratación">
+          <h4>CONTRATACIÓN</h4>
+          <div class="cards">
+            <article class="card">
+              <h5>Formato</h5>
+              <p>Solo · Dúo · Banda. Adaptable a sala, teatro o evento.</p>
+            </article>
+            <article class="card">
+              <h5>Producción</h5>
+              <p>Opciones de backline, necesidades técnicas y logística.</p>
+            </article>
+            <article class="card">
+              <h5>Contacto directo</h5>
+              <p>Escribe y responde con detalle: ciudad, fecha, aforo, formato.</p>
+              <a class="boton" href="contacto.html">Ir a contacto</a>
+            </article>
+          </div>
+        </section>
+
+        <section id="sigueme" aria-label="Sígueme">
+          <h4>SÍGUEME EN</h4>
+          <p>ÚNETE A MI NEWSLETTER</p>
+
+          <form action="#" method="post">
+            <input type="email" name="email" placeholder="Tu correo electrónico..." required>
+            <button type="submit">Suscribirse</button>
+          </form>
+
+          <p class="social">
+            <a href="#" aria-label="Facebook">f</a>
+            <a href="#" aria-label="X">x</a>
+            <a href="#" aria-label="Instagram">⌁</a>
+            <a href="#" aria-label="YouTube">▶</a>
+            <a href="#" aria-label="Spotify">◌</a>
+          </p>
+        </section>
+
+      </section>
+    </section>
+
+  </main>
+
+  <footer>
+    © 2024 CAROLINA VEGA · TODOS LOS DERECHOS RESERVADOS
+  </footer>
+
+</body>
+</html>
+

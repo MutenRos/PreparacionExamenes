@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Calendario</title>
+    <style>
+      .vista_anual{
+        display:grid;
+        grid-template-columns:repeat(2,100fr);
+      }
+      .vista_anual .mes{
+        width:700px !important;
+      }
+      .vista_anual .mes .dia{
+        height:100px !important;
+      }
+      #jvcalendario .mes{display:grid;width:1400px;grid-template-columns:repeat(7,100fr);}
+      #jvcalendario .mes .dia{border:1px solid lightgray;height:250px;padding:10px;font-size:10px;display:flex;flex-direction:column;justify-content:space-between;}
+      #jvcalendario .mes .dia .hora{border-bottom:1px solid lightgray;display:flex;gap:20px;}
+      #jvcalendario .mes .desactivado{background:lightgrey;}
+      #jvcalendario .mes .dia .hora:nth-child(even){background:rgb(240,240,240);}
+      #jvcalendario .mes .dia .hora .evento{color:white;padding:5px;border-radius:5px;width:80%;}
+      .boton{border:0px;border-radius:5px;background:lightgray;padding:10px 20px;}
+      .personal{background:red;color:white;}.laboral{background:green;color:white;}.vacaciones{background:blue;color:white;}
+      .oculto{display:none !important;}
+    </style>
+  </head>
+  <body>
+    <button id="guardar">Guardar</button>
+    <button class="boton personal">personal</button>
+    <button class="boton laboral">laboral</button>
+    <button class="boton vacaciones">vacaciones</button>
+    <button class="acciones anio">Año</button>
+    <button class="acciones mes">Mes</button>
+    <button class="acciones semana">Semana</button>
+    <button class="acciones dia">Dia</button>
+    <div id="jvcalendario"></div>
+    <script>
+      function bindEvento(el){
+          el.addEventListener("click", function(e){
+            e.stopPropagation();
+          });
+        }
+      function diasEnMes(year, month) {
+        return new Date(year, month, 0).getDate();
+      }
+      function primerDiaDelMes(year, month) {
+        return new Date(year, month - 1, 1).getDay();
+      }
+      let acciones = document.querySelectorAll(".acciones")
+      acciones.forEach(function(accion){
+        accion.onclick = function(){
+          switch(this.textContent){
+            case "Año":
+              console.log("Has pulsado en el año")
+              let horas = document.querySelectorAll(".hora")
+              horas.forEach(function(hora){
+                hora.classList.add("oculto")
+              })
+              contenedor.classList.add("vista_anual")
+              break;
+            case "Mes":
+              console.log("Has pulsado en el mes")
+              break;
+            case "Semana":
+              console.log("Has pulsado en la semana")
+              break;
+            case "Dia":
+              console.log("Has pulsado en el dia")
+              break;
+          }
+        }
+      })
+      let boton = document.querySelector("#guardar")
+      boton.onclick = function(){
+        console.log("vamos a guardar")
+        let eventos = document.querySelectorAll(".evento")
+        let json = [];
+        eventos.forEach(function(evento){
+          json.push({
+            anio: evento.getAttribute("anio"),
+            mes:  evento.getAttribute("mes"),
+            dia:  evento.getAttribute("dia"),
+            hora: evento.getAttribute("hora"),
+            tipo: evento.classList.contains("personal") ? "personal"
+                 : evento.classList.contains("laboral") ? "laboral"
+                 : evento.classList.contains("vacaciones") ? "vacaciones"
+                 : "",
+            texto: evento.textContent
+          })
+        })
+        localStorage.setItem("jvcalendario",JSON.stringify(json))
+      }
+      let calendario_activo = "personal";
+      let botones_calendario = document.querySelectorAll(".boton")
+      botones_calendario.forEach(function(boton){
+        boton.onclick = function(){
+          calendario_activo = this.textContent
+        }
+      })
+      let contenedor = document.querySelector("#jvcalendario");         // Selecciono el contenedor
+      let anio = 2026;                                                  // Establezco año actual
+      let meses = 12;                                                   // Indico número de meses
+      let nombres_meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio',
+      'Agosto','Septiembre','Octubre','Noviembre','Diciembre']          // Creo un array con los meses
+      for(let i = 1;i<=meses;i++){                                      // Para cada mes
+        let dias_en_mes = diasEnMes(anio,i)                             // Obtengo los dias que tiene el mes
+
+        let mes = document.createElement("div");                        // Creo un div para el mes
+        mes.classList.add("mes");                                       // Le pongo la clase mes para el css
+        mes.setAttribute("mes",nombres_meses[i-1])                      // Le pongo un atributo mes
+          let inicio_mes = primerDiaDelMes(anio, i)+6                   // Atrapo el dia de la semana en el que empieza el mes
+          for(let j = 1;j<=inicio_mes;j++){                             // Para cada uno de los dias
+            let dia = document.createElement("div");                    // Creo un dia vacío
+            dia.classList.add("dia")                                    // Le pongo la clase dia
+            dia.classList.add("desactivado")                            // Le pongo la clase dia
+            mes.appendChild(dia)                                        // Y lo añado al mes
+          }
+          for(let j = 1;j<=dias_en_mes;j++){                            // para cada uno de los dias llenos
+            let dia = document.createElement("div");                    // Creo un div
+            dia.classList.add("dia")                                    // Le pongo clase
+            dia.textContent = j                                         // Le pongo el número
+              for(let k = 8;k<=21;k++){
+                let hora = document.createElement("div");
+                hora.setAttribute("anio",anio)
+                  hora.setAttribute("mes",i)
+                  hora.setAttribute("dia",j)
+                hora.classList.add("hora")
+                hora.setAttribute("hora", k);
+                hora.textContent = k
+                hora.onclick = function(){
+                  console.log("has hecho click")
+                  let evento = document.createElement("div")
+                  evento.setAttribute("anio",anio)
+                  evento.setAttribute("mes",i)
+                  evento.setAttribute("dia",j)
+                  evento.setAttribute("hora",k)
+                  evento.classList.add("evento")
+                  evento.classList.add(calendario_activo)
+                  hora.appendChild(evento)
+                  evento.setAttribute("contenteditable",true)
+                  evento.onkeydown =  function (e) {
+                      if (e.key === "Delete" || e.code === "Delete") {
+                        this.remove()
+                      }
+                    };
+                  bindEvento(evento);
+                  evento.focus()
+                  
+                }
+                dia.appendChild(hora) 
+              }
+            mes.appendChild(dia)                                        // Y lo añado al mes
+          }
+        contenedor.appendChild(mes)
+        // Recupero los eventos:
+        let eventos_recuperados_raw = localStorage.getItem("jvcalendario");
+        let eventos_recuperados = [];
+
+        try {
+          eventos_recuperados = eventos_recuperados_raw ? JSON.parse(eventos_recuperados_raw) : [];
+        } catch (e) {
+          eventos_recuperados = [];
+        }
+
+        eventos_recuperados.forEach(function(ev){
+          // Solo eventos de este mes (i)
+          if (Number(ev.mes) !== i) return;
+
+          // Busca el CONTENEDOR DE HORA exacto dentro del mes actual
+          let selector = `.hora[anio="${ev.anio}"][mes="${ev.mes}"][dia="${ev.dia}"][hora="${ev.hora}"]`;
+          let slotHora = mes.querySelector(selector);
+          if (!slotHora) return;
+
+          // Crea el evento y lo mete en el slot de hora (no en el día)
+          let evento = document.createElement("div");
+          evento.setAttribute("anio", ev.anio);
+          evento.setAttribute("mes", ev.mes);
+          evento.setAttribute("dia", ev.dia);
+          evento.setAttribute("hora", ev.hora);
+          evento.classList.add("evento");
+           evento.onkeydown =  function (e) {
+                      if (e.key === "Delete" || e.code === "Delete") {
+                        this.remove()
+                      }
+                    };
+          if (ev.tipo) evento.classList.add(ev.tipo);
+          evento.setAttribute("contenteditable", true);
+          evento.textContent = ev.texto || "";
+
+          slotHora.appendChild(evento);
+          bindEvento(evento);
+        });
+
+      }
+      
+      let temporizador = setTimeout("latido()",1000)
+      
+      function latido(){
+        let eventos = document.querySelectorAll(".evento")
+        let json = [];
+        eventos.forEach(function(evento){
+          json.push({
+            anio: evento.getAttribute("anio"),
+            mes:  evento.getAttribute("mes"),
+            dia:  evento.getAttribute("dia"),
+            hora: evento.getAttribute("hora"),
+            tipo: evento.classList.contains("personal") ? "personal"
+                 : evento.classList.contains("laboral") ? "laboral"
+                 : evento.classList.contains("vacaciones") ? "vacaciones"
+                 : "",
+            texto: evento.textContent
+          })
+        })
+        localStorage.setItem("jvcalendario",JSON.stringify(json))
+        clearTimeout(temporizador);
+        temporizador = setTimeout("latido()",1000)
+      }
+    </script>
+  </body>
+</html>

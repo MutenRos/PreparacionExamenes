@@ -1,0 +1,28 @@
+// Plantilla JVpug para la página de perfil profesional
+// Variables esperadas: nombre, titulo, descripcion, areas, enfoque_html, year
+html
+  head
+    meta charset="utf-8"
+    meta name="viewport" content="width=device-width,initial-scale=1"
+    title Jose Vicente Carratalá
+  body
+    header
+      h1 #{nombre}
+      h2 #{titulo}
+
+    section
+      p #{descripcion}
+
+    section
+      h3 Áreas de trabajo
+      ul
+        @for area in $areas
+          li #{area}
+
+    section
+      h3 Proyectos y enfoque
+      p !{$enfoque_html}
+
+    footer
+      p © #{year} #{nombre}
+

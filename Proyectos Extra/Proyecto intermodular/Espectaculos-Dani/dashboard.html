@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Panel de administración de Espectáculos Dani. Gestión de eventos, clientes, inventario y facturación.">
+    <title>Dashboard | Espectáculos Dani</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="sidebar-logo">
+                <i class="fas fa-star"></i>
+                <span>Espectáculos Dani</span>
+            </a>
+            <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Principal</span>
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active" data-section="overview"><i class="fas fa-th-large"></i><span>Panel General</span></a></li>
+                    <li><a href="#" data-section="calendar"><i class="fas fa-calendar-alt"></i><span>Calendario</span></a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Gestión</span>
+                <ul class="sidebar-menu">
+                    <li><a href="#" data-section="events"><i class="fas fa-calendar-check"></i><span>Eventos</span><span class="menu-badge" id="eventsBadge">0</span></a></li>
+                    <li><a href="#" data-section="clients"><i class="fas fa-users"></i><span>Clientes</span></a></li>
+                    <li><a href="#" data-section="invoices"><i class="fas fa-file-invoice-dollar"></i><span>Facturas</span></a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Inventario</span>
+                <ul class="sidebar-menu">
+                    <li><a href="#" data-section="hinchables"><i class="fas fa-castle"></i><span>Hinchables</span></a></li>
+                    <li><a href="#" data-section="atracciones"><i class="fas fa-rocket"></i><span>Atracciones</span></a></li>
+                    <li><a href="#" data-section="mobiliario"><i class="fas fa-chair"></i><span>Mobiliario</span></a></li>
+                    <li><a href="#" data-section="equipos"><i class="fas fa-volume-high"></i><span>Equipos Sonido</span></a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Informes</span>
+                <ul class="sidebar-menu">
+                    <li><a href="#" data-section="income"><i class="fas fa-chart-line"></i><span>Ingresos</span></a></li>
+                    <li><a href="#" data-section="settings"><i class="fas fa-cog"></i><span>Configuración</span></a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="index.html" class="back-to-site"><i class="fas fa-arrow-left"></i> Volver al sitio web</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Buscar eventos, clientes..." id="globalSearch">
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="header-icon" title="Notificaciones">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notifBadge">3</span>
+                </button>
+                <div class="user-menu">
+                    <div class="user-avatar">D</div>
+                    <span class="user-name">Dani</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Overview Section -->
+            <section id="section-overview" class="dashboard-section active">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Panel General</h1>
+                        <div class="page-breadcrumb">
+                            <a href="#">Dashboard</a>
+                            <span>/</span>
+                            <span>Panel General</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="openEventModal()"><i class="fas fa-plus"></i> Nuevo Evento</button>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon primary"><i class="fas fa-calendar-check"></i></div>
+                        <div class="stat-info">
+                            <h3 id="statEvents">0</h3>
+                            <p>Eventos Este Mes</p>
+                        </div>
+                        <div class="stat-change positive"><i class="fas fa-arrow-up"></i> 12%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success"><i class="fas fa-euro-sign"></i></div>
+                        <div class="stat-info">
+                            <h3 id="statIncome">0€</h3>
+                            <p>Ingresos del Mes</p>
+                        </div>
+                        <div class="stat-change positive"><i class="fas fa-arrow-up"></i> 8%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning"><i class="fas fa-users"></i></div>
+                        <div class="stat-info">
+                            <h3 id="statClients">0</h3>
+                            <p>Total Clientes</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon info"><i class="fas fa-box"></i></div>
+                        <div class="stat-info">
+                            <h3 id="statItems">0</h3>
+                            <p>Items Inventario</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <!-- Upcoming Events -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-calendar-day"></i> Próximos Eventos</h3>
+                            <a href="#" class="btn btn-sm btn-secondary" data-section="events">Ver todos</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Evento</th>
+                                            <th>Fecha</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="upcomingEventsTable">
+                                        <tr>
+                                            <td colspan="3" class="text-center">No hay eventos próximos</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-bolt"></i> Acciones Rápidas</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="quick-actions">
+                                <div class="quick-action" onclick="openEventModal()">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <span>Nuevo Evento</span>
+                                </div>
+                                <div class="quick-action" onclick="openClientModal()">
+                                    <i class="fas fa-user-plus"></i>
+                                    <span>Nuevo Cliente</span>
+                                </div>
+                                <div class="quick-action" onclick="switchSection('invoices')">
+                                    <i class="fas fa-file-invoice"></i>
+                                    <span>Crear Factura</span>
+                                </div>
+                                <div class="quick-action" onclick="switchSection('calendar')">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Ver Calendario</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Clients -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-users"></i> Clientes Recientes</h3>
+                        <a href="#" class="btn btn-sm btn-secondary" data-section="clients">Ver todos</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Teléfono</th>
+                                        <th>Email</th>
+                                        <th>Eventos</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentClientsTable">
+                                    <tr>
+                                        <td colspan="5" class="text-center">No hay clientes registrados</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calendar Section -->
+            <section id="section-calendar" class="dashboard-section">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Calendario</h1>
+                        <div class="page-breadcrumb">
+                            <a href="#">Dashboard</a>
+                            <span>/</span>
+                            <span>Calendario</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="openEventModal()"><i class="fas fa-plus"></i> Nuevo Evento</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="calendar-nav">
+                            <button id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                            <h3 id="currentMonth">Enero 2024</h3>
+                            <button id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <button class="btn btn-secondary" id="todayBtn">Hoy</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="calendar-grid" id="calendarGrid">
+                            <!-- Calendar will be generated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Events Section -->
+            <section id="section-events" class="dashboard-section">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Gestión de Eventos</h1>
+                        <div class="page-breadcrumb">
+                            <a href="#">Dashboard</a>
+                            <span>/</span>
+                            <span>Eventos</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="openEventModal()"><i class="fas fa-plus"></i> Nuevo Evento</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-calendar-check"></i> Todos los Eventos</h3>
+                        <div class="card-actions">
+                            <select class="form-control form-select" id="eventFilter" style="width: 150px;">
+                                <option value="all">Todos</option>
+                                <option value="pending">Pendientes</option>
+                                <option value="confirmed">Confirmados</option>
+                                <option value="completed">Completados</option>
+                                <option value="cancelled">Cancelados</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Cliente</th>
+                                        <th>Servicio</th>
+                                        <th>Fecha</th>
+                                        <th>Lugar</th>
+                                        <th>Precio</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="eventsTable">
+                                    <tr>
+                                        <td colspan="7" class="text-center">No hay eventos registrados</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Clients Section -->
+            <section id="section-clients" class="dashboard-section">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Gestión de Clientes</h1>
+                        <div class="page-breadcrumb">
+                            <a href="#">Dashboard</a>
+                            <span>/</span>
+                            <span>Clientes</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="openClientModal()"><i class="fas fa-plus"></i> Nuevo Cliente</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-users"></i> Todos los Clientes</h3>
+                        <div class="header-search" style="display: block;">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Buscar cliente..." id="clientSearch" style="width: 200px;">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Teléfono</th>
+                                        <th>Email</th>
+                                        <th>Dirección</th>
+                                        <th>Total Eventos</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="clientsTable">
+                                    <tr>
+                                        <td colspan="6" class="text-center">No hay clientes registrados</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Invoices Section -->
+            <section id="section-invoices" class="dashboard-section">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Facturación</h1>
+                        <div class="page-breadcrumb">
+                            <a href="#">Dashboard</a>
+                            <span>/</span>
+                            <span>Facturas</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="openInvoiceModal()"><i class="fas fa-plus"></i> Nueva Factura</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-file-invoice-dollar"></i> Todas las Facturas</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nº Factura</th>
+                                        <th>Cliente</th>
+                                        <th>Fecha</th>
+                                        <th>Importe</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="invoicesTable">
+                                    <tr>
+                                        <td colspan="6" class="text-center">No hay facturas registradas</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Inventory Sections -->
+            <section id="section-hinchables" class="dashboard-section">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Inventario - Hinchables</h1>
+                        <div class="page-breadcrumb">
+                            <a href="#">Dashboard</a>
+                            <span>/</span>
+                            <span>Hinchables</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="openInventoryModal('hinchables')"><i class="fas fa-plus"></i> Añadir</button>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Dimensiones</th>
+                                        <th>Precio/Día</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="hinchablesTable">
+                                    <tr><td colspan="5" class="text-center">No hay hinchables registrados</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-atracciones" class="dashboard-section">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Inventario - Atracciones Mecánicas</h1>
+                        <div class="page-breadcrumb">
+                            <a href="#">Dashboard</a>
+                            <span>/</span>
+                            <span>Atracciones</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="openInventoryModal('atracciones')"><i class="fas fa-plus"></i> Añadir</button>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Capacidad</th>
+                                        <th>Precio/Día</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="atraccionesTable">
+                                    <tr><td colspan="5" class="text-center">No hay atracciones registradas</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-mobiliario" class="dashboard-section">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Inventario - Mobiliario</h1>
+                        <div class="page-breadcrumb">
+                            <a href="#">Dashboard</a>
+                            <span>/</span>
+                            <span>Mobiliario</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="openInventoryModal('mobiliario')"><i class="fas fa-plus"></i> Añadir</button>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio/Unidad</th>
+                                        <th>Disponible</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mobiliarioTable">
+                                    <tr><td colspan="5" class="text-center">No hay mobiliario registrado</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-equipos" class="dashboard-section">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Inventario - Equipos de Sonido</h1>
+                        <div class="page-breadcrumb">
+                            <a href="#">Dashboard</a>
+                            <span>/</span>
+                            <span>Equipos</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="openInventoryModal('equipos')"><i class="fas fa-plus"></i> Añadir</button>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Tipo</th>
+                                        <th>Precio/Día</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="equiposTable">
+                                    <tr><td colspan="5" class="text-center">No hay equipos registrados</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Income Section -->
+            <section id="section-income" class="dashboard-section">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Informe de Ingresos</h1>
+                        <div class="page-breadcrumb">
+                            <a href="#">Dashboard</a>
+                            <span>/</span>
+                            <span>Ingresos</span>
+                        </div>
+                    </div>
+                    <div>
+                        <select class="form-control form-select" id="incomeYear" style="width: 120px; display: inline-block;">
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon primary"><i class="fas fa-coins"></i></div>
+                        <div class="stat-info">
+                            <h3 id="yearlyIncome">0€</h3>
+                            <p>Ingresos Anuales</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success"><i class="fas fa-chart-pie"></i></div>
+                        <div class="stat-info">
+                            <h3 id="avgEvent">0€</h3>
+                            <p>Media por Evento</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning"><i class="fas fa-trophy"></i></div>
+                        <div class="stat-info">
+                            <h3 id="bestMonth">-</h3>
+                            <p>Mejor Mes</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon info"><i class="fas fa-star"></i></div>
+                        <div class="stat-info">
+                            <h3 id="topService">-</h3>
+                            <p>Servicio Más Solicitado</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-chart-bar"></i> Ingresos Mensuales</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-placeholder" id="incomeChart">
+                            <span><i class="fas fa-chart-bar"></i> Gráfico de ingresos</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="section-settings" class="dashboard-section">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Configuración</h1>
+                        <div class="page-breadcrumb">
+                            <a href="#">Dashboard</a>
+                            <span>/</span>
+                            <span>Configuración</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-building"></i> Datos de la Empresa</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">Nombre de la Empresa</label>
+                                <input type="text" class="form-control" id="companyName" value="Espectáculos Dani">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">CIF/NIF</label>
+                                <input type="text" class="form-control" id="companyCIF" placeholder="B12345678">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Dirección</label>
+                                <input type="text" class="form-control" id="companyAddress" value="Valencia, España">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Teléfono</label>
+                                    <input type="tel" class="form-control" id="companyPhone" value="661 725 756">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="companyEmail" value="info@espectaculosdani.es">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-save"></i> Guardar Cambios</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-database"></i> Gestión de Datos</h3>
+                        </div>
+                        <div class="card-body">
+                            <p style="margin-bottom: 1.5rem; color: var(--gray-600);">Gestiona los datos almacenados en tu navegador. Los datos se guardan localmente y no se envían a ningún servidor.</p>
+                            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                <button class="btn btn-secondary" onclick="exportData()"><i class="fas fa-download"></i> Exportar Datos (JSON)</button>
+                                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> Importar Datos</button>
+                                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                                <button class="btn btn-danger" onclick="clearAllData()"><i class="fas fa-trash"></i> Borrar Todos los Datos</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Event Modal -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="eventModalTitle">Nuevo Evento</h3>
+                <button class="modal-close" onclick="closeModal('eventModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="eventForm">
+                    <input type="hidden" id="eventId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Cliente *</label>
+                            <select class="form-control form-select" id="eventClient" required>
+                                <option value="">Seleccionar cliente...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Servicio *</label>
+                            <select class="form-control form-select" id="eventService" required>
+                                <option value="">Seleccionar servicio...</option>
+                                <option value="hinchables">Hinchables</option>
+                                <option value="atracciones">Atracciones Mecánicas</option>
+                                <option value="megafonia">Megafonía</option>
+                                <option value="mobiliario">Mobiliario</option>
+                                <option value="disco">Disco Móvil</option>
+                                <option value="espuma">Cañón de Espuma</option>
+                                <option value="escenario">Escenario</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Fecha *</label>
+                            <input type="date" class="form-control" id="eventDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Hora</label>
+                            <input type="time" class="form-control" id="eventTime">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Lugar del Evento</label>
+                        <input type="text" class="form-control" id="eventLocation" placeholder="Dirección del evento">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Precio (€) *</label>
+                            <input type="number" class="form-control" id="eventPrice" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Estado</label>
+                            <select class="form-control form-select" id="eventStatus">
+                                <option value="pending">Pendiente</option>
+                                <option value="confirmed">Confirmado</option>
+                                <option value="completed">Completado</option>
+                                <option value="cancelled">Cancelado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Notas</label>
+                        <textarea class="form-control" id="eventNotes" rows="3" placeholder="Notas adicionales..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('eventModal')">Cancelar</button>
+                <button class="btn btn-primary" onclick="saveEvent()"><i class="fas fa-save"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client Modal -->
+    <div class="modal" id="clientModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="clientModalTitle">Nuevo Cliente</h3>
+                <button class="modal-close" onclick="closeModal('clientModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="clientForm">
+                    <input type="hidden" id="clientId">
+                    <div class="form-group">
+                        <label class="form-label">Nombre Completo *</label>
+                        <input type="text" class="form-control" id="clientName" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Teléfono *</label>
+                            <input type="tel" class="form-control" id="clientPhone" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="clientEmail">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Dirección</label>
+                        <input type="text" class="form-control" id="clientAddress">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Notas</label>
+                        <textarea class="form-control" id="clientNotes" rows="3" placeholder="Notas sobre el cliente..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('clientModal')">Cancelar</button>
+                <button class="btn btn-primary" onclick="saveClient()"><i class="fas fa-save"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inventory Modal -->
+    <div class="modal" id="inventoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="inventoryModalTitle">Añadir Item</h3>
+                <button class="modal-close" onclick="closeModal('inventoryModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="inventoryForm">
+                    <input type="hidden" id="inventoryId">
+                    <input type="hidden" id="inventoryCategory">
+                    <div class="form-group">
+                        <label class="form-label">Nombre *</label>
+                        <input type="text" class="form-control" id="inventoryName" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" id="inventoryDetailLabel">Detalle</label>
+                            <input type="text" class="form-control" id="inventoryDetail">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Precio (€) *</label>
+                            <input type="number" class="form-control" id="inventoryPrice" min="0" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Estado</label>
+                        <select class="form-control form-select" id="inventoryStatus">
+                            <option value="available">Disponible</option>
+                            <option value="rented">Alquilado</option>
+                            <option value="maintenance">En Mantenimiento</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('inventoryModal')">Cancelar</button>
+                <button class="btn btn-primary" onclick="saveInventoryItem()"><i class="fas fa-save"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

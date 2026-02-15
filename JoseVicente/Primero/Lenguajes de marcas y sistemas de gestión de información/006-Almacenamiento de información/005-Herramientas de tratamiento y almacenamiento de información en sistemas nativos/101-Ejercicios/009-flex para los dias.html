@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Calendario</title>
+    <style>
+      #jvcalendario .mes{display:grid;width:1400px;grid-template-columns:repeat(7,100fr);}
+      #jvcalendario .mes .dia{border:1px solid lightgray;height:250px;padding:10px;font-size:10px;display:flex;flex-direction:column;justify-content:space-between;}
+      #jvcalendario .mes .dia .hora{border-bottom:1px solid lightgray;}
+    </style>
+  </head>
+  <body>
+    <div id="jvcalendario"></div>
+    <script>
+      function diasEnMes(year, month) {
+        return new Date(year, month, 0).getDate();
+      }
+      function primerDiaDelMes(year, month) {
+        return new Date(year, month - 1, 1).getDay();
+      }
+      let contenedor = document.querySelector("#jvcalendario");         // Selecciono el contenedor
+      let anio = 2026;                                                  // Establezco año actual
+      let meses = 12;                                                   // Indico número de meses
+      let nombres_meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio',
+      'Agosto','Septiembre','Octubre','Noviembre','Diciembre']          // Creo un array con los meses
+      for(let i = 1;i<=meses;i++){                                      // Para cada mes
+        let dias_en_mes = diasEnMes(anio,i)                             // Obtengo los dias que tiene el mes
+        let titulo = document.createElement("h3")                       // Creo un titulo con tipo h3
+        titulo.textContent = nombres_meses[i-1]                         // Le pongo el nombre del mes
+        contenedor.appendChild(titulo)                                  // Y lo añado al contenedor
+        let mes = document.createElement("div");                        // Creo un div para el mes
+        mes.classList.add("mes");                                       // Le pongo la clase mes para el css
+        mes.setAttribute("mes",nombres_meses[i-1])                      // Le pongo un atributo mes
+          let inicio_mes = primerDiaDelMes(anio, i)+6                   // Atrapo el dia de la semana en el que empieza el mes
+          for(let j = 1;j<=inicio_mes;j++){                             // Para cada uno de los dias
+            let dia = document.createElement("div");                    // Creo un dia vacío
+            dia.classList.add("dia")                                    // Le pongo la clase dia
+            mes.appendChild(dia)                                        // Y lo añado al mes
+          }
+          for(let j = 1;j<=dias_en_mes;j++){                            // para cada uno de los dias llenos
+            let dia = document.createElement("div");                    // Creo un div
+            dia.classList.add("dia")                                    // Le pongo clase
+            dia.textContent = j                                         // Le pongo el número
+              for(let k = 8;k<=21;k++){
+                let hora = document.createElement("div");
+                hora.classList.add("hora")
+                hora.textContent = k
+                dia.appendChild(hora) 
+              }
+            mes.appendChild(dia)                                        // Y lo añado al mes
+          }
+        contenedor.appendChild(mes)
+      }
+    </script>
+  </body>
+</html>

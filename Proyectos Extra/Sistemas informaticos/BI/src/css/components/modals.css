@@ -1,0 +1,338 @@
+/**
+ * =============================================================================
+ * BOMBAS IDEAL - Componente: Modales
+ * =============================================================================
+ * 
+ * @description  Sistema de modales/diálogos para contenido emergente.
+ *               Incluye overlay, animaciones y diferentes tamaños.
+ * 
+ * @author       Bombas Ideal Development Team
+ * @version      2.0.0
+ * 
+ * ESTRUCTURA HTML:
+ * <div class="modal" id="modalId">
+ *   <div class="modal-overlay"></div>
+ *   <div class="modal-container">
+ *     <div class="modal-header">...</div>
+ *     <div class="modal-body">...</div>
+ *     <div class="modal-footer">...</div>
+ *   </div>
+ * </div>
+ * =============================================================================
+ */
+
+/* =========================================================================
+ * MODAL BASE
+ * =========================================================================
+ */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: var(--bi-z-modal);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    padding: var(--bi-space-4);
+    
+    opacity: 0;
+    visibility: hidden;
+    
+    transition: 
+        opacity var(--bi-duration-normal) ease,
+        visibility var(--bi-duration-normal) ease;
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Bloquear scroll del body cuando modal está abierto */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* =========================================================================
+ * OVERLAY
+ * =========================================================================
+ */
+
+.modal-overlay {
+    position: absolute;
+    inset: 0;
+    
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    
+    cursor: pointer;
+}
+
+/* =========================================================================
+ * MODAL CONTAINER
+ * =========================================================================
+ */
+
+.modal-container {
+    position: relative;
+    
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    
+    background-color: var(--bi-bg-primary);
+    border-radius: var(--bi-radius-xl);
+    box-shadow: var(--bi-shadow-2xl);
+    
+    display: flex;
+    flex-direction: column;
+    
+    overflow: hidden;
+    
+    transform: scale(0.95) translateY(20px);
+    transition: transform var(--bi-duration-normal) ease;
+}
+
+.modal.active .modal-container {
+    transform: scale(1) translateY(0);
+}
+
+/* Tamaños de modal */
+.modal--sm .modal-container {
+    max-width: 400px;
+}
+
+.modal--lg .modal-container {
+    max-width: 700px;
+}
+
+.modal--xl .modal-container {
+    max-width: 900px;
+}
+
+.modal--full .modal-container {
+    max-width: 95vw;
+    max-height: 95vh;
+}
+
+/* =========================================================================
+ * MODAL HEADER
+ * =========================================================================
+ */
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    padding: var(--bi-space-5) var(--bi-space-6);
+    border-bottom: 1px solid var(--bi-gray-200);
+}
+
+.modal-title {
+    font-family: var(--bi-font-primary);
+    font-size: var(--bi-text-lg);
+    font-weight: var(--bi-font-bold);
+    color: var(--bi-text-primary);
+    
+    margin: 0;
+}
+
+.modal-close {
+    width: 32px;
+    height: 32px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background-color: transparent;
+    border: none;
+    border-radius: var(--bi-radius-md);
+    
+    color: var(--bi-text-muted);
+    font-size: var(--bi-text-xl);
+    
+    cursor: pointer;
+    transition: var(--bi-transition-normal);
+}
+
+.modal-close:hover {
+    background-color: var(--bi-gray-100);
+    color: var(--bi-text-primary);
+}
+
+/* =========================================================================
+ * MODAL BODY
+ * =========================================================================
+ */
+
+.modal-body {
+    flex: 1;
+    padding: var(--bi-space-6);
+    overflow-y: auto;
+}
+
+/* Scrollbar personalizada */
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: var(--bi-gray-100);
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: var(--bi-gray-300);
+    border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: var(--bi-gray-400);
+}
+
+/* =========================================================================
+ * MODAL FOOTER
+ * =========================================================================
+ */
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--bi-space-3);
+    
+    padding: var(--bi-space-4) var(--bi-space-6);
+    border-top: 1px solid var(--bi-gray-200);
+    
+    background-color: var(--bi-gray-50);
+}
+
+/* Alinear a la izquierda */
+.modal-footer--left {
+    justify-content: flex-start;
+}
+
+/* Centrado */
+.modal-footer--center {
+    justify-content: center;
+}
+
+/* Espaciado entre elementos */
+.modal-footer--between {
+    justify-content: space-between;
+}
+
+/* =========================================================================
+ * MODAL VARIANTES
+ * =========================================================================
+ */
+
+/* Modal de confirmación */
+.modal--confirm .modal-body {
+    text-align: center;
+    padding: var(--bi-space-8);
+}
+
+.modal--confirm .modal-icon {
+    width: 60px;
+    height: 60px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    margin: 0 auto var(--bi-space-4);
+    
+    border-radius: var(--bi-radius-full);
+    font-size: var(--bi-text-2xl);
+}
+
+.modal--confirm .modal-icon--warning {
+    background-color: var(--bi-warning-100);
+    color: var(--bi-warning-500);
+}
+
+.modal--confirm .modal-icon--danger {
+    background-color: var(--bi-error-100);
+    color: var(--bi-error-500);
+}
+
+.modal--confirm .modal-icon--success {
+    background-color: var(--bi-success-100);
+    color: var(--bi-success-500);
+}
+
+.modal--confirm .modal-message {
+    font-size: var(--bi-text-base);
+    color: var(--bi-text-secondary);
+}
+
+/* Modal de imagen/galería */
+.modal--gallery {
+    padding: 0;
+}
+
+.modal--gallery .modal-overlay {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal--gallery .modal-container {
+    background-color: transparent;
+    box-shadow: none;
+    max-width: none;
+    max-height: none;
+}
+
+.modal--gallery .modal-close {
+    position: absolute;
+    top: var(--bi-space-4);
+    right: var(--bi-space-4);
+    
+    color: var(--bi-text-inverse);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal--gallery .modal-close:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal--gallery img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+}
+
+/* =========================================================================
+ * ANIMACIONES DE ENTRADA
+ * =========================================================================
+ */
+
+/* Slide desde arriba */
+.modal--slide-down .modal-container {
+    transform: translateY(-100px);
+}
+
+.modal--slide-down.active .modal-container {
+    transform: translateY(0);
+}
+
+/* Slide desde abajo */
+.modal--slide-up .modal-container {
+    transform: translateY(100px);
+}
+
+.modal--slide-up.active .modal-container {
+    transform: translateY(0);
+}
+
+/* Zoom */
+.modal--zoom .modal-container {
+    transform: scale(0.5);
+}
+
+.modal--zoom.active .modal-container {
+    transform: scale(1);
+}

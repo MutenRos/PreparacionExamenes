@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proyecto IA — Ollama Web</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: #f6f7f9;
+      color: #111827;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .container{max-width:720px;width:100%;text-align:center}
+    h1{font-size:28px;margin-bottom:8px;letter-spacing:-.5px}
+    .subtitle{color:#6b7280;font-size:15px;margin-bottom:32px}
+    .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+    .card{
+      background:#fff;
+      border:1px solid #e6e8ee;
+      border-radius:16px;
+      padding:28px 20px;
+      text-decoration:none;
+      color:#111827;
+      transition:box-shadow .2s ease, transform .15s ease;
+      box-shadow:0 4px 12px rgba(0,0,0,.04);
+    }
+    .card:hover{box-shadow:0 12px 32px rgba(0,0,0,.1);transform:translateY(-3px)}
+    .card h2{font-size:18px;margin-bottom:8px}
+    .card p{font-size:13px;color:#6b7280;line-height:1.5}
+    .badge{
+      display:inline-block;
+      font-size:11px;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid #e6e8ee;
+      color:#6b7280;
+      margin-top:12px;
+    }
+    .tech{margin-top:32px;font-size:12px;color:#9ca3af}
+    @media(max-width:600px){.cards{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Proyecto IA para Dietética</h1>
+    <p class="subtitle">Interfaz web PHP conectada a Ollama (LLM local) — 6 fases de desarrollo</p>
+
+    <div class="cards">
+      <a href="dietetico.html" class="card">
+        <h2>🥗 Consejero Dietético</h2>
+        <p>Indica los ingredientes de tu nevera y la IA genera recetas saludables. Interfaz sencilla con prompt cerrado.</p>
+        <span class="badge">Fase 003</span>
+      </a>
+      <a href="asesor-pc.html" class="card">
+        <h2>🖥️ Asesor de Componentes PC</h2>
+        <p>Indica presupuesto y uso, y la IA recomienda componentes con tabla de precios y suma verificada.</p>
+        <span class="badge">Fase 006</span>
+      </a>
+    </div>
+
+    <p class="tech">PHP · cURL · Ollama API · CSS Grid · JavaScript · Markdown→HTML</p>
+  </div>
+</body>
+</html>

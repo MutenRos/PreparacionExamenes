@@ -1,0 +1,515 @@
+/**
+ * =============================================================================
+ * BOMBAS IDEAL - Componente: Formularios
+ * =============================================================================
+ * 
+ * @description  Sistema de formularios completo con estilos para inputs,
+ *               selects, textareas, checkboxes, radios y validación.
+ *               Soporta variantes de tamaño y estados.
+ * 
+ * @author       Bombas Ideal Development Team
+ * @version      2.0.0
+ * 
+ * ESTRUCTURA HTML:
+ * <form class="form">
+ *   <div class="form-group">
+ *     <label class="form-label">...</label>
+ *     <input class="form-control" type="text">
+ *     <span class="form-hint">...</span>
+ *   </div>
+ * </form>
+ * =============================================================================
+ */
+
+/* =========================================================================
+ * FORM CONTAINER
+ * =========================================================================
+ */
+
+.form {
+    width: 100%;
+}
+
+/* Layout en grid */
+.form--grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--bi-space-4);
+}
+
+.form--grid .form-group--full {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+    .form--grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================================
+ * FORM GROUP
+ * =========================================================================
+ */
+
+.form-group {
+    margin-bottom: var(--bi-space-5);
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+/* Inline (checkbox/radio con label) */
+.form-group--inline {
+    display: flex;
+    align-items: center;
+    gap: var(--bi-space-2);
+}
+
+/* =========================================================================
+ * LABELS
+ * =========================================================================
+ */
+
+.form-label {
+    display: block;
+    margin-bottom: var(--bi-space-2);
+    
+    font-family: var(--bi-font-primary);
+    font-size: var(--bi-text-sm);
+    font-weight: var(--bi-font-medium);
+    color: var(--bi-text-primary);
+}
+
+/* Campo requerido */
+.form-label--required::after {
+    content: ' *';
+    color: var(--bi-error-500);
+}
+
+/* Label en modo oscuro */
+.form-label--light {
+    color: var(--bi-text-inverse);
+}
+
+/* =========================================================================
+ * INPUTS Y TEXTAREAS
+ * =========================================================================
+ */
+
+.form-control {
+    width: 100%;
+    
+    padding: var(--bi-space-3) var(--bi-space-4);
+    
+    font-family: var(--bi-font-primary);
+    font-size: var(--bi-text-base);
+    color: var(--bi-text-primary);
+    
+    background-color: var(--bi-bg-primary);
+    border: 1px solid var(--bi-gray-300);
+    border-radius: var(--bi-radius-md);
+    
+    transition: var(--bi-transition-normal);
+}
+
+.form-control::placeholder {
+    color: var(--bi-text-muted);
+}
+
+/* Focus */
+.form-control:focus {
+    outline: none;
+    border-color: var(--bi-primary-500);
+    box-shadow: 
+        0 0 0 3px rgba(var(--bi-primary-rgb), 0.1),
+        var(--bi-shadow-sm);
+}
+
+/* Hover */
+.form-control:hover:not(:focus):not(:disabled) {
+    border-color: var(--bi-gray-400);
+}
+
+/* Disabled */
+.form-control:disabled {
+    background-color: var(--bi-gray-100);
+    color: var(--bi-text-muted);
+    cursor: not-allowed;
+}
+
+/* Readonly */
+.form-control:read-only {
+    background-color: var(--bi-gray-50);
+}
+
+/* Textarea */
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* =========================================================================
+ * TAMAÑOS DE INPUT
+ * =========================================================================
+ */
+
+.form-control--sm {
+    padding: var(--bi-space-2) var(--bi-space-3);
+    font-size: var(--bi-text-sm);
+}
+
+.form-control--lg {
+    padding: var(--bi-space-4) var(--bi-space-5);
+    font-size: var(--bi-text-lg);
+}
+
+/* =========================================================================
+ * ESTADOS DE VALIDACIÓN
+ * =========================================================================
+ */
+
+/* Válido */
+.form-control.is-valid,
+.form-control:valid:not(:placeholder-shown) {
+    border-color: var(--bi-success-500);
+}
+
+.form-control.is-valid:focus {
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+/* Inválido */
+.form-control.is-invalid,
+.form-control:invalid:not(:placeholder-shown) {
+    border-color: var(--bi-error-500);
+}
+
+.form-control.is-invalid:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Mensajes de validación */
+.form-feedback {
+    display: block;
+    margin-top: var(--bi-space-1);
+    font-size: var(--bi-text-xs);
+}
+
+.form-feedback--valid {
+    color: var(--bi-success-500);
+}
+
+.form-feedback--invalid {
+    color: var(--bi-error-500);
+}
+
+/* =========================================================================
+ * INPUT CON ICONO
+ * =========================================================================
+ */
+
+.input-group {
+    position: relative;
+}
+
+.input-group .form-control {
+    padding-left: var(--bi-space-10);
+}
+
+.input-group-icon {
+    position: absolute;
+    left: var(--bi-space-3);
+    top: 50%;
+    transform: translateY(-50%);
+    
+    color: var(--bi-text-muted);
+    pointer-events: none;
+    
+    transition: var(--bi-transition-colors);
+}
+
+.input-group:focus-within .input-group-icon {
+    color: var(--bi-primary-500);
+}
+
+/* Icono a la derecha */
+.input-group--right .form-control {
+    padding-left: var(--bi-space-4);
+    padding-right: var(--bi-space-10);
+}
+
+.input-group--right .input-group-icon {
+    left: auto;
+    right: var(--bi-space-3);
+}
+
+/* =========================================================================
+ * SELECT
+ * =========================================================================
+ */
+
+.form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right var(--bi-space-3) center;
+    background-repeat: no-repeat;
+    background-size: 1.25rem 1.25rem;
+    padding-right: var(--bi-space-10);
+    cursor: pointer;
+}
+
+.form-select:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%230a4f8c' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+}
+
+/* Select múltiple */
+select[multiple].form-select {
+    background-image: none;
+    padding-right: var(--bi-space-4);
+}
+
+/* =========================================================================
+ * CHECKBOX Y RADIO
+ * =========================================================================
+ */
+
+.form-check {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--bi-space-2);
+    cursor: pointer;
+}
+
+.form-check-input {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    
+    background-color: var(--bi-bg-primary);
+    border: 2px solid var(--bi-gray-300);
+    
+    cursor: pointer;
+    transition: var(--bi-transition-normal);
+}
+
+/* Checkbox cuadrado */
+input[type="checkbox"].form-check-input {
+    border-radius: var(--bi-radius-sm);
+}
+
+/* Radio redondeado */
+input[type="radio"].form-check-input {
+    border-radius: var(--bi-radius-full);
+}
+
+/* Checked */
+.form-check-input:checked {
+    background-color: var(--bi-primary-500);
+    border-color: var(--bi-primary-500);
+}
+
+/* Checkbox checked - marca */
+input[type="checkbox"].form-check-input:checked {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3e%3cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd' /%3e%3c/svg%3e");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Radio checked - círculo */
+input[type="radio"].form-check-input:checked {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='white'/%3e%3c/svg%3e");
+    background-size: 100% 100%;
+}
+
+/* Focus */
+.form-check-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--bi-primary-rgb), 0.2);
+}
+
+/* Label del check */
+.form-check-label {
+    font-size: var(--bi-text-sm);
+    color: var(--bi-text-secondary);
+    line-height: var(--bi-leading-snug);
+}
+
+/* =========================================================================
+ * SWITCH/TOGGLE
+ * =========================================================================
+ */
+
+.form-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--bi-space-3);
+    cursor: pointer;
+}
+
+.form-switch-input {
+    appearance: none;
+    width: 44px;
+    height: 24px;
+    
+    background-color: var(--bi-gray-300);
+    border-radius: var(--bi-radius-full);
+    
+    cursor: pointer;
+    transition: var(--bi-transition-normal);
+}
+
+.form-switch-input::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    
+    width: 20px;
+    height: 20px;
+    
+    background-color: white;
+    border-radius: var(--bi-radius-full);
+    box-shadow: var(--bi-shadow-sm);
+    
+    transition: transform var(--bi-duration-fast) ease;
+}
+
+.form-switch-input:checked {
+    background-color: var(--bi-primary-500);
+}
+
+.form-switch-input:checked::before {
+    transform: translateX(20px);
+}
+
+.form-switch-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--bi-primary-rgb), 0.2);
+}
+
+/* =========================================================================
+ * FILE INPUT
+ * =========================================================================
+ */
+
+.form-file {
+    position: relative;
+}
+
+.form-file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.form-file-label {
+    display: flex;
+    align-items: center;
+    gap: var(--bi-space-3);
+    
+    padding: var(--bi-space-3) var(--bi-space-4);
+    
+    background-color: var(--bi-gray-50);
+    border: 2px dashed var(--bi-gray-300);
+    border-radius: var(--bi-radius-md);
+    
+    cursor: pointer;
+    transition: var(--bi-transition-normal);
+}
+
+.form-file-label:hover {
+    background-color: var(--bi-gray-100);
+    border-color: var(--bi-primary-500);
+}
+
+.form-file-input:focus + .form-file-label {
+    border-color: var(--bi-primary-500);
+    box-shadow: 0 0 0 3px rgba(var(--bi-primary-rgb), 0.1);
+}
+
+/* =========================================================================
+ * RANGE INPUT
+ * =========================================================================
+ */
+
+.form-range {
+    width: 100%;
+    height: 6px;
+    
+    appearance: none;
+    background-color: var(--bi-gray-200);
+    border-radius: var(--bi-radius-full);
+    
+    cursor: pointer;
+}
+
+.form-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    
+    background-color: var(--bi-primary-500);
+    border-radius: var(--bi-radius-full);
+    box-shadow: var(--bi-shadow-md);
+    
+    cursor: pointer;
+    transition: var(--bi-transition-normal);
+}
+
+.form-range::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+}
+
+.form-range:focus::-webkit-slider-thumb {
+    box-shadow: 
+        var(--bi-shadow-md),
+        0 0 0 3px rgba(var(--bi-primary-rgb), 0.2);
+}
+
+/* =========================================================================
+ * HINT Y AYUDA
+ * =========================================================================
+ */
+
+.form-hint {
+    display: block;
+    margin-top: var(--bi-space-1);
+    
+    font-size: var(--bi-text-xs);
+    color: var(--bi-text-muted);
+}
+
+/* =========================================================================
+ * FORMULARIO EN MODO OSCURO
+ * =========================================================================
+ */
+
+.form--dark .form-control {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--bi-text-inverse);
+}
+
+.form--dark .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.form--dark .form-control:focus {
+    border-color: var(--bi-accent);
+    box-shadow: 0 0 0 3px rgba(0, 200, 200, 0.2);
+}
+
+.form--dark .form-label {
+    color: var(--bi-text-inverse);
+}
+
+.form--dark .form-hint {
+    color: rgba(255, 255, 255, 0.6);
+}

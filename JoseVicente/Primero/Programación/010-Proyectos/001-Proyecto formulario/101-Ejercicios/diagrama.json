@@ -1,0 +1,97 @@
+{
+  "formas": [
+    {
+      "id": "forma-1",
+      "tipo": "rectangle",
+      "left": "301.128px",
+      "top": "244.632px",
+      "width": "",
+      "height": "",
+      "texto": "Formulario HTML"
+    },
+    {
+      "id": "forma-2",
+      "tipo": "rectangle",
+      "left": "301.111px",
+      "top": "205.211px",
+      "width": "",
+      "height": "",
+      "texto": "CSS"
+    },
+    {
+      "id": "forma-3",
+      "tipo": "rectangle",
+      "left": "301.124px",
+      "top": "290.505px",
+      "width": "",
+      "height": "",
+      "texto": "PHP"
+    },
+    {
+      "id": "forma-4",
+      "tipo": "rectangle",
+      "left": "408.771px",
+      "top": "388.153px",
+      "width": "",
+      "height": "",
+      "texto": "MySQL"
+    },
+    {
+      "id": "forma-5",
+      "tipo": "rectangle",
+      "left": "498.184px",
+      "top": "288.161px",
+      "width": "",
+      "height": "",
+      "texto": "PHP"
+    },
+    {
+      "id": "forma-6",
+      "tipo": "rectangle",
+      "left": "498.774px",
+      "top": "246.976px",
+      "width": "",
+      "height": "",
+      "texto": "HTML"
+    },
+    {
+      "id": "forma-7",
+      "tipo": "rectangle",
+      "left": "498.185px",
+      "top": "206.979px",
+      "width": "",
+      "height": "",
+      "texto": "CSS"
+    }
+  ],
+  "flechas": [
+    {
+      "desde": {
+        "shapeId": "forma-3",
+        "propId": null,
+        "side": null
+      },
+      "hasta": {
+        "shapeId": "forma-4",
+        "propId": null,
+        "side": null
+      },
+      "tipo": "simple",
+      "estilo": "straight"
+    },
+    {
+      "desde": {
+        "shapeId": "forma-4",
+        "propId": null,
+        "side": null
+      },
+      "hasta": {
+        "shapeId": "forma-5",
+        "propId": null,
+        "side": null
+      },
+      "tipo": "doble",
+      "estilo": "straight"
+    }
+  ]
+}

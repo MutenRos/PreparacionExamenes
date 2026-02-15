@@ -1,0 +1,169 @@
+<!-- index.html -->
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carolina Vega</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <main>
+
+    <!-- HERO -->
+    <section id="heroe" aria-label="Portada">
+      <header>
+        <h1>Carolina<br>Vega</h1>
+
+        <nav aria-label="Navegación principal">
+          <a href="#inicio">Inicio</a>
+          <a href="#biografia">Biografía</a>
+          <a href="#musica">Música</a>
+          <a href="#tour">Tour</a>
+          <a href="#galeria">Galería</a>
+          <a href="#contacto">Contacto</a>
+
+          <span></span>
+
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="X">x</a>
+          <a href="#" aria-label="YouTube">▶</a>
+        </nav>
+      </header>
+
+      <article id="destacado">
+        <h2>Carolina<br>Vega</h2>
+        <p>NUEVO ÁLBUM DISPONIBLE AHORA</p>
+        <h3>Entre Luces y Sombras</h3>
+
+        <p>
+          <a class="boton" href="#musica">Escuchar ahora</a>
+          <a class="boton negro" href="#video">Ver vídeo</a>
+        </p>
+
+        <p class="plataformas" aria-label="Plataformas">
+          <a href="#" aria-label="Spotify">Spotify</a>
+          <a href="#" aria-label="Apple Music">Apple</a>
+          <a href="#" aria-label="YouTube Music">YT Music</a>
+          <a href="#" aria-label="Amazon Music">Amazon</a>
+        </p>
+      </article>
+    </section>
+
+    <!-- CONTENIDO -->
+    <section id="contenido">
+
+      <!-- DISCOGRAFÍA -->
+      <section id="albumes" aria-label="Discos publicados">
+        <h4>DISCOS PUBLICADOS</h4>
+
+        <article>
+          <img src="portada.png" alt="Portada Entre Luces y Sombras">
+          <h5>Entre Luces y Sombras</h5>
+          <p>2024</p>
+          <a class="boton" href="#">Escuchar</a>
+        </article>
+
+        <article>
+          <img src="portada.png" alt="Portada Días de Otoño">
+          <h5>Días de Otoño</h5>
+          <p>2021</p>
+          <a class="boton" href="#">Escuchar</a>
+        </article>
+
+        <article>
+          <img src="portada.png" alt="Portada Fotografías">
+          <h5>Fotografías</h5>
+          <p>2018</p>
+          <a class="boton" href="#">Escuchar</a>
+        </article>
+
+        <article>
+          <img src="portada.png" alt="Portada Alma Viajera">
+          <h5>Alma Viajera</h5>
+          <p>2018</p>
+          <a class="boton" href="#">Escuchar</a>
+        </article>
+      </section>
+
+      <!-- CANCIONES + MERCH -->
+      <section id="bloques">
+
+        <section id="canciones" aria-label="Últimas canciones">
+          <h4>ÚLTIMAS CANCIONES</h4>
+
+          <!-- lista simple, cada fila como article (sin contenedor extra) -->
+          <article>
+            <button aria-label="Reproducir Entre Luces y Sombras">▶</button>
+            <h5>Entre Luces y Sombras</h5>
+            <audio src="A Long Weekend.mp3" controls></audio>
+            <a href="#" aria-label="Más opciones">···</a>
+          </article>
+
+          <article>
+            <button aria-label="Reproducir Bajo la Lluvia">▶</button>
+            <h5>Bajo la Lluvia</h5>
+            <audio src="A Long Weekend.mp3" controls></audio>
+            <a href="#" aria-label="Más opciones">···</a>
+          </article>
+
+          <article>
+            <button aria-label="Reproducir Susurro Eterno">▶</button>
+            <h5>Susurro Eterno</h5>
+            <audio src="A Long Weekend.mp3" controls></audio>
+            <a href="#" aria-label="Más opciones">···</a>
+          </article>
+
+          <article>
+            <button aria-label="Reproducir Días de Otoño">▶</button>
+            <h5>Días de Otoño</h5>
+            <audio src="A Long Weekend.mp3" controls></audio>
+            <a href="#" aria-label="Más opciones">···</a>
+          </article>
+
+          <article>
+            <button aria-label="Reproducir Alma Viajera">▶</button>
+            <h5>Alma Viajera</h5>
+            <audio src="A Long Weekend.mp3" controls></audio>
+            <a href="#" aria-label="Más opciones">···</a>
+          </article>
+        </section>
+
+        <aside id="tienda" aria-label="Compra">
+          <img src="merch.png" alt="CD, camiseta y taza de Carolina Vega">
+          <a class="boton grande" href="#">¡Compra ahora!</a>
+        </aside>
+
+      </section>
+
+      <!-- NEWSLETTER -->
+      <section id="sigueme" aria-label="Sígueme">
+        <h4>SÍGUEME EN</h4>
+        <p>ÚNETE A MI NEWSLETTER</p>
+
+        <form action="#" method="post">
+          <input type="email" name="email" placeholder="Tu correo electrónico..." required>
+          <button type="submit">Suscribirse</button>
+        </form>
+
+        <p class="social">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="X">x</a>
+          <a href="#" aria-label="Instagram">⌁</a>
+          <a href="#" aria-label="YouTube">▶</a>
+          <a href="#" aria-label="Spotify">◌</a>
+        </p>
+      </section>
+
+    </section>
+
+  </main>
+
+  <footer>
+    © 2024 CAROLINA VEGA · TODOS LOS DERECHOS RESERVADOS
+  </footer>
+
+</body>
+</html>
+

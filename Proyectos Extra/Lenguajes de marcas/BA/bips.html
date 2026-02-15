@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BIPS - Selector de Bombas Asoin. Encuentra la bomba perfecta para tus necesidades de caudal y altura.">
+    <title>BIPS - Selector de Bombas | Bombas Asoin Murcia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark));
+            padding: 140px 0 60px;
+            text-align: center;
+            color: var(--text-white);
+        }
+        .page-header h1 {
+            font-family: var(--font-primary);
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .page-header p {
+            font-size: 18px;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* BIPS Section */
+        .bips-section {
+            padding: 60px 0 100px;
+            background: var(--bg-light);
+        }
+        
+        /* Calculator Form */
+        .bips-calculator {
+            background: var(--bg-white);
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 700px;
+            margin: 0 auto 60px;
+            box-shadow: var(--shadow);
+        }
+        .bips-calculator h2 {
+            font-family: var(--font-primary);
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+        .bips-calculator > p {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 40px;
+            font-size: 15px;
+        }
+        
+        .input-group {
+            margin-bottom: 30px;
+        }
+        .input-group label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-primary);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+        .input-group label i {
+            font-size: 20px;
+            color: var(--primary-color);
+        }
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .input-row input {
+            flex: 1;
+            padding: 16px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .input-row input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.1);
+        }
+        .input-row span {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-light);
+            min-width: 50px;
+        }
+        
+        .category-selector {
+            margin-bottom: 30px;
+        }
+        .category-selector label {
+            display: block;
+            font-family: var(--font-primary);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+        .category-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .category-btn {
+            padding: 15px 10px;
+            background: var(--bg-light);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+        .category-btn:hover {
+            border-color: var(--primary-color);
+        }
+        .category-btn.active {
+            background: var(--primary-color);
+            color: var(--text-white);
+            border-color: var(--primary-color);
+        }
+        .category-btn i {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        #searchBtn {
+            width: 100%;
+            padding: 18px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        
+        /* Results */
+        .results-section {
+            display: none;
+        }
+        .results-section.visible {
+            display: block;
+        }
+        .results-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .results-header h2 {
+            font-family: var(--font-primary);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+        .results-header p {
+            color: var(--text-light);
+        }
+        .results-count {
+            background: var(--primary-color);
+            color: white;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .result-card {
+            background: var(--bg-white);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+        }
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        .result-card.best-match {
+            border-left-color: var(--secondary-color);
+            position: relative;
+        }
+        .result-card.best-match::before {
+            content: '⭐ Mejor opción';
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: var(--secondary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .result-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+        .result-header h3 {
+            font-family: var(--font-primary);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .result-series {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        
+        .result-specs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .spec-item {
+            background: var(--bg-light);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .spec-item label {
+            font-size: 11px;
+            color: var(--text-light);
+            display: block;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        .spec-item value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        
+        .result-category {
+            display: inline-block;
+            background: var(--primary-light);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+        
+        .result-card .btn {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        /* No results */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--bg-white);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+        .no-results i {
+            font-size: 60px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        .no-results h3 {
+            font-family: var(--font-primary);
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+        .no-results p {
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+        
+        /* Info section */
+        .bips-info {
+            margin-top: 80px;
+            background: var(--bg-white);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+        }
+        .bips-info h3 {
+            font-family: var(--font-primary);
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            text-align: center;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .info-item {
+            text-align: center;
+        }
+        .info-item i {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        .info-item h4 {
+            font-family: var(--font-primary);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+        .info-item p {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 32px; }
+            .bips-calculator { padding: 30px 20px; }
+            .category-buttons { grid-template-columns: repeat(2, 1fr); }
+            .results-grid { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cookie Banner -->
+    <div class="cookie-banner" id="cookieBanner">
+        <p>Utilizamos cookies para mejorar tu experiencia. <a href="politica-cookies.html">Más información</a></p>
+        <button id="acceptCookies">Aceptar</button>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <a href="index.html" class="logo">
+                <span class="logo-text">BOMBAS ASOIN</span>
+                <span class="logo-subtitle">MURCIA</span>
+            </a>
+            <nav class="nav">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="tienda.html">Tienda</a></li>
+                    <li><a href="index.html#nosotros">Conócenos</a></li>
+                    <li><a href="contacto.html">Contactar</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="bips.html" class="nav-bips active">BIPS</a></li>
+                </ul>
+            </nav>
+            <div class="header-contact">
+                <a href="tel:+34968346852" class="phone"><i class="fas fa-phone"></i> 96 834 68 52</a>
+            </div>
+            <button class="nav-toggle" aria-label="Menú">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-search"></i> BIPS</h1>
+            <p>Selector Inteligente de Bombas - Encuentra el producto perfecto para tus necesidades</p>
+        </div>
+    </section>
+
+    <!-- BIPS Section -->
+    <section class="bips-section">
+        <div class="container">
+            <!-- Calculator -->
+            <div class="bips-calculator">
+                <h2>¿Qué bomba necesitas?</h2>
+                <p>Introduce tus requisitos de caudal y altura para encontrar la bomba ideal</p>
+                
+                <div class="category-selector">
+                    <label>Tipo de aplicación</label>
+                    <div class="category-buttons">
+                        <button class="category-btn active" data-category="all">
+                            <i class="fas fa-th-large"></i>
+                            Todas
+                        </button>
+                        <button class="category-btn" data-category="agricultura">
+                            <i class="fas fa-seedling"></i>
+                            Agricultura
+                        </button>
+                        <button class="category-btn" data-category="abastecimiento">
+                            <i class="fas fa-faucet"></i>
+                            Abastecimiento
+                        </button>
+                        <button class="category-btn" data-category="piscinas">
+                            <i class="fas fa-swimming-pool"></i>
+                            Piscinas
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-tachometer-alt"></i> Caudal requerido</label>
+                    <div class="input-row">
+                        <input type="number" id="caudal" placeholder="0" min="0" step="0.1">
+                        <span>m³/h</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-arrows-alt-v"></i> Altura manométrica</label>
+                    <div class="input-row">
+                        <input type="number" id="altura" placeholder="0" min="0" step="0.1">
+                        <span>m</span>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" id="searchBtn">
+                    <i class="fas fa-search"></i> Buscar bombas
+                </button>
+            </div>
+            
+            <!-- Results -->
+            <div class="results-section" id="resultsSection">
+                <div class="results-header">
+                    <h2>Resultados <span class="results-count" id="resultsCount">0</span></h2>
+                    <p>Bombas que cumplen con tus requisitos</p>
+                </div>
+                
+                <div class="results-grid" id="resultsGrid">
+                    <!-- Results loaded by JS -->
+                </div>
+            </div>
+            
+            <!-- Info -->
+            <div class="bips-info">
+                <h3>¿Cómo funciona BIPS?</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <i class="fas fa-sliders-h"></i>
+                        <h4>1. Introduce tus datos</h4>
+                        <p>Indica el caudal y altura que necesitas para tu instalación</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-cogs"></i>
+                        <h4>2. Filtramos por ti</h4>
+                        <p>Nuestro sistema busca entre todas las bombas disponibles</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-check-circle"></i>
+                        <h4>3. Elige la mejor</h4>
+                        <p>Te mostramos las opciones que cumplen tus requisitos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <span class="logo-text">BOMBAS ASOIN</span>
+                    </div>
+                    <p>Expertos en soluciones de bombeo para riego, abastecimiento, achique y piscinas.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Servicios</h4>
+                    <ul>
+                        <li><a href="index.html#nosotros">Sobre nosotros</a></li>
+                        <li><a href="tienda.html">Tienda online</a></li>
+                        <li><a href="contacto.html">Tienda física</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Información legal</h4>
+                    <ul>
+                        <li><a href="politica-privacidad.html">Política de privacidad</a></li>
+                        <li><a href="aviso-legal.html">Aviso legal</a></li>
+                        <li><a href="politica-devoluciones.html">Política de devoluciones</a></li>
+                        <li><a href="politica-cookies.html">Política de cookies</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Contacto</h4>
+                    <p><i class="fas fa-phone"></i> <a href="tel:+34968346852">96 834 68 52</a></p>
+                    <p><i class="fas fa-mobile-alt"></i> <a href="tel:+34628756295">628 756 295</a></p>
+                    <p><i class="fas fa-map-marker-alt"></i> Ctra. de Sta. Catalina, 108<br>Murcia</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Bombas Asoin Murcia. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="bips.js"></script>
+</body>
+</html>

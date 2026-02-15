@@ -1,0 +1,43 @@
+{
+  "name": "ELECE Barber - Barbería Profesional",
+  "short_name": "ELECE Barber",
+  "description": "Barbería premium en Albuixech, Valencia. Cortes profesionales, arreglo de barba y servicios de calidad.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "images/elece-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "images/elece-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["lifestyle", "beauty"],
+  "lang": "es",
+  "dir": "ltr",
+  "scope": "/",
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Reservar Cita",
+      "short_name": "Reservar",
+      "description": "Reserva tu cita en Booksy",
+      "url": "/index.html#servicios",
+      "icons": [
+        {
+          "src": "images/elece-logo.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

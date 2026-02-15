@@ -1,0 +1,58 @@
+'''
+  Programa agenda v0.1
+  Jose Vicente Carratala
+'''
+
+################## DEFINICION DE FUNCIONES #######################################3
+
+def imprimeBienvenida():
+  print("Programa agenda v0.1 por Jose Vicente Carratala")
+  
+def muestraMenu():
+  print("Selecciona una opcion:")
+  print("1.-Insertar clientes")
+  print("2.-Listar clientes")
+  print("3.-Actualizar clientes")
+  print("4.-Eliminar clientes")
+
+def insertarCliente():
+  nombre = input("Dime el nuevo nombre del cliente: ")
+  clientes += nombre+","
+  
+def listadoClientes():
+  print("Tus clientes son: ")
+  print(clientes)
+  
+def actualizaClientes():
+  print("Tus clientes son:")
+  print(clientes)
+  print("Quienes quieres que sean?")
+  clientes = input("Introduce los nuevos clientes")
+  
+def borraClientes():
+  clientes = ""
+  print("Tus clientes han sido borrados")
+  
+################## DEFINICION DE VARIABLES GLOBALES #######################################3
+
+clientes = ""
+
+################## BUCLE PRINCIPAL #######################################3
+
+imprimeBienvenida()
+
+while True:
+  muestraMenu()
+  opcion = input("Elige tu opcion: ")
+  opcion = int(opcion)
+  
+  if opcion == 1:
+    insertarCliente()
+  elif opcion == 2:
+    listadoClientes()
+  elif opcion == 3:
+    actualizaClientes()
+  elif opcion == 4:
+    borraClientes()
+  
+  

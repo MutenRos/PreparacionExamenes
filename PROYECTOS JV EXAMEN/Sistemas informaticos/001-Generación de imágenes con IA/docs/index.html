@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Generación de imágenes con IA — Stable Diffusion + Ollama</title>
+  <meta name="description" content="Proyecto de generación automática de imágenes con Stable Diffusion, Python y Ollama. Desde scripts básicos hasta un pipeline XML completo.">
+  <style>
+    :root{
+      --bg:#0d1117;
+      --card:#161b22;
+      --border:#30363d;
+      --text:#c9d1d9;
+      --heading:#f0f6fc;
+      --accent:#58a6ff;
+      --accent2:#7ee787;
+      --purple:#bc8cff;
+      --radius:12px;
+      --shadow:0 8px 24px rgba(0,0,0,.4);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;
+      background:var(--bg);color:var(--text);line-height:1.6;
+    }
+
+    /* HEADER */
+    header{
+      background:linear-gradient(135deg,#0d1117 0%,#161b22 50%,#1a1e2e 100%);
+      border-bottom:1px solid var(--border);
+      padding:20px 0;
+      position:sticky;top:0;z-index:10;
+      backdrop-filter:blur(12px);
+    }
+    header .wrap{
+      max-width:1100px;margin:0 auto;padding:0 24px;
+      display:flex;justify-content:space-between;align-items:center;
+    }
+    header h1{font-size:20px;color:var(--heading);font-weight:800}
+    header h1 span{color:var(--accent)}
+    header nav{display:flex;gap:20px}
+    header nav a{
+      color:var(--text);text-decoration:none;font-size:14px;font-weight:600;
+      transition:color .2s;
+    }
+    header nav a:hover{color:var(--accent)}
+
+    /* WRAP */
+    .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+
+    /* HERO */
+    .hero{
+      padding:80px 0 60px;
+      background:linear-gradient(180deg,#0d1117 0%,#161b22 100%);
+      text-align:center;
+    }
+    .hero .badge{
+      display:inline-block;padding:6px 14px;border-radius:999px;
+      background:rgba(88,166,255,.12);color:var(--accent);font-size:13px;
+      font-weight:700;letter-spacing:.5px;border:1px solid rgba(88,166,255,.25);
+      margin-bottom:20px;
+    }
+    .hero h2{
+      font-size:clamp(32px,5vw,56px);color:var(--heading);font-weight:900;
+      line-height:1.1;margin-bottom:16px;
+    }
+    .hero h2 em{font-style:normal;color:var(--accent)}
+    .hero p{
+      max-width:640px;margin:0 auto 28px;font-size:18px;color:var(--text);opacity:.85;
+    }
+    .hero .buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:12px 22px;border-radius:8px;text-decoration:none;
+      font-weight:700;font-size:14px;letter-spacing:.3px;
+      transition:transform .2s,box-shadow .2s;
+    }
+    .btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3)}
+    .btn.primary{background:var(--accent);color:#0d1117}
+    .btn.secondary{background:var(--card);color:var(--text);border:1px solid var(--border)}
+
+    /* SECTIONS */
+    section{padding:60px 0}
+    section h3{
+      font-size:28px;color:var(--heading);font-weight:800;
+      margin-bottom:12px;text-align:center;
+    }
+    section h3 span{color:var(--accent)}
+    section > .wrap > p.sub{
+      text-align:center;max-width:600px;margin:0 auto 36px;opacity:.8;
+    }
+
+    /* PIPELINE DIAGRAM */
+    .pipeline{
+      display:flex;align-items:center;justify-content:center;gap:0;
+      flex-wrap:wrap;margin:40px 0;
+    }
+    .pipeline .step{
+      background:var(--card);border:1px solid var(--border);
+      padding:18px 20px;border-radius:var(--radius);text-align:center;
+      min-width:140px;
+    }
+    .pipeline .step .icon{font-size:28px;margin-bottom:6px}
+    .pipeline .step .label{font-size:13px;font-weight:700;color:var(--heading)}
+    .pipeline .step .desc{font-size:11px;color:var(--text);opacity:.7;margin-top:4px}
+    .pipeline .arrow{
+      font-size:22px;color:var(--accent);padding:0 8px;font-weight:900;
+    }
+
+    /* GRID CARDS */
+    .grid{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+      gap:16px;margin-top:24px;
+    }
+    .card{
+      background:var(--card);border:1px solid var(--border);
+      border-radius:var(--radius);padding:20px;
+      transition:transform .2s,box-shadow .2s;
+    }
+    .card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+    .card .num{
+      display:inline-flex;width:32px;height:32px;align-items:center;justify-content:center;
+      border-radius:8px;background:rgba(88,166,255,.12);color:var(--accent);
+      font-weight:900;font-size:14px;margin-bottom:12px;
+    }
+    .card h4{font-size:18px;color:var(--heading);font-weight:700;margin-bottom:8px}
+    .card p{font-size:14px;opacity:.8}
+    .card code{
+      display:block;margin-top:10px;padding:10px 12px;border-radius:8px;
+      background:#0d1117;font-size:12px;font-family:'Fira Code',monospace;
+      color:var(--accent2);border:1px solid var(--border);
+      overflow-x:auto;white-space:pre;
+    }
+
+    /* GALLERY */
+    .gallery{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+      gap:14px;margin-top:24px;
+    }
+    .gallery figure{
+      background:var(--card);border:1px solid var(--border);
+      border-radius:var(--radius);overflow:hidden;
+      transition:transform .2s;
+    }
+    .gallery figure:hover{transform:scale(1.02)}
+    .gallery img{width:100%;height:200px;object-fit:cover;display:block}
+    .gallery figcaption{
+      padding:12px 14px;font-size:13px;font-weight:600;color:var(--heading);
+    }
+    .gallery figcaption .section-tag{
+      display:inline-block;padding:2px 8px;border-radius:4px;
+      background:rgba(188,140,255,.15);color:var(--purple);font-size:11px;
+      font-weight:700;margin-bottom:6px;
+    }
+
+    /* TECH */
+    .tech-grid{
+      display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:24px;
+    }
+    .tech{
+      display:flex;align-items:center;gap:8px;
+      padding:10px 16px;background:var(--card);border:1px solid var(--border);
+      border-radius:999px;font-size:13px;font-weight:700;color:var(--heading);
+    }
+    .tech .dot{width:8px;height:8px;border-radius:50%}
+    .dot.python{background:#3572A5}
+    .dot.xml{background:#f1e05a}
+    .dot.ai{background:var(--accent)}
+    .dot.shell{background:var(--accent2)}
+
+    /* CODE BLOCK */
+    .code-block{
+      background:#0d1117;border:1px solid var(--border);border-radius:var(--radius);
+      padding:20px;margin:24px auto;max-width:700px;overflow-x:auto;
+    }
+    .code-block .filename{
+      color:var(--accent);font-size:12px;font-weight:700;margin-bottom:10px;
+      display:block;
+    }
+    .code-block pre{
+      font-family:'Fira Code',Consolas,monospace;font-size:13px;
+      color:var(--accent2);line-height:1.5;margin:0;
+    }
+
+    /* FOOTER */
+    footer{
+      border-top:1px solid var(--border);padding:30px 0;text-align:center;
+      font-size:13px;color:var(--text);opacity:.6;
+    }
+
+    @media (max-width:700px){
+      .pipeline{flex-direction:column}
+      .pipeline .arrow{transform:rotate(90deg)}
+      .gallery{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap">
+      <h1>🎨 <span>IA</span> Image Gen</h1>
+      <nav>
+        <a href="#pipeline">Pipeline</a>
+        <a href="#ejercicios">Ejercicios</a>
+        <a href="#galeria">Galería</a>
+        <a href="#tech">Tech</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="wrap">
+      <span class="badge">SISTEMAS INFORMÁTICOS · IA GENERATIVA</span>
+      <h2>Generación de <em>imágenes</em> con <em>inteligencia artificial</em></h2>
+      <p>De un prompt de texto a imágenes de marketing profesionales. Un pipeline automatizado con Stable Diffusion, Ollama y Python.</p>
+      <div class="buttons">
+        <a class="btn primary" href="#pipeline">Ver pipeline</a>
+        <a class="btn secondary" href="#galeria">Ver imágenes generadas</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIPELINE -->
+  <section id="pipeline">
+    <div class="wrap">
+      <h3>🔄 El <span>Pipeline</span> completo</h3>
+      <p class="sub">Desde un archivo XML de producto hasta imágenes generadas automáticamente, sin intervención manual.</p>
+
+      <div class="pipeline">
+        <div class="step">
+          <div class="icon">📄</div>
+          <div class="label">XML producto</div>
+          <div class="desc">Secciones y alt texts</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="step">
+          <div class="icon">🧠</div>
+          <div class="label">Ollama (LLaMA3)</div>
+          <div class="desc">Genera prompts</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="step">
+          <div class="icon">🎨</div>
+          <div class="label">Stable Diffusion</div>
+          <div class="desc">Genera imágenes</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="step">
+          <div class="icon">📁</div>
+          <div class="label">Imágenes .png</div>
+          <div class="desc">Listas para web</div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <span class="filename">005-crear imagenes a partir de xml.py — main()</span>
+        <pre>tree = ET.parse("producto.xml")
+root = tree.getroot()
+context = build_context_from_xml(root)
+images  = collect_images(root)
+
+prompts = ask_ollama_for_prompts(context, images)
+pipe, device = load_pipeline()
+generate_images(pipe, images, prompts, out_dir)
+
+tree.write("producto.updated.xml")</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- EJERCICIOS -->
+  <section id="ejercicios" style="background:var(--card)">
+    <div class="wrap">
+      <h3>📚 <span>Ejercicios</span> progresivos</h3>
+      <p class="sub">5 ejercicios que van de la instalación básica al pipeline completo.</p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="num">01</div>
+          <h4>Instalar Stable Diffusion</h4>
+          <p>Instalación de AUTOMATIC1111 WebUI en Linux con Python, venv y git.</p>
+          <code>git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui
+./webui.sh</code>
+        </div>
+
+        <div class="card">
+          <div class="num">02</div>
+          <h4>Instalar dependencias Python</h4>
+          <p>Configuración de entorno virtual con PyTorch CUDA 12.1, diffusers, transformers y Pillow.</p>
+          <code>pip install torch torchvision --index-url .../cu121
+pip install diffusers transformers accelerate</code>
+        </div>
+
+        <div class="card">
+          <div class="num">03</div>
+          <h4>Crear una imagen</h4>
+          <p>Script básico que genera una imagen a partir de un prompt. Detecta GPU/CPU automáticamente.</p>
+          <code>pipe = StableDiffusionPipeline.from_pretrained(MODEL_ID)
+img = pipe(PROMPT, steps=30).images[0]
+img.save("out.png")</code>
+        </div>
+
+        <div class="card">
+          <div class="num">04</div>
+          <h4>Lista de peticiones</h4>
+          <p>Genera múltiples imágenes por lotes. El pipeline se carga una sola vez fuera del bucle.</p>
+          <code>lista = ['a green dog...', 'a pink cat...']
+for peticion in lista:
+    img = pipe(peticion).images[0]
+    img.save(peticion + ".png")</code>
+        </div>
+
+        <div class="card">
+          <div class="num">05</div>
+          <h4>XML → Ollama → Stable Diffusion</h4>
+          <p>Pipeline completo: lee XML de producto, genera prompts con IA y crea todas las imágenes automáticamente.</p>
+          <code>context = build_context_from_xml(root)
+prompts = ask_ollama_for_prompts(context, images)
+generate_images(pipe, images, prompts, out_dir)</code>
+        </div>
+
+        <div class="card">
+          <div class="num">XML</div>
+          <h4>producto.xml</h4>
+          <p>Estructura de landing page SaaS educativo con secciones: hero, problema, solución, features, audiencia, FAQ.</p>
+          <code>&lt;productPage lang="es" type="softwareEducativo"&gt;
+  &lt;meta&gt;&lt;title&gt;Gestión Académica Pro&lt;/title&gt;&lt;/meta&gt;
+  &lt;hero&gt;&lt;image src="..." alt="..."/&gt;&lt;/hero&gt;
+&lt;/productPage&gt;</code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERÍA -->
+  <section id="galeria">
+    <div class="wrap">
+      <h3>🖼️ <span>Imágenes</span> generadas por IA</h3>
+      <p class="sub">Creadas automáticamente con Stable Diffusion v1.5 a partir de prompts generados por Ollama.</p>
+
+      <div class="gallery">
+        <figure>
+          <img src="img/hero-gesti%C3%B3n-acad%C3%A9mica-moderna.png" alt="Hero – Gestión académica moderna">
+          <figcaption>
+            <span class="section-tag">HERO</span><br>
+            Gestión académica moderna
+          </figcaption>
+        </figure>
+        <figure>
+          <img src="img/problem-problemas-de-gesti%C3%B3n-educativa.png" alt="Problem – Problemas de gestión educativa">
+          <figcaption>
+            <span class="section-tag">PROBLEM</span><br>
+            Problemas de gestión educativa
+          </figcaption>
+        </figure>
+        <figure>
+          <img src="img/solution-soluci%C3%B3n-centralizada.png" alt="Solution – Solución centralizada">
+          <figcaption>
+            <span class="section-tag">SOLUTION</span><br>
+            Solución centralizada
+          </figcaption>
+        </figure>
+        <figure>
+          <img src="img/features-funcionalidades-clave.png" alt="Features – Funcionalidades clave">
+          <figcaption>
+            <span class="section-tag">FEATURES</span><br>
+            Funcionalidades clave
+          </figcaption>
+        </figure>
+        <figure>
+          <img src="img/audience-p%C3%BAblico-objetivo.png" alt="Audience – Público objetivo">
+          <figcaption>
+            <span class="section-tag">AUDIENCE</span><br>
+            Público objetivo
+          </figcaption>
+        </figure>
+        <figure>
+          <img src="img/green-dog.png" alt="Ejemplo básico – A green dog over green grass">
+          <figcaption>
+            <span class="section-tag">EJERCICIO 03</span><br>
+            A green dog over green grass
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH -->
+  <section id="tech" style="background:var(--card)">
+    <div class="wrap">
+      <h3>⚙️ <span>Tecnologías</span></h3>
+      <div class="tech-grid">
+        <div class="tech"><div class="dot python"></div>Python 3</div>
+        <div class="tech"><div class="dot ai"></div>Stable Diffusion v1.5</div>
+        <div class="tech"><div class="dot ai"></div>Ollama / LLaMA 3</div>
+        <div class="tech"><div class="dot python"></div>Diffusers (HuggingFace)</div>
+        <div class="tech"><div class="dot python"></div>PyTorch + CUDA</div>
+        <div class="tech"><div class="dot xml"></div>XML (ElementTree)</div>
+        <div class="tech"><div class="dot python"></div>Pillow (PIL)</div>
+        <div class="tech"><div class="dot shell"></div>Linux / venv</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      © 2024 Sistemas Informáticos · Generación de imágenes con IA · Stable Diffusion + Ollama
+    </div>
+  </footer>
+
+</body>
+</html>

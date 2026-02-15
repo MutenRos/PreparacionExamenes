@@ -1,0 +1,4 @@
+ALTER TABLE piezas
+ADD COLUMN imagen VARCHAR(255);
+
+DESCRIBE piezas;

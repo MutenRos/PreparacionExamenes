@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - OmniERP</title>
+    <meta name="description" content="Panel de control OmniERP — gestión integral de inventario, ventas, compras, producción y más. 74 módulos empresariales.">
+    <!-- CSS Variables & Design System -->
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <!-- Component Styles -->
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/aaaaa-animations.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <link rel="stylesheet" href="/static/css/tutorial.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 100;
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--brand-primary); }
+        .user-menu a {
+            margin-left: 1.5rem;
+            text-decoration: none;
+            color: var(--gray-600);
+        }
+        .container {
+            max-width: 100%;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        .welcome {
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .welcome h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .stat-card .icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+        }
+        .stat-card .label {
+            color: var(--gray-600);
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .modules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        .module-card {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 120px;
+        }
+        .module-card:hover {
+            /* Sin expansiones por hover */
+            transform: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .module-card .icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .module-card h3 { color: var(--brand-primary); margin: 0; font-size: 1rem; }
+        .module-card p { display: none; }
+        .submenu { display: none !important; }
+        .submenu-item:hover {
+            /* Evitar cambios por hover */
+            background: inherit;
+            color: inherit;
+        }
+        .submenu-item {
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        /* Accordion de notificaciones asistente - OVERLAY SIN AFECTAR LAYOUT */
+        .assistant-panel {
+            position: fixed;
+            left: 12px;
+            top: 86px;
+            width: 320px;
+            max-height: 70vh;
+            background: var(--bg-primary);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            display: none !important;
+            flex-direction: column;
+            z-index: 9999;
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        
+        .assistant-panel.open {
+            display: flex !important;
+        }
+        .assistant-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 14px;
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+            color: var(--text-inverse);
+            border-radius: 12px 12px 0 0;
+            flex-shrink: 0;
+        }
+        .assistant-header h3 { margin: 0; font-size: 15px; font-weight: 600; }
+        .assistant-body {
+            padding: 0;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 150px;
+        }
+        .accordion-item { border-bottom: 1px solid var(--border-color-light); }
+        .accordion-trigger {
+            width: 100%;
+            text-align: left;
+            padding: 12px 14px;
+            background: none;
+            border: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        .accordion-trigger:hover { background: inherit; }
+        .accordion-trigger span { font-size: 12px; color: var(--text-tertiary); font-weight: 400; }
+        .accordion-content {
+            padding: 0 14px 12px 14px;
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .accordion-content.open { display: block; }
+        .accordion-content ul { list-style: none; padding-left: 0; margin: 0; }
+        .accordion-content li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color-light);
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        .accordion-content li:last-child { border-bottom: none; }
+        .assistant-footer {
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--text-tertiary);
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-radius: 0 0 12px 12px;
+            flex-shrink: 0;
+        }
+        .assistant-footer button {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: none;
+            background: var(--brand-primary);
+            color: var(--text-inverse);
+            cursor: pointer;
+            font-size: 12px;
+            transition: background var(--transition-fast);
+        }
+        .assistant-footer button:hover { background: var(--brand-primary); }
+        @media (max-width: 1400px) {
+            .assistant-panel { width: 300px; }
+        }
+        @media (max-width: 1200px) {
+            .assistant-panel { width: 280px; }
+        }
+        @media (max-width: 992px) {
+            .assistant-panel { width: 260px; }
+        }
+        @media (max-width: 900px) {
+            .assistant-panel { width: calc(100% - 24px); left: 12px; right: 12px; max-height: 50vh; }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .modules { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+        }
+        
+        /* Assistant toggle button */
+        .assistant-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+            border: none;
+            border-radius: 50%;
+            color: var(--text-inverse);
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            z-index: 9998;
+            transition: all 0.3s;
+            display: none;
+        }
+        
+        .assistant-toggle:hover {
+            transform: none;
+            box-shadow: var(--shadow-md);
+        }
+        
+        @media (max-width: 900px) {
+            .assistant-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">⚡ OmniERP</div>
+        <div class="user-menu">
+            <a href="/app/pos">💳 POS</a>
+            <a href="/app/configuracion">⚙️ Configuración</a>
+            <a href="/app/logout">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <div class="assistant-panel" id="assistantPanel">
+        <div class="assistant-header">
+            <h3>Asistente básico</h3>
+            <button class="btn btn-secondary" onclick="refreshAssistant()">↻</button>
+        </div>
+        <div class="assistant-body">
+            <div class="accordion-item">
+                <button class="accordion-trigger" onclick="toggleAccordion('acc-compras')">Compras sugeridas <span id="tag-compras"></span></button>
+                <div class="accordion-content" id="acc-compras"><ul id="acc-compras-list"></ul></div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-trigger" onclick="toggleAccordion('acc-recordatorios')">Recordatorios <span id="tag-record"></span></button>
+                <div class="accordion-content" id="acc-recordatorios"><ul id="acc-record-list"></ul></div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-trigger" onclick="toggleAccordion('acc-resumen')">Resumen asistente</button>
+                <div class="accordion-content" id="acc-resumen"><pre id="acc-resumen-text" style="white-space: pre-wrap; font-family: var(--font-sans); font-size: 13px; color: var(--text-primary); margin: 0;"></pre></div>
+            </div>
+        </div>
+        <div class="assistant-footer">
+            <span id="assistantStatus">Listo</span>
+            <button onclick="refreshAssistant()">Actualizar</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="welcome">
+            <h1>¡Bienvenido a tu ERP! 🎉</h1>
+            <p>Panel de control de tu negocio - Comienza explorando los módulos</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="icon">📦</div>
+                <div class="value" id="statProductos">—</div>
+                <div class="label">Productos en inventario</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">💰</div>
+                <div class="value" id="statVentasMes">—</div>
+                <div class="label">Ventas del mes</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">👥</div>
+                <div class="value" id="statUsuarios">—</div>
+                <div class="label">Usuarios activos</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🛒</div>
+                <div class="value" id="statOrdenes">—</div>
+                <div class="label">Órdenes pendientes</div>
+            </div>
+        </div>
+
+        <h2 style="margin-bottom: 1.5rem; color: var(--text-primary);">Módulos del Sistema</h2>
+
+        <div class="modules">
+            <div class="module-card" onclick="location.href='/app/pos'">
+                <div class="icon">💳</div>
+                <h3>POS</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/inventario'">
+                <div class="icon">📦</div>
+                <h3>Inventario</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/almacen'">
+                <div class="icon">🏭</div>
+                <h3>Almacén</h3>
+            </div>
+
+
+            <div class="module-card" onclick="location.href='/app/oficina-tecnica'">
+                <div class="icon">🔧</div>
+                <h3>Oficina Técnica</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/produccion-ordenes'">
+                <div class="icon">📋</div>
+                <h3>Producción</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/produccion'">
+                <div class="icon">🛠️</div>
+                <h3>Mi Producción</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/logistica'">
+                <div class="icon">🚚</div>
+                <h3>Logística</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/field-service'">
+                <div class="icon">🛠️</div>
+                <h3>Field Service</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/project-ops'">
+                <div class="icon">🗂️</div>
+                <h3>Proyectos</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/customer-service'">
+                <div class="icon">🎧</div>
+                <h3>Soporte</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/marketing'">
+                <div class="icon">📢</div>
+                <h3>Marketing</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/supply-chain'">
+                <div class="icon">🔗</div>
+                <h3>Supply Chain</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/puertas'">
+                <div class="icon">🚪</div>
+                <h3>Puertas</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/ventas'">
+                <div class="icon">💰</div>
+                <h3>Ventas</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/compras'">
+                <div class="icon">🛒</div>
+                <h3>Compras</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/documentos'">
+                <div class="icon">📄</div>
+                <h3>Documentos</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/finanzas'">
+                <div class="icon">💰</div>
+                <h3>Finanzas</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/hr'">
+                <div class="icon">🧑‍💼</div>
+                <h3>RRHH</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/configuracion'">
+                <div class="icon">⚙️</div>
+                <h3>Configuración</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/reportes'">
+                <div class="icon">📊</div>
+                <h3>Análisis</h3>
+            </div>
+
+            <div class="module-card" onclick="location.href='/app/correo'">
+                <div class="icon">📧</div>
+                <h3>Correo</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI assistant widget -->
+    <script defer src="/static/assistant.js"></script>
+    <script defer src="/static/assistant-basic-panel.js"></script>
+    <script defer src="/static/voice-assistant-widget.js"></script>
+    <link rel="stylesheet" href="/static/assistant.css">
+
+    <script>
+        function toggleAccordion(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const isOpen = el.classList.contains('open');
+            document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
+            if (!isOpen) el.classList.add('open');
+        }
+
+        function formatCurrency(value) {
+            const num = Number(value) || 0;
+            return num.toLocaleString('es-ES', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 });
+        }
+
+        async function loadEnterpriseQuick() {
+            try {
+                const resp = await fetch('/api/enterprise/health');
+                if (!resp.ok) throw new Error('No disponible');
+                const data = await resp.json();
+                const healthEl = document.getElementById('entHealth');
+                const auditEl = document.getElementById('entAudit');
+                const webhooksEl = document.getElementById('entWebhooks');
+                if (healthEl) healthEl.textContent = (data.status || 'OK').toUpperCase();
+                if (auditEl) auditEl.textContent = (data.features?.audit ? 'Activo' : 'Off');
+                if (webhooksEl) webhooksEl.textContent = (data.features?.webhooks ? 'Activo' : 'Off');
+            } catch (err) {
+                const healthEl = document.getElementById('entHealth');
+                if (healthEl) healthEl.textContent = '—';
+            }
+        }
+
+        async function loadDashboardStats() {
+            const productosEl = document.getElementById('statProductos');
+            const ventasEl = document.getElementById('statVentasMes');
+            const usuariosEl = document.getElementById('statUsuarios');
+            const ordenesEl = document.getElementById('statOrdenes');
+
+            const setLoading = () => {
+                [productosEl, ventasEl, usuariosEl, ordenesEl].forEach(el => el.textContent = '…');
+            };
+
+            const setError = () => {
+                [productosEl, ventasEl, usuariosEl, ordenesEl].forEach(el => el.textContent = '—');
+            };
+
+            setLoading();
+            try {
+                const resp = await fetch('/api/reportes/resumen-dashboard', { credentials: 'include' });
+                if (!resp.ok) throw new Error('No se pudo cargar el resumen');
+                const data = await resp.json();
+                productosEl.textContent = data.productos_total ?? 0;
+                ventasEl.textContent = formatCurrency(data.ventas_mes ?? 0);
+                usuariosEl.textContent = data.usuarios_activos ?? 0;
+                ordenesEl.textContent = data.ordenes_pendientes ?? 0;
+            } catch (err) {
+                console.error(err);
+                setError();
+            }
+        }
+
+        async function refreshAssistant() {
+            const statusEl = document.getElementById('assistantStatus');
+            const comprasList = document.getElementById('acc-compras-list');
+            const recList = document.getElementById('acc-record-list');
+            const resumenText = document.getElementById('acc-resumen-text');
+            const tagCompras = document.getElementById('tag-compras');
+            const tagRecord = document.getElementById('tag-record');
+            statusEl.textContent = 'Cargando...';
+            comprasList.innerHTML = '';
+            recList.innerHTML = '';
+            resumenText.textContent = '';
+            try {
+                const resp = await fetch('/api/ai/sugerencias-basico');
+                if (!resp.ok) throw new Error('No se pudo obtener sugerencias');
+                const data = await resp.json();
+
+                const compras = data.compras_sugeridas || [];
+                tagCompras.textContent = compras.length ? `(${compras.length})` : '';
+                if (compras.length === 0) {
+                    comprasList.innerHTML = '<li class="text-muted">Sin compras urgentes</li>';
+                } else {
+                    comprasList.innerHTML = compras.map(c => `
+                        <li>
+                            <strong>${c.codigo}</strong> · ${c.nombre}<br>
+                            Proveedor: ${c.proveedor || '-'} · Stock ${c.stock_actual}/${c.stock_minimo} · Comprar: ${c.cantidad_sugerida}<br>
+                            ${c.motivo}
+                        </li>
+                    `).join('');
+                }
+
+                const recs = data.recordatorios || [];
+                tagRecord.textContent = recs.length ? `(${recs.length})` : '';
+                if (recs.length === 0) {
+                    recList.innerHTML = '<li class="text-muted">Sin recordatorios</li>';
+                } else {
+                    recList.innerHTML = recs.map(r => `
+                        <li><strong>${r.tipo}</strong> · ${r.entidad}: ${r.mensaje}</li>
+                    `).join('');
+                }
+
+                resumenText.textContent = data.resumen_llm || 'Sin resumen disponible.';
+                statusEl.textContent = 'Actualizado';
+            } catch (err) {
+                statusEl.textContent = 'Error: ' + err.message;
+                comprasList.innerHTML = '<li class="text-danger">Error al cargar</li>';
+            }
+        }
+
+        // Cargar al entrar al dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            refreshAssistant();
+            loadDashboardStats();
+            loadEnterpriseQuick();
+        });
+    </script>
+    
+    <!-- Tutorial interactivo -->
+    <script src="/static/js/tutorial.js"></script>
+</body>
+</html>
+
+<style>
+    .badge-dot { display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:6px; }
+    .badge-pill { 
+        background: var(--brand-primary-light);
+        color: var(--brand-primary-dark);
+        border-radius: var(--border-radius-full);
+        padding: 2px 8px;
+        font-size: 11px;
+        margin-left: 6px;
+    }
+    .text-muted { color: var(--text-tertiary); }
+    .text-danger { color: var(--color-danger); }
+</style>
+
+<script>
+</script>

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <title>Configuración - ERP Dario</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <style>
+        .navbar { background: var(--color-info-dark); color: white; padding: 15px 30px; }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .card-header { padding: 20px; border-bottom: 1px solid var(--gray-200); }
+        .card-header h2 { font-size: 1.5em; color: var(--gray-800); }
+        .card-body { padding: 20px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: 500; color: var(--gray-700); }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--gray-300); border-radius: 4px; }
+        .btn { background: var(--color-info-dark); color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        .btn:hover { background: #1d4ed8; }
+        .btn-secondary { background: var(--gray-500); }
+        .btn-secondary:hover { background: var(--gray-600); }
+        .btn-danger { background: var(--color-danger); }
+        .btn-danger:hover { background: #b91c1c; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--gray-200); }
+        .tab { padding: 10px 20px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+        .tab.active { border-bottom-color: var(--color-info-dark); color: var(--color-info-dark); font-weight: 500; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .info-box { background: var(--primary-light); padding: 15px; border-radius: 4px; margin-bottom: 20px; border-left: 4px solid var(--color-info-dark); }
+        .plan-badge { display: inline-block; padding: 4px 12px; background: var(--color-info-light); color: #1e40af; border-radius: 12px; font-size: 0.875em; }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    <link rel="stylesheet" href="/static/assistant.css">
+    <nav class="navbar">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>ERP Dario</h1>
+            <div>
+                <a href="/app/dashboard" style="color: white; margin-right: 20px; text-decoration: none;">Dashboard</a>
+                <a href="/app/logout" style="color: white; text-decoration: none;">Cerrar sesión</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <h1 style="margin-bottom: 10px;">Configuración</h1>
+        <p style="color: var(--gray-500); margin-bottom: 30px;">Administra tu cuenta y preferencias</p>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('perfil')">Perfil</div>
+            <div class="tab" onclick="switchTab('organizacion')">Organización</div>
+            <div class="tab" onclick="switchTab('plantillas')">Plantillas</div>
+            <div class="tab" onclick="switchTab('suscripcion')">Suscripción</div>
+            <div class="tab" onclick="switchTab('seguridad')">Seguridad</div>
+        </div>
+        
+        <!-- Perfil Tab -->
+        <div class="tab-content active" id="perfil">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Información Personal</h2>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <label>Nombre completo</label>
+                            <input type="text" value="Admin Usuario">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" value="admin@erpdario.com" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="tel" placeholder="+34 600 000 000">
+                        </div>
+                        <button type="submit" class="btn">Guardar cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Organización Tab -->
+        <div class="tab-content" id="organizacion">
+            <div class="info-box" id="fiscalDataWarning" style="display: none; background: var(--color-warning-light); border-color: var(--color-warning);">
+                <strong>⚠️ Datos Fiscales Incompletos</strong><br>
+                Debes completar los datos fiscales de tu empresa para poder suscribirte a un plan de pago y generar documentos legales.
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2>Datos Fiscales de la Empresa</h2>
+                </div>
+                <div class="card-body">
+                    <form id="fiscalDataForm" onsubmit="guardarDatosFiscales(event)">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <!-- Datos de Identificación -->
+                            <div>
+                                <h3 style="margin-bottom: 15px; border-bottom: 1px solid var(--gray-200); padding-bottom: 10px;">Identificación</h3>
+                                
+                                <div class="form-group">
+                                    <label>Razón Social *</label>
+                                    <input type="text" id="org_razonSocial" name="razon_social" placeholder="Mi Empresa S.A." required>
+                                    <small style="color: var(--gray-500);">Nombre legal completo de la empresa</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>RUC/CIF *</label>
+                                    <input type="text" id="org_rucNumero" name="ruc_numero" placeholder="12345678901" required minlength="8">
+                                    <small style="color: var(--gray-500);">Registro Único de Contribuyentes (mínimo 8 caracteres)</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Dígito Verificador</label>
+                                    <input type="text" id="org_rucDigito" name="ruc_digito" placeholder="0" maxlength="1">
+                                    <small style="color: var(--gray-500);">Opcional, si aplica en tu país</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Régimen Tributario</label>
+                                    <select id="org_regimenTributario" name="regimen_tributario">
+                                        <option value="">Seleccionar...</option>
+                                        <option value="RUC">RUC (Régimen General)</option>
+                                        <option value="RUS">RUS (Régimen Único Simplificado)</option>
+                                        <option value="RER">RER (Régimen Especial de Renta)</option>
+                                        <option value="MYPE">MYPE Tributario</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Dirección Fiscal -->
+                            <div>
+                                <h3 style="margin-bottom: 15px; border-bottom: 1px solid var(--gray-200); padding-bottom: 10px;">Dirección Fiscal</h3>
+                                
+                                <div class="form-group">
+                                    <label>Dirección *</label>
+                                    <input type="text" id="org_direccion" name="direccion" placeholder="Av. Principal 123, Oficina 4B" required>
+                                    <small style="color: var(--gray-500);">Domicilio fiscal principal</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Ciudad *</label>
+                                    <input type="text" id="org_ciudad" name="ciudad" placeholder="Lima" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Provincia/Estado *</label>
+                                    <input type="text" id="org_provincia" name="provincia" placeholder="Metropolitana" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Código Postal *</label>
+                                    <input type="text" id="org_codigoPostal" name="codigo_postal" placeholder="15001" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>País *</label>
+                                    <input type="text" id="org_pais" name="pais" value="Perú" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Sitio Web</label>
+                                    <input type="url" id="org_website" name="website" placeholder="https://www.miempresa.com">
+                                    <small style="color: var(--gray-500);">Opcional, aparecerá en documentos</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--gray-200);">
+                            <div class="info-box" style="margin-bottom: 15px;">
+                                <strong>ℹ️ Importante:</strong> Estos datos aparecerán en todas tus facturas y albaranes. Verifica que sean correctos antes de guardar.
+                            </div>
+                            <button type="submit" class="btn">Guardar Datos Fiscales</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Plantillas Tab -->
+        <div class="tab-content" id="plantillas">
+            <div class="info-box">
+                <strong>🎨 Personaliza el Diseño de tus Documentos</strong><br>
+                Configura colores, logos y elementos visuales. Los datos legales se toman automáticamente de tu organización.
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2>Plantillas de Documentos</h2>
+                </div>
+                <div class="card-body">
+                    <div id="templatesContainer" style="margin-bottom: 20px;"></div>
+                    <button type="button" class="btn" onclick="mostrarFormularioPlantilla()">+ Nueva Plantilla</button>
+                </div>
+            </div>
+            
+            <!-- Formulario de Plantilla (oculto inicialmente) -->
+            <div class="card" id="formularioPlantilla" style="display: none;">
+                <div class="card-header">
+                    <h2>Personalización Estética</h2>
+                </div>
+                <div class="card-body">
+                    <form id="templateForm" onsubmit="guardarPlantilla(event)">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <!-- Configuración Básica -->
+                            <div>
+                                <h3 style="margin-bottom: 15px; border-bottom: 1px solid var(--gray-200); padding-bottom: 10px;">Configuración Básica</h3>
+                                
+                                <div class="form-group">
+                                    <label>Tipo de Documento *</label>
+                                    <select id="tipoDocumento" name="tipo_documento" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="factura">Factura</option>
+                                        <option value="albarán">Albarán</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Prefijo de Numeración</label>
+                                    <input type="text" id="prefijo" name="prefijo" placeholder="F- o A-" maxlength="10">
+                                    <small style="color: var(--gray-500);">Ejemplo: F-0001, A-0001</small>
+                                </div>
+                                
+                                <h3 style="margin: 25px 0 15px; border-bottom: 1px solid var(--gray-200); padding-bottom: 10px;">Textos Personalizados</h3>
+                                
+                                <div class="form-group">
+                                    <label>Condiciones de Pago</label>
+                                    <textarea id="condicionesPago" name="condiciones_pago" rows="2" placeholder="Contado / Crédito a 30 días"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Notas al Pie</label>
+                                    <textarea id="notasPie" name="notas_pie" rows="2" placeholder="Gracias por su compra"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Términos y Condiciones</label>
+                                    <textarea id="terminosCondiciones" name="terminos_condiciones" rows="3" placeholder="Términos comerciales..."></textarea>
+                                </div>
+                            </div>
+                            
+                            <!-- Diseño Visual -->
+                            <div>
+                                <h3 style="margin-bottom: 15px; border-bottom: 1px solid var(--gray-200); padding-bottom: 10px;">Diseño Visual</h3>
+                                
+                                <div class="form-group">
+                                    <label>URL del Logo</label>
+                                    <input type="url" id="logoUrl" name="logo_url" placeholder="https://ejemplo.com/logo.png">
+                                    <small style="color: var(--gray-500);">Tamaño recomendado: 200x200px</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Color Primario</label>
+                                    <input type="color" id="colorPrimario" name="color_primario" value="var(--color-info-dark)">
+                                    <small style="color: var(--gray-500);">Para encabezados y destacados</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Color Secundario</label>
+                                    <input type="color" id="colorSecundario" name="color_secundario" value="var(--gray-500)">
+                                    <small style="color: var(--gray-500);">Para textos secundarios</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Fuente</label>
+                                    <select id="fuente" name="fuente">
+                                        <option value="Helvetica">Helvetica</option>
+                                        <option value="Times">Times</option>
+                                        <option value="Courier">Courier</option>
+                                    </select>
+                                </div>
+                                
+                                <h3 style="margin: 25px 0 15px; border-bottom: 1px solid var(--gray-200); padding-bottom: 10px;">Elementos Visuales</h3>
+                                
+                                <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="checkbox" id="mostrarLogo" name="mostrar_logo" checked>
+                                    <label style="margin: 0;">Mostrar logo</label>
+                                </div>
+                                
+                                <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="checkbox" id="mostrarQR" name="mostrar_qr" checked>
+                                    <label style="margin: 0;">Mostrar código QR</label>
+                                </div>
+                                
+                                <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="checkbox" id="mostrarCodigoBarras" name="mostrar_codigo_barras">
+                                    <label style="margin: 0;">Mostrar código de barras</label>
+                                </div>
+                                
+                                <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="checkbox" id="mostrarFirmaVendedor" name="mostrar_firma_vendedor" checked>
+                                    <label style="margin: 0;">Mostrar firma del vendedor</label>
+                                </div>
+                                
+                                <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="checkbox" id="mostrarFirmaCliente" name="mostrar_firma_cliente" checked>
+                                    <label style="margin: 0;">Mostrar firma del cliente</label>
+                                </div>
+                                
+                                <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="checkbox" id="mostrarSello" name="mostrar_sello">
+                                    <label style="margin: 0;">Mostrar sello de empresa</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 20px; display: flex; gap: 10px;">
+                            <button type="submit" class="btn">Guardar Plantilla</button>
+                            <button type="button" class="btn btn-secondary" onclick="cancelarFormulario()">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Suscripción Tab -->
+        <div class="tab-content" id="suscripcion">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Información de la Organización</h2>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <label>Nombre de la empresa</label>
+                            <input type="text" value="Mi Empresa">
+                        </div>
+                        <div class="form-group">
+                            <label>RUC/CIF</label>
+                            <input type="text" placeholder="12345678901">
+                        </div>
+                        <div class="form-group">
+                            <label>Dirección</label>
+                            <textarea rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Industria</label>
+                            <select>
+                                <option>Retail</option>
+                                <option>Restaurante</option>
+                                <option>Farmacia</option>
+                                <option>Otro</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn">Guardar cambios</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2>Equipo</h2>
+                </div>
+                <div class="card-body">
+                    <p style="margin-bottom: 15px;">Usuarios activos: <strong>1</strong> / 5</p>
+                    <button class="btn">Invitar usuario</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Suscripción Tab -->
+        <div class="tab-content" id="suscripcion">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Plan Actual</h2>
+                </div>
+                <div class="card-body">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <div>
+                            <span class="plan-badge">Plan Trial</span>
+                            <p style="margin-top: 10px; color: var(--gray-500);">Válido hasta: 14 días restantes</p>
+                        </div>
+                        <h3 style="color: var(--color-info-dark); font-size: 2em;">$0</h3>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>Límites del plan Trial:</strong>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>5 usuarios máximo</li>
+                            <li>100 productos máximo</li>
+                            <li>1 sucursal</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn">Actualizar a Pro</button>
+                        <button class="btn btn-secondary">Ver planes</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2>Método de Pago</h2>
+                </div>
+                <div class="card-body">
+                    <p style="color: var(--gray-500); margin-bottom: 15px;">No hay método de pago configurado</p>
+                    <button class="btn">Agregar tarjeta</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2>Historial de Facturas</h2>
+                </div>
+                <div class="card-body">
+                    <p style="color: var(--gray-500);">No hay facturas disponibles</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seguridad Tab -->
+        <div class="tab-content" id="seguridad">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Cambiar Contraseña</h2>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <label>Contraseña actual</label>
+                            <input type="password">
+                        </div>
+                        <div class="form-group">
+                            <label>Nueva contraseña</label>
+                            <input type="password">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmar nueva contraseña</label>
+                            <input type="password">
+                        </div>
+                        <button type="submit" class="btn">Actualizar contraseña</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2>API Keys</h2>
+                </div>
+                <div class="card-body">
+                    <p style="color: var(--gray-500); margin-bottom: 15px;">Genera claves API para integraciones</p>
+                    <button class="btn">Generar nueva API Key</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2>Zona de Peligro</h2>
+                </div>
+                <div class="card-body">
+                    <p style="color: var(--gray-500); margin-bottom: 15px;">Esta acción es irreversible. Todos tus datos serán eliminados.</p>
+                    <button class="btn btn-danger">Eliminar cuenta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function switchTab(tabName) {
+            // Remove active class from all tabs and contents
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to selected tab
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+            
+            // Cargar datos según tab
+            if (tabName === 'plantillas') {
+                cargarPlantillas();
+            } else if (tabName === 'organizacion') {
+                cargarDatosOrganizacion();
+            } else if (tabName === 'suscripcion') {
+                verificarDatosFiscales();
+            }
+        }
+        
+        // Funciones para gestionar datos fiscales de la organización
+        async function cargarDatosOrganizacion() {
+            try {
+                const response = await fetch('/api/organization/');
+                if (!response.ok) throw new Error('Error al cargar datos');
+                
+                const org = await response.json();
+                
+                // Llenar formulario con datos actuales
+                document.getElementById('org_razonSocial').value = org.razon_social || '';
+                document.getElementById('org_rucNumero').value = org.ruc_numero || '';
+                document.getElementById('org_rucDigito').value = org.ruc_digito || '';
+                document.getElementById('org_direccion').value = org.direccion || '';
+                document.getElementById('org_ciudad').value = org.ciudad || '';
+                document.getElementById('org_provincia').value = org.provincia || '';
+                document.getElementById('org_codigoPostal').value = org.codigo_postal || '';
+                document.getElementById('org_pais').value = org.pais || 'Perú';
+                document.getElementById('org_regimenTributario').value = org.regimen_tributario || '';
+                document.getElementById('org_website').value = org.website || '';
+                
+                // Mostrar aviso si datos incompletos
+                if (!org.datos_fiscales_completos) {
+                    document.getElementById('fiscalDataWarning').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        async function guardarDatosFiscales(event) {
+            event.preventDefault();
+            
+            const form = document.getElementById('fiscalDataForm');
+            const formData = new FormData(form);
+            
+            const datos = {
+                razon_social: formData.get('razon_social'),
+                ruc_numero: formData.get('ruc_numero'),
+                ruc_digito: formData.get('ruc_digito') || null,
+                direccion: formData.get('direccion'),
+                ciudad: formData.get('ciudad'),
+                provincia: formData.get('provincia'),
+                codigo_postal: formData.get('codigo_postal'),
+                pais: formData.get('pais'),
+                regimen_tributario: formData.get('regimen_tributario') || null,
+                website: formData.get('website') || null
+            };
+            
+            try {
+                const response = await fetch('/api/organization/fiscal-data', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos)
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Error al guardar datos');
+                }
+                
+                alert('✅ Datos fiscales guardados correctamente');
+                document.getElementById('fiscalDataWarning').style.display = 'none';
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
+                console.error('Error:', error);
+            }
+        }
+        
+        async function verificarDatosFiscales() {
+            try {
+                const response = await fetch('/api/organization/can-upgrade');
+                if (!response.ok) return;
+                
+                const data = await response.json();
+                const warning = document.getElementById('fiscalDataWarning');
+                
+                if (!data.can_upgrade && warning) {
+                    // Mostrar aviso en tab de suscripción
+                    const subTab = document.getElementById('suscripcion');
+                    const existingWarning = subTab.querySelector('.fiscal-warning');
+                    
+                    if (!existingWarning) {
+                        const warningDiv = document.createElement('div');
+                        warningDiv.className = 'info-box fiscal-warning';
+                        warningDiv.style.cssText = 'background: var(--color-warning-light); border-color: var(--color-warning); margin-bottom: 20px;';
+                        warningDiv.innerHTML = `
+                            <strong>⚠️ Datos Fiscales Requeridos</strong><br>
+                            Para suscribirte a un plan de pago, primero debes completar los datos fiscales de tu empresa en la pestaña <a href="#" onclick="switchTab('organizacion'); return false;" style="color: var(--color-info-dark); text-decoration: underline;">Organización</a>.
+                        `;
+                        subTab.insertBefore(warningDiv, subTab.firstChild);
+                    }
+                }
+            } catch (error) {
+                console.error('Error verificando datos fiscales:', error);
+            }
+        }
+        
+        // Funciones para gestionar plantillas estéticas
+        async function cargarPlantillas() {
+            try {
+                const response = await fetch('/api/templates/');
+                if (!response.ok) throw new Error('Error al cargar plantillas');
+                
+                const plantillas = await response.json();
+                const container = document.getElementById('templatesContainer');
+                
+                if (plantillas.length === 0) {
+                    container.innerHTML = '<p style="color: var(--gray-500); text-align: center;">No tienes plantillas configuradas aún.</p>';
+                    return;
+                }
+                
+                container.innerHTML = plantillas.map(p => `
+                    <div class="card" style="margin-bottom: 10px;">
+                        <div style="padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>${p.tipo_documento.charAt(0).toUpperCase() + p.tipo_documento.slice(1)}</strong>
+                                <p style="color: var(--gray-500); font-size: 0.875em; margin-top: 5px;">
+                                    Color: <span style="display:inline-block; width:20px; height:20px; background:${p.color_primario}; border:1px solid var(--border-color); vertical-align:middle;"></span>
+                                    ${p.color_primario}
+                                </p>
+                                <p style="color: var(--gray-400); font-size: 0.8em;">Fuente: ${p.fuente || 'Helvetica'}</p>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="btn btn-secondary" onclick="editarPlantilla(${p.id})">Editar</button>
+                                <button class="btn btn-danger" onclick="eliminarPlantilla(${p.id})">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('templatesContainer').innerHTML = '<p style="color: red;">Error al cargar plantillas</p>';
+            }
+        }
+        
+        function mostrarFormularioPlantilla() {
+            document.getElementById('formularioPlantilla').style.display = 'block';
+            document.getElementById('templateForm').reset();
+            document.getElementById('colorPrimario').value = 'var(--color-info-dark)';
+            document.getElementById('colorSecundario').value = 'var(--gray-500)';
+        }
+        
+        function cancelarFormulario() {
+            document.getElementById('formularioPlantilla').style.display = 'none';
+            document.getElementById('templateForm').reset();
+        }
+        
+        async function guardarPlantilla(event) {
+            event.preventDefault();
+            
+            const form = document.getElementById('templateForm');
+            const formData = new FormData(form);
+            
+            const datos = {
+                tipo_documento: formData.get('tipo_documento'),
+                prefijo: formData.get('prefijo') || null,
+                logo_url: formData.get('logo_url') || null,
+                color_primario: formData.get('color_primario'),
+                color_secundario: formData.get('color_secundario'),
+                fuente: formData.get('fuente'),
+                mostrar_logo: formData.get('mostrar_logo') === 'on',
+                mostrar_qr: formData.get('mostrar_qr') === 'on',
+                mostrar_codigo_barras: formData.get('mostrar_codigo_barras') === 'on',
+                mostrar_firma_vendedor: formData.get('mostrar_firma_vendedor') === 'on',
+                mostrar_firma_cliente: formData.get('mostrar_firma_cliente') === 'on',
+                mostrar_sello: formData.get('mostrar_sello') === 'on',
+                condiciones_pago: formData.get('condiciones_pago') || null,
+                notas_pie: formData.get('notas_pie') || null,
+                terminos_condiciones: formData.get('terminos_condiciones') || null
+            };
+            
+            try {
+                const response = await fetch('/api/templates/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos)
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Error al guardar plantilla');
+                }
+                
+                alert('✅ Plantilla guardada exitosamente');
+                cancelarFormulario();
+                cargarPlantillas();
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
+                console.error('Error:', error);
+            }
+        }
+        
+        async function editarPlantilla(plantillaId) {
+            alert('Funcionalidad de edición en desarrollo');
+        }
+        
+        async function eliminarPlantilla(plantillaId) {
+            if (!confirm('¿Estás seguro de que deseas eliminar esta plantilla?')) return;
+            
+            try {
+                const response = await fetch(`/api/templates/${plantillaId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (!response.ok) throw new Error('Error al eliminar');
+                
+                alert('✅ Plantilla eliminada');
+                cargarPlantillas();
+            } catch (error) {
+                alert('❌ Error: ' + error.message);
+            }
+        }
+    </script>
+</body>
+<script defer src="/static/assistant.js"></script>
+<script defer src="/static/assistant-basic-panel.js"></script>
+</html>

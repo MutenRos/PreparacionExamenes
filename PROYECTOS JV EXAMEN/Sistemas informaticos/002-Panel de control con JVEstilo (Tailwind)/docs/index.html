@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Panel de Control — JVEstilo</title>
+<style>
+/* ===== JVEstilo — Clases utilitarias generadas (subset estático) ===== */
+*{box-sizing:border-box;margin:0;padding:0;}
+/* Colores de fondo */
+.b-lightgray{background:lightgray;}
+.b-white{background:white;}
+.b-teal{background:teal;}
+.b-whitesmoke{background:whitesmoke;}
+/* Colores de texto */
+.c-teal{color:teal;}
+.c-white{color:white;}
+.c-gray{color:gray;}
+/* Flex */
+.flex{display:flex;}
+.fd-row{flex-direction:row;}
+.fd-column{flex-direction:column;}
+.fj-center{justify-content:center;}
+.fa-center{align-items:center;}
+/* Flex factor */
+.f-1{flex:1;}
+.f-5{flex:5;}
+/* Dimensiones */
+.w-100pc{width:100%;}
+.h-100pc{height:100%;}
+.w-200{width:200px;}
+.h-200{height:200px;}
+.w-360{width:360px;}
+/* Spacing */
+.p-0{padding:0;}
+.m-0{margin:0;}
+.p-10{padding:10px;}
+.p-20{padding:20px;}
+.g-10{gap:10px;}
+.g-20{gap:20px;}
+/* Border radius */
+.bradius-5{border-radius:5px;}
+.bradius-10{border-radius:10px;}
+/* Bordes */
+.br-1-solid-lightgray{border:1px solid lightgray;}
+.br-2-solid-teal{border:2px solid teal;}
+/* Texto */
+.td-none{text-decoration:none;}
+.fs-14{font-size:14px;}
+.fs-18{font-size:18px;}
+.fs-24{font-size:24px;}
+/* Cursor */
+.cursor-pointer{cursor:pointer;}
+
+/* ===== Estilos propios del mockup ===== */
+html,body{height:100%;font-family:system-ui,sans-serif;}
+
+/* === Pantalla LOGIN === */
+.login-screen{
+  display:flex;align-items:center;justify-content:center;
+  width:100%;min-height:100vh;background:lightgray;
+}
+.login-card{
+  background:#fff;padding:30px;border-radius:10px;width:340px;
+  display:flex;flex-direction:column;gap:18px;
+  box-shadow:0 4px 20px rgba(0,0,0,.12);
+}
+.login-card h2{text-align:center;color:teal;margin-bottom:4px;font-size:22px;}
+.login-card input[type="text"],
+.login-card input[type="password"]{
+  padding:10px 12px;border:1px solid lightgray;border-radius:5px;font-size:15px;
+  transition:border-color .2s,box-shadow .2s;outline:none;
+}
+.login-card input[type="text"]:focus,
+.login-card input[type="password"]:focus{
+  border-color:teal;box-shadow:0 0 0 3px rgba(0,128,128,.15);
+}
+.login-card button{
+  padding:10px;background:teal;color:#fff;border:none;border-radius:5px;
+  font-size:15px;cursor:pointer;transition:transform .15s,box-shadow .15s;
+}
+.login-card button:hover{transform:translateY(-2px);box-shadow:0 3px 10px rgba(0,128,128,.3);}
+.login-card .hint{font-size:12px;color:gray;text-align:center;}
+
+/* === Pantalla ADMIN === */
+.admin-screen{display:none;height:100vh;width:100%;}
+.admin-screen.active{display:flex;}
+.sidebar{
+  flex:1;background:teal;padding:20px;display:flex;flex-direction:column;gap:16px;
+  min-width:180px;max-width:220px;
+}
+.sidebar h3{color:#fff;font-size:18px;margin-bottom:8px;letter-spacing:.5px;}
+.sidebar a{
+  display:block;background:#fff;padding:10px 14px;color:teal;text-decoration:none;
+  border-radius:5px;font-weight:500;transition:transform .15s,box-shadow .15s;
+}
+.sidebar a:hover{transform:translateX(4px);box-shadow:2px 0 8px rgba(0,0,0,.15);}
+.sidebar a.active{font-weight:700;box-shadow:inset 3px 0 0 #fff;}
+.main-content{flex:5;background:#fff;padding:24px 30px;overflow-y:auto;}
+.main-content h2{color:teal;margin-bottom:16px;font-size:22px;}
+
+/* Tabla */
+table{width:100%;border-collapse:collapse;border:2px solid teal;}
+thead{background:teal;color:#fff;}
+th,td{padding:10px 14px;text-align:left;font-size:14px;}
+tbody tr{transition:background .15s;}
+tbody tr:nth-child(even){background:rgba(0,128,128,.06);}
+tbody tr:hover{background:rgba(0,128,128,.12);}
+.record-count{margin-top:12px;font-size:13px;color:gray;text-align:right;}
+
+/* Nav responsive */
+@media(max-width:700px){
+  .admin-screen.active{flex-direction:column;}
+  .sidebar{max-width:100%;flex-direction:row;flex-wrap:wrap;gap:8px;padding:12px;}
+  .sidebar h3{display:none;}
+  .sidebar a{flex:1;text-align:center;min-width:80px;}
+}
+</style>
+</head>
+<body>
+
+<!-- =============== PANTALLA LOGIN =============== -->
+<div class="login-screen" id="loginScreen">
+  <form class="login-card" onsubmit="return hacerLogin(this)">
+    <h2>🔐 Panel de Control</h2>
+    <input type="text" placeholder="Usuario" required id="inputUser">
+    <input type="password" placeholder="Contraseña" required id="inputPass">
+    <button type="submit">Entrar</button>
+    <p class="hint">Prueba con cualquier usuario (mín. 3 car.) y contraseña (mín. 4 car.)</p>
+  </form>
+</div>
+
+<!-- =============== PANTALLA ADMIN =============== -->
+<div class="admin-screen" id="adminScreen">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <h3>☰ Menú</h3>
+    <a href="#" class="active" onclick="showSection('clientes',this)">Clientes</a>
+    <a href="#" onclick="showSection('productos',this)">Productos</a>
+    <a href="#" onclick="showSection('pedidos',this)">Pedidos</a>
+    <a href="#" onclick="showSection('almacen',this)">Almacén</a>
+  </nav>
+
+  <!-- Main -->
+  <main class="main-content">
+    <!-- Sección Clientes -->
+    <section id="sec-clientes">
+      <h2>Clientes</h2>
+      <table>
+        <thead>
+          <tr><th>Nombre</th><th>Apellidos</th><th>Email</th><th>Teléfono</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Ana</td><td>Martínez López</td><td>ana.martinez@example.com</td><td>612345678</td></tr>
+          <tr><td>Carlos</td><td>García Ruiz</td><td>carlos.garcia@example.com</td><td>623456789</td></tr>
+          <tr><td>María</td><td>Fernández Soto</td><td>maria.fernandez@example.com</td><td>634567890</td></tr>
+          <tr><td>Pedro</td><td>López Navarro</td><td>pedro.lopez@example.com</td><td>645678901</td></tr>
+          <tr><td>Laura</td><td>Sánchez Gil</td><td>laura.sanchez@example.com</td><td>656789012</td></tr>
+          <tr><td>Javier</td><td>Romero Díaz</td><td>javier.romero@example.com</td><td>667890123</td></tr>
+          <tr><td>Lucía</td><td>Torres Vega</td><td>lucia.torres@example.com</td><td>678901234</td></tr>
+          <tr><td>David</td><td>Moreno Castro</td><td>david.moreno@example.com</td><td>689012345</td></tr>
+          <tr><td>Sofía</td><td>Jiménez Ortega</td><td>sofia.jimenez@example.com</td><td>690123456</td></tr>
+          <tr><td>Pablo</td><td>Álvarez Herrera</td><td>pablo.alvarez@example.com</td><td>601234567</td></tr>
+          <tr><td>Elena</td><td>Ruiz Campos</td><td>elena.ruiz@example.com</td><td>612345670</td></tr>
+          <tr><td>Miguel</td><td>Navarro Peña</td><td>miguel.navarro@example.com</td><td>623456780</td></tr>
+          <tr><td>Carmen</td><td>Gil Serrano</td><td>carmen.gil@example.com</td><td>634567891</td></tr>
+          <tr><td>Raúl</td><td>Díaz Molina</td><td>raul.diaz@example.com</td><td>645678902</td></tr>
+          <tr><td>Paula</td><td>Vega Ramos</td><td>paula.vega@example.com</td><td>656789013</td></tr>
+          <tr><td>Adrián</td><td>Castro León</td><td>adrian.castro@example.com</td><td>667890124</td></tr>
+          <tr><td>Isabel</td><td>Ortega Flores</td><td>isabel.ortega@example.com</td><td>678901235</td></tr>
+          <tr><td>Fernando</td><td>Herrera Blanco</td><td>fernando.herrera@example.com</td><td>689012346</td></tr>
+          <tr><td>Marta</td><td>Peña Iglesias</td><td>marta.pena@example.com</td><td>690123457</td></tr>
+          <tr><td>Víctor</td><td>Lorenzo Aguirre</td><td>victor.lorenzo@example.com</td><td>601234568</td></tr>
+        </tbody>
+      </table>
+      <p class="record-count">Total: 20 clientes</p>
+    </section>
+
+    <!-- Sección Productos -->
+    <section id="sec-productos" style="display:none">
+      <h2>Productos</h2>
+      <table>
+        <thead><tr><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th></tr></thead>
+        <tbody>
+          <tr><td>Teclado mecánico RGB</td><td>Periféricos</td><td>79,99 €</td><td>42</td></tr>
+          <tr><td>Ratón inalámbrico</td><td>Periféricos</td><td>29,99 €</td><td>87</td></tr>
+          <tr><td>Monitor 27" 4K</td><td>Pantallas</td><td>349,00 €</td><td>15</td></tr>
+          <tr><td>Webcam HD 1080p</td><td>Accesorios</td><td>49,50 €</td><td>63</td></tr>
+          <tr><td>Auriculares Bluetooth</td><td>Audio</td><td>59,99 €</td><td>34</td></tr>
+        </tbody>
+      </table>
+      <p class="record-count">Total: 5 productos</p>
+    </section>
+
+    <!-- Sección Pedidos -->
+    <section id="sec-pedidos" style="display:none">
+      <h2>Pedidos</h2>
+      <table>
+        <thead><tr><th>#</th><th>Cliente</th><th>Fecha</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td>001</td><td>Ana Martínez</td><td>2025-01-15</td><td>Entregado</td></tr>
+          <tr><td>002</td><td>Carlos García</td><td>2025-02-03</td><td>En camino</td></tr>
+          <tr><td>003</td><td>Laura Sánchez</td><td>2025-02-10</td><td>Pendiente</td></tr>
+          <tr><td>004</td><td>David Moreno</td><td>2025-03-01</td><td>Entregado</td></tr>
+        </tbody>
+      </table>
+      <p class="record-count">Total: 4 pedidos</p>
+    </section>
+
+    <!-- Sección Almacén -->
+    <section id="sec-almacen" style="display:none">
+      <h2>Almacén</h2>
+      <table>
+        <thead><tr><th>Zona</th><th>Productos</th><th>Capacidad</th><th>Ocupación</th></tr></thead>
+        <tbody>
+          <tr><td>A-01</td><td>Periféricos</td><td>500 uds</td><td>72%</td></tr>
+          <tr><td>B-02</td><td>Pantallas</td><td>200 uds</td><td>45%</td></tr>
+          <tr><td>C-03</td><td>Accesorios</td><td>1000 uds</td><td>60%</td></tr>
+        </tbody>
+      </table>
+      <p class="record-count">Total: 3 zonas</p>
+    </section>
+  </main>
+</div>
+
+<script>
+/* Login con validación */
+function hacerLogin(form){
+  var u=document.getElementById('inputUser').value.trim();
+  var p=document.getElementById('inputPass').value;
+  if(u.length<3){alert('El usuario debe tener al menos 3 caracteres.');return false;}
+  if(p.length<4){alert('La contraseña debe tener al menos 4 caracteres.');return false;}
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('adminScreen').classList.add('active');
+  return false;
+}
+
+/* Navegación entre secciones */
+function showSection(name,link){
+  var sections=document.querySelectorAll('.main-content section');
+  sections.forEach(function(s){s.style.display='none';});
+  document.getElementById('sec-'+name).style.display='block';
+  var links=document.querySelectorAll('.sidebar a');
+  links.forEach(function(a){a.classList.remove('active');});
+  link.classList.add('active');
+}
+</script>
+</body>
+</html>

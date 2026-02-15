@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+	<head>
+		<style>
+			body,html{padding:0px;margin:0px;width:100%;height:100%;}
+			html{padding:20px;font-family:sans-serif;}
+			html section{display:grid;grid-template-columns:repeat(3,100fr);gap:20px;}
+			article{border:1px solid lightgray;padding:20px;border-radius:10px;}
+		</style>
+	</head>
+	<body>
+		<section>
+			<article>
+				<h3>PHP es un lenguaje de:</h3>
+				<progress value="0.5"></progress> 4 - 30% - Cliente<br>
+				<progress value="0.2"></progress> 2 - 20% - Servidor<br>
+				<progress value="0.3"></progress> 2 - 30% - Web<br>
+			</article>
+			<article>
+				<h3>Javascript es un lenguaje de:</h3>
+				<progress value="0.5"></progress> 4 - 30% - Cliente<br>
+				<progress value="0.2"></progress> 2 - 20% - Servidor<br>
+				<progress value="0.3"></progress> 2 - 30% - Web<br>
+			</article>
+			<article>
+				<h3>PHP es un lenguaje de:</h3>
+				<progress value="0.5"></progress> 4 - 30% - Cliente<br>
+				<progress value="0.2"></progress> 2 - 20% - Servidor<br>
+				<progress value="0.3"></progress> 2 - 30% - Web<br>
+			</article>
+			<article>
+				<h3>Javascript es un lenguaje de:</h3>
+				<progress value="0.5"></progress> 4 - 30% - Cliente<br>
+				<progress value="0.2"></progress> 2 - 20% - Servidor<br>
+				<progress value="0.3"></progress> 2 - 30% - Web<br>
+			</article>
+		</section>
+		<script>
+			fetch("respuestas.csv")
+			.then(function(respuesta){return respuesta.text()})
+			.then(function(datos){
+				let contenedor = []
+				let lineas = datos.trim().split("\n")
+				lineas.forEach(function(linea){
+					let partido = linea.split(",")
+					contenedor.push(partido)
+				})
+				console.log(contenedor)
+			})
+		</script>
+	</body>
+</html>
+

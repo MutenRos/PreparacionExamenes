@@ -1,0 +1,13 @@
+La conexión de sistemas en red es una área fundamental que abarca la comunicación eficiente entre diferentes dispositivos electrónicos a través de redes. En esta subunidad didáctica, nos adentramos en las tecnologías que permiten el acceso a redes de área extensa (WAN), un tipo de red que conecta sistemas geográficamente dispersos.
+
+La tecnología más común para acceder a WAN es la transmisión por cableado, que implica el uso de cables como medio de comunicación. Estos cables pueden ser de fibra óptica o coaxial, cada uno con sus ventajas en términos de velocidad y distancia. La fibra óptica ofrece velocidades extremadamente altas y largas distancias, ideal para redes de gran escala, mientras que la coaxial es más costosa pero permite una mayor flexibilidad en la instalación.
+
+Además de los medios de transmisión por cableado, existen tecnologías inalámbricas como el Wi-Fi y el Bluetooth. El Wi-Fi es especialmente relevante para WAN, ya que permite la conexión a Internet sin cables, lo que facilita la comunicación entre dispositivos móviles y computadoras en diferentes ubicaciones. El Bluetooth, por otro lado, se utiliza principalmente para conexiones cortas a corto alcance, como el intercambio de datos entre dispositivos cercanos.
+
+La seguridad es un aspecto crucial en el acceso a WAN. Los protocolos criptográficos desempeñan un papel fundamental en la protección de los datos durante su transmisión. Algunos de los protocolos más utilizados incluyen SSL/TLS para las conexiones web y IPsec para las redes privadas virtuales (VPN). Estos protocolos cifran los datos, garantizando que solo el emisor y el receptor puedan acceder a la información.
+
+La gestión de la conectividad es otro aspecto importante en el acceso a WAN. Los sistemas operativos modernos ofrecen herramientas avanzadas para monitorear y gestionar las conexiones de red. Herramientas como los comandos `ping`, `traceroute` y `netstat` permiten diagnosticar problemas de conectividad y optimizar el rendimiento de la red.
+
+En el contexto empresarial, la gestión de la conectividad en WAN es crucial para la colaboración remota y la eficiencia operativa. Los sistemas ERP-CRM utilizan tecnologías avanzadas para gestionar las conexiones con clientes, proveedores y otros sistemas externos. La integración segura y eficiente de estos sistemas requiere una comprensión profunda de las tecnologías de acceso a WAN.
+
+En resumen, el acceso a redes de área extensa es un campo complejo que involucra la selección del medio de transmisión adecuado, la implementación de protocolos seguros y la gestión eficiente de las conexiones. Esta subunidad didáctica proporciona una visión integral de estas tecnologías y su importancia en el mundo digital actual.

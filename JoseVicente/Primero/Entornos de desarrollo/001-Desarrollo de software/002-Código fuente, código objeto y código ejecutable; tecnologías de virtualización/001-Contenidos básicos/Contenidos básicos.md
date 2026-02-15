@@ -1,0 +1,11 @@
+El desarrollo de software es una actividad compleja que requiere una comprensión profunda del ciclo de vida completo de un programa informático. En este proceso, el código fuente, el código objeto y el código ejecutable desempeñan papeles cruciales, cada uno con características distintas y funciones específicas.
+
+El código fuente es la versión original y legible del programa que los programadores escriben en lenguajes de alto nivel. Este texto plano contiene las instrucciones necesarias para que un compilador o intérprete genere el código objeto. El código fuente es fundamental porque refleja la idea inicial del software, su funcionalidad y su estructura.
+
+El código objeto, por otro lado, es una versión intermedia del programa que ha sido traducida desde el lenguaje de alto nivel al lenguaje de máquina o a un lenguaje más cercano. Este archivo binario contiene instrucciones que pueden ser ejecutadas directamente por la computadora. El código objeto es crucial para el proceso de compilación y enlazado, que prepara el programa para su ejecución.
+
+El código ejecutable es el resultado final del proceso de compilación y enlazado. Este archivo contiene todo lo necesario para que la computadora pueda interpretar e implementar las instrucciones del programa. El código ejecutable es el programa listo para ser corrido, y es lo que los usuarios finales interactúan.
+
+La virtualización es una tecnología que permite crear entornos de ejecución aislados dentro de un sistema operativo host. Esta técnica es especialmente útil en el desarrollo de software, ya que permite probar diferentes configuraciones y versiones del sistema sin afectar la estabilidad del sistema principal. La virtualización facilita la creación de entornos de desarrollo consistentes y replicables, lo que mejora la calidad y la eficiencia del proceso de desarrollo.
+
+En el contexto del desarrollo de software, la comprensión de estos conceptos es esencial para los programadores. El código fuente es su herramienta principal para expresar ideas, mientras que el código objeto y el código ejecutable son los productos finales de su trabajo. La virtualización ofrece una herramienta poderosa para mejorar la eficiencia y la calidad del desarrollo. Comprender estos conceptos y cómo interactúan entre sí es fundamental para cualquier profesional en el campo de la programación.

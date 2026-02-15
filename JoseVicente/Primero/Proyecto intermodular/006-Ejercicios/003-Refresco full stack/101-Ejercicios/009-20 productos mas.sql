@@ -1,0 +1,22 @@
+INSERT INTO productos (nombre, descripcion, precio, imagen) VALUES
+('Sudadera deportiva', 'Sudadera con capucha, tejido cálido y transpirable para entrenamientos al aire libre.', '39.99 €', 'sudadera_deportiva.jpg'),
+('Cinta para el pelo', 'Cinta elástica absorbente que mantiene el sudor alejado de los ojos.', '5.99 €', 'cinta_pelo.jpg'),
+('Rodillera ajustable', 'Rodillera ortopédica con cierre de velcro para protección y estabilidad.', '18.90 €', 'rodillera.jpg'),
+('Tobillera elástica', 'Soporte elástico para tobillo, ideal para prevenir lesiones.', '11.50 €', 'tobillera.jpg'),
+('Balón medicinal', 'Balón de entrenamiento de 5 kg para ejercicios funcionales y de fuerza.', '44.00 €', 'balon_medicinal.jpg'),
+('Chaleco con peso', 'Chaleco ajustable con 10 kg de peso distribuido uniformemente.', '69.95 €', 'chaleco_peso.jpg'),
+('Esterilla de fitness', 'Superficie antideslizante y acolchada para ejercicios de suelo.', '19.50 €', 'esterilla_fitness.jpg'),
+('Raqueta de pádel', 'Raqueta de fibra de carbono con gran control y potencia.', '129.00 €', 'raqueta_padel.jpg'),
+('Pelotas de pádel', 'Pack de 3 pelotas presurizadas de alto rendimiento.', '6.90 €', 'pelotas_padel.jpg'),
+('Gafas deportivas', 'Gafas con protección solar UV400, ligeras y resistentes a impactos.', '24.99 €', 'gafas_deportivas.jpg'),
+('Banda de sudor', 'Muñequera absorbente para entrenamiento y competiciones.', '4.50 €', 'banda_sudor.jpg'),
+('Cinta para correr', 'Cinta de correr plegable con velocidad regulable hasta 14 km/h.', '599.00 €', 'cinta_correr.jpg'),
+('Pulsómetro', 'Reloj deportivo con sensor de frecuencia cardíaca y contador de pasos.', '79.00 €', 'pulsometro.jpg'),
+('Saco de boxeo', 'Saco de entrenamiento de 40 kg con soporte y cadenas reforzadas.', '129.99 €', 'saco_boxeo.jpg'),
+('Guantes de boxeo', 'Guantes acolchados de piel sintética con cierre de velcro.', '49.00 €', 'guantes_boxeo.jpg'),
+('Tabla de surf', 'Tabla ligera de espuma rígida, ideal para surfistas principiantes.', '219.00 €', 'tabla_surf.jpg'),
+('Palas de ping pong', 'Set de 2 palas con 3 pelotas, ideal para jugadores recreativos.', '17.50 €', 'palas_pingpong.jpg'),
+('Bolsa de deporte', 'Bolsa de gran capacidad con compartimentos separados y correa ajustable.', '27.99 €', 'bolsa_deporte.jpg'),
+('Protector solar deportivo', 'Crema resistente al agua, FPS 50, ideal para actividades al aire libre.', '14.99 €', 'protector_solar.jpg'),
+('Gorra de natación', 'Gorra de silicona flexible que se adapta cómodamente a la cabeza.', '9.50 €', 'gorra_natacion.jpg');
+

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventas - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <!-- Duplicado eliminado: modules-base.css ya cargado arriba -->
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/aaaaa-animations.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <link rel="stylesheet" href="/static/css/tutorial.css">
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            color: #667eea;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .table th {
+            background: #667eea;
+            color: white;
+        }
+        .table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .details-row {
+            display: none;
+            background: #f8f9fa;
+        }
+        .details-row.show {
+            display: table-row;
+        }
+        .details-content {
+            padding: 15px;
+        }
+        .details-table {
+            width: 100%;
+            margin-top: 10px;
+            background: white;
+            border: 1px solid #ddd;
+        }
+        .details-table th {
+            background: #e9ecef;
+            color: #495057;
+            font-size: 12px;
+        }
+        .details-table td {
+            font-size: 12px;
+        }
+        .btn-expand {
+            cursor: pointer;
+            font-size: 18px;
+            user-select: none;
+            transition: transform 0.2s;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .btn-expand.expanded {
+            transform: rotate(90deg);
+            font-weight: bold;
+        }
+        .badge-pendiente {
+            background: #ffc107;
+            color: #333;
+        }
+        .badge-completada {
+            background: #28a745;
+            color: white;
+        }
+        .badge-cancelada {
+            background: #dc3545;
+            color: white;
+        }
+        .badge-enviada {
+            background: #28a745;
+            color: white;
+        }
+        .badge-no-enviada {
+            background: #6c757d;
+            color: white;
+        }
+        .badge-generada {
+            background: #007bff;
+            color: white;
+        }
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 11px;
+            margin: 2px;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    {% include '_assistant_panel.html' %}
+
+    <link rel="stylesheet" href="/static/assistant.css">
+    <div class="container">
+        <div class="header">
+            <h1>💰 Órdenes de Venta</h1>
+            <div>
+                <a href="/app/pos" class="btn btn-success">🛒 Ir a POS</a>
+                <a href="/app/dashboard" class="btn btn-secondary">⬅️ Dashboard</a>
+            </div>
+        </div>
+
+        <div id="moduleDisabledMsg" class="alert alert-warning" style="display:none;">
+            ⚠️ Este módulo no está habilitado para su organización. Actívelo en Configuración → Módulos.
+        </div>
+
+        <div class="content">
+            <!-- PENDING APPROVALS SECTION -->
+            <h2 style="margin-bottom: 5px;">⏳ Pendientes de Aprobación</h2>
+            <p style="color: #666; margin-top: 0;">Ventas del POS que requieren aprobación para generar órdenes de producción</p>
+            <div id="pendientes"></div>
+
+            <hr style="margin:30px 0; border:none; border-top:2px solid #eee;">
+
+            <!-- ALL SALES SECTION -->
+            <h2 style="margin-bottom: 5px;">📋 Todas las Ventas</h2>
+            <p style="color: #666; margin-top: 0;">Historial completo de ventas aprobadas</p>
+            <div id="message"></div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>Número</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="ventasTable">
+                    <tr>
+                        <td colspan="8" style="text-align: center;">Cargando...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function verificarModuloVentas() {
+            try {
+                const resp = await fetch('/api/organization/modules-config', {
+                    headers: { 'Authorization': 'Bearer ' + (localStorage.getItem('token') || '') }
+                });
+                if (!resp.ok) return;
+                const data = await resp.json();
+                const enabled = data.enabled_modules || [];
+                const activo = enabled.includes('ventas');
+                const msg = document.getElementById('moduleDisabledMsg');
+                if (!activo) {
+                    msg.style.display = 'block';
+                    const content = document.querySelector('.content');
+                    if (content) content.style.display = 'none';
+                }
+            } catch (e) {
+                console.warn('No se pudo verificar módulos');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', verificarModuloVentas);
+        async function cargarVentas() {
+            try {
+                // ========== LOAD PENDING APPROVALS (POS with "pendiente_aprobacion" status) ==========
+                let respPend = await fetch('/api/ventas/pendientes-aprobacion');
+                let pendientes = [];
+                if (respPend.ok) {
+                    pendientes = await respPend.json();
+                }
+
+                const pendDiv = document.getElementById('pendientes');
+                if (pendientes.length === 0) {
+                    pendDiv.innerHTML = '<p style="color:#999; padding:20px; background:#f8f9fa; border-radius:5px;">✓ No hay solicitudes pendientes</p>';
+                } else {
+                    pendDiv.innerHTML = `
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>ID</th><th>Número</th><th>Total</th><th>Fecha</th><th>Observaciones</th><th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${pendientes.map(v => {
+                                    const rowId = `pend-${v.id}`;
+                                    return `
+                                    <tr style="background: #fff3cd;">
+                                        <td><span class="btn-expand" onclick="toggleDetailsPending('${rowId}', ${v.id})">▶</span></td>
+                                        <td>#${v.id}</td>
+                                        <td><strong>${v.numero}</strong></td>
+                                        <td><strong>S/ ${parseFloat(v.total).toFixed(2)}</strong></td>
+                                        <td>${new Date(v.creado_en).toLocaleDateString('es-ES')}</td>
+                                        <td>${v.observaciones || '—'}</td>
+                                        <td>
+                                            <button class="btn btn-success btn-sm" onclick="aprobarPOS(${v.id}, '${v.numero}')" title="Aprobar esta venta y generar orden de producción">✅ Aprobar</button>
+                                            <button class="btn btn-secondary btn-sm" onclick="rechazarPOS(${v.id}, '${v.numero}')" title="Rechazar esta solicitud de venta">✖ Rechazar</button>
+                                        </td>
+                                    </tr>
+                                    <tr class="details-row" id="${rowId}">
+                                        <td colspan="7">
+                                            <div class="details-content" id="${rowId}-content">
+                                                <p style="color: #666;">Cargando detalles...</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                }
+
+                // ========== LOAD ALL APPROVED SALES (excluding pending) ==========
+                let response = await fetch('/api/ventas');
+                if (!response.ok) {
+                    throw new Error('Error al cargar ventas');
+                }
+                const allVentas = await response.json();
+
+                // Filter out pending approvals - show only approved sales
+                const ventasAprobadas = allVentas.filter(v => v.estado !== 'pendiente_aprobacion');
+
+                const tbody = document.getElementById('ventasTable');
+                if (ventasAprobadas.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 30px;">No hay ventas aprobadas. Aprueba una solicitud pendiente para crear una orden de producción.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = ventasAprobadas.map(venta => {
+                    const fecha = venta.fecha || venta.creado_en;
+                    const rowId = `venta-${venta.id}`;
+                    const tieneDetalles = venta.tipo === 'suscripcion';
+
+                    return `
+                    <tr>
+                        <td>
+                            ${tieneDetalles ? `<span class="btn-expand" onclick="toggleDetails('${rowId}', ${venta.id}, '${venta.tipo}')">▶</span>` : '—'}
+                        </td>
+                        <td>#${venta.id}</td>
+                        <td>${venta.numero || 'POS-' + venta.id}</td>
+                        <td>${venta.cliente_nombre || 'Sin cliente'}</td>
+                        <td>${new Date(fecha).toLocaleDateString('es-ES')}</td>
+                        <td><strong>S/ ${parseFloat(venta.total).toFixed(2)}</strong></td>
+                        <td><span class="badge badge-${venta.estado}">${venta.estado === 'pendiente_aprobacion' ? 'Pendiente' : venta.estado}</span></td>
+                        <td></td>
+                    </tr>
+                    ${tieneDetalles ? `
+                    <tr class="details-row" id="${rowId}">
+                        <td colspan="8">
+                            <div class="details-content" id="${rowId}-content">
+                                <p style="color: #666;">Cargando detalles...</p>
+                            </div>
+                        </td>
+                    </tr>
+                    ` : ''}
+                `}).join('');
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('message').innerHTML = '<p class="error">Error al cargar ventas: ' + error.message + '</p>';
+            }
+        }
+
+        async function toggleDetails(rowId, ventaId, tipo) {
+            const row = document.getElementById(rowId);
+            const btn = event.target;
+            
+            if (row.classList.contains('show')) {
+                row.classList.remove('show');
+                btn.classList.remove('expanded');
+                return;
+            }
+            
+            row.classList.add('show');
+            btn.classList.add('expanded');
+            
+            // Load details if not already loaded
+            const content = document.getElementById(`${rowId}-content`);
+            if (content.dataset.loaded) return;
+            
+            try {
+                if (tipo !== 'suscripcion') {
+                    content.innerHTML = '<p style="color:#999;">Detalles no disponibles para ventas estándar.</p>';
+                    content.dataset.loaded = 'true';
+                    return;
+                }
+
+                const resp = await fetch(`/api/pos/${ventaId}/detalles`);
+                if (!resp.ok) throw new Error('Error al cargar detalles');
+                
+                const detalles = await resp.json();
+                if (detalles.length === 0) {
+                    content.innerHTML = '<p style="color: #999;">Sin detalles</p>';
+                    return;
+                }
+                
+                const total = detalles.reduce((sum, d) => sum + d.subtotal, 0);
+                
+                content.innerHTML = `
+                    <h4 style="margin-top: 0;">Detalles de la Venta</h4>
+                    <table class="details-table">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Código</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unit.</th>
+                                <th>Descuento</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${detalles.map(d => `
+                                <tr>
+                                    <td>${d.producto_nombre || 'N/A'}</td>
+                                    <td>${d.producto_codigo || 'N/A'}</td>
+                                    <td>${d.cantidad}</td>
+                                    <td>S/ ${parseFloat(d.precio_unitario).toFixed(2)}</td>
+                                    <td>S/ ${parseFloat(d.descuento).toFixed(2)}</td>
+                                    <td>S/ ${parseFloat(d.subtotal).toFixed(2)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                        <tfoot>
+                            <tr style="font-weight: bold;">
+                                <td colspan="5" style="text-align: right;">Total:</td>
+                                <td>S/ ${total.toFixed(2)}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                `;
+                content.dataset.loaded = 'true';
+            } catch (e) {
+                content.innerHTML = `<p style="color: red;">Error: ${e.message}</p>`;
+            }
+        }
+
+        async function toggleDetailsPending(rowId, ventaId) {
+            const row = document.getElementById(rowId);
+            const btn = event.target;
+            
+            if (row.classList.contains('show')) {
+                row.classList.remove('show');
+                btn.classList.remove('expanded');
+                return;
+            }
+            
+            row.classList.add('show');
+            btn.classList.add('expanded');
+            
+            // Load details if not already loaded
+            const content = document.getElementById(`${rowId}-content`);
+            if (content.dataset.loaded) return;
+            
+            try {
+                const token = localStorage.getItem('token');
+                const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+                const resp = await fetch(`/api/pos/${ventaId}/detalles`, { headers });
+                if (!resp.ok) throw new Error('Error al cargar detalles');
+                const detalles = await resp.json();
+                if (detalles.length === 0) {
+                    content.innerHTML = '<p style="color: #999;">Sin detalles</p>';
+                    return;
+                }
+                
+                const total = detalles.reduce((sum, d) => sum + d.subtotal, 0);
+                
+                content.innerHTML = `
+                    <h4 style="margin-top: 0;">Detalles de la Venta</h4>
+                    <table class="details-table">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Código</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unit.</th>
+                                <th>Descuento</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${detalles.map(d => `
+                                <tr>
+                                    <td>${d.producto_nombre || 'N/A'}</td>
+                                    <td>${d.producto_codigo || 'N/A'}</td>
+                                    <td>${d.cantidad}</td>
+                                    <td>S/ ${parseFloat(d.precio_unitario).toFixed(2)}</td>
+                                    <td>S/ ${parseFloat(d.descuento).toFixed(2)}</td>
+                                    <td>S/ ${parseFloat(d.subtotal).toFixed(2)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                        <tfoot>
+                            <tr style="font-weight: bold;">
+                                <td colspan="5" style="text-align: right;">Total:</td>
+                                <td>S/ ${total.toFixed(2)}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                `;
+                content.dataset.loaded = 'true';
+            } catch (e) {
+                content.innerHTML = `<p style="color: red;">Error: ${e.message}</p>`;
+            }
+        }
+
+        async function aprobarPOS(id, numero) {
+            if (!confirm(`¿Aprobar la venta ${numero}? Esto generará órdenes de producción.`)) return;
+
+            try {
+                const resp = await fetch(`/api/pos/${id}/aprobar`, { method: 'POST' });
+                const data = await resp.json();
+                if (data.success) {
+                    const ordenes = data.ordenes_produccion || [];
+                    let msg = `✓ Venta aprobada.\n\n`;
+                    if (ordenes.length > 0) {
+                        msg += `Se crearon ${ordenes.length} órdenes de producción:\n`;
+                        ordenes.forEach(o => msg += `- ${o.numero} (${o.producto})\n`);
+                    }
+                    alert(msg);
+                    cargarVentas();
+                } else {
+                    alert('Error: ' + (data.message || 'No se pudo aprobar'));
+                }
+            } catch (e) {
+                alert('Error al aprobar: ' + e.message);
+            }
+        }
+
+        async function rechazarPOS(id, numero) {
+            if (!confirm(`¿Rechazar la venta ${numero}?`)) return;
+
+            try {
+                const resp = await fetch(`/api/pos/${id}/rechazar`, { method: 'POST' });
+                const data = await resp.json();
+                if (data.success) {
+                    alert('✓ Venta rechazada');
+                    cargarVentas();
+                } else {
+                    alert('Error: ' + (data.message || 'No se pudo rechazar'));
+                }
+            } catch (e) {
+                alert('Error al rechazar: ' + e.message);
+            }
+        }
+
+        // Cargar ventas al inicio
+        cargarVentas();
+        // Recargar cada 30 segundos para ver cambios
+        setInterval(cargarVentas, 30000);
+    </script>
+    <script defer src="/static/assistant.js?v=2"></script>
+    <script defer src="/static/assistant-basic-panel.js?v=2"></script>
+    <script defer src="/static/voice-assistant-widget.js?v=2"></script>
+    <script defer src="/static/voice-widget.js?v=2"></script>
+    <script src="/static/js/module-tutorial.js?v=2"></script>
+</body>
+</html>

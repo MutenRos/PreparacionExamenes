@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Panel de administración de Espectáculos Dani. Gestión de eventos, clientes, inventario y facturación.">
+    <title>Dashboard | Espectáculos Dani</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="sidebar-logo"><i class="fas fa-star"></i><span>Espectáculos Dani</span></a>
+            <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Principal</span>
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active" data-section="overview"><i class="fas fa-th-large"></i><span>Panel General</span></a></li>
+                    <li><a href="#" data-section="calendar"><i class="fas fa-calendar-alt"></i><span>Calendario</span></a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Gestión</span>
+                <ul class="sidebar-menu">
+                    <li><a href="#" data-section="events"><i class="fas fa-calendar-check"></i><span>Eventos</span><span class="menu-badge">12</span></a></li>
+                    <li><a href="#" data-section="clients"><i class="fas fa-users"></i><span>Clientes</span></a></li>
+                    <li><a href="#" data-section="invoices"><i class="fas fa-file-invoice-dollar"></i><span>Facturas</span></a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Inventario</span>
+                <ul class="sidebar-menu">
+                    <li><a href="#" data-section="hinchables"><i class="fas fa-castle"></i><span>Hinchables</span></a></li>
+                    <li><a href="#" data-section="atracciones"><i class="fas fa-rocket"></i><span>Atracciones</span></a></li>
+                    <li><a href="#" data-section="mobiliario"><i class="fas fa-chair"></i><span>Mobiliario</span></a></li>
+                    <li><a href="#" data-section="equipos"><i class="fas fa-volume-high"></i><span>Equipos Sonido</span></a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <span class="nav-section-title">Informes</span>
+                <ul class="sidebar-menu">
+                    <li><a href="#" data-section="income"><i class="fas fa-chart-line"></i><span>Ingresos</span></a></li>
+                    <li><a href="#" data-section="settings"><i class="fas fa-cog"></i><span>Configuración</span></a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="index.html" class="back-to-site"><i class="fas fa-arrow-left"></i> Volver al sitio web</a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <header class="dashboard-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Buscar eventos, clientes...">
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="header-icon" title="Notificaciones">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="user-menu">
+                    <div class="user-avatar">D</div>
+                    <span class="user-name">Dani</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-content">
+            <!-- Panel General -->
+            <section id="section-overview" class="dashboard-section active">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Panel General</h1>
+                        <div class="page-breadcrumb">
+                            <a href="#">Dashboard</a><span>/</span><span>Panel General</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="alert('Función de nuevo evento (mockup estático)')"><i class="fas fa-plus"></i> Nuevo Evento</button>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon primary"><i class="fas fa-calendar-check"></i></div>
+                        <div class="stat-info"><h3>12</h3><p>Eventos Este Mes</p></div>
+                        <div class="stat-change positive"><i class="fas fa-arrow-up"></i> 12%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success"><i class="fas fa-euro-sign"></i></div>
+                        <div class="stat-info"><h3>8.450€</h3><p>Ingresos del Mes</p></div>
+                        <div class="stat-change positive"><i class="fas fa-arrow-up"></i> 8%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning"><i class="fas fa-users"></i></div>
+                        <div class="stat-info"><h3>47</h3><p>Total Clientes</p></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon info"><i class="fas fa-box"></i></div>
+                        <div class="stat-info"><h3>83</h3><p>Items Inventario</p></div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <!-- Próximos Eventos -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-calendar-day"></i> Próximos Eventos</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr><th>Evento</th><th>Fecha</th><th>Estado</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Boda García-López</td>
+                                            <td>22/02/2026</td>
+                                            <td><span class="status status-confirmed">Confirmado</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cumpleaños infantil — Torrent</td>
+                                            <td>25/02/2026</td>
+                                            <td><span class="status status-confirmed">Confirmado</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fiestas patronales Mislata</td>
+                                            <td>01/03/2026</td>
+                                            <td><span class="status status-pending">Pendiente</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Comunión Martínez</td>
+                                            <td>08/03/2026</td>
+                                            <td><span class="status status-pending">Pendiente</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Feria empresas Paterna</td>
+                                            <td>15/03/2026</td>
+                                            <td><span class="status status-pending">Pendiente</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Acciones Rápidas -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-bolt"></i> Acciones Rápidas</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="quick-actions">
+                                <div class="quick-action" style="text-align:center; padding:1rem; background:var(--gray-100); border-radius:var(--border-radius); cursor:pointer;">
+                                    <i class="fas fa-plus-circle" style="font-size:1.5rem; color:var(--primary); display:block; margin-bottom:0.5rem;"></i>
+                                    <span>Nuevo Evento</span>
+                                </div>
+                                <div class="quick-action" style="text-align:center; padding:1rem; background:var(--gray-100); border-radius:var(--border-radius); cursor:pointer;">
+                                    <i class="fas fa-user-plus" style="font-size:1.5rem; color:var(--success); display:block; margin-bottom:0.5rem;"></i>
+                                    <span>Nuevo Cliente</span>
+                                </div>
+                                <div class="quick-action" style="text-align:center; padding:1rem; background:var(--gray-100); border-radius:var(--border-radius); cursor:pointer;">
+                                    <i class="fas fa-file-invoice" style="font-size:1.5rem; color:var(--info); display:block; margin-bottom:0.5rem;"></i>
+                                    <span>Crear Factura</span>
+                                </div>
+                                <div class="quick-action" style="text-align:center; padding:1rem; background:var(--gray-100); border-radius:var(--border-radius); cursor:pointer;">
+                                    <i class="fas fa-calendar" style="font-size:1.5rem; color:var(--warning); display:block; margin-bottom:0.5rem;"></i>
+                                    <span>Ver Calendario</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clientes Recientes -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-users"></i> Clientes Recientes</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr><th>Nombre</th><th>Teléfono</th><th>Email</th><th>Último Evento</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>María García López</td>
+                                        <td>612 345 678</td>
+                                        <td>maria.garcia@email.com</td>
+                                        <td>Boda — 22/02/2026</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Antonio Martínez Ruiz</td>
+                                        <td>654 987 321</td>
+                                        <td>amartinez@email.com</td>
+                                        <td>Comunión — 08/03/2026</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ayuntamiento de Mislata</td>
+                                        <td>963 401 200</td>
+                                        <td>fiestas@mislata.es</td>
+                                        <td>Fiestas patronales — 01/03/2026</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Laura Sánchez Pérez</td>
+                                        <td>678 123 456</td>
+                                        <td>laura.sp@email.com</td>
+                                        <td>Cumpleaños — 25/02/2026</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cámara de Comercio Paterna</td>
+                                        <td>961 234 567</td>
+                                        <td>eventos@camarapaterna.es</td>
+                                        <td>Feria — 15/03/2026</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inventario Resumen -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-box"></i> Inventario — Estado Actual</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr><th>Artículo</th><th>Categoría</th><th>Estado</th><th>Precio/día</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Patrulla Canina</td>
+                                        <td>Hinchable</td>
+                                        <td><span class="status status-available">Disponible</span></td>
+                                        <td>80€</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Superhéroes</td>
+                                        <td>Hinchable</td>
+                                        <td><span class="status status-rented">Alquilado</span></td>
+                                        <td>100€</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Toro Mecánico</td>
+                                        <td>Atracción</td>
+                                        <td><span class="status status-available">Disponible</span></td>
+                                        <td>250€</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Macro Discomóvil</td>
+                                        <td>Disco Móvil</td>
+                                        <td><span class="status status-rented">Alquilado</span></td>
+                                        <td>500€</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Equipo Sonido 5000W</td>
+                                        <td>Sonido</td>
+                                        <td><span class="status status-maintenance">Mantenimiento</span></td>
+                                        <td>180€</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cañón Espuma Grande</td>
+                                        <td>Espuma</td>
+                                        <td><span class="status status-available">Disponible</span></td>
+                                        <td>120€</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Escenario 6x4m</td>
+                                        <td>Escenarios</td>
+                                        <td><span class="status status-available">Disponible</span></td>
+                                        <td>300€</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lote 50 sillas + 10 mesas</td>
+                                        <td>Mobiliario</td>
+                                        <td><span class="status status-rented">Alquilado</span></td>
+                                        <td>150€</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+    (function() {
+        'use strict';
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menuToggle');
+        const mainContent = document.getElementById('mainContent');
+        const sidebarClose = document.getElementById('sidebarClose');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        });
+        sidebarClose.addEventListener('click', () => sidebar.classList.remove('active'));
+
+        // Navegación sidebar (demo — muestra alerta en secciones no implementadas)
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.sidebar-menu a').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                if (link.dataset.section !== 'overview') {
+                    alert('Sección "' + link.querySelector('span').textContent + '" — En el proyecto real esta sección funciona con localStorage.');
+                }
+            });
+        });
+    })();
+    </script>
+</body>
+</html>

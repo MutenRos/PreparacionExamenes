@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenClaw — Personal AI Assistant</title>
+  <meta name="description" content="OpenClaw: plataforma de asistente personal de IA multicanal. Conecta 30+ canales de mensajería a un único agente inteligente." />
+  <meta name="theme-color" content="#12141a" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== Reset & Base ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #12141a;
+      --bg-accent: #14161d;
+      --bg-elevated: #1a1d25;
+      --card: #181b22;
+      --text: #e4e4e7;
+      --text-strong: #fafafa;
+      --muted: #71717a;
+      --border: #27272a;
+      --border-strong: #3f3f46;
+      --accent: #ff5c5c;
+      --accent-hover: #ff7070;
+      --accent-glow: rgba(255, 92, 92, 0.25);
+      --accent-subtle: rgba(255, 92, 92, 0.12);
+      --accent-2: #14b8a6;
+      --accent-2-subtle: rgba(20, 184, 166, 0.12);
+      --ok: #22c55e;
+      --ok-subtle: rgba(34, 197, 94, 0.12);
+      --warn: #eab308;
+      --warn-subtle: rgba(234, 179, 8, 0.12);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --radius-lg: 16px;
+      --font: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: var(--accent-hover); }
+    img { max-width: 100%; height: auto; }
+
+    /* ===== Scrollbar ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+    /* ===== Animations ===== */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 0 rgba(255, 92, 92, 0); }
+      50% { box-shadow: 0 0 40px var(--accent-glow); }
+    }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes typing { from { width: 0; } to { width: 100%; } }
+    @keyframes blink { 50% { border-color: transparent; } }
+    @keyframes orbitSlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ===== Header ===== */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(18, 20, 26, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 clamp(16px, 4vw, 48px);
+    }
+    .header__inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .header__logo {
+      font-size: 20px; font-weight: 700; letter-spacing: -0.03em;
+      color: var(--text-strong);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .header__logo-icon {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--accent), #ff8a65);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .header__nav { display: flex; gap: 28px; }
+    .header__nav a {
+      color: var(--muted); font-size: 14px; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .header__nav a:hover, .header__nav a.active { color: var(--text-strong); }
+
+    /* ===== Hero ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px clamp(16px, 4vw, 48px) 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero__orb {
+      position: absolute; width: 600px; height: 600px;
+      border-radius: 50%; filter: blur(120px); opacity: 0.15;
+      pointer-events: none;
+    }
+    .hero__orb--red { background: var(--accent); top: -200px; right: -100px; animation: float 8s ease-in-out infinite; }
+    .hero__orb--teal { background: var(--accent-2); bottom: -200px; left: -100px; animation: float 10s ease-in-out infinite reverse; }
+    .hero__badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px; border-radius: 99px;
+      background: var(--accent-subtle); color: var(--accent);
+      font-size: 13px; font-weight: 600; margin-bottom: 24px;
+      animation: fadeUp 0.6s ease backwards;
+    }
+    .hero__title {
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 700; letter-spacing: -0.04em;
+      line-height: 1.08;
+      color: var(--text-strong);
+      max-width: 800px;
+      animation: fadeUp 0.6s ease 0.1s backwards;
+    }
+    .hero__title span { color: var(--accent); }
+    .hero__sub {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--muted); max-width: 600px;
+      margin-top: 20px;
+      animation: fadeUp 0.6s ease 0.2s backwards;
+    }
+    .hero__cta {
+      display: flex; gap: 14px; margin-top: 36px;
+      animation: fadeUp 0.6s ease 0.3s backwards;
+    }
+
+    /* ===== Buttons ===== */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: var(--radius);
+      font-family: var(--font); font-size: 15px; font-weight: 600;
+      cursor: pointer; border: none; transition: all 0.25s ease;
+    }
+    .btn--primary {
+      background: var(--accent); color: #fff;
+      box-shadow: 0 4px 24px var(--accent-glow);
+    }
+    .btn--primary:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 8px 32px var(--accent-glow);
+      transform: translateY(-2px);
+    }
+    .btn--ghost {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border-strong);
+    }
+    .btn--ghost:hover {
+      border-color: var(--accent); color: var(--accent);
+    }
+
+    /* ===== Section base ===== */
+    section { padding: 100px clamp(16px, 4vw, 48px); }
+    .section__inner { max-width: 1200px; margin: 0 auto; }
+    .section__label {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--accent); font-size: 13px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+    .section__title {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700; letter-spacing: -0.03em;
+      color: var(--text-strong); margin-bottom: 16px;
+    }
+    .section__sub {
+      color: var(--muted); font-size: 17px; max-width: 600px;
+      margin-bottom: 48px;
+    }
+    section[id] { scroll-margin-top: 80px; }
+
+    /* ===== Features Grid ===== */
+    .features { background: var(--bg-accent); }
+    .features__grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .feature-card:hover {
+      border-color: var(--border-strong);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      transform: translateY(-4px);
+    }
+    .feature-card__icon {
+      width: 44px; height: 44px;
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 16px;
+    }
+    .feature-card__icon--red { background: var(--accent-subtle); }
+    .feature-card__icon--teal { background: var(--accent-2-subtle); }
+    .feature-card__icon--green { background: var(--ok-subtle); }
+    .feature-card__icon--yellow { background: var(--warn-subtle); }
+    .feature-card__title {
+      font-size: 17px; font-weight: 600; color: var(--text-strong);
+      margin-bottom: 8px; letter-spacing: -0.01em;
+    }
+    .feature-card__desc { color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+    /* ===== Channels ===== */
+    .channels__showcase {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      justify-content: center; margin-top: 40px;
+    }
+    .channel-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border-radius: 99px;
+      background: var(--card); border: 1px solid var(--border);
+      font-size: 14px; font-weight: 500; color: var(--text);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .channel-badge:hover { border-color: var(--accent); transform: scale(1.05); }
+    .channel-badge__icon { font-size: 18px; }
+
+    /* ===== Architecture ===== */
+    .arch { background: var(--bg-accent); }
+    .arch__diagram {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--muted);
+      overflow-x: auto;
+      line-height: 1.8;
+    }
+    .arch__diagram .hl { color: var(--accent); font-weight: 600; }
+    .arch__diagram .hl2 { color: var(--accent-2); font-weight: 600; }
+    .arch__diagram .ok { color: var(--ok); }
+
+    /* ===== Stack ===== */
+    .stack__grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 14px;
+    }
+    .stack-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px; border-radius: var(--radius);
+      background: var(--card); border: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+    .stack-item:hover { border-color: var(--accent); }
+    .stack-item__icon { font-size: 24px; }
+    .stack-item__name { font-size: 14px; font-weight: 600; color: var(--text-strong); }
+    .stack-item__sub { font-size: 12px; color: var(--muted); }
+
+    /* ===== Stats ===== */
+    .stats__grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px; margin-top: 40px;
+    }
+    .stat-card {
+      text-align: center;
+      padding: 32px 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .stat-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .stat-card__value {
+      font-size: 40px; font-weight: 700; letter-spacing: -0.04em;
+      color: var(--accent);
+    }
+    .stat-card__label {
+      font-size: 14px; color: var(--muted); margin-top: 8px;
+    }
+
+    /* ===== Security ===== */
+    .security__cards {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .sec-card {
+      padding: 24px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card);
+    }
+    .sec-card__badge {
+      display: inline-block;
+      padding: 3px 10px; border-radius: 6px;
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .sec-card__badge--ok { background: var(--ok-subtle); color: var(--ok); }
+    .sec-card__badge--warn { background: var(--warn-subtle); color: var(--warn); }
+    .sec-card__title { font-size: 15px; font-weight: 600; color: var(--text-strong); margin-bottom: 6px; }
+    .sec-card__desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+    /* ===== Footer ===== */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 40px clamp(16px, 4vw, 48px);
+      text-align: center; color: var(--muted); font-size: 13px;
+    }
+    .footer a { color: var(--accent); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .header__nav { display: none; }
+      .features__grid { grid-template-columns: 1fr; }
+      .hero__cta { flex-direction: column; align-items: center; }
+      .arch__diagram { font-size: 11px; padding: 20px; }
+      .stats__grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header__inner">
+      <div class="header__logo">
+        <div class="header__logo-icon">🔴</div>
+        OpenClaw
+      </div>
+      <nav class="header__nav">
+        <a href="#features">Features</a>
+        <a href="#channels">Channels</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#stack">Stack</a>
+        <a href="#security">Security</a>
+        <a href="https://github.com/MutenRos/PrivateTenacitas" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero__orb hero__orb--red"></div>
+    <div class="hero__orb hero__orb--teal"></div>
+    <div class="hero__badge">🤖 Open Source AI Platform</div>
+    <h1 class="hero__title">Your Personal <span>AI Assistant</span>, Everywhere</h1>
+    <p class="hero__sub">
+      One agent, 30+ messaging channels. WhatsApp, Telegram, Discord, Signal, Slack, iMessage, and many more — all connected to your private AI.
+    </p>
+    <div class="hero__cta">
+      <a href="#features" class="btn btn--primary">Explore Features</a>
+      <a href="https://github.com/MutenRos/PrivateTenacitas" class="btn btn--ghost" target="_blank" rel="noopener">
+        ⭐ View on GitHub
+      </a>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="section__inner">
+      <div class="section__label">⚡ Core Features</div>
+      <h2 class="section__title">Everything you need in a personal AI</h2>
+      <p class="section__sub">A complete platform from CLI to native apps, built with TypeScript and modern web standards.</p>
+      <div class="features__grid">
+        <div class="feature-card">
+          <div class="feature-card__icon feature-card__icon--red">💬</div>
+          <div class="feature-card__title">Multi-Channel Messaging</div>
+          <div class="feature-card__desc">Connect 30+ channels simultaneously. WhatsApp, Telegram, Discord, Signal, Slack, Matrix, Nostr, MS Teams, and more through a unified plugin system.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon feature-card__icon--teal">🌐</div>
+          <div class="feature-card__title">Web Control Panel</div>
+          <div class="feature-card__desc">Real-time dashboard built with Lit Web Components. Manage chat, config, channels, cron jobs, sessions, skills, and logs from your browser.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon feature-card__icon--green">🔌</div>
+          <div class="feature-card__title">Plugin Architecture</div>
+          <div class="feature-card__desc">Extensible system with 30+ channel plugins as independent workspace packages. Add new channels without touching the core codebase.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon feature-card__icon--yellow">⚙️</div>
+          <div class="feature-card__title">WebSocket Gateway</div>
+          <div class="feature-card__desc">High-performance server with authentication, session management, model catalog, health monitoring, TLS, and auto-reconnection with backoff.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon feature-card__icon--red">📱</div>
+          <div class="feature-card__title">Native Apps</div>
+          <div class="feature-card__desc">iOS (Swift/SwiftUI), Android (Kotlin), and macOS menubar app. All connected to the same gateway through a shared protocol layer.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon feature-card__icon--teal">🔒</div>
+          <div class="feature-card__title">Security Audit System</div>
+          <div class="feature-card__desc">Comprehensive security analysis with severity levels (info/warn/critical). Checks filesystem permissions, secrets, model hygiene, and gateway exposure.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon feature-card__icon--green">🐳</div>
+          <div class="feature-card__title">Docker Ready</div>
+          <div class="feature-card__desc">Production-ready Dockerfile with multi-stage build, non-root user, HEALTHCHECK, and Docker Compose orchestration with resource limits.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon feature-card__icon--yellow">🛠️</div>
+          <div class="feature-card__title">Powerful CLI</div>
+          <div class="feature-card__desc">Feature-rich command-line interface with Commander.js. 20+ commands for gateway management, agent interaction, config, channels, diagnostics, and more.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon feature-card__icon--red">📋</div>
+          <div class="feature-card__title">Zod Config Validation</div>
+          <div class="feature-card__desc">Strongly-typed configuration with JSON5 support, Zod schemas, automatic legacy migration, and runtime validation for all 20+ config sections.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Channels -->
+  <section id="channels">
+    <div class="section__inner" style="text-align:center">
+      <div class="section__label">🔗 Integrations</div>
+      <h2 class="section__title">30+ Messaging Channels</h2>
+      <p class="section__sub" style="margin:0 auto 40px">One agent, every platform. Each channel is a plugin — add or remove without touching core code.</p>
+      <div class="channels__showcase">
+        <div class="channel-badge"><span class="channel-badge__icon">💬</span> WhatsApp</div>
+        <div class="channel-badge"><span class="channel-badge__icon">✈️</span> Telegram</div>
+        <div class="channel-badge"><span class="channel-badge__icon">🎮</span> Discord</div>
+        <div class="channel-badge"><span class="channel-badge__icon">🔐</span> Signal</div>
+        <div class="channel-badge"><span class="channel-badge__icon">💼</span> Slack</div>
+        <div class="channel-badge"><span class="channel-badge__icon">🍎</span> iMessage</div>
+        <div class="channel-badge"><span class="channel-badge__icon">👥</span> MS Teams</div>
+        <div class="channel-badge"><span class="channel-badge__icon">🔲</span> Matrix</div>
+        <div class="channel-badge"><span class="channel-badge__icon">🟣</span> Nostr</div>
+        <div class="channel-badge"><span class="channel-badge__icon">🎬</span> Twitch</div>
+        <div class="channel-badge"><span class="channel-badge__icon">📞</span> Voice Call</div>
+        <div class="channel-badge"><span class="channel-badge__icon">💬</span> Google Chat</div>
+        <div class="channel-badge"><span class="channel-badge__icon">📱</span> Zalo</div>
+        <div class="channel-badge"><span class="channel-badge__icon">☁️</span> Nextcloud Talk</div>
+        <div class="channel-badge"><span class="channel-badge__icon">🔵</span> BlueBubbles</div>
+        <div class="channel-badge"><span class="channel-badge__icon">📡</span> LINE</div>
+        <div class="channel-badge"><span class="channel-badge__icon">🌊</span> Mattermost</div>
+        <div class="channel-badge"><span class="channel-badge__icon">🌐</span> Web UI</div>
+        <div class="channel-badge"><span class="channel-badge__icon">⌨️</span> CLI / Terminal</div>
+        <div class="channel-badge" style="border-color: var(--accent); color: var(--accent)"><span class="channel-badge__icon">+</span> 10+ more</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section class="arch" id="architecture">
+    <div class="section__inner">
+      <div class="section__label">🏗️ Architecture</div>
+      <h2 class="section__title">How it all connects</h2>
+      <p class="section__sub">A modular system where every component communicates through the WebSocket Gateway.</p>
+      <div class="arch__diagram">
+<pre>
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │                        <span class="hl">OpenClaw Platform</span>                           │
+  │                                                                     │
+  │   <span class="hl2">Clients</span>                  <span class="hl">Gateway</span>              <span class="hl2">Channels</span>         │
+  │  ┌──────────┐         ┌──────────────┐       ┌──────────────┐      │
+  │  │  Web UI  │────ws──▶│  WebSocket   │──────▶│  WhatsApp    │      │
+  │  │  (Lit)   │         │  Server      │       │  Telegram    │      │
+  │  └──────────┘         │              │       │  Discord     │      │
+  │  ┌──────────┐         │  ┌────────┐  │       │  Signal      │      │
+  │  │  CLI     │────ws──▶│  │ Agent  │  │       │  Slack       │      │
+  │  │(Terminal)│         │  │  Core  │  │       │  iMessage    │      │
+  │  └──────────┘         │  └────────┘  │       │  + 24 more   │      │
+  │  ┌──────────┐         │  ┌────────┐  │       └──────────────┘      │
+  │  │  iOS     │────ws──▶│  │ Plugin │  │       ┌──────────────┐      │
+  │  │  macOS   │         │  │Registry│  │       │  <span class="ok">Extensions/</span>  │      │
+  │  │  Android │         │  └────────┘  │       │  30+ plugins │      │
+  │  └──────────┘         └──────────────┘       └──────────────┘      │
+  │                              │                                      │
+  │                    ┌─────────┴─────────┐                           │
+  │                    │  <span class="hl2">Config (Zod)</span>     │                           │
+  │                    │  Security Audit   │                           │
+  │                    │  Cron / Hooks     │                           │
+  │                    │  Session Manager  │                           │
+  │                    └───────────────────┘                           │
+  └─────────────────────────────────────────────────────────────────────┘
+</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section id="stack">
+    <div class="section__inner">
+      <div class="section__label">🧰 Tech Stack</div>
+      <h2 class="section__title">Built with modern tools</h2>
+      <p class="section__sub">Every layer uses best-in-class technology for performance, type safety, and developer experience.</p>
+      <div class="stack__grid">
+        <div class="stack-item">
+          <div class="stack-item__icon">🟦</div>
+          <div><div class="stack-item__name">TypeScript</div><div class="stack-item__sub">ES2023 Strict</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item__icon">🟢</div>
+          <div><div class="stack-item__name">Node.js 22+</div><div class="stack-item__sub">ESM Runtime</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item__icon">🔥</div>
+          <div><div class="stack-item__name">Lit 3.3</div><div class="stack-item__sub">Web Components</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item__icon">⚡</div>
+          <div><div class="stack-item__name">Vite 7.3</div><div class="stack-item__sub">Build + HMR</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item__icon">🧪</div>
+          <div><div class="stack-item__name">Vitest</div><div class="stack-item__sub">V8 Coverage</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item__icon">📦</div>
+          <div><div class="stack-item__name">pnpm</div><div class="stack-item__sub">Monorepo Workspaces</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item__icon">🐳</div>
+          <div><div class="stack-item__name">Docker</div><div class="stack-item__sub">Compose + Healthcheck</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item__icon">🛡️</div>
+          <div><div class="stack-item__name">Zod</div><div class="stack-item__sub">Config Validation</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item__icon">🎯</div>
+          <div><div class="stack-item__name">Commander.js</div><div class="stack-item__sub">CLI Framework</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item__icon">🍎</div>
+          <div><div class="stack-item__name">Swift/SwiftUI</div><div class="stack-item__sub">iOS + macOS</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item__icon">🤖</div>
+          <div><div class="stack-item__name">Kotlin</div><div class="stack-item__sub">Android App</div></div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item__icon">🦎</div>
+          <div><div class="stack-item__name">Bun</div><div class="stack-item__sub">Dev & Scripts</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="features" id="stats">
+    <div class="section__inner" style="text-align:center">
+      <div class="section__label">📊 By the Numbers</div>
+      <h2 class="section__title">Scale of the project</h2>
+      <div class="stats__grid">
+        <div class="stat-card">
+          <div class="stat-card__value">30+</div>
+          <div class="stat-card__label">Messaging Channels</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__value">50+</div>
+          <div class="stat-card__label">Source Modules</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__value">30+</div>
+          <div class="stat-card__label">Extension Plugins</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__value">3</div>
+          <div class="stat-card__label">Native Platforms</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__value">166 MB</div>
+          <div class="stat-card__label">Repository Size</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__value">70%</div>
+          <div class="stat-card__label">Test Coverage Target</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Security -->
+  <section id="security">
+    <div class="section__inner">
+      <div class="section__label">🛡️ Security</div>
+      <h2 class="section__title">Security at every layer</h2>
+      <p class="section__sub">From token auth to filesystem audits, security is a first-class concern.</p>
+      <div class="security__cards">
+        <div class="sec-card">
+          <div class="sec-card__badge sec-card__badge--ok">Implemented</div>
+          <div class="sec-card__title">Gateway Token Authentication</div>
+          <div class="sec-card__desc">All WebSocket connections require token or password authentication. Supports device identity with cryptographic signatures.</div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-card__badge sec-card__badge--ok">Implemented</div>
+          <div class="sec-card__title">Non-root Docker Container</div>
+          <div class="sec-card__desc">Production image runs as `node` user (UID 1000), reducing container escape attack surface via root privilege escalation.</div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-card__badge sec-card__badge--ok">Implemented</div>
+          <div class="sec-card__title">Security Audit System (987 LOC)</div>
+          <div class="sec-card__desc">Automated security audit with info/warn/critical severity findings. Checks file permissions, secrets exposure, model hygiene, and gateway probe.</div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-card__badge sec-card__badge--ok">Implemented</div>
+          <div class="sec-card__title">Execution Approval System</div>
+          <div class="sec-card__desc">Commands requiring system-level execution go through an approval workflow before the agent can run them.</div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-card__badge sec-card__badge--ok">Implemented</div>
+          <div class="sec-card__title">Device Pairing Protocol</div>
+          <div class="sec-card__desc">New devices must be explicitly paired and authorized before connecting. Supports token rotation and revocation.</div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-card__badge sec-card__badge--warn">Optional</div>
+          <div class="sec-card__title">TLS Gateway Exposure</div>
+          <div class="sec-card__desc">Optional TLS encryption for the gateway. Loopback-only by default — LAN/WAN binding requires explicit configuration.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>
+      <strong style="color:var(--text-strong)">OpenClaw</strong> — Personal AI Assistant Platform<br/>
+      Built by <a href="https://github.com/MutenRos" target="_blank" rel="noopener">MutenRos</a> •
+      <a href="https://github.com/MutenRos/PrivateTenacitas" target="_blank" rel="noopener">Source Code</a> •
+      MIT License
+    </p>
+  </footer>
+
+  <!-- Scroll Spy -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navLinks = document.querySelectorAll('.header__nav a[href^="#"]');
+      const sections = [...navLinks].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            navLinks.forEach(l => l.classList.remove('active'));
+            const link = document.querySelector(`.header__nav a[href="#${entry.target.id}"]`);
+            if (link) link.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-30% 0px -60% 0px' });
+
+      sections.forEach(s => observer.observe(s));
+
+      // Smooth scroll for nav links
+      navLinks.forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const target = document.querySelector(link.getAttribute('href'));
+          if (target) target.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+
+      // Parallax orbs on mousemove
+      const orbs = document.querySelectorAll('.hero__orb');
+      document.addEventListener('mousemove', e => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 20;
+        const y = (e.clientY / window.innerHeight - 0.5) * 20;
+        orbs.forEach((orb, i) => {
+          const factor = i === 0 ? 1 : -0.7;
+          orb.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+        });
+      });
+
+      // Animate cards on scroll
+      const cards = document.querySelectorAll('.feature-card, .stat-card, .sec-card, .stack-item, .channel-badge');
+      const cardObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            cardObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      cards.forEach((card, i) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = `opacity 0.4s ease ${i % 6 * 0.05}s, transform 0.4s ease ${i % 6 * 0.05}s`;
+        cardObserver.observe(card);
+      });
+    });
+  </script>
+</body>
+</html>

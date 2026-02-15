@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BIPS - Selector inteligente de bombas Bombas Ideal">
+    <title>BIPS - Bombas Ideal Pump Selector</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="bips.css">
+</head>
+<body class="bips-page">
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Header -->
+    <header class="bips-header">
+        <div class="container">
+            <a href="index.html" class="bips-logo">
+                <img src="assets/images/logo.svg" alt="Bombas Ideal">
+            </a>
+            <div class="bips-title">
+                <h1><i class="fas fa-microchip"></i> BIPS</h1>
+                <p>Bombas Ideal Pump Selector</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-icon" id="theme-toggle" title="Modo oscuro">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn-icon" id="history-btn" title="Historial">
+                    <i class="fas fa-history"></i>
+                    <span class="badge" id="history-count">0</span>
+                </button>
+                <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Volver</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- History Sidebar -->
+    <aside class="history-sidebar" id="history-sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-history"></i> Historial</h3>
+            <button id="sidebar-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="sidebar-content" id="history-list"></div>
+        <div class="sidebar-footer">
+            <button id="clear-history" class="btn-danger-outline">
+                <i class="fas fa-trash"></i> Limpiar
+            </button>
+        </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Main -->
+    <main class="bips-main">
+        <div class="container">
+
+            <!-- Intro -->
+            <section class="bips-intro">
+                <div class="intro-text">
+                    <h2>Selecciona la Serie de Bomba Perfecta</h2>
+                    <p>Introduce los parámetros de tu instalación y te recomendaremos las series más adecuadas. El modelo exacto se determina consultando el catálogo oficial.</p>
+                </div>
+                <div class="intro-stats">
+                    <div class="stat"><span id="total-pumps-count">35</span><small>Series</small></div>
+                    <div class="stat"><span>+500</span><small>Modelos</small></div>
+                    <div class="stat"><span>+120</span><small>Años</small></div>
+                </div>
+            </section>
+
+            <!-- Calculator -->
+            <section class="bips-calculator">
+                <h3><i class="fas fa-calculator"></i> Calculadora Hidraulica</h3>
+                <div class="calc-grid">
+                    <div class="calc-field">
+                        <label>Caudal (m3/h)</label>
+                        <input type="number" id="calc-flow" placeholder="50" min="0">
+                    </div>
+                    <div class="calc-field">
+                        <label>Altura (m)</label>
+                        <input type="number" id="calc-head" placeholder="30" min="0">
+                    </div>
+                    <div class="calc-field">
+                        <label>Densidad (kg/m3)</label>
+                        <input type="number" id="calc-density" placeholder="1000" value="1000" min="0">
+                    </div>
+                    <div class="calc-result">
+                        <span class="label">Potencia estimada</span>
+                        <span class="value" id="calc-result-value">-- kW</span>
+                        <span class="hp" id="calc-result-hp">-- HP</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Selector Grid -->
+            <div class="selector-grid">
+
+                <!-- Form Panel -->
+                <div class="form-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-sliders-h"></i> Parametros</h3>
+                        <div class="tabs">
+                            <button class="tab active" data-tab="basic">Basico</button>
+                            <button class="tab" data-tab="advanced">Avanzado</button>
+                        </div>
+                    </div>
+
+                    <form id="pump-selector-form">
+                        <!-- Tab Basic -->
+                        <div class="tab-content active" id="tab-basic">
+
+                            <!-- Sector -->
+                            <div class="form-section">
+                                <label class="section-title"><i class="fas fa-industry"></i> Sector</label>
+                                <p class="field-hint">Selecciona tu aplicacion principal para filtrar bombas especializadas</p>
+                                <div class="btn-grid cols-3">
+                                    <label class="btn-option">
+                                        <input type="radio" name="sector" value="water" checked>
+                                        <span><i class="fas fa-tint"></i> Agua</span>
+                                    </label>
+                                    <label class="btn-option">
+                                        <input type="radio" name="sector" value="agriculture">
+                                        <span><i class="fas fa-seedling"></i> Riego</span>
+                                    </label>
+                                    <label class="btn-option">
+                                        <input type="radio" name="sector" value="industrial">
+                                        <span><i class="fas fa-cogs"></i> Industrial</span>
+                                    </label>
+                                    <label class="btn-option">
+                                        <input type="radio" name="sector" value="building">
+                                        <span><i class="fas fa-building"></i> Edificios</span>
+                                    </label>
+                                    <label class="btn-option">
+                                        <input type="radio" name="sector" value="drainage">
+                                        <span><i class="fas fa-recycle"></i> Drenaje</span>
+                                    </label>
+                                    <label class="btn-option">
+                                        <input type="radio" name="sector" value="fire">
+                                        <span><i class="fas fa-fire-extinguisher"></i> Incendios</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Prioridad -->
+                            <div class="form-section">
+                                <label class="section-title"><i class="fas fa-star"></i> Prioridad</label>
+                                <p class="field-hint">Que aspecto es mas importante para ti en esta instalacion</p>
+                                <div class="btn-grid cols-2">
+                                    <label class="btn-option">
+                                        <input type="radio" name="priority" value="efficiency" checked>
+                                        <span><i class="fas fa-leaf"></i> Eficiencia</span>
+                                    </label>
+                                    <label class="btn-option">
+                                        <input type="radio" name="priority" value="cost">
+                                        <span><i class="fas fa-euro-sign"></i> Coste</span>
+                                    </label>
+                                    <label class="btn-option">
+                                        <input type="radio" name="priority" value="durability">
+                                        <span><i class="fas fa-shield-alt"></i> Durabilidad</span>
+                                    </label>
+                                    <label class="btn-option">
+                                        <input type="radio" name="priority" value="compact">
+                                        <span><i class="fas fa-compress"></i> Compacto</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Liquido -->
+                            <div class="form-section">
+                                <label class="section-title"><i class="fas fa-tint"></i> Liquido</label>
+                                <p class="field-hint">Tipo de fluido a bombear - determina materiales y compatibilidad</p>
+                                <select id="liquid-type" class="form-select">
+                                    <option value="clean">Agua limpia</option>
+                                    <option value="dirty">Agua con particulas</option>
+                                    <option value="sewage">Aguas residuales</option>
+                                    <option value="chemical">Liquidos quimicos</option>
+                                    <option value="food">Alimentario</option>
+                                </select>
+
+                                <div class="form-row">
+                                    <div class="form-field">
+                                        <label>Temperatura <span class="tooltip-icon" data-tooltip="Temperatura del liquido a bombear. Afecta a la seleccion de materiales y juntas."><i class="fas fa-question-circle"></i></span></label>
+                                        <div class="input-unit">
+                                            <input type="number" id="liquid-temp" value="20" min="-10" max="150">
+                                            <span>C</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-field">
+                                        <label>pH <span class="tooltip-icon" data-tooltip="Acidez del liquido. pH 7 = neutro. Menor de 7 = acido. Mayor de 7 = basico."><i class="fas fa-question-circle"></i></span></label>
+                                        <div class="input-unit">
+                                            <input type="number" id="liquid-ph" value="7" min="0" max="14" step="0.5">
+                                            <span>pH</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-field">
+                                    <label>Tamano solidos: <strong id="solid-display">0 mm</strong> <span class="tooltip-icon" data-tooltip="Diametro maximo de particulas solidas que puede pasar la bomba sin obstruirse. Para aguas limpias: 0mm. Aguas residuales: 30-80mm."><i class="fas fa-question-circle"></i></span></label>
+                                    <p class="field-hint">Diametro de particulas en suspension (0 para agua limpia)</p>
+                                    <input type="range" id="solid-size" min="0" max="100" value="0" class="slider-gradient">
+                                </div>
+
+                                <div class="checkbox-list">
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" id="atex">
+                                        <span>ATEX (explosivo)</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" id="corrosive">
+                                        <span>Corrosivo</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" id="sanitary">
+                                        <span>Sanitario</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" id="fibrous">
+                                        <span>Fibroso</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Hidraulica -->
+                            <div class="form-section">
+                                <label class="section-title"><i class="fas fa-chart-line"></i> Hidraulica</label>
+                                
+                                <div class="form-field">
+                                    <label>Caudal requerido <span class="tooltip-icon" data-tooltip="Volumen de liquido a bombear por unidad de tiempo. Ejemplo: si necesitas llenar un deposito de 1000 litros en 1 hora, el caudal es 1 m3/h."><i class="fas fa-question-circle"></i></span></label>
+                                    <p class="field-hint">Cantidad de liquido que necesitas mover por hora</p>
+                                    <div class="input-unit">
+                                        <input type="number" id="flow-value" placeholder="Ej: 50" min="0" step="0.1">
+                                        <select id="flow-unit">
+                                            <option value="m3h">m3/h</option>
+                                            <option value="ls">l/s</option>
+                                            <option value="lmin">l/min</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-field">
+                                    <label>Altura manometrica <span class="tooltip-icon" data-tooltip="Altura total que debe vencer la bomba: desde el nivel del agua hasta el punto mas alto de descarga, mas las perdidas por friccion en tuberias."><i class="fas fa-question-circle"></i></span></label>
+                                    <p class="field-hint">Distancia vertical total + perdidas en tuberia (1m extra por cada 10m de tuberia horizontal)</p>
+                                    <div class="input-unit">
+                                        <input type="number" id="head-value" placeholder="Ej: 30" min="0" step="0.1">
+                                        <select id="head-unit">
+                                            <option value="m">m</option>
+                                            <option value="bar">bar</option>
+                                            <option value="psi">psi</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-field">
+                                    <label>NPSH disponible <span class="tooltip-icon" data-tooltip="Net Positive Suction Head: presion disponible en la aspiracion para evitar cavitacion. Si no lo conoces, dejalo vacio."><i class="fas fa-question-circle"></i></span></label>
+                                    <p class="field-hint">Opcional - Presion en aspiracion para evitar cavitacion</p>
+                                    <div class="input-unit">
+                                        <input type="number" id="npsh-available" placeholder="--" min="0" step="0.1">
+                                        <span>m</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Instalacion -->
+                            <div class="form-section">
+                                <label class="section-title"><i class="fas fa-tools"></i> Instalacion</label>
+                                <p class="field-hint">Donde se ubicara la bomba respecto al liquido</p>
+                                <div class="btn-grid cols-2">
+                                    <label class="btn-option card">
+                                        <input type="radio" name="installation" value="surface" checked>
+                                        <div class="card-content">
+                                            <i class="fas fa-arrow-up"></i>
+                                            <strong>Superficie</strong>
+                                            <small>Fuera del liquido</small>
+                                        </div>
+                                    </label>
+                                    <label class="btn-option card">
+                                        <input type="radio" name="installation" value="submerged">
+                                        <div class="card-content">
+                                            <i class="fas fa-arrow-down"></i>
+                                            <strong>Sumergida</strong>
+                                            <small>Dentro del liquido</small>
+                                        </div>
+                                    </label>
+                                    <label class="btn-option card">
+                                        <input type="radio" name="installation" value="inline">
+                                        <div class="card-content">
+                                            <i class="fas fa-arrows-alt-h"></i>
+                                            <strong>En linea</strong>
+                                            <small>En la tuberia</small>
+                                        </div>
+                                    </label>
+                                    <label class="btn-option card">
+                                        <input type="radio" name="installation" value="any">
+                                        <div class="card-content">
+                                            <i class="fas fa-question"></i>
+                                            <strong>Cualquiera</strong>
+                                            <small>Sin preferencia</small>
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <div id="well-data-fields" class="conditional-fields" style="display:none;">
+                                    <div class="form-row">
+                                        <div class="form-field">
+                                            <label>Diametro pozo</label>
+                                            <select id="well-diameter">
+                                                <option value="4">4" (100mm)</option>
+                                                <option value="6">6" (150mm)</option>
+                                                <option value="8">8" (200mm)</option>
+                                                <option value="10">10" (250mm)</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-field">
+                                            <label>Profundidad</label>
+                                            <div class="input-unit">
+                                                <input type="number" id="well-depth" placeholder="50" min="0">
+                                                <span>m</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Energia -->
+                            <div class="form-section">
+                                <label class="section-title"><i class="fas fa-bolt"></i> Energia</label>
+                                <p class="field-hint">Tipo de corriente electrica disponible en tu instalacion</p>
+                                <div class="btn-grid cols-2">
+                                    <label class="btn-option">
+                                        <input type="radio" name="power" value="single">
+                                        <span><strong>1~</strong> Monofasica</span>
+                                    </label>
+                                    <label class="btn-option">
+                                        <input type="radio" name="power" value="three" checked>
+                                        <span><strong>3~</strong> Trifasica</span>
+                                    </label>
+                                    <label class="btn-option">
+                                        <input type="radio" name="power" value="solar">
+                                        <span><i class="fas fa-sun"></i> Solar</span>
+                                    </label>
+                                    <label class="btn-option">
+                                        <input type="radio" name="power" value="any">
+                                        <span><i class="fas fa-plug"></i> Cualquiera</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Conexion -->
+                            <div class="form-section">
+                                <label class="section-title"><i class="fas fa-link"></i> Conexion</label>
+                                <select id="connection-size" class="form-select">
+                                    <option value="">Sin preferencia</option>
+                                    <option value="DN25">DN25 (1")</option>
+                                    <option value="DN32">DN32 (1 1/4")</option>
+                                    <option value="DN40">DN40 (1 1/2")</option>
+                                    <option value="DN50">DN50 (2")</option>
+                                    <option value="DN65">DN65 (2 1/2")</option>
+                                    <option value="DN80">DN80 (3")</option>
+                                    <option value="DN100">DN100 (4")</option>
+                                    <option value="DN150">DN150 (6")</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <!-- Tab Advanced -->
+                        <div class="tab-content" id="tab-advanced">
+                            <div class="form-section">
+                                <label class="section-title"><i class="fas fa-cog"></i> Opciones Avanzadas</label>
+                                
+                                <div class="form-field">
+                                    <label>Material</label>
+                                    <select id="material" class="form-select">
+                                        <option value="">Sin preferencia</option>
+                                        <option value="cast-iron">Fundicion</option>
+                                        <option value="stainless">Acero inoxidable</option>
+                                        <option value="bronze">Bronce</option>
+                                        <option value="plastic">Plastico</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-field">
+                                    <label>Eficiencia minima: <strong id="efficiency-value">0%</strong></label>
+                                    <input type="range" id="min-efficiency" min="0" max="90" value="0" class="slider">
+                                </div>
+
+                                <div class="form-field">
+                                    <label>RPM preferido</label>
+                                    <select id="rpm" class="form-select">
+                                        <option value="">Sin preferencia</option>
+                                        <option value="1450">1450 rpm</option>
+                                        <option value="2900">2900 rpm</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary" id="search-btn">
+                                <i class="fas fa-search"></i> Buscar Bombas
+                            </button>
+                            <button type="button" class="btn-secondary" id="reset-btn">
+                                <i class="fas fa-undo"></i> Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Results Panel -->
+                <div class="results-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-list"></i> Resultados</h3>
+                        <div class="results-info">
+                            <span id="results-number">0</span> bombas
+                        </div>
+                    </div>
+
+                    <div class="export-bar">
+                        <span>Exportar:</span>
+                        <button id="export-pdf" class="btn-export"><i class="fas fa-file-pdf"></i> PDF</button>
+                        <button id="export-excel" class="btn-export"><i class="fas fa-file-excel"></i> Excel</button>
+                        <button id="btn-print" class="btn-export"><i class="fas fa-print"></i> Imprimir</button>
+                    </div>
+
+                    <div id="results-content" class="results-content">
+                        <div class="placeholder">
+                            <i class="fas fa-search"></i>
+                            <h4>Busca tu bomba ideal</h4>
+                            <p>Configura los parametros y pulsa "Buscar Bombas"</p>
+                            
+                            <div class="quick-presets">
+                                <p>O prueba un preset:</p>
+                                <div class="preset-buttons">
+                                    <button class="btn-preset" data-preset="domestic"><i class="fas fa-home"></i> Domestico</button>
+                                    <button class="btn-preset" data-preset="irrigation"><i class="fas fa-seedling"></i> Riego</button>
+                                    <button class="btn-preset" data-preset="industrial"><i class="fas fa-industry"></i> Industrial</button>
+                                    <button class="btn-preset" data-preset="sewage"><i class="fas fa-recycle"></i> Residuales</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Comparison -->
+            <section class="bips-comparison" id="comparison-section" style="display:none;">
+                <div class="section-header">
+                    <h3><i class="fas fa-balance-scale"></i> Comparacion</h3>
+                    <div class="section-actions">
+                        <button id="quote-selected" class="btn-primary"><i class="fas fa-file-invoice"></i> Pedir Presupuesto</button>
+                        <button id="clear-comparison" class="btn-danger-outline"><i class="fas fa-trash"></i> Limpiar</button>
+                    </div>
+                </div>
+                <div class="comparison-table-wrapper">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Modelo</th>
+                                <th>Caudal</th>
+                                <th>Altura</th>
+                                <th>Potencia</th>
+                                <th>Eficiencia</th>
+                                <th>Material</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="comparison-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Series Guide -->
+            <section class="bips-series">
+                <h3><i class="fas fa-book"></i> Series Disponibles</h3>
+                <div class="series-grid">
+                    <div class="series-card">
+                        <div class="series-icon"><i class="fas fa-cogs"></i></div>
+                        <h4>IDEAL</h4>
+                        <p>Centrifugas horizontales normalizadas</p>
+                        <span class="series-tag">3-120 m3/h</span>
+                    </div>
+                    <div class="series-card">
+                        <div class="series-icon"><i class="fas fa-layer-group"></i></div>
+                        <h4>MULTI</h4>
+                        <p>Multietapa verticales y horizontales</p>
+                        <span class="series-tag">1-32 m3/h</span>
+                    </div>
+                    <div class="series-card">
+                        <div class="series-icon"><i class="fas fa-arrow-down"></i></div>
+                        <h4>SUBMER</h4>
+                        <p>Sumergibles para pozos profundos</p>
+                        <span class="series-tag">0.5-150 m3/h</span>
+                    </div>
+                    <div class="series-card">
+                        <div class="series-icon"><i class="fas fa-water"></i></div>
+                        <h4>DRAIN</h4>
+                        <p>Drenaje y achique</p>
+                        <span class="series-tag">2-40 m3/h</span>
+                    </div>
+                    <div class="series-card">
+                        <div class="series-icon"><i class="fas fa-recycle"></i></div>
+                        <h4>SEWAGE</h4>
+                        <p>Aguas residuales y lodos</p>
+                        <span class="series-tag">2-80 m3/h</span>
+                    </div>
+                    <div class="series-card">
+                        <div class="series-icon"><i class="fas fa-arrows-alt-v"></i></div>
+                        <h4>INLINE</h4>
+                        <p>Centrifugas en linea</p>
+                        <span class="series-tag">2-60 m3/h</span>
+                    </div>
+                    <div class="series-card">
+                        <div class="series-icon"><i class="fas fa-fire-extinguisher"></i></div>
+                        <h4>FIRE</h4>
+                        <p>Contra incendios certificadas</p>
+                        <span class="series-tag">UNE/FM/UL</span>
+                    </div>
+                    <div class="series-card">
+                        <div class="series-icon"><i class="fas fa-sun"></i></div>
+                        <h4>SOLAR</h4>
+                        <p>Bombeo solar fotovoltaico</p>
+                        <span class="series-tag">DC Directo</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Pump Modal -->
+    <div class="modal" id="pump-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+            <div class="modal-body" id="pump-modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Quote Modal -->
+    <div class="modal" id="quote-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+            <div class="modal-body">
+                <h2><i class="fas fa-file-invoice"></i> Solicitar Presupuesto</h2>
+                <div id="selected-pumps-list" class="selected-pumps"></div>
+                <form id="quote-form">
+                    <div class="form-field">
+                        <label>Nombre *</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Email *</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Telefono</label>
+                        <input type="tel" name="phone">
+                    </div>
+                    <div class="form-field">
+                        <label>Comentarios</label>
+                        <textarea name="comments" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-paper-plane"></i> Enviar Solicitud
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bips-footer">
+        <p>2026 Bombas Ideal S.A. - <a href="index.html">www.bombasideal.com</a> - BIPS v3.0</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="bips.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detalle de producto — JOCARSA</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .detalle{max-width:700px;margin:3rem auto;text-align:center;padding:2rem}
+    .detalle img{width:120px;margin-bottom:1.5rem}
+    .detalle h2{font-size:2rem;margin-bottom:.5rem}
+    .detalle p{font-size:1.1rem;color:#555;margin-bottom:2rem}
+    .detalle .badge{display:inline-block;padding:.4rem 1.2rem;border-radius:20px;font-size:.85rem;color:white;margin-bottom:1.5rem}
+    .detalle .back{display:inline-block;padding:.6rem 1.5rem;border:2px solid #333;border-radius:30px;color:#333;text-decoration:none;transition:background .3s,color .3s}
+    .detalle .back:hover{background:#333;color:white}
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      var productos = {
+        teal: { nombre:'jocarsa | teal', desc:'Software de gestión de empresa low-code', logo:'https://static.jocarsa.com/logos/teal.png', color:'teal' },
+        rosybrown: { nombre:'jocarsa | rosybrown', desc:'Software de facturación para autónomos y PYMEs', logo:'https://static.jocarsa.com/logos/rosybrown.png', color:'rosybrown' },
+        royalblue: { nombre:'jocarsa | royalblue', desc:'Software de gestión de reservas online', logo:'https://static.jocarsa.com/logos/royalblue.png', color:'royalblue' },
+        ghostwhite: { nombre:'jocarsa | ghostwhite', desc:'Software de analítica web', logo:'https://static.jocarsa.com/logos/ghostwhite.png', color:'ghostwhite' },
+        darkolivegreen: { nombre:'jocarsa | darkolivegreen', desc:'Cliente de correo electrónico', logo:'https://static.jocarsa.com/logos/darkolivegreen.png', color:'darkolivegreen' },
+        darkkhaki: { nombre:'jocarsa | darkkhaki', desc:'Toma de notas flotantes online', logo:'https://static.jocarsa.com/logos/darkkhaki.png', color:'darkkhaki' },
+        lightsalmon: { nombre:'jocarsa | lightsalmon', desc:'Gestiona tus propios calendarios', logo:'https://static.jocarsa.com/logos/lightsalmon.png', color:'lightsalmon' },
+        lightgreen: { nombre:'jocarsa | lightgreen', desc:'Software de documentación de proyecto', logo:'https://static.jocarsa.com/logos/lightgreen.png', color:'lightgreen' },
+        lightpink: { nombre:'jocarsa | lightpink', desc:'Agenda personal', logo:'https://static.jocarsa.com/logos/lightpink.png', color:'lightpink' },
+        mediumorchid: { nombre:'jocarsa | mediumorchid', desc:'Descripción del producto 11', logo:'https://static.jocarsa.com/logos/mediumorchid.png', color:'mediumorchid' },
+        purple: { nombre:'jocarsa | purple', desc:'Descripción del producto 12', logo:'https://static.jocarsa.com/logos/purple.png', color:'purple' },
+        firebrick: { nombre:'jocarsa | firebrick', desc:'Descripción del producto 14', logo:'https://static.jocarsa.com/logos/firebrick.png', color:'firebrick' },
+        cornflowerblue: { nombre:'jocarsa | cornflowerblue', desc:'Descripción del producto 15', logo:'https://static.jocarsa.com/logos/cornflowerblue.png', color:'cornflowerblue' },
+        chartreuse: { nombre:'jocarsa | chartreuse', desc:'Descripción del producto 16', logo:'https://static.jocarsa.com/logos/chartreuse.png', color:'chartreuse' },
+        beige: { nombre:'jocarsa | beige', desc:'Descripción del producto 18', logo:'https://static.jocarsa.com/logos/beige.png', color:'beige' },
+        darksalmon: { nombre:'jocarsa | darksalmon', desc:'Software de fichaje laboral', logo:'https://static.jocarsa.com/logos/darksalmon.png', color:'darksalmon' }
+      };
+
+      var params = new URLSearchParams(window.location.search);
+      var id = params.get('producto');
+      var prod = productos[id];
+      var det = document.getElementById('detalle');
+
+      if(prod){
+        det.innerHTML =
+          '<img src="'+prod.logo+'" alt="'+prod.nombre+'">'+
+          '<span class="badge" style="background:'+prod.color+';">'+prod.color+'</span>'+
+          '<h2>'+prod.nombre+'</h2>'+
+          '<p>'+prod.desc+'</p>'+
+          '<a class="back" href="index.html">&larr; Volver al catálogo</a>';
+      } else {
+        det.innerHTML =
+          '<h2>Producto no encontrado</h2>'+
+          '<p>El producto solicitado no existe en el catálogo.</p>'+
+          '<a class="back" href="index.html">&larr; Volver al catálogo</a>';
+      }
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <h1>JOCARSA | Soluciones de software empresarial</h1>
+    <nav>
+      <a href="index.html">Catálogo</a>
+    </nav>
+  </header>
+  <main>
+    <div class="detalle" id="detalle">
+      <p>Cargando producto...</p>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2026 JOCARSA &mdash; Soluciones de software empresarial</p>
+  </footer>
+</body>
+</html>

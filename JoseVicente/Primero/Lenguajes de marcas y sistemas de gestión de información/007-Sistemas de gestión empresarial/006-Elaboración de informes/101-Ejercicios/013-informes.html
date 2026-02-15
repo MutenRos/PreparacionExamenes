@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+	<head>
+	</head>
+	<body>
+		<script>
+			fetch("respuestas.csv")
+			.then(function(respuesta){return respuesta.text()})
+			.then(function(datos){
+				let contenedor = []
+				let lineas = datos.trim().split("\n")
+				lineas.forEach(function(linea){
+					let partido = linea.split(",")
+					contenedor.push(partido)
+				})
+				console.log(contenedor)
+			})
+		</script>
+	</body>
+</html>
+

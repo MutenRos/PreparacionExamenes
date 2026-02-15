@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- En este documento voy a describir a un ser humano -->
+<personas xmlns:per="https://jocarsa.com/personas">
+
+  <per:persona>
+    <per:nombre id="propio">Jose Vicente</per:nombre>
+    <per:nombre id="mote">JV</per:nombre>
+    <per:edad medida="años">47</per:edad>
+    <per:profesion>Programador</per:profesion>
+  </per:persona>
+  
+  <per:persona>
+    <per:nombre id="propio">Jose Vicente</per:nombre>
+    <per:nombre id="mote">JV</per:nombre>
+    <per:edad medida="años">47</per:edad>
+    <per:profesion>Programador</per:profesion>
+  </per:persona>
+  
+</personas>

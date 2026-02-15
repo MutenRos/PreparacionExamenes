@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Diagrama exportado</title>
+<style>
+body {
+  margin: 0;
+  padding: 20px;
+  background: #f3f3f7;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.page {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  width: 579.7499883742557px;
+  height: 393.0155872163317px;
+  overflow: visible;
+}
+
+/* formas básicas */
+.shape {
+  position: absolute;
+  min-width: 120px;
+  min-height: 40px;
+  padding: 6px 10px;
+  background: #ffffff;
+  border-radius: 4px;
+  border: 1px solid #9ca3af;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+
+.shape.rectangle {
+  border-radius: 4px;
+}
+
+.shape.pill {
+  border-radius: 999px;
+}
+
+.shape.circle {
+  border-radius: 999px;
+  width: 80px;
+  height: 80px;
+  padding: 0;
+  justify-content: center;
+}
+
+/* texto libre */
+.shape.text {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  min-width: 20px;
+  min-height: 20px;
+}
+
+/* base de datos */
+.shape.db {
+  min-width: 120px;
+  min-height: 60px;
+  padding-top: 20px;
+  border-radius: 60px / 16px;
+  background: linear-gradient(180deg, #e5e7eb 0%, #ffffff 40%, #e5e7eb 100%);
+  position: absolute;
+  overflow: hidden;
+  text-align: center;
+}
+.shape.db::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 8px;
+  right: 8px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid #9ca3af;
+  background: radial-gradient(circle at 50% 30%, #ffffff 0%, #e5e7eb 70%);
+}
+.shape.db::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 8px;
+  right: 8px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(156, 163, 175, 0.6);
+  border-top: none;
+  background: radial-gradient(circle at 50% 70%, #e5e7eb 0%, #d1d5db 70%);
+}
+
+/* entidades ER */
+.shape.entity {
+  width: 220px;
+  min-height: 80px;
+  background: #ffffff;
+  border: 2px solid #111827;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.15);
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  overflow: hidden;
+  padding: 0;
+}
+.entity-header {
+  background: #f3f4f6;
+  padding: 4px 8px;
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 1px solid #e5e7eb;
+}
+.entity-properties {
+  flex: 1;
+  padding: 4px 4px 0 4px;
+}
+.entity-property {
+  display: grid;
+  grid-template-columns: 14px 1fr 14px;
+  align-items: center;
+  column-gap: 4px;
+  padding: 2px 0;
+}
+.entity-property .property-name {
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* puertos */
+.port {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid #111827;
+  background: #ffffff;
+}
+.port-left { justify-self: start; }
+.port-right { justify-self: end; }
+
+/* flechas rectas */
+.arrow {
+  position: absolute;
+  height: 2px;
+  background: #111827;
+  transform-origin: 0 50%;
+}
+.arrow::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid #111827;
+}
+.arrow-double::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) rotate(180deg);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid #111827;
+}
+
+/* flechas ortogonales */
+.ortho-arrow {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.ortho-arrow .ortho-seg {
+  position: absolute;
+  background: #111827;
+}
+.ortho-seg.seg-horizontal { height: 2px; }
+.ortho-seg.seg-vertical { width: 2px; }
+.ortho-arrowhead {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.ortho-arrowhead.dir-right {
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid #111827;
+}
+.ortho-arrowhead.dir-left {
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 8px solid #111827;
+}
+.ortho-arrowhead.dir-down {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 8px solid #111827;
+}
+.ortho-arrowhead.dir-up {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 8px solid #111827;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="shape rectangle" style="left:109.92187499999994px;top:113.20312499999994px;width:119.99999999999994px;height:39.99999999999998px;">HTML</div>
+<div class="shape text" style="left:77.82813662574401px;top:40px;width:31.656232561383913px;height:19.99999999999999px;">Front</div>
+<div class="shape text" style="left:383.2187616257439px;top:43.06249709356396px;width:37.640613374255935px;height:19.99999999999999px;">Admin</div>
+<div class="shape rectangle" style="left:109.76562499999994px;top:74.60937499999997px;width:119.99999999999994px;height:39.99999999999998px;">CSS</div>
+<div class="shape rectangle" style="left:109.7499883742559px;top:151.92188081287196px;width:119.99999999999994px;height:39.999970935639865px;">JS?</div>
+<div class="shape rectangle" style="left:109.3593633742559px;top:235.74996221633177px;width:119.99999999999994px;height:39.99999999999998px;">PHP/Python</div>
+<div class="shape pill" style="left:228.60935756138383px;top:313.0155872163317px;width:120.00002906436006px;height:39.99999999999998px;">xSQL</div>
+<div class="shape rectangle" style="left:350.21873837425585px;top:68.21874709356396px;width:119.99999999999994px;height:39.99999999999998px;">CSS</div>
+<div class="shape rectangle" style="left:351.0312616257439px;top:107.42187499999997px;width:119.9999418712797px;height:39.99999999999998px;">HTML</div>
+<div class="shape rectangle" style="left:351.43746512276766px;top:147.0156133742559px;width:119.99999999999994px;height:39.99999999999998px;">JS?</div>
+<div class="shape rectangle" style="left:352.2343517485117px;top:232.2187587193079px;width:119.99999999999994px;height:39.99999999999998px;">PHP/Python</div>
+<div class="shape text" style="left:480.21873837425574px;top:131.82811918712792px;width:34.42185174851189px;height:19.99999999999999px;">CRUD</div>
+<div class="shape text" style="left:489.82811337425574px;top:147.81249999999994px;width:47.14059012276783px;height:19.99999999999999px;">CREATE</div>
+<div class="shape text" style="left:490.21873837425574px;top:167.4062383742559px;width:33.046874999999986px;height:19.99999999999999px;">READ</div>
+<div class="shape text" style="left:491.0156249999998px;top:184.21874999999994px;width:48.73436337425593px;height:19.99999999999999px;">UPDATE</div>
+<div class="shape text" style="left:491.43746512276766px;top:201.81248256138383px;width:45.968773251488074px;height:19.99999999999999px;">DELETE</div>
+<div class="shape text" style="left:60.328107561383916px;top:102.31249128069192px;width:33.046904064360106px;height:20.00001453218005px;">READ</div>
+<div class="shape text" style="left:40px;top:126.49998256138389px;width:51.24999999999998px;height:19.99999999999999px;">(INSERT)</div>
+<div class="arrow" style="left:169.45256005148923px;top:235.7499622163317px;width:43.82858630816327px;transform:rotate(-1.566136526660747rad);"></div>
+<div class="arrow" style="left:257.7418268638947px;top:313.0155872163317px;width:68.53242027749792px;transform:rotate(-2.5666741900098735rad);"></div>
+<div class="arrow arrow-double" style="left:411.62452080539924px;top:187.0156133742559px;width:45.205122364691945px;transform:rotate(1.5614438153592605rad);"></div>
+<div class="arrow arrow-double" style="left:381.6329081140003px;top:272.2187587193079px;width:74.57143443204332px;transform:rotate(2.5627161073308415rad);"></div>
+</div>
+</body>
+</html>

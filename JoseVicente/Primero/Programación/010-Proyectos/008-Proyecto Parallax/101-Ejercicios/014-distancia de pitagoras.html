@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+	<head>
+		<style>
+			body,html{padding:0px;margin:0px;overflow:hidden;}
+			canvas{display:block;}
+		</style>
+	</head>
+	<body>
+		<canvas></canvas>
+		<script>
+			function distancia(x1, y1, x2, y2) {
+				return Math.sqrt(
+					Math.pow(x2 - x1, 2) +
+					Math.pow(y2 - y1, 2)
+				);
+			}
+
+			class Estrella{
+				constructor(){
+					this.x = Math.random()*window.innerWidth;
+					this.y = Math.random()*window.innerHeight;
+					this.z = 0.5 + Math.random()*2; // evita z demasiado pequeño
+				}
+			}
+
+			let lienzo = document.querySelector("canvas");
+			let contexto = lienzo.getContext("2d");
+
+			function resize(){
+				lienzo.width = window.innerWidth;
+				lienzo.height = window.innerHeight;
+			}
+			window.addEventListener("resize", resize);
+			resize();
+
+			let desfasex = 0;
+			let desfasey = 0;
+			let multiplicador = 50;
+			let multiplicavelocidad = 0.5;
+
+			let numeroestrellas = 800;
+			let estrellas = [];
+			for(let i = 0;i<numeroestrellas;i++){
+				estrellas.push(new Estrella());
+			}
+
+			function bucle(){
+				contexto.fillStyle = "black";
+				contexto.fillRect(0,0,lienzo.width,lienzo.height);
+
+				estrellas.forEach(function(estrella){
+					// movimiento base
+					estrella.x += estrella.z*multiplicavelocidad;
+					if(estrella.x > lienzo.width){estrella.x = 0;}
+					if(estrella.x < 0){estrella.x = lienzo.width;}
+					if(estrella.y > lienzo.height){estrella.y = 0;}
+					if(estrella.y < 0){estrella.y = lienzo.height;}
+
+					// dibujado con parallax
+					contexto.fillStyle = "white";
+					contexto.beginPath();
+					contexto.arc(
+						estrella.x + desfasex*estrella.z,
+						estrella.y + desfasey*estrella.z,
+						estrella.z,
+						0,
+						Math.PI*2
+					);
+					contexto.fill();
+				});
+
+				requestAnimationFrame(bucle);
+			}
+			requestAnimationFrame(bucle);
+
+			document.addEventListener("mousemove", function(evento){
+				let centrox = lienzo.width/2;
+				let centroy = lienzo.height/2;
+
+				let ratonx = evento.clientX;
+				let ratony = evento.clientY;
+
+				desfasex = (centrox - ratonx) / multiplicador;
+				desfasey = (centroy - ratony) / multiplicador;
+
+				// --- repulsión ---
+				const radio = 160;     // distancia de influencia del ratón
+				const fuerza = 2.5;   // potencia del empuje (ajústalo)
+
+				estrellas.forEach(function(estrella){
+					let dx = estrella.x - ratonx;
+					let dy = estrella.y - ratony;
+
+					let d = Math.sqrt(dx*dx + dy*dy);
+					if(d > 0 && d < radio){
+						// ángulo desde el ratón hacia la estrella
+						let angulo = Math.atan2(dy, dx);
+
+						// cuanto más cerca, más empuja (0..1)
+						let t = (radio - d) / radio;
+
+						// empuje: también puedes multiplicar por estrella.z si quieres “profundidad”
+						estrella.x += Math.cos(angulo) * fuerza * t;
+						estrella.y += Math.sin(angulo) * fuerza * t;
+					}
+				});
+			});
+		</script>
+	</body>
+</html>
+

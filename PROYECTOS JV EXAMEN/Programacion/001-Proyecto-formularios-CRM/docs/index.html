@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM de Clientes — Proyecto Java</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.7;
+        }
+        header {
+            background: linear-gradient(135deg, #161b22, #0d1117);
+            border-bottom: 1px solid #30363d;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 { font-size: 22px; color: #58a6ff; }
+        header h1 span { color: #8b949e; font-weight: normal; font-size: 14px; }
+        header nav { display: flex; gap: 18px; }
+        header nav a {
+            color: #8b949e; font-size: 14px; text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        header nav a:hover { color: #58a6ff; }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #161b22 0%, #1a2332 100%);
+            border-bottom: 1px solid #30363d;
+        }
+        .hero h2 { font-size: 36px; color: #f0f6fc; margin-bottom: 12px; }
+        .hero p { font-size: 18px; color: #8b949e; max-width: 700px; margin: 0 auto 20px; }
+        .hero .tech-badges { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+        .hero .badge {
+            background: #21262d;
+            border: 1px solid #30363d;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #58a6ff;
+        }
+
+        /* Secciones */
+        section { padding: 50px 30px; max-width: 1100px; margin: 0 auto; }
+        section h3 {
+            font-size: 24px; color: #f0f6fc; text-align: center;
+            margin-bottom: 30px; border-bottom: 1px solid #30363d;
+            padding-bottom: 10px;
+        }
+
+        /* Tarjetas de funcionalidad */
+        .funciones { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .funcion {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 25px;
+            width: calc(33.33% - 20px);
+            min-width: 280px;
+            transition: border-color 0.3s ease, transform 0.2s ease;
+        }
+        .funcion:hover { border-color: #58a6ff; transform: translateY(-3px); }
+        .funcion .icono { font-size: 32px; margin-bottom: 10px; }
+        .funcion h4 { color: #f0f6fc; font-size: 16px; margin-bottom: 8px; }
+        .funcion p { font-size: 14px; color: #8b949e; }
+
+        /* Simulacion de consola */
+        .consola {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Cascadia Code', 'Consolas', monospace;
+            font-size: 13px;
+            color: #c9d1d9;
+            overflow-x: auto;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .consola .prompt { color: #58a6ff; }
+        .consola .success { color: #3fb950; }
+        .consola .warn { color: #d29922; }
+        .consola .header-line { color: #8b949e; }
+        .consola .titulo { color: #f0f6fc; font-weight: bold; }
+
+        /* Tabla de datos */
+        .tabla-datos {
+            width: 100%;
+            max-width: 900px;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        .tabla-datos th {
+            background: #161b22;
+            color: #58a6ff;
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 2px solid #30363d;
+            font-size: 13px;
+        }
+        .tabla-datos td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #21262d;
+            font-size: 13px;
+        }
+        .tabla-datos tr:hover { background: #161b22; }
+        .cat-particular { color: #8b949e; }
+        .cat-empresa { color: #58a6ff; }
+        .cat-vip { color: #d29922; }
+
+        /* Arquitectura */
+        .arquitectura {
+            display: flex; gap: 20px; justify-content: center;
+            flex-wrap: wrap; margin-top: 20px;
+        }
+        .archivo {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            width: calc(33.33% - 20px);
+            min-width: 260px;
+        }
+        .archivo h4 {
+            font-family: 'Cascadia Code', 'Consolas', monospace;
+            color: #58a6ff;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .archivo p { font-size: 13px; color: #8b949e; }
+        .archivo .lineas {
+            font-size: 12px; color: #484f58;
+            margin-top: 8px;
+        }
+
+        /* Footer */
+        footer {
+            background: #161b22;
+            border-top: 1px solid #30363d;
+            text-align: center;
+            padding: 20px;
+            color: #484f58;
+            font-size: 13px;
+        }
+        footer a { color: #58a6ff; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .funcion, .archivo { width: 100%; min-width: auto; }
+            .hero h2 { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>CRM Clientes <span>— Proyecto Java</span></h1>
+        <nav>
+            <a href="#funciones">Funciones</a>
+            <a href="#demo">Demo</a>
+            <a href="#datos">Datos</a>
+            <a href="#arquitectura">Arquitectura</a>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <div class="hero">
+        <h2>CRM de Gestión de Clientes</h2>
+        <p>Aplicación de consola en Java con formularios interactivos, operaciones CRUD y persistencia en fichero CSV</p>
+        <div class="tech-badges">
+            <span class="badge">Java</span>
+            <span class="badge">OOP</span>
+            <span class="badge">ArrayList</span>
+            <span class="badge">Scanner</span>
+            <span class="badge">CSV</span>
+            <span class="badge">File I/O</span>
+        </div>
+    </div>
+
+    <!-- Funciones -->
+    <section id="funciones">
+        <h3>Funcionalidades del CRM</h3>
+        <div class="funciones">
+            <div class="funcion">
+                <p class="icono">📝</p>
+                <h4>Alta de clientes</h4>
+                <p>Formulario con validación de nombre, email, teléfono y categoría. Los datos se guardan automáticamente.</p>
+            </div>
+            <div class="funcion">
+                <p class="icono">📋</p>
+                <h4>Listado completo</h4>
+                <p>Tabla formateada con todos los clientes, mostrando ID, nombre, email, teléfono, empresa y categoría.</p>
+            </div>
+            <div class="funcion">
+                <p class="icono">🔍</p>
+                <h4>Búsqueda</h4>
+                <p>Búsqueda parcial por nombre o email, ignorando mayúsculas y minúsculas (case-insensitive).</p>
+            </div>
+            <div class="funcion">
+                <p class="icono">✏️</p>
+                <h4>Modificación</h4>
+                <p>Editar datos de un cliente por ID. Los campos vacíos mantienen el valor anterior.</p>
+            </div>
+            <div class="funcion">
+                <p class="icono">🗑️</p>
+                <h4>Eliminación segura</h4>
+                <p>Eliminar clientes con confirmación previa para evitar borrados accidentales.</p>
+            </div>
+            <div class="funcion">
+                <p class="icono">📊</p>
+                <h4>Estadísticas</h4>
+                <p>Resumen con conteo de clientes por categoría: particulares, empresas y VIP.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo consola -->
+    <section id="demo">
+        <h3>Simulación de la consola</h3>
+        <div class="consola">
+<span class="header-line">  ╔══════════════════════════════════════╗</span>
+<span class="titulo">  ║     BIENVENIDO AL CRM DE CLIENTES   ║</span>
+<span class="titulo">  ║     Gestion de Formularios v1.0     ║</span>
+<span class="header-line">  ╚══════════════════════════════════════╝</span>
+
+<span class="success">  [OK] Cargados 6 clientes desde datos/clientes.csv</span>
+
+<span class="header-line">  ═══════════════════════════════════════</span>
+<span class="titulo">         MENU PRINCIPAL DEL CRM</span>
+<span class="header-line">  ═══════════════════════════════════════</span>
+  1. Dar de alta un cliente
+  2. Listar todos los clientes
+  3. Buscar cliente
+  4. Modificar cliente
+  5. Eliminar cliente
+  6. Estadisticas
+  0. Salir
+<span class="header-line">  ═══════════════════════════════════════</span>
+<span class="prompt">  Elige una opcion: </span><span class="warn">1</span>
+
+<span class="header-line">  ╔══════════════════════════════════════╗</span>
+<span class="titulo">  ║    FORMULARIO: NUEVO CLIENTE         ║</span>
+<span class="header-line">  ╚══════════════════════════════════════╝</span>
+
+<span class="prompt">  Nombre completo: </span>Elena López Torres
+<span class="prompt">  Email: </span>elena.lopez@correo.es
+<span class="prompt">  Telefono (min 9 digitos): </span>644555666
+<span class="prompt">  Empresa (dejar vacio si es particular): </span>-
+  Categoria:
+    1. Particular
+    2. Empresa
+    3. VIP
+<span class="prompt">  Opcion (1-3): </span><span class="warn">3</span>
+
+<span class="success">  [OK] Cliente 'Elena López Torres' dado de alta con ID 7</span>
+        </div>
+    </section>
+
+    <!-- Datos de ejemplo -->
+    <section id="datos">
+        <h3>Datos de ejemplo del CRM</h3>
+        <table class="tabla-datos">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Empresa</th>
+                    <th>Categoría</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>María García</td>
+                    <td>maria.garcia@email.com</td>
+                    <td>612345678</td>
+                    <td>Consultora López</td>
+                    <td class="cat-empresa">empresa</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Carlos Ruiz</td>
+                    <td>carlos.ruiz@gmail.com</td>
+                    <td>698765432</td>
+                    <td>—</td>
+                    <td class="cat-particular">particular</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Ana Martínez</td>
+                    <td>ana.martinez@empresa.es</td>
+                    <td>611222333</td>
+                    <td>TechSoluciones</td>
+                    <td class="cat-vip">VIP</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Pedro Sánchez</td>
+                    <td>pedro.s@outlook.com</td>
+                    <td>655444333</td>
+                    <td>—</td>
+                    <td class="cat-particular">particular</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Laura Fernández</td>
+                    <td>laura.f@miempresa.com</td>
+                    <td>677888999</td>
+                    <td>Diseños Fernández</td>
+                    <td class="cat-empresa">empresa</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Roberto Díaz</td>
+                    <td>roberto.vip@gmail.com</td>
+                    <td>633222111</td>
+                    <td>Grupo Díaz</td>
+                    <td class="cat-vip">VIP</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Arquitectura -->
+    <section id="arquitectura">
+        <h3>Arquitectura del proyecto</h3>
+        <div class="arquitectura">
+            <div class="archivo">
+                <h4>Principal.java</h4>
+                <p>Punto de entrada. Contiene el <code>main()</code>, muestra el menú principal y gestiona la navegación por las opciones con un bucle <code>while</code> y <code>switch</code>.</p>
+                <p class="lineas">90 líneas · src/Principal.java</p>
+            </div>
+            <div class="archivo">
+                <h4>GestorCRM.java</h4>
+                <p>Lógica de negocio: operaciones CRUD (alta, listado, búsqueda, modificación, eliminación), estadísticas y persistencia en fichero CSV.</p>
+                <p class="lineas">408 líneas · src/GestorCRM.java</p>
+            </div>
+            <div class="archivo">
+                <h4>Cliente.java</h4>
+                <p>Modelo de datos. Clase con atributos privados, getters/setters, constructor, <code>toString()</code>, y métodos de conversión CSV.</p>
+                <p class="lineas">124 líneas · src/Cliente.java</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>CRM de Clientes — Proyecto de Programación · 1º DAM</p>
+        <p style="margin-top:5px;"><a href="https://github.com/MutenRos/Programacion-001-Proyecto-formularios-CRM">Ver repositorio en GitHub</a></p>
+    </footer>
+
+</body>
+</html>

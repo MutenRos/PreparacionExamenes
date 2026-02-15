@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style>
+			@font-face {
+			  font-family: magiera;
+			  src: url("Magiera Script.ttf");
+			}
+			html,body{padding:0px;margin:0px;}
+			html{font-family:ubuntu,sans-serif;background:url("fondo2.png");color:white;}
+			h1{font-family:magiera;}
+			header{display:flex;justify-content:space-between;}
+			header nav{
+				background: rgba(0, 0, 0, 0);
+background: linear-gradient(90deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.53) 28%, rgba(0, 0, 0, 0.49) 100%);
+				padding:30px;
+			}
+			header nav a{text-decoration:none;color:inherit;text-transform:uppercase;margin:20px;font-weight:bold;}
+			#heroe{
+				background:url("heroe.png");
+				background-size:cover;
+				height:600px;
+				background-position:center top;
+				display:flex;
+				flex-direction:column;
+			}
+			header h1{
+				margin:30px;
+				font-size:60px;
+				text-shadow:0px 3px 6px black;
+				transform:rotate(-10deg);
+			}
+			#heroe #destacado{
+				font-size:1.5em;
+				text-shadow:0px 3px 6px black;
+				width:50%;
+				text-align:center;
+			}
+			#heroe #destacado h3{
+				font-family:magiera;
+				font-size:60px;
+				transform:rotate(-5deg);
+			}
+			#heroe #destacado h4,#heroe #destacado h5,#heroe #destacado a{
+				text-transform:uppercase;
+			}
+			#albumes{
+				margin:auto;
+				width:1200px;
+				padding:20px;
+				display:flex;
+				flex-direction:column;
+				gap:20px;
+				color:black;
+			}
+			#albumes article{
+				background:rgba(255,255,255,0.8);
+				padding:20px;
+				display:flex;
+				justify-content:space-between;
+				align-items:center;
+				font-size:1.5em;
+			}
+			#albumes article img{
+				width:200px;
+			}
+			#albumes article a{
+				text-decoration:none;
+				color:inherit;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<main>
+			<section id="heroe">
+				<header>
+					<h1>Carolina Vega</h1>
+					<nav>
+						<a href="">Inicio</a>
+						<a href="">Biografía</a>
+						<a href="">Música</a>
+						<a href="">Tour</a>
+						<a href="">Galería</a>
+						<a href="">Contacto</a>
+						<a href="">F</a>
+						<a href="">X</a>
+						<a href="">Youtube</a>
+					</nav>
+				</header>
+				<div id="destacado">
+					<h3>Carolina Vega</h3>
+					<h4>Nuevo album disponible ahora</h4>
+					<h5>Entre luces y sombras</h5>
+					<a href="">Escuchar ahora</a>
+					<a href="">Ver video</a>
+				</div>
+			</section>
+			<section id="albumes">
+				<article>
+					<img src="portada.png">
+					<div class="texto">
+						<h5>Nombre del album</h5>
+						<h6>2025</h6>
+					</div>
+					<a href="">Escuchar</a>
+				</article>
+				<article>
+					<img src="portada.png">
+					<div class="texto">
+						<h5>Nombre del album</h5>
+						<h6>2025</h6>
+					</div>
+					<a href="">Escuchar</a>
+				</article>
+				<article>
+					<img src="portada.png">
+					<div class="texto">
+						<h5>Nombre del album</h5>
+						<h6>2025</h6>
+					</div>
+					<a href="">Escuchar</a>
+				</article>
+				<article>
+					<img src="portada.png">
+					<div class="texto">
+						<h5>Nombre del album</h5>
+						<h6>2025</h6>
+					</div>
+					<a href="">Escuchar</a>
+				</article>
+			</section>
+		</main>
+		<footer>
+		</footer>
+	</body>
+</html>

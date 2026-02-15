@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="nombre"></div>
+    <div id="apellidos"></div>
+    <script>
+      fetch("ejemplo.json")
+      .then(function(respuesta){return respuesta.json();})
+      .then(function(datos){
+        console.log(datos);
+        document.querySelector("#nombre").textContent = datos.nombre
+        document.querySelector("#apellidos").textContent = datos.apellidos
+      })
+    </script>
+  </body>
+</html>
+

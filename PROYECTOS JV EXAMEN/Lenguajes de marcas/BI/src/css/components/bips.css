@@ -1,0 +1,588 @@
+/**
+ * =============================================================================
+ * BOMBAS IDEAL - Estilos del Sistema BIPS
+ * =============================================================================
+ * 
+ * @description  Estilos específicos para el sistema Bombas Ideal Product
+ *               Selector (BIPS). Incluye el layout del selector, formularios,
+ *               resultados y estados.
+ * 
+ * @author       Bombas Ideal Development Team
+ * @version      2.0.0
+ * 
+ * SECCIONES:
+ * - Layout principal
+ * - Formulario de parámetros
+ * - Tabla de resultados
+ * - Ficha de producto
+ * - Estados (loading, empty, error)
+ * =============================================================================
+ */
+
+/* =========================================================================
+ * LAYOUT PRINCIPAL BIPS
+ * =========================================================================
+ */
+
+.bips-container {
+    max-width: var(--bi-container-2xl);
+    margin: 0 auto;
+    padding: var(--bi-space-8);
+}
+
+.bips-header {
+    text-align: center;
+    margin-bottom: var(--bi-space-10);
+}
+
+.bips-title {
+    font-family: var(--bi-font-primary);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: var(--bi-font-bold);
+    color: var(--bi-text-primary);
+    margin-bottom: var(--bi-space-3);
+}
+
+.bips-subtitle {
+    font-size: var(--bi-text-lg);
+    color: var(--bi-text-secondary);
+}
+
+/* Layout de dos columnas */
+.bips-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: var(--bi-space-8);
+    align-items: start;
+}
+
+@media (max-width: 1024px) {
+    .bips-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================================
+ * PANEL DE FILTROS/PARÁMETROS
+ * =========================================================================
+ */
+
+.bips-sidebar {
+    position: sticky;
+    top: calc(var(--bi-space-20) + 70px); /* Navbar height */
+}
+
+.bips-panel {
+    background-color: var(--bi-bg-primary);
+    border-radius: var(--bi-radius-xl);
+    box-shadow: var(--bi-shadow-lg);
+    overflow: hidden;
+}
+
+.bips-panel-header {
+    display: flex;
+    align-items: center;
+    gap: var(--bi-space-3);
+    
+    padding: var(--bi-space-5);
+    background: linear-gradient(135deg, var(--bi-primary-500), var(--bi-secondary-500));
+    
+    color: var(--bi-text-inverse);
+}
+
+.bips-panel-header i {
+    font-size: var(--bi-text-xl);
+}
+
+.bips-panel-header h3 {
+    font-size: var(--bi-text-lg);
+    font-weight: var(--bi-font-semibold);
+    margin: 0;
+}
+
+.bips-panel-body {
+    padding: var(--bi-space-5);
+}
+
+/* Grupo de parámetro */
+.bips-param-group {
+    margin-bottom: var(--bi-space-5);
+}
+
+.bips-param-group:last-child {
+    margin-bottom: 0;
+}
+
+.bips-param-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--bi-space-2);
+}
+
+.bips-param-label span {
+    font-size: var(--bi-text-sm);
+    font-weight: var(--bi-font-medium);
+    color: var(--bi-text-primary);
+}
+
+.bips-param-label small {
+    font-size: var(--bi-text-xs);
+    color: var(--bi-text-muted);
+}
+
+/* Input con unidad */
+.bips-input-unit {
+    position: relative;
+}
+
+.bips-input-unit input {
+    padding-right: var(--bi-space-12);
+}
+
+.bips-input-unit .unit {
+    position: absolute;
+    right: var(--bi-space-3);
+    top: 50%;
+    transform: translateY(-50%);
+    
+    font-size: var(--bi-text-sm);
+    color: var(--bi-text-muted);
+    pointer-events: none;
+}
+
+/* Tipo de aplicación (radio visual) */
+.bips-application-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--bi-space-2);
+}
+
+.bips-application-option {
+    position: relative;
+}
+
+.bips-application-option input {
+    position: absolute;
+    opacity: 0;
+}
+
+.bips-application-option label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--bi-space-2);
+    
+    padding: var(--bi-space-3);
+    
+    background-color: var(--bi-gray-50);
+    border: 2px solid transparent;
+    border-radius: var(--bi-radius-md);
+    
+    cursor: pointer;
+    transition: var(--bi-transition-normal);
+}
+
+.bips-application-option label i {
+    font-size: var(--bi-text-xl);
+    color: var(--bi-text-muted);
+}
+
+.bips-application-option label span {
+    font-size: var(--bi-text-xs);
+    color: var(--bi-text-secondary);
+}
+
+.bips-application-option input:checked + label {
+    background-color: var(--bi-primary-50);
+    border-color: var(--bi-primary-500);
+}
+
+.bips-application-option input:checked + label i {
+    color: var(--bi-primary-500);
+}
+
+/* Botón de búsqueda */
+.bips-search-btn {
+    width: 100%;
+    margin-top: var(--bi-space-4);
+}
+
+/* Reset de filtros */
+.bips-reset-link {
+    display: block;
+    text-align: center;
+    margin-top: var(--bi-space-3);
+    
+    font-size: var(--bi-text-sm);
+    color: var(--bi-text-muted);
+    
+    transition: var(--bi-transition-colors);
+}
+
+.bips-reset-link:hover {
+    color: var(--bi-primary-500);
+}
+
+/* =========================================================================
+ * ÁREA DE RESULTADOS
+ * =========================================================================
+ */
+
+.bips-results {
+    min-height: 400px;
+}
+
+/* Contador de resultados */
+.bips-results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--bi-space-5);
+}
+
+.bips-results-count {
+    font-size: var(--bi-text-sm);
+    color: var(--bi-text-secondary);
+}
+
+.bips-results-count strong {
+    color: var(--bi-primary-500);
+    font-weight: var(--bi-font-semibold);
+}
+
+/* Opciones de vista */
+.bips-view-options {
+    display: flex;
+    gap: var(--bi-space-2);
+}
+
+.bips-view-btn {
+    width: 36px;
+    height: 36px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background-color: var(--bi-gray-100);
+    border: none;
+    border-radius: var(--bi-radius-md);
+    
+    color: var(--bi-text-muted);
+    cursor: pointer;
+    
+    transition: var(--bi-transition-normal);
+}
+
+.bips-view-btn:hover,
+.bips-view-btn.active {
+    background-color: var(--bi-primary-500);
+    color: var(--bi-text-inverse);
+}
+
+/* =========================================================================
+ * GRID DE PRODUCTOS BIPS
+ * =========================================================================
+ */
+
+.bips-products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--bi-space-5);
+}
+
+/* Tarjeta de producto BIPS */
+.bips-product-card {
+    position: relative;
+    
+    background-color: var(--bi-bg-primary);
+    border-radius: var(--bi-radius-lg);
+    box-shadow: var(--bi-shadow-md);
+    
+    overflow: hidden;
+    
+    transition: var(--bi-transition-normal);
+}
+
+.bips-product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--bi-shadow-xl);
+}
+
+/* Badge de match */
+.bips-match-badge {
+    position: absolute;
+    top: var(--bi-space-3);
+    right: var(--bi-space-3);
+    
+    padding: var(--bi-space-1) var(--bi-space-3);
+    
+    background-color: var(--bi-success-500);
+    border-radius: var(--bi-radius-full);
+    
+    font-size: var(--bi-text-xs);
+    font-weight: var(--bi-font-bold);
+    color: var(--bi-text-inverse);
+}
+
+.bips-match-badge--partial {
+    background-color: var(--bi-warning-500);
+}
+
+/* Imagen del producto */
+.bips-product-image {
+    aspect-ratio: 4 / 3;
+    padding: var(--bi-space-4);
+    background-color: var(--bi-gray-50);
+}
+
+.bips-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Info del producto */
+.bips-product-info {
+    padding: var(--bi-space-5);
+}
+
+.bips-product-series {
+    font-size: var(--bi-text-xs);
+    color: var(--bi-primary-500);
+    font-weight: var(--bi-font-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--bi-tracking-wide);
+    margin-bottom: var(--bi-space-1);
+}
+
+.bips-product-name {
+    font-size: var(--bi-text-base);
+    font-weight: var(--bi-font-bold);
+    color: var(--bi-text-primary);
+    margin-bottom: var(--bi-space-3);
+}
+
+/* Specs rápidos */
+.bips-product-specs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--bi-space-2);
+    margin-bottom: var(--bi-space-4);
+}
+
+.bips-spec {
+    font-size: var(--bi-text-xs);
+    color: var(--bi-text-secondary);
+}
+
+.bips-spec strong {
+    display: block;
+    color: var(--bi-text-primary);
+    font-size: var(--bi-text-sm);
+}
+
+/* Acciones */
+.bips-product-actions {
+    display: flex;
+    gap: var(--bi-space-2);
+}
+
+.bips-product-actions .btn {
+    flex: 1;
+}
+
+/* =========================================================================
+ * TABLA DE RESULTADOS (Vista lista)
+ * =========================================================================
+ */
+
+.bips-table-wrapper {
+    overflow-x: auto;
+    border-radius: var(--bi-radius-lg);
+    box-shadow: var(--bi-shadow-md);
+}
+
+.bips-table {
+    width: 100%;
+    background-color: var(--bi-bg-primary);
+    border-collapse: collapse;
+}
+
+.bips-table th {
+    padding: var(--bi-space-4);
+    
+    background-color: var(--bi-primary-500);
+    
+    font-size: var(--bi-text-xs);
+    font-weight: var(--bi-font-semibold);
+    color: var(--bi-text-inverse);
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: var(--bi-tracking-wide);
+    
+    white-space: nowrap;
+}
+
+.bips-table td {
+    padding: var(--bi-space-4);
+    
+    font-size: var(--bi-text-sm);
+    color: var(--bi-text-primary);
+    
+    border-bottom: 1px solid var(--bi-gray-100);
+}
+
+.bips-table tbody tr {
+    transition: var(--bi-transition-colors);
+}
+
+.bips-table tbody tr:hover {
+    background-color: var(--bi-gray-50);
+}
+
+.bips-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Celda con imagen */
+.bips-table-product {
+    display: flex;
+    align-items: center;
+    gap: var(--bi-space-3);
+}
+
+.bips-table-thumb {
+    width: 50px;
+    height: 50px;
+    
+    background-color: var(--bi-gray-100);
+    border-radius: var(--bi-radius-md);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bips-table-thumb img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* =========================================================================
+ * ESTADOS
+ * =========================================================================
+ */
+
+/* Loading */
+.bips-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    padding: var(--bi-space-16);
+    text-align: center;
+}
+
+.bips-loading-spinner {
+    width: 50px;
+    height: 50px;
+    
+    border: 3px solid var(--bi-gray-200);
+    border-top-color: var(--bi-primary-500);
+    border-radius: 50%;
+    
+    animation: spin 1s linear infinite;
+    margin-bottom: var(--bi-space-4);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.bips-loading-text {
+    font-size: var(--bi-text-sm);
+    color: var(--bi-text-muted);
+}
+
+/* Empty state */
+.bips-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    padding: var(--bi-space-16);
+    text-align: center;
+    
+    background-color: var(--bi-gray-50);
+    border-radius: var(--bi-radius-xl);
+}
+
+.bips-empty-icon {
+    font-size: 4rem;
+    color: var(--bi-gray-300);
+    margin-bottom: var(--bi-space-4);
+}
+
+.bips-empty-title {
+    font-size: var(--bi-text-lg);
+    font-weight: var(--bi-font-semibold);
+    color: var(--bi-text-primary);
+    margin-bottom: var(--bi-space-2);
+}
+
+.bips-empty-text {
+    font-size: var(--bi-text-sm);
+    color: var(--bi-text-muted);
+    max-width: 300px;
+}
+
+/* Initial state */
+.bips-initial {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    padding: var(--bi-space-16);
+    text-align: center;
+    
+    background: linear-gradient(135deg, var(--bi-primary-50), var(--bi-secondary-50));
+    border: 2px dashed var(--bi-primary-200);
+    border-radius: var(--bi-radius-xl);
+}
+
+.bips-initial-icon {
+    width: 80px;
+    height: 80px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background: linear-gradient(135deg, var(--bi-primary-500), var(--bi-secondary-500));
+    border-radius: var(--bi-radius-full);
+    
+    font-size: var(--bi-text-3xl);
+    color: var(--bi-text-inverse);
+    
+    margin-bottom: var(--bi-space-5);
+}
+
+.bips-initial-title {
+    font-size: var(--bi-text-xl);
+    font-weight: var(--bi-font-bold);
+    color: var(--bi-text-primary);
+    margin-bottom: var(--bi-space-2);
+}
+
+.bips-initial-text {
+    font-size: var(--bi-text-base);
+    color: var(--bi-text-secondary);
+}

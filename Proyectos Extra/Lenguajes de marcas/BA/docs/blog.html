@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog de Bombas Asoin Murcia - Consejos y noticias sobre bombas de agua, riego y sistemas de bombeo.">
+    <title>Blog | Bombas Asoin Murcia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            padding: 140px 0 60px;
+            text-align: center;
+            color: var(--text-white);
+        }
+        .page-header h1 {
+            font-family: var(--font-primary);
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .breadcrumb {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .breadcrumb a { color: var(--text-white); opacity: 0.8; }
+        .breadcrumb a:hover { opacity: 1; }
+        .breadcrumb span { margin: 0 8px; }
+        
+        /* Blog Section */
+        .blog-section {
+            padding: 80px 0;
+            background: var(--bg-light);
+        }
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        .blog-card {
+            background: var(--bg-white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        .blog-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: rgba(255,255,255,0.4);
+        }
+        .blog-content {
+            padding: 25px;
+        }
+        .blog-date {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+        .blog-date i { margin-right: 5px; }
+        .blog-card h3 {
+            font-family: var(--font-primary);
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        .blog-card h3 a { color: inherit; }
+        .blog-card h3 a:hover { color: var(--primary-color); }
+        .blog-card p {
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        .read-more:hover { gap: 12px; }
+        
+        /* Categories */
+        .blog-categories {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+        .category-btn {
+            padding: 10px 20px;
+            background: var(--bg-white);
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .category-btn:hover,
+        .category-btn.active {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: var(--text-white);
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 32px; }
+            .blog-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cookie Banner -->
+    <div class="cookie-banner" id="cookieBanner">
+        <p>Utilizamos cookies para mejorar tu experiencia. <a href="politica-cookies.html">Más información</a></p>
+        <button id="acceptCookies">Aceptar</button>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <a href="index.html" class="logo">
+                <span class="logo-text">BOMBAS ASOIN</span>
+                <span class="logo-subtitle">MURCIA</span>
+            </a>
+            <nav class="nav">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="tienda.html">Tienda</a></li>
+                    <li><a href="index.html#nosotros">Conócenos</a></li>
+                    <li><a href="contacto.html">Contactar</a></li>
+                    <li><a href="blog.html" class="active">Blog</a></li>
+                    <li><a href="bips.html" class="nav-bips">BIPS</a></li>
+                </ul>
+            </nav>
+            <div class="header-contact">
+                <a href="tel:+34968346852" class="phone"><i class="fas fa-phone"></i> 96 834 68 52</a>
+            </div>
+            <button class="nav-toggle" aria-label="Menú">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Blog</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Inicio</a>
+                <span>/</span>
+                <span>Blog</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="blog-section">
+        <div class="container">
+            <div class="blog-categories">
+                <button class="category-btn active">Todos</button>
+                <button class="category-btn">Agricultura</button>
+                <button class="category-btn">Riego</button>
+                <button class="category-btn">Piscinas</button>
+                <button class="category-btn">Consejos</button>
+            </div>
+            
+            <div class="blog-grid">
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-date">
+                            <i class="fas fa-calendar"></i> 15 de Enero, 2024
+                        </div>
+                        <h3><a href="#">Cómo elegir la bomba adecuada para riego agrícola</a></h3>
+                        <p>Guía completa para seleccionar la bomba de agua perfecta según el tipo de cultivo, superficie y necesidades de caudal.</p>
+                        <a href="#" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="blog-card">
+                    <div class="blog-image" style="background: linear-gradient(135deg, #00acc1, #00838f);">
+                        <i class="fas fa-swimming-pool"></i>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-date">
+                            <i class="fas fa-calendar"></i> 10 de Enero, 2024
+                        </div>
+                        <h3><a href="#">Mantenimiento de bombas de piscina: guía práctica</a></h3>
+                        <p>Consejos esenciales para mantener tu bomba de piscina en perfecto estado y prolongar su vida útil.</p>
+                        <a href="#" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="blog-card">
+                    <div class="blog-image" style="background: linear-gradient(135deg, #5c6bc0, #3949ab);">
+                        <i class="fas fa-water"></i>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-date">
+                            <i class="fas fa-calendar"></i> 5 de Enero, 2024
+                        </div>
+                        <h3><a href="#">Bombas sumergibles vs bombas de superficie</a></h3>
+                        <p>Conoce las diferencias entre ambos tipos de bombas y cuál es la mejor opción para tu instalación.</p>
+                        <a href="#" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="blog-card">
+                    <div class="blog-image" style="background: linear-gradient(135deg, #ff6f00, #e65100);">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-date">
+                            <i class="fas fa-calendar"></i> 28 de Diciembre, 2023
+                        </div>
+                        <h3><a href="#">5 problemas comunes en bombas de agua y cómo solucionarlos</a></h3>
+                        <p>Descubre los fallos más frecuentes en bombas de agua y las soluciones para cada uno de ellos.</p>
+                        <a href="#" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="blog-card">
+                    <div class="blog-image" style="background: linear-gradient(135deg, #7cb342, #558b2f);">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-date">
+                            <i class="fas fa-calendar"></i> 20 de Diciembre, 2023
+                        </div>
+                        <h3><a href="#">Ahorro de agua con sistemas de riego eficientes</a></h3>
+                        <p>Cómo optimizar el consumo de agua en agricultura mediante bombas y sistemas de riego modernos.</p>
+                        <a href="#" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="blog-card">
+                    <div class="blog-image" style="background: linear-gradient(135deg, #0288d1, #01579b);">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-date">
+                            <i class="fas fa-calendar"></i> 15 de Diciembre, 2023
+                        </div>
+                        <h3><a href="#">Grupos de presión: todo lo que necesitas saber</a></h3>
+                        <p>Qué son los grupos de presión, cómo funcionan y cuándo son necesarios en tu instalación.</p>
+                        <a href="#" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <span class="logo-text">BOMBAS ASOIN</span>
+                    </div>
+                    <p>Expertos en soluciones de bombeo para riego, abastecimiento, achique y piscinas.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Servicios</h4>
+                    <ul>
+                        <li><a href="index.html#nosotros">Sobre nosotros</a></li>
+                        <li><a href="tienda.html">Tienda online</a></li>
+                        <li><a href="contacto.html">Tienda física</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Información legal</h4>
+                    <ul>
+                        <li><a href="politica-privacidad.html">Política de privacidad</a></li>
+                        <li><a href="aviso-legal.html">Aviso legal</a></li>
+                        <li><a href="politica-devoluciones.html">Política de devoluciones</a></li>
+                        <li><a href="politica-cookies.html">Política de cookies</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Contacto</h4>
+                    <p><i class="fas fa-phone"></i> <a href="tel:+34968346852">96 834 68 52</a></p>
+                    <p><i class="fas fa-mobile-alt"></i> <a href="tel:+34628756295">628 756 295</a></p>
+                    <p><i class="fas fa-map-marker-alt"></i> Ctra. de Sta. Catalina, 108<br>Murcia</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Bombas Asoin Murcia. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

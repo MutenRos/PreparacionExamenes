@@ -1,0 +1,2059 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Calendario</title>
+
+    <style>
+      :root{
+        --bg:#f6f7fb;
+        --card:#ffffff;
+        --stroke:#e7e9f2;
+        --text:#0f172a;
+        --muted:#64748b;
+        --shadow: 0 10px 30px rgba(15,23,42,.08);
+        --r: 16px;
+
+        --hour-h-month: 14px;  /* mes (compacto) */
+        --hour-h-panel: 42px;  /* semana/día (legible) */
+
+        --day-start: 8;  /* 08:00 */
+        --day-end: 22;   /* 22:00 */
+      }
+
+      *{ box-sizing:border-box; }
+      body{
+        margin:0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", Arial;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .app{
+        max-width: 1520px;
+        margin: 0 auto;
+        padding: 18px 16px 30px;
+      }
+
+      /* topbar */
+      .topbar{
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(246,247,251,.85);
+        backdrop-filter: blur(10px);
+        border:1px solid var(--stroke);
+        border-radius: var(--r);
+        box-shadow: var(--shadow);
+        padding: 14px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap: 12px;
+        flex-wrap:wrap;
+      }
+
+      .brand{
+        display:flex;
+        flex-direction:column;
+        gap: 2px;
+        min-width: 220px;
+      }
+      .brand .t{ font-weight:800; letter-spacing:.2px; }
+      .brand .s{ color: var(--muted); font-size: 12px; }
+
+      .grupo{
+        display:flex;
+        gap:10px;
+        align-items:center;
+        flex-wrap:wrap;
+      }
+
+      .btn{
+        border:1px solid var(--stroke);
+        background: #fff;
+        color: var(--text);
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-size: 13px;
+        cursor:pointer;
+        transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+      }
+      .btn:hover{ transform: translateY(-1px); box-shadow: 0 8px 18px rgba(15,23,42,.08); }
+      .btn:active{ transform: translateY(0px); }
+
+      .btn.primary{
+        background: #0ea5e9;
+        color: #fff;
+        border-color: rgba(14,165,233,.25);
+      }
+
+      .pill{
+        border:1px solid var(--stroke);
+        background: #fff;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        color: var(--muted);
+        display:flex;
+        align-items:center;
+        gap:8px;
+      }
+      .pill b{ color: var(--text); }
+      .dot{
+        width:10px;height:10px;border-radius:999px;
+        background:#94a3b8;
+        box-shadow: 0 0 0 3px rgba(148,163,184,.15);
+      }
+
+      .acciones{
+        border:1px solid var(--stroke);
+        background: #fff;
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-size: 13px;
+        cursor:pointer;
+      }
+      .acciones.activa{
+        background:#0f172a;
+        color:#fff;
+        border-color:#0f172a;
+      }
+
+      /* contenedores */
+      #jvcalendario{ margin-top: 14px; }
+      .oculto{ display:none !important; }
+
+      /* -------- VISTA AÑO -------- */
+      .vista_anual{
+        display:grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      @media (max-width: 1200px){
+        .vista_anual{ grid-template-columns: 1fr; }
+      }
+
+      .mes{
+        border:1px solid var(--stroke);
+        background: var(--card);
+        border-radius: var(--r);
+        box-shadow: var(--shadow);
+        overflow:hidden;
+      }
+      .cabecera_mes{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding: 12px 14px;
+        border-bottom:1px solid var(--stroke);
+      }
+      .cabecera_mes .nombre{ font-weight:800; }
+      .cabecera_mes .info{ color: var(--muted); font-size: 12px; }
+
+      /* -------- VISTA MES (grid 7 col) -------- */
+      .mes.grid{
+        display:grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+      }
+
+      .dia{
+        border-right:1px solid var(--stroke);
+        border-bottom:1px solid var(--stroke);
+        padding: 10px;
+        position:relative;
+        background:#fff;
+      }
+      .dia:hover{ background:#fbfcff; }
+
+      .desactivado{
+        background: #fafafa;
+        color: rgba(15,23,42,.45);
+      }
+
+      .dia .numdia{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap: 10px;
+        font-weight:800;
+        cursor:pointer;
+        user-select:none;
+      }
+      .dia .numdia .mini{
+        font-weight:600;
+        font-size: 11px;
+        color: var(--muted);
+        border:1px solid var(--stroke);
+        padding: 3px 8px;
+        border-radius: 999px;
+        background:#fff;
+        display:flex;
+        align-items:center;
+        gap:6px;
+      }
+      .badge{
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border:1px solid var(--stroke);
+        color: var(--muted);
+        background:#fff;
+      }
+      .badge.holiday{
+        color:#b91c1c;
+        border-color: rgba(185,28,28,.25);
+        background: rgba(239,68,68,.08);
+      }
+
+      /* timeline dentro del día */
+      .timeline{
+        margin-top: 8px;
+        position:relative;
+        height: calc((var(--day-end) - var(--day-start)) * var(--hour-h-month));
+        border:1px solid var(--stroke);
+        border-radius: 12px;
+        overflow: hidden;
+        background:
+          linear-gradient(#fff,#fff),
+          repeating-linear-gradient(
+            to bottom,
+            transparent,
+            transparent calc(var(--hour-h-month) - 1px),
+            rgba(15,23,42,.06) calc(var(--hour-h-month) - 1px),
+            rgba(15,23,42,.06) var(--hour-h-month)
+          );
+      }
+
+      .tick{
+        position:absolute;
+        left:0; right:0;
+        height: var(--hour-h-month);
+        cursor:pointer;
+      }
+      .tick:hover{ background: rgba(14,165,233,.05); }
+
+      /* evento absoluto */
+      .evento{
+        position:absolute;
+        left: 6px;
+        right: 6px;
+        border-radius: 12px;
+        padding: 6px 8px;
+        background: color-mix(in srgb, var(--cat) 92%, white 8%);
+        color:#fff;
+        border:1px solid color-mix(in srgb, var(--cat) 78%, white 22%);
+        box-shadow: 0 8px 18px rgba(15,23,42,.10);
+        font-size: 12px;
+        overflow:hidden;
+      }
+      .evento .t{
+        font-weight:700;
+        line-height: 1.2;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .evento .h{
+        margin-top: 2px;
+        font-size: 11px;
+        opacity:.92;
+      }
+      .evento .rpt{
+        margin-top: 3px;
+        font-size: 10px;
+        opacity:.9;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .evento:focus{
+        outline:none;
+        box-shadow: 0 10px 22px rgba(15,23,42,.16);
+      }
+
+      /* -------- PANEL SEMANA/DÍA -------- */
+      #panel_vista{
+        margin-top: 14px;
+        border:1px solid var(--stroke);
+        background: var(--card);
+        border-radius: var(--r);
+        box-shadow: var(--shadow);
+        overflow:hidden;
+      }
+      #panel_vista .panel_head{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding: 12px 14px;
+        border-bottom:1px solid var(--stroke);
+        gap:10px;
+        flex-wrap:wrap;
+      }
+      #panel_vista .panel_head .ttl{
+        font-weight:800;
+      }
+      #panel_vista .panel_body{
+        padding: 12px;
+      }
+
+      .grid_semana2{
+        display:grid;
+        grid-template-columns: 72px repeat(7, minmax(0, 1fr));
+        gap: 10px;
+        align-items:start;
+      }
+      .celda_lbl{
+        font-size: 12px;
+        color: var(--muted);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      }
+      .dia_lbl{
+        border:1px solid var(--stroke);
+        border-radius: 12px;
+        background: #fbfcff;
+        padding: 10px 8px;
+        font-weight:800;
+        font-size: 12px;
+        text-align:center;
+        display:flex;
+        justify-content:center;
+        gap:8px;
+        align-items:center;
+        flex-wrap:wrap;
+      }
+
+      .col_dia{
+        border:1px solid var(--stroke);
+        border-radius: 14px;
+        overflow:hidden;
+        background:#fff;
+      }
+      .col_dia .timeline{
+        height: calc((var(--day-end) - var(--day-start)) * var(--hour-h-panel));
+        border:0;
+        border-radius:0;
+        background:
+          linear-gradient(#fff,#fff),
+          repeating-linear-gradient(
+            to bottom,
+            transparent,
+            transparent calc(var(--hour-h-panel) - 1px),
+            rgba(15,23,42,.06) calc(var(--hour-h-panel) - 1px),
+            rgba(15,23,42,.06) var(--hour-h-panel)
+          );
+      }
+      .col_dia .tick{ height: var(--hour-h-panel); }
+
+      .lista_dia{
+        display:flex;
+        gap: 14px;
+      }
+      .lista_dia .col_horas{
+        width: 72px;
+        color: var(--muted);
+        font-size: 12px;
+        display:flex;
+        flex-direction:column;
+        gap: 0;
+      }
+      .lista_dia .col_horas .hitem{
+        height: var(--hour-h-panel);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      }
+      .lista_dia .col_main{
+        flex:1;
+        border:1px solid var(--stroke);
+        border-radius: 14px;
+        overflow:hidden;
+        background:#fff;
+      }
+      .lista_dia .col_main .timeline{
+        height: calc((var(--day-end) - var(--day-start)) * var(--hour-h-panel));
+        border:0;
+        border-radius:0;
+      }
+      .lista_dia .col_main .tick{ height: var(--hour-h-panel); }
+
+      /* -------- MODALES -------- */
+      .modal_back{
+        position:fixed;
+        inset:0;
+        background: rgba(15,23,42,.40);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding: 18px;
+        z-index: 200;
+      }
+      .modal{
+        width: min(720px, 100%);
+        border:1px solid var(--stroke);
+        background: #fff;
+        border-radius: var(--r);
+        box-shadow: 0 20px 60px rgba(15,23,42,.22);
+        overflow:hidden;
+      }
+      .modal.sm{ width: min(560px, 100%); }
+      .modal .mh{
+        padding: 14px 16px;
+        border-bottom:1px solid var(--stroke);
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:10px;
+      }
+      .modal .mh .ttl{ font-weight:800; }
+      .modal .mb{
+        padding: 16px;
+        display:flex;
+        flex-direction:column;
+        gap: 12px;
+      }
+      .row{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .field label{
+        display:block;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .field input, .field select, .field textarea{
+        width: 100%;
+        border:1px solid var(--stroke);
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 13px;
+        outline:none;
+        background:#fff;
+      }
+      .field textarea{ min-height: 90px; resize: vertical; }
+      .modal .mf{
+        padding: 14px 16px;
+        border-top:1px solid var(--stroke);
+        display:flex;
+        justify-content:flex-end;
+        gap: 10px;
+        flex-wrap:wrap;
+      }
+      .danger{
+        background:#ef4444;
+        color:#fff;
+        border-color: rgba(239,68,68,.25);
+      }
+
+      /* tabs modal gestión */
+      .tabs{
+        display:flex;
+        gap:8px;
+        flex-wrap:wrap;
+      }
+      .tab{
+        border:1px solid var(--stroke);
+        background:#fff;
+        border-radius:999px;
+        padding:8px 12px;
+        font-size:12px;
+        cursor:pointer;
+      }
+      .tab.activa{
+        background:#0f172a;
+        color:#fff;
+        border-color:#0f172a;
+      }
+      .list{
+        border:1px solid var(--stroke);
+        border-radius: 14px;
+        overflow:hidden;
+        background:#fff;
+      }
+      .item{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        padding: 10px 12px;
+        border-bottom:1px solid var(--stroke);
+      }
+      .item:last-child{ border-bottom:0; }
+      .item .l{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        min-width:0;
+      }
+      .item .name{
+        font-weight:800;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .item .meta{
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .miniBtns{
+        display:flex;
+        gap:8px;
+        align-items:center;
+        flex-wrap:wrap;
+      }
+      .btn.xs{
+        padding: 8px 10px;
+        font-size: 12px;
+      }
+
+      .weekdays{
+        display:flex;
+        gap:8px;
+        flex-wrap:wrap;
+      }
+      .wd{
+        display:flex;
+        align-items:center;
+        gap:6px;
+        border:1px solid var(--stroke);
+        border-radius:999px;
+        padding:6px 10px;
+        font-size:12px;
+        background:#fff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app">
+      <div class="topbar">
+        <div class="brand">
+          <div class="t">Calendario</div>
+          <div class="s" id="estado"></div>
+        </div>
+
+        <div class="grupo">
+          <button id="guardar" class="btn">Guardar</button>
+
+          <button id="descargar" class="btn primary">Descargar JSON</button>
+          <button id="cargar" class="btn">Cargar JSON</button>
+          <input id="file" type="file" accept="application/json" class="oculto"/>
+
+          <button id="btn_gestion" class="btn">Categorías / Festivos</button>
+
+          <span class="pill">
+            <span class="dot" id="activo_dot"></span>
+            Activo: <b id="activo_lbl">—</b>
+          </span>
+
+          <div class="grupo" id="cats_bar"></div>
+        </div>
+
+        <div class="grupo">
+          <button class="acciones anio">Año</button>
+          <button class="acciones mes activa">Mes</button>
+          <button class="acciones semana">Semana</button>
+          <button class="acciones dia">Dia</button>
+        </div>
+      </div>
+
+      <div id="panel_vista" class="oculto">
+        <div class="panel_head">
+          <div class="ttl" id="panel_titulo">Vista</div>
+          <div class="grupo">
+            <button id="prev" class="btn">◀</button>
+            <button id="hoy" class="btn">Hoy</button>
+            <button id="next" class="btn">▶</button>
+          </div>
+        </div>
+        <div class="panel_body" id="panel_body"></div>
+      </div>
+
+      <div id="jvcalendario"></div>
+    </div>
+
+    <!-- MODAL EVENTO -->
+    <div id="modal_back" class="modal_back oculto">
+      <div class="modal sm">
+        <div class="mh">
+          <div class="ttl" id="modal_titulo">Nuevo evento</div>
+          <button id="modal_close" class="btn">Cerrar</button>
+        </div>
+
+        <div class="mb">
+          <div class="row">
+            <div class="field">
+              <label>Inicio</label>
+              <input id="m_ini" type="time" step="300" value="08:00">
+            </div>
+            <div class="field">
+              <label>Fin</label>
+              <input id="m_fin" type="time" step="300" value="09:00">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Texto</label>
+            <textarea id="m_txt" placeholder="Escribe el evento..."></textarea>
+          </div>
+
+          <div class="field">
+            <label>Categoría</label>
+            <select id="m_cat"></select>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label>Repetir</label>
+              <select id="m_rep_tipo">
+                <option value="none">No repetir</option>
+                <option value="daily">Diario</option>
+                <option value="weekly">Semanal</option>
+                <option value="monthly">Mensual</option>
+                <option value="yearly">Anual</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Intervalo</label>
+              <input id="m_rep_int" type="number" min="1" value="1">
+            </div>
+          </div>
+
+          <div class="field" id="m_rep_weekdays_wrap" class="oculto">
+            <label>Días (solo semanal)</label>
+            <div class="weekdays" id="m_rep_weekdays"></div>
+          </div>
+
+          <div class="field">
+            <label>Repetir hasta (inclusive)</label>
+            <input id="m_rep_until" type="date">
+          </div>
+
+          <div class="pill" id="m_hint">—</div>
+        </div>
+
+        <div class="mf">
+          <button id="modal_delete" class="btn danger oculto">Eliminar</button>
+          <button id="modal_ok" class="btn primary">Guardar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL GESTIÓN -->
+    <div id="mg_back" class="modal_back oculto">
+      <div class="modal">
+        <div class="mh">
+          <div class="ttl">Gestión</div>
+          <button id="mg_close" class="btn">Cerrar</button>
+        </div>
+
+        <div class="mb">
+          <div class="tabs">
+            <button class="tab activa" data-tab="cats">Categorías</button>
+            <button class="tab" data-tab="hol">Festivos</button>
+          </div>
+
+          <!-- CATEGORÍAS -->
+          <div id="tab_cats">
+            <div class="row">
+              <div class="field">
+                <label>Nombre</label>
+                <input id="cat_name" placeholder="p. ej. personal">
+              </div>
+              <div class="field">
+                <label>Color</label>
+                <input id="cat_color" type="color" value="#ef4444">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label>¿Trabajo?</label>
+                <select id="cat_work">
+                  <option value="false">No</option>
+                  <option value="true">Sí</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>&nbsp;</label>
+                <button id="cat_add" class="btn primary">Crear categoría</button>
+              </div>
+            </div>
+
+            <div class="pill">
+              Si una categoría es “trabajo”, sus eventos <b>no se mostrarán</b> en días marcados como festivos.
+            </div>
+
+            <div class="list" id="cat_list"></div>
+          </div>
+
+          <!-- FESTIVOS -->
+          <div id="tab_hol" class="oculto">
+            <div class="row">
+              <div class="field">
+                <label>Fecha festivo</label>
+                <input id="hol_date" type="date">
+              </div>
+              <div class="field">
+                <label>&nbsp;</label>
+                <button id="hol_add" class="btn primary">Añadir festivo</button>
+              </div>
+            </div>
+
+            <div class="pill">
+              Los festivos se guardan como fechas (YYYY-MM-DD). Se aplican a cualquier año cargado.
+            </div>
+
+            <div class="list" id="hol_list"></div>
+          </div>
+        </div>
+
+        <div class="mf">
+          <button id="mg_export" class="btn">Copiar JSON (debug)</button>
+          <button id="mg_ok" class="btn primary">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // -------------------------------
+      // utilidades base
+      // -------------------------------
+      function pad2(n){ return String(n).padStart(2,"0"); }
+      function fechaKey(a,m,d){ return a+"-"+pad2(m)+"-"+pad2(d); }
+      function hhmmToMin(hhmm){
+        let p = (hhmm||"").split(":");
+        let h = Number(p[0]||0);
+        let m = Number(p[1]||0);
+        return (h*60+m);
+      }
+      function minToHHMM(min){
+        let h = Math.floor(min/60);
+        let m = min%60;
+        return pad2(h)+":"+pad2(m);
+      }
+      function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+
+      function toDateObj(a,m,d){ return new Date(a, m-1, d); }
+      function isoFromDate(d){
+        return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate());
+      }
+      function dateFromISO(iso){
+        let p = String(iso||"").split("-");
+        if(p.length!==3) return null;
+        let y=Number(p[0]), m=Number(p[1]), d=Number(p[2]);
+        if(!y||!m||!d) return null;
+        return new Date(y,m-1,d);
+      }
+
+      // -------------------------------
+      // storage keys
+      // -------------------------------
+      const K_EVENTS   = "jvcalendario";
+      const K_CATS     = "jvcal_categories";
+      const K_HOLIDAYS = "jvcal_holidays";
+
+      // -------------------------------
+      // defaults y migración
+      // -------------------------------
+      function defaultCats(){
+        return [
+          { id:"personal",   name:"personal",   color:"#ef4444", trabajo:false },
+          { id:"laboral",    name:"laboral",    color:"#22c55e", trabajo:true  },
+          { id:"vacaciones", name:"vacaciones", color:"#3b82f6", trabajo:false }
+        ];
+      }
+
+      function readJSON(key, fallback){
+        let raw = localStorage.getItem(key);
+        if(!raw) return fallback;
+        try{ return JSON.parse(raw); }catch(e){ return fallback; }
+      }
+      function writeJSON(key, val){
+        localStorage.setItem(key, JSON.stringify(val));
+      }
+
+      function loadCats(){
+        let cats = readJSON(K_CATS, null);
+        if(!Array.isArray(cats) || cats.length===0){
+          cats = defaultCats();
+          writeJSON(K_CATS, cats);
+        }
+        // normaliza
+        cats = cats.map(c => ({
+          id: String(c.id||"").trim() || ("cat_"+Math.random().toString(16).slice(2)),
+          name: String(c.name||c.id||"").trim() || "categoria",
+          color: String(c.color||"#94a3b8"),
+          trabajo: !!c.trabajo
+        }));
+        writeJSON(K_CATS, cats);
+        return cats;
+      }
+
+      function loadHolidays(){
+        let hol = readJSON(K_HOLIDAYS, []);
+        if(!Array.isArray(hol)) hol = [];
+        hol = hol.map(x => String(x)).filter(x => /^\d{4}-\d{2}-\d{2}$/.test(x));
+        hol = Array.from(new Set(hol)).sort();
+        writeJSON(K_HOLIDAYS, hol);
+        return hol;
+      }
+
+      function migrateEvents(events, cats){
+        if(!Array.isArray(events)) return [];
+        let catIds = new Set(cats.map(c=>c.id));
+        return events.map(ev=>{
+          let out = Object.assign({}, ev);
+
+          // migración de "tipo" -> catId
+          if(out.tipo && !out.catId){
+            out.catId = String(out.tipo);
+          }
+          if(!out.catId){
+            out.catId = "personal";
+          }
+          if(!catIds.has(out.catId)){
+            // intenta mapear por nombre legacy
+            if(String(out.catId).toLowerCase()==="laboral") out.catId="laboral";
+            else if(String(out.catId).toLowerCase()==="vacaciones") out.catId="vacaciones";
+            else out.catId="personal";
+          }
+
+          // normaliza tiempos
+          out.anio  = Number(out.anio);
+          out.mes   = Number(out.mes);
+          out.dia   = Number(out.dia);
+          out.start = Number(out.start);
+          out.end   = Number(out.end);
+          out.texto = String(out.texto||"");
+
+          // repetición
+          if(out.repeat && typeof out.repeat==="object"){
+            out.repeat = {
+              freq: String(out.repeat.freq||"none"),
+              interval: Math.max(1, Number(out.repeat.interval||1)),
+              until: out.repeat.until ? String(out.repeat.until) : "",
+              byWeekdays: Array.isArray(out.repeat.byWeekdays) ? out.repeat.byWeekdays.map(Number).filter(n=>n>=1 && n<=7) : null
+            };
+            if(!out.repeat.until) out.repeat.until = "";
+          }else{
+            out.repeat = { freq:"none", interval:1, until:"", byWeekdays:null };
+          }
+          return out;
+        });
+      }
+
+      function loadEvents(cats){
+        let events = readJSON(K_EVENTS, []);
+        events = migrateEvents(events, cats);
+        writeJSON(K_EVENTS, events);
+        return events;
+      }
+
+      // -------------------------------
+      // lógica de calendario
+      // -------------------------------
+      function diasEnMes(year, month) {
+        return new Date(year, month, 0).getDate();
+      }
+      function primerDiaDelMes(year, month) {
+        return new Date(year, month - 1, 1).getDay();
+      }
+      function startOfWeekMonday(dateObj){
+        let d = new Date(dateObj);
+        d.setHours(0,0,0,0);
+        let day = d.getDay();
+        let diff = (day===0 ? -6 : 1-day);
+        d.setDate(d.getDate()+diff);
+        return d;
+      }
+
+      function calcTopHeight(startMin, endMin, hourH){
+        let dayStart = 8*60;
+        let top = ((startMin - dayStart)/60) * hourH;
+        let height = ((endMin - startMin)/60) * hourH;
+        return { top: top, height: height };
+      }
+
+      function makeCatVarStyle(cat){
+        return "--cat:" + (cat?.color || "#94a3b8");
+      }
+
+      // -------------------------------
+      // repetición: ocurrencias por fecha
+      // - freq: none|daily|weekly|monthly|yearly
+      // - interval >= 1
+      // - until ISO (inclusive). Si vacío => sin límite (se limita por rango de render).
+      // - weekly: byWeekdays (1..7, lunes=1)
+      // -------------------------------
+      function weekdayMon1(dateObj){
+        // JS: 0 domingo..6 sábado -> queremos 1 lunes..7 domingo
+        let g = dateObj.getDay();
+        if(g===0) return 7;
+        return g;
+      }
+
+      function occursOnDate(ev, dateObj){
+        let startDate = toDateObj(ev.anio, ev.mes, ev.dia);
+        startDate.setHours(0,0,0,0);
+
+        let target = new Date(dateObj);
+        target.setHours(0,0,0,0);
+
+        if(target < startDate) return false;
+
+        let r = ev.repeat || {freq:"none", interval:1, until:"", byWeekdays:null};
+        let freq = String(r.freq||"none");
+        let interval = Math.max(1, Number(r.interval||1));
+        let until = r.until ? dateFromISO(r.until) : null;
+        if(until){ until.setHours(0,0,0,0); }
+        if(until && target > until) return false;
+
+        if(freq === "none"){
+          return (target.getTime() === startDate.getTime());
+        }
+
+        if(freq === "daily"){
+          let diffDays = Math.floor((target - startDate) / 86400000);
+          return diffDays % interval === 0;
+        }
+
+        if(freq === "weekly"){
+          // semanas desde lunes
+          let sMon = startOfWeekMonday(startDate);
+          let tMon = startOfWeekMonday(target);
+          let diffWeeks = Math.floor((tMon - sMon) / (86400000*7));
+          if(diffWeeks % interval !== 0) return false;
+
+          let wd = weekdayMon1(target);
+          let by = Array.isArray(r.byWeekdays) && r.byWeekdays.length ? r.byWeekdays : [weekdayMon1(startDate)];
+          return by.includes(wd);
+        }
+
+        if(freq === "monthly"){
+          // mismo día del mes (si no existe, no ocurre)
+          let months = (target.getFullYear() - startDate.getFullYear())*12 + (target.getMonth() - startDate.getMonth());
+          if(months < 0) return false;
+          if(months % interval !== 0) return false;
+
+          let day = startDate.getDate();
+          if(target.getDate() !== day) return false;
+
+          return true;
+        }
+
+        if(freq === "yearly"){
+          let diffYears = target.getFullYear() - startDate.getFullYear();
+          if(diffYears < 0) return false;
+          if(diffYears % interval !== 0) return false;
+
+          return (target.getMonth()===startDate.getMonth() && target.getDate()===startDate.getDate());
+        }
+
+        return false;
+      }
+
+      function listEventsForDate(dateObj, events, catsById, holidaysSet){
+        let iso = isoFromDate(dateObj);
+        let out = [];
+
+        for(let ev of events){
+          // regla: si la categoría es trabajo y el día es festivo => no aparece (ni como repetición)
+          let cat = catsById.get(ev.catId);
+          let isWork = !!cat?.trabajo;
+          if(isWork && holidaysSet.has(iso)) continue;
+
+          if(occursOnDate(ev, dateObj)){
+            out.push(ev);
+          }
+        }
+
+        return out;
+      }
+
+      function repeatLabel(ev){
+        let r = ev.repeat || {freq:"none"};
+        if(!r || r.freq==="none") return "";
+        let freq = r.freq;
+        let interval = Math.max(1, Number(r.interval||1));
+        let until = r.until ? (" hasta " + r.until) : "";
+        if(freq==="daily") return "Repite: diario" + (interval>1 ? " (cada "+interval+" días)" : "") + until;
+        if(freq==="weekly") return "Repite: semanal" + (interval>1 ? " (cada "+interval+" semanas)" : "") + until;
+        if(freq==="monthly") return "Repite: mensual" + (interval>1 ? " (cada "+interval+" meses)" : "") + until;
+        if(freq==="yearly") return "Repite: anual" + (interval>1 ? " (cada "+interval+" años)" : "") + until;
+        return "Repite";
+      }
+
+      // -------------------------------
+      // estado general
+      // -------------------------------
+      let contenedor   = document.querySelector("#jvcalendario");
+      let panel        = document.querySelector("#panel_vista");
+      let panelBody    = document.querySelector("#panel_body");
+      let panelTitulo  = document.querySelector("#panel_titulo");
+      let estado       = document.querySelector("#estado");
+
+      let anio = 2026;
+      let meses = 12;
+      let nombres_meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+      let vista = "Mes"; // Año | Mes | Semana | Dia
+      let seleccion = { anio: anio, mes: 1, dia: 1 };
+      let semanaOffset = 0;
+      let diaOffset = 0;
+
+      // datos persistentes
+      let CATS = loadCats();
+      let HOLIDAYS = loadHolidays();
+      let HOLSET = new Set(HOLIDAYS);
+      let CATS_BY_ID = new Map(CATS.map(c=>[c.id,c]));
+
+      let EVENTOS = loadEvents(CATS);
+
+      // categoría activa (para crear)
+      let calendario_activo = CATS[0]?.id || "personal";
+      let activo_lbl = document.querySelector("#activo_lbl");
+      let activo_dot = document.querySelector("#activo_dot");
+
+      function setActiveCat(catId){
+        if(!CATS_BY_ID.has(catId)) catId = CATS[0]?.id || "personal";
+        calendario_activo = catId;
+        let c = CATS_BY_ID.get(catId);
+        activo_lbl.textContent = c ? c.name : catId;
+        activo_dot.style.background = (c?.color || "#94a3b8");
+        activo_dot.style.boxShadow = "0 0 0 3px " + (c?.color ? "color-mix(in srgb, "+c.color+" 20%, transparent 80%)" : "rgba(148,163,184,.15)");
+      }
+
+      function saveAll(){
+        writeJSON(K_CATS, CATS);
+        writeJSON(K_HOLIDAYS, HOLIDAYS);
+        writeJSON(K_EVENTS, EVENTOS);
+      }
+
+      // -------------------------------
+      // UI: barra de categorías (rápida)
+      // -------------------------------
+      let catsBar = document.querySelector("#cats_bar");
+
+      function renderCatsBar(){
+        catsBar.innerHTML = "";
+        CATS.forEach(cat=>{
+          let b = document.createElement("button");
+          b.className = "btn xs";
+          b.textContent = cat.name;
+          b.style.cssText = makeCatVarStyle(cat) + ";";
+          b.onclick = function(){
+            setActiveCat(cat.id);
+          };
+          catsBar.appendChild(b);
+        });
+        setActiveCat(calendario_activo);
+      }
+
+      // -------------------------------
+      // MODAL EVENTO
+      // -------------------------------
+      let modalBack   = document.querySelector("#modal_back");
+      let modalTitulo = document.querySelector("#modal_titulo");
+      let m_ini  = document.querySelector("#m_ini");
+      let m_fin  = document.querySelector("#m_fin");
+      let m_txt  = document.querySelector("#m_txt");
+      let m_cat  = document.querySelector("#m_cat");
+      let m_hint = document.querySelector("#m_hint");
+      let modal_ok    = document.querySelector("#modal_ok");
+      let modal_close = document.querySelector("#modal_close");
+      let modal_delete= document.querySelector("#modal_delete");
+
+      let m_rep_tipo = document.querySelector("#m_rep_tipo");
+      let m_rep_int  = document.querySelector("#m_rep_int");
+      let m_rep_until= document.querySelector("#m_rep_until");
+      let m_rep_weekdays_wrap = document.querySelector("#m_rep_weekdays_wrap");
+      let m_rep_weekdays = document.querySelector("#m_rep_weekdays");
+
+      function fillCatSelect(){
+        m_cat.innerHTML = "";
+        CATS.forEach(cat=>{
+          let opt = document.createElement("option");
+          opt.value = cat.id;
+          opt.textContent = cat.name + (cat.trabajo ? " (trabajo)" : "");
+          m_cat.appendChild(opt);
+        });
+      }
+
+      function buildWeekdayChips(selected){
+        m_rep_weekdays.innerHTML = "";
+        let names = [
+          {id:1, t:"Lun"},
+          {id:2, t:"Mar"},
+          {id:3, t:"Mié"},
+          {id:4, t:"Jue"},
+          {id:5, t:"Vie"},
+          {id:6, t:"Sáb"},
+          {id:7, t:"Dom"}
+        ];
+        names.forEach(n=>{
+          let w = document.createElement("label");
+          w.className = "wd";
+          let cb = document.createElement("input");
+          cb.type = "checkbox";
+          cb.value = n.id;
+          cb.checked = selected.includes(n.id);
+          w.appendChild(cb);
+          let sp = document.createElement("span");
+          sp.textContent = n.t;
+          w.appendChild(sp);
+          m_rep_weekdays.appendChild(w);
+        });
+      }
+
+      function getSelectedWeekdays(){
+        let arr = [];
+        m_rep_weekdays.querySelectorAll("input[type=checkbox]").forEach(cb=>{
+          if(cb.checked) arr.push(Number(cb.value));
+        });
+        arr = arr.filter(n=>n>=1 && n<=7);
+        // no vacío: si vacío, se interpretará como el día original (en occursOnDate)
+        return arr;
+      }
+
+      let modalCtx = null; // { anio, mes, dia, startMin, editId? }
+
+      function abrirModal(ctx){
+        modalCtx = ctx;
+
+        fillCatSelect();
+
+        // defaults
+        let start = ctx.startMin || (8*60);
+        let end = Math.min(start+60, 22*60);
+
+        m_ini.value = minToHHMM(start);
+        m_fin.value = minToHHMM(end);
+        m_txt.value = ctx.texto || "";
+        m_cat.value = ctx.catId || ctx.tipo || calendario_activo;
+
+        // repetición
+        let rep = ctx.repeat || {freq:"none", interval:1, until:"", byWeekdays:null};
+        m_rep_tipo.value = rep.freq || "none";
+        m_rep_int.value = Math.max(1, Number(rep.interval||1));
+        m_rep_until.value = rep.until || ""; // ISO
+        let baseDate = toDateObj(ctx.anio, ctx.mes, ctx.dia);
+        let baseWd = weekdayMon1(baseDate);
+        let selectedWds = Array.isArray(rep.byWeekdays) && rep.byWeekdays.length ? rep.byWeekdays : [baseWd];
+        buildWeekdayChips(selectedWds);
+
+        // edición
+        if(ctx.edit){
+          modal_delete.classList.remove("oculto");
+          modalTitulo.textContent = "Editar evento";
+        }else{
+          modal_delete.classList.add("oculto");
+          modalTitulo.textContent = "Nuevo evento";
+        }
+
+        updateRepeatUI();
+        actualizarHintModal();
+        modalBack.classList.remove("oculto");
+      }
+
+      function cerrarModal(){
+        modalBack.classList.add("oculto");
+        modalCtx = null;
+      }
+
+      function updateRepeatUI(){
+        if(m_rep_tipo.value === "weekly"){
+          m_rep_weekdays_wrap.classList.remove("oculto");
+        }else{
+          m_rep_weekdays_wrap.classList.add("oculto");
+        }
+        actualizarHintModal();
+      }
+
+      function actualizarHintModal(){
+        if(!modalCtx) return;
+
+        let s = hhmmToMin(m_ini.value);
+        let e = hhmmToMin(m_fin.value);
+        let dur = Math.max(0, e - s);
+
+        let rep = m_rep_tipo.value;
+        let until = m_rep_until.value ? (" · Hasta: " + m_rep_until.value) : "";
+        let repTxt = (rep && rep!=="none") ? (" · Repite: " + rep + " (int " + Math.max(1, Number(m_rep_int.value||1)) + ")" + until) : "";
+
+        // aviso por trabajo/festivos
+        let cat = CATS_BY_ID.get(m_cat.value);
+        let iso = fechaKey(modalCtx.anio, modalCtx.mes, modalCtx.dia);
+        let warn = "";
+        if(cat?.trabajo && HOLSET.has(iso)){
+          warn = " · Aviso: categoría trabajo en festivo (no se mostrará ese día)";
+        }
+
+        m_hint.textContent = "Fecha: " + iso + " · Duración: " + dur + " min" + repTxt + warn;
+      }
+
+      m_ini.oninput = actualizarHintModal;
+      m_fin.oninput = actualizarHintModal;
+      m_cat.onchange = actualizarHintModal;
+      m_rep_tipo.onchange = updateRepeatUI;
+      m_rep_int.oninput = actualizarHintModal;
+      m_rep_until.onchange = actualizarHintModal;
+
+      modal_close.onclick = cerrarModal;
+      modalBack.addEventListener("click", function(e){
+        if(e.target === modalBack) cerrarModal();
+      });
+
+      function eventoId(ev){
+        // id estable para edición/merge: incluye el “origen” (fecha/hora/cat/texto) + repetición
+        let r = ev.repeat || {freq:"none", interval:1, until:"", byWeekdays:null};
+        return [
+          ev.anio, ev.mes, ev.dia,
+          ev.start, ev.end,
+          (ev.catId||""),
+          (ev.texto||"").trim(),
+          (r.freq||"none"),
+          (r.interval||1),
+          (r.until||""),
+          Array.isArray(r.byWeekdays)?r.byWeekdays.join(","):""
+        ].join("|");
+      }
+
+      modal_ok.onclick = function(){
+        if(!modalCtx) return;
+
+        let dayStart = 8*60;
+        let dayEnd = 22*60;
+
+        let s = clamp(hhmmToMin(m_ini.value), dayStart, dayEnd);
+        let e = clamp(hhmmToMin(m_fin.value), dayStart, dayEnd);
+
+        if(e <= s){
+          alert("El fin debe ser posterior al inicio.");
+          return;
+        }
+
+        let rep = {
+          freq: m_rep_tipo.value || "none",
+          interval: Math.max(1, Number(m_rep_int.value||1)),
+          until: m_rep_until.value || "",
+          byWeekdays: null
+        };
+        if(rep.freq === "weekly"){
+          let wds = getSelectedWeekdays();
+          rep.byWeekdays = wds.length ? wds : null;
+        }
+
+        let ev = {
+          anio: modalCtx.anio,
+          mes: modalCtx.mes,
+          dia: modalCtx.dia,
+          start: s,
+          end: e,
+          catId: m_cat.value,
+          texto: m_txt.value || "",
+          repeat: rep
+        };
+
+        if(modalCtx.editId){
+          EVENTOS = EVENTOS.map(function(x){
+            return (eventoId(x)===modalCtx.editId) ? ev : x;
+          });
+        }else{
+          EVENTOS.push(ev);
+        }
+
+        writeJSON(K_EVENTS, EVENTOS);
+        renderAll();
+        cerrarModal();
+      };
+
+      modal_delete.onclick = function(){
+        if(!modalCtx || !modalCtx.editId) return;
+        if(!confirm("¿Eliminar este evento?")) return;
+
+        EVENTOS = EVENTOS.filter(function(x){
+          return eventoId(x)!==modalCtx.editId;
+        });
+
+        writeJSON(K_EVENTS, EVENTOS);
+        renderAll();
+        cerrarModal();
+      };
+
+      // -------------------------------
+      // descargar/cargar JSON
+      // (incluye eventos + categorías + festivos)
+      // -------------------------------
+      document.querySelector("#guardar").onclick = function(){
+        saveAll();
+      };
+
+      document.querySelector("#descargar").onclick = function(){
+        let payload = {
+          version: 2,
+          exportedAt: new Date().toISOString(),
+          categories: CATS,
+          holidays: HOLIDAYS,
+          events: EVENTOS
+        };
+
+        let data = JSON.stringify(payload, null, 2);
+        let blob = new Blob([data], {type:"application/json"});
+        let url = URL.createObjectURL(blob);
+
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = "jvcalendario_"+Date.now()+".json";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        URL.revokeObjectURL(url);
+      };
+
+      let fileInput = document.querySelector("#file");
+      document.querySelector("#cargar").onclick = function(){
+        fileInput.value = "";
+        fileInput.click();
+      };
+
+      fileInput.onchange = function(){
+        let f = fileInput.files && fileInput.files[0];
+        if(!f) return;
+
+        let reader = new FileReader();
+        reader.onload = function(){
+          let raw = String(reader.result||"");
+          let incoming = null;
+          try { incoming = JSON.parse(raw); } catch(e){ alert("JSON inválido."); return; }
+
+          // acepta formatos:
+          // - v2 {categories, holidays, events}
+          // - legacy: array de eventos
+          let incCats = null, incHol = null, incEvents = null;
+
+          if(Array.isArray(incoming)){
+            incEvents = incoming;
+          }else if(incoming && typeof incoming==="object"){
+            if(Array.isArray(incoming.categories)) incCats = incoming.categories;
+            if(Array.isArray(incoming.holidays)) incHol = incoming.holidays;
+            if(Array.isArray(incoming.events)) incEvents = incoming.events;
+          }
+
+          if(!incEvents && !incCats && !incHol){
+            alert("No se han encontrado datos válidos.");
+            return;
+          }
+
+          let replace = confirm("OK = REEMPLAZAR todo, Cancelar = AÑADIR (merge)");
+
+          if(replace){
+            if(incCats){ CATS = incCats; }
+            if(incHol){ HOLIDAYS = incHol; }
+            if(incEvents){ EVENTOS = incEvents; }
+          }else{
+            // merge cats por id
+            if(incCats){
+              let map = new Map(CATS.map(c=>[String(c.id), c]));
+              incCats.forEach(c=>{ map.set(String(c.id), c); });
+              CATS = Array.from(map.values());
+            }
+            // merge holidays
+            if(incHol){
+              let set = new Set(HOLIDAYS);
+              incHol.forEach(d=>set.add(String(d)));
+              HOLIDAYS = Array.from(set);
+            }
+            // merge events por eventoId (con migración posterior)
+            if(incEvents){
+              let mapE = new Map();
+              migrateEvents(EVENTOS, loadCats()).forEach(ev=>mapE.set(eventoId(ev), ev));
+              migrateEvents(incEvents, loadCats()).forEach(ev=>mapE.set(eventoId(ev), ev));
+              EVENTOS = Array.from(mapE.values());
+            }
+          }
+
+          // normaliza y persiste
+          CATS = loadCats(); // asegura defaults si rompieron
+          // si venían categorías, las aplicamos pero normalizamos y guardamos
+          if(incCats){ writeJSON(K_CATS, CATS = loadCats()); }
+
+          HOLIDAYS = loadHolidays();
+          HOLSET = new Set(HOLIDAYS);
+
+          CATS_BY_ID = new Map(CATS.map(c=>[c.id,c]));
+          EVENTOS = migrateEvents(EVENTOS, CATS);
+          saveAll();
+
+          // refresca UI
+          renderCatsBar();
+          setActiveCat(calendario_activo);
+          renderAll();
+        };
+        reader.readAsText(f);
+      };
+
+      // -------------------------------
+      // crear DOM de evento
+      // -------------------------------
+      function crearEventoDom(ev, hourH){
+        let cat = CATS_BY_ID.get(ev.catId);
+        let el = document.createElement("div");
+        el.classList.add("evento");
+        el.style.cssText = makeCatVarStyle(cat) + ";";
+
+        // posicionamiento por duración
+        let p = calcTopHeight(Number(ev.start), Number(ev.end), hourH);
+        el.style.top = p.top + "px";
+        el.style.height = p.height + "px";
+
+        el.tabIndex = 0;
+        el.innerHTML = `
+          <div class="t"></div>
+          <div class="h"></div>
+          <div class="rpt"></div>
+        `;
+
+        el.querySelector(".t").textContent = (ev.texto||"").trim() || "(sin texto)";
+        el.querySelector(".h").textContent = minToHHMM(Number(ev.start)) + " - " + minToHHMM(Number(ev.end));
+        el.querySelector(".rpt").textContent = repeatLabel(ev);
+
+        el.onclick = function(e){
+          e.stopPropagation();
+          abrirModal({
+            anio: Number(ev.anio),
+            mes: Number(ev.mes),
+            dia: Number(ev.dia),
+            startMin: Number(ev.start),
+            texto: ev.texto,
+            catId: ev.catId,
+            repeat: ev.repeat,
+            edit: true,
+            editId: eventoId(ev)
+          });
+        };
+
+        el.onkeydown = function(e){
+          if(e.key === "Delete" || e.code === "Delete"){
+            if(confirm("¿Eliminar este evento?")){
+              EVENTOS = EVENTOS.filter(function(x){ return eventoId(x)!==eventoId(ev); });
+              writeJSON(K_EVENTS, EVENTOS);
+              renderAll();
+            }
+          }
+        };
+
+        return el;
+      }
+
+      function crearTimelineTicks(timeline, hourH, onClickHour){
+        let dayStart = 8;
+        let dayEnd = 22;
+        let hours = (dayEnd - dayStart);
+
+        for(let i=0;i<hours;i++){
+          let tick = document.createElement("div");
+          tick.classList.add("tick");
+          tick.style.top = (i*hourH) + "px";
+          tick.style.height = hourH + "px";
+          tick.setAttribute("hora", dayStart+i);
+          tick.onclick = function(){
+            onClickHour(dayStart+i);
+          };
+          timeline.appendChild(tick);
+        }
+      }
+
+      // -------------------------------
+      // VISTAS
+      // -------------------------------
+      function renderYearAndMonths(){
+        contenedor.innerHTML = "";
+
+        for(let i=1;i<=meses;i++){
+          let dias_en_mes = diasEnMes(anio,i);
+
+          let mes = document.createElement("div");
+          mes.classList.add("mes","grid");
+          mes.setAttribute("mes", nombres_meses[i-1]);
+          mes.setAttribute("mesnum", i);
+
+          // cabecera
+          let cab = document.createElement("div");
+          cab.classList.add("cabecera_mes");
+          cab.style.gridColumn = "1 / -1";
+          cab.innerHTML = `
+            <div class="nombre">${nombres_meses[i-1]}</div>
+            <div class="info">${anio}</div>
+          `;
+          mes.appendChild(cab);
+
+          // offset inicio (lógica original)
+          let inicio_mes = primerDiaDelMes(anio, i) + 6;
+          for(let j=1;j<=inicio_mes;j++){
+            let dia = document.createElement("div");
+            dia.classList.add("dia","desactivado");
+            mes.appendChild(dia);
+          }
+
+          for(let j=1;j<=dias_en_mes;j++){
+            let dia = document.createElement("div");
+            dia.classList.add("dia");
+
+            let iso = fechaKey(anio, i, j);
+            let isHol = HOLSET.has(iso);
+
+            let num = document.createElement("div");
+            num.classList.add("numdia");
+            num.innerHTML = `
+              <span>${j}</span>
+              <span class="mini">
+                ${nombres_meses[i-1].slice(0,3)}
+                ${isHol ? '<span class="badge holiday">Festivo</span>' : ''}
+              </span>
+            `;
+            dia.appendChild(num);
+
+            num.onclick = function(e){
+              e.stopPropagation();
+              seleccion = { anio: anio, mes: i, dia: j };
+              semanaOffset = 0;
+              diaOffset = 0;
+              estado.textContent = "Selección: " + fechaKey(seleccion.anio, seleccion.mes, seleccion.dia);
+              if(vista==="Semana") mostrarSemana();
+              if(vista==="Dia") mostrarDia();
+              if(vista==="Año"){
+                cambiarVista("Mes");
+                mostrarSoloMes(i);
+              }
+            };
+
+            // timeline mes
+            let timeline = document.createElement("div");
+            timeline.classList.add("timeline");
+            dia.appendChild(timeline);
+
+            let hourH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hour-h-month"));
+            crearTimelineTicks(timeline, hourH, function(h){
+              abrirModal({
+                anio: anio,
+                mes: i,
+                dia: j,
+                startMin: h*60,
+                catId: calendario_activo
+              });
+            });
+
+            // eventos del día (incluye repetidos, aplica festivos/trabajo)
+            let list = listEventsForDate(toDateObj(anio,i,j), EVENTOS, CATS_BY_ID, HOLSET);
+            list.forEach(function(ev){
+              let el = crearEventoDom(ev, hourH);
+              timeline.appendChild(el);
+            });
+
+            mes.appendChild(dia);
+          }
+
+          contenedor.appendChild(mes);
+        }
+      }
+
+      function mostrarSoloMes(mesNum){
+        let mesesDom = contenedor.querySelectorAll(".mes");
+        mesesDom.forEach(function(m){
+          if(Number(m.getAttribute("mesnum"))===Number(mesNum)){
+            m.classList.remove("oculto");
+          }else{
+            m.classList.add("oculto");
+          }
+        });
+        contenedor.classList.remove("vista_anual");
+      }
+
+      function mostrarTodosLosMeses(){
+        contenedor.querySelectorAll(".mes").forEach(function(m){ m.classList.remove("oculto"); });
+      }
+
+      function mostrarSemana(){
+        panel.classList.remove("oculto");
+        contenedor.classList.add("oculto");
+
+        let base = toDateObj(seleccion.anio, seleccion.mes, seleccion.dia);
+        base.setDate(base.getDate() + (semanaOffset*7));
+        let lunes = startOfWeekMonday(base);
+
+        panelTitulo.textContent = "Semana · " + lunes.toLocaleDateString("es-ES",{year:"numeric",month:"2-digit",day:"2-digit"});
+
+        panelBody.innerHTML = "";
+
+        let grid = document.createElement("div");
+        grid.classList.add("grid_semana2");
+
+        // esquina
+        let corner = document.createElement("div");
+        corner.classList.add("celda_lbl");
+        corner.textContent = "";
+        grid.appendChild(corner);
+
+        // headers
+        let dayCols = [];
+        for(let i=0;i<7;i++){
+          let dd = new Date(lunes);
+          dd.setDate(lunes.getDate()+i);
+
+          let iso = isoFromDate(dd);
+          let isHol = HOLSET.has(iso);
+
+          let hdr = document.createElement("div");
+          hdr.classList.add("dia_lbl");
+          hdr.innerHTML = `
+            <span>${dd.toLocaleDateString("es-ES",{weekday:"short",day:"2-digit",month:"2-digit"})}</span>
+            ${isHol ? '<span class="badge holiday">Festivo</span>' : ''}
+          `;
+          grid.appendChild(hdr);
+
+          dayCols.push(dd);
+        }
+
+        // columna horas (una sola)
+        let hourH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hour-h-panel"));
+        let hoursWrap = document.createElement("div");
+        hoursWrap.classList.add("celda_lbl");
+        hoursWrap.style.display="flex";
+        hoursWrap.style.flexDirection="column";
+        hoursWrap.style.gap="0";
+        hoursWrap.style.alignItems="stretch";
+        hoursWrap.style.justifyContent="flex-start";
+        hoursWrap.style.paddingTop="10px";
+
+        // placeholder alto para alinear con timelines
+        hoursWrap.style.height = "calc((var(--day-end) - var(--day-start)) * var(--hour-h-panel))";
+        hoursWrap.style.border = "1px solid var(--stroke)";
+        hoursWrap.style.borderRadius = "14px";
+        hoursWrap.style.background = "#fff";
+        hoursWrap.style.overflow="hidden";
+
+        for(let h=8; h<22; h++){
+          let row = document.createElement("div");
+          row.classList.add("celda_lbl");
+          row.style.height = "var(--hour-h-panel)";
+          row.textContent = h+":00";
+          hoursWrap.appendChild(row);
+        }
+
+        grid.appendChild(hoursWrap);
+
+        // 7 timelines
+        for(let i=0;i<7;i++){
+          let dd = dayCols[i];
+          let a = dd.getFullYear();
+          let m = dd.getMonth()+1;
+          let d = dd.getDate();
+
+          let col = document.createElement("div");
+          col.classList.add("col_dia");
+
+          let timeline = document.createElement("div");
+          timeline.classList.add("timeline");
+          col.appendChild(timeline);
+
+          crearTimelineTicks(timeline, hourH, function(hh){
+            abrirModal({ anio:a, mes:m, dia:d, startMin: hh*60, catId: calendario_activo });
+          });
+
+          let list = listEventsForDate(dd, EVENTOS, CATS_BY_ID, HOLSET);
+          list.forEach(function(ev){
+            let el = crearEventoDom(ev, hourH);
+            timeline.appendChild(el);
+          });
+
+          grid.appendChild(col);
+        }
+
+        panelBody.appendChild(grid);
+      }
+
+      function mostrarDia(){
+        panel.classList.remove("oculto");
+        contenedor.classList.add("oculto");
+
+        let base = toDateObj(seleccion.anio, seleccion.mes, seleccion.dia);
+        base.setDate(base.getDate() + diaOffset);
+
+        let a = base.getFullYear();
+        let m = base.getMonth()+1;
+        let d = base.getDate();
+
+        let iso = isoFromDate(base);
+        let isHol = HOLSET.has(iso);
+
+        panelTitulo.textContent = "Día · " + base.toLocaleDateString("es-ES",{weekday:"long", year:"numeric", month:"long", day:"2-digit"}) + (isHol ? " · Festivo" : "");
+
+        panelBody.innerHTML = "";
+        let wrap = document.createElement("div");
+        wrap.classList.add("lista_dia");
+
+        let colH = document.createElement("div");
+        colH.classList.add("col_horas");
+        wrap.appendChild(colH);
+
+        let colM = document.createElement("div");
+        colM.classList.add("col_main");
+        wrap.appendChild(colM);
+
+        let timeline = document.createElement("div");
+        timeline.classList.add("timeline");
+        colM.appendChild(timeline);
+
+        let hourH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hour-h-panel"));
+
+        for(let h=8;h<22;h++){
+          let hi = document.createElement("div");
+          hi.classList.add("hitem");
+          hi.textContent = h+":00";
+          colH.appendChild(hi);
+        }
+
+        crearTimelineTicks(timeline, hourH, function(hh){
+          abrirModal({ anio:a, mes:m, dia:d, startMin: hh*60, catId: calendario_activo });
+        });
+
+        let list = listEventsForDate(base, EVENTOS, CATS_BY_ID, HOLSET);
+        list.forEach(function(ev){
+          let el = crearEventoDom(ev, hourH);
+          timeline.appendChild(el);
+        });
+
+        panelBody.appendChild(wrap);
+      }
+
+      // -------------------------------
+      // cambiar vista
+      // -------------------------------
+      function marcarAccionActiva(txt){
+        document.querySelectorAll(".acciones").forEach(function(b){
+          if(b.textContent.trim()===txt){ b.classList.add("activa"); }
+          else{ b.classList.remove("activa"); }
+        });
+      }
+
+      function cambiarVista(nueva){
+        vista = nueva;
+        marcarAccionActiva(nueva);
+
+        if(vista==="Año"){
+          panel.classList.add("oculto");
+          contenedor.classList.remove("oculto");
+          mostrarTodosLosMeses();
+          contenedor.classList.add("vista_anual");
+          estado.textContent = "Vista: Año · " + anio;
+        }
+
+        if(vista==="Mes"){
+          panel.classList.add("oculto");
+          contenedor.classList.remove("oculto");
+          contenedor.classList.remove("vista_anual");
+          mostrarTodosLosMeses();
+          estado.textContent = "Vista: Mes · click en una franja para crear evento";
+        }
+
+        if(vista==="Semana"){
+          contenedor.classList.remove("vista_anual");
+          mostrarSemana();
+          estado.textContent = "Vista: Semana · selección " + fechaKey(seleccion.anio, seleccion.mes, seleccion.dia);
+        }
+
+        if(vista==="Dia"){
+          contenedor.classList.remove("vista_anual");
+          mostrarDia();
+          estado.textContent = "Vista: Día · selección " + fechaKey(seleccion.anio, seleccion.mes, seleccion.dia);
+        }
+      }
+
+      document.querySelectorAll(".acciones").forEach(function(accion){
+        accion.onclick = function(){
+          cambiarVista(this.textContent.trim());
+        };
+      });
+
+      // navegación panel
+      document.querySelector("#prev").onclick = function(){
+        if(vista==="Semana"){ semanaOffset--; mostrarSemana(); }
+        if(vista==="Dia"){ diaOffset--; mostrarDia(); }
+      };
+      document.querySelector("#next").onclick = function(){
+        if(vista==="Semana"){ semanaOffset++; mostrarSemana(); }
+        if(vista==="Dia"){ diaOffset++; mostrarDia(); }
+      };
+      document.querySelector("#hoy").onclick = function(){
+        let now = new Date();
+        seleccion = { anio: now.getFullYear(), mes: now.getMonth()+1, dia: now.getDate() };
+        semanaOffset = 0;
+        diaOffset = 0;
+        if(vista==="Semana") mostrarSemana();
+        if(vista==="Dia") mostrarDia();
+        estado.textContent = "Selección: " + fechaKey(seleccion.anio, seleccion.mes, seleccion.dia);
+      };
+
+      // -------------------------------
+      // MODAL GESTIÓN (categorías + festivos)
+      // -------------------------------
+      let mgBack = document.querySelector("#mg_back");
+      let mgClose = document.querySelector("#mg_close");
+      let mgOk = document.querySelector("#mg_ok");
+      let mgExport = document.querySelector("#mg_export");
+      let btnGestion = document.querySelector("#btn_gestion");
+
+      let tabBtns = mgBack.querySelectorAll(".tab");
+      let tabCats = document.querySelector("#tab_cats");
+      let tabHol  = document.querySelector("#tab_hol");
+
+      function openGestion(){
+        renderGestion();
+        mgBack.classList.remove("oculto");
+      }
+      function closeGestion(){
+        mgBack.classList.add("oculto");
+      }
+
+      btnGestion.onclick = openGestion;
+      mgClose.onclick = closeGestion;
+      mgOk.onclick = closeGestion;
+      mgBack.addEventListener("click", function(e){
+        if(e.target===mgBack) closeGestion();
+      });
+
+      tabBtns.forEach(b=>{
+        b.onclick = function(){
+          tabBtns.forEach(x=>x.classList.remove("activa"));
+          this.classList.add("activa");
+          let t = this.dataset.tab;
+          if(t==="cats"){ tabCats.classList.remove("oculto"); tabHol.classList.add("oculto"); }
+          if(t==="hol"){ tabHol.classList.remove("oculto"); tabCats.classList.add("oculto"); }
+        };
+      });
+
+      mgExport.onclick = function(){
+        let payload = {categories:CATS, holidays:HOLIDAYS, events:EVENTOS};
+        navigator.clipboard?.writeText(JSON.stringify(payload, null, 2));
+        alert("JSON copiado al portapapeles (si el navegador lo permite).");
+      };
+
+      // categorías UI
+      let catName = document.querySelector("#cat_name");
+      let catColor= document.querySelector("#cat_color");
+      let catWork = document.querySelector("#cat_work");
+      let catAdd  = document.querySelector("#cat_add");
+      let catList = document.querySelector("#cat_list");
+
+      function slugId(s){
+        s = String(s||"").trim().toLowerCase();
+        s = s.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+        s = s.replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+        if(!s) s = "cat";
+        return s;
+      }
+
+      catAdd.onclick = function(){
+        let name = String(catName.value||"").trim();
+        if(!name){ alert("Nombre requerido."); return; }
+        let idBase = slugId(name);
+        let id = idBase;
+        let n = 2;
+        while(CATS_BY_ID.has(id)){
+          id = idBase + "-" + (n++);
+        }
+        let color = String(catColor.value||"#94a3b8");
+        let trabajo = (catWork.value==="true");
+
+        CATS.push({id, name, color, trabajo});
+        CATS_BY_ID = new Map(CATS.map(c=>[c.id,c]));
+
+        saveAll();
+        renderCatsBar();
+        renderGestion();
+        renderAll();
+
+        catName.value = "";
+      };
+
+      function editCategory(catId){
+        let cat = CATS_BY_ID.get(catId);
+        if(!cat) return;
+
+        let name = prompt("Nuevo nombre de categoría:", cat.name);
+        if(name===null) return;
+        name = String(name).trim();
+        if(!name){ alert("Nombre inválido."); return; }
+
+        let color = prompt("Nuevo color HEX (p. ej. #22c55e):", cat.color);
+        if(color===null) return;
+        color = String(color).trim();
+        if(!/^#([0-9a-fA-F]{6})$/.test(color)){
+          alert("Color inválido. Use #RRGGBB.");
+          return;
+        }
+
+        let trabajo = confirm("¿Marcar esta categoría como trabajo?\n(OK = Sí, Cancelar = No)");
+
+        CATS = CATS.map(c=>{
+          if(c.id!==catId) return c;
+          return { id:c.id, name, color, trabajo };
+        });
+        CATS_BY_ID = new Map(CATS.map(c=>[c.id,c]));
+
+        saveAll();
+        renderCatsBar();
+        renderGestion();
+        renderAll();
+        setActiveCat(calendario_activo);
+      }
+
+      function deleteCategory(catId){
+        if(catId==="personal" || catId==="laboral" || catId==="vacaciones"){
+          if(!confirm("Es una categoría por defecto.\n¿Eliminar igualmente? (se reasignarán eventos a 'personal')")) return;
+        }else{
+          if(!confirm("¿Eliminar esta categoría? (se reasignarán eventos a 'personal')")) return;
+        }
+
+        // reasigna eventos
+        EVENTOS = EVENTOS.map(ev=>{
+          if(ev.catId===catId) return Object.assign({}, ev, {catId:"personal"});
+          return ev;
+        });
+
+        CATS = CATS.filter(c=>c.id!==catId);
+        if(CATS.length===0) CATS = defaultCats();
+
+        CATS_BY_ID = new Map(CATS.map(c=>[c.id,c]));
+
+        // si la activa se borra, cae a personal
+        if(!CATS_BY_ID.has(calendario_activo)) calendario_activo = "personal";
+
+        saveAll();
+        renderCatsBar();
+        renderGestion();
+        renderAll();
+        setActiveCat(calendario_activo);
+      }
+
+      // festivos UI
+      let holDate = document.querySelector("#hol_date");
+      let holAdd  = document.querySelector("#hol_add");
+      let holList = document.querySelector("#hol_list");
+
+      holAdd.onclick = function(){
+        let d = String(holDate.value||"");
+        if(!/^\d{4}-\d{2}-\d{2}$/.test(d)){ alert("Fecha inválida."); return; }
+        HOLIDAYS = Array.from(new Set([...HOLIDAYS, d])).sort();
+        HOLSET = new Set(HOLIDAYS);
+        saveAll();
+        renderGestion();
+        renderAll();
+      };
+
+      function removeHoliday(iso){
+        if(!confirm("¿Eliminar festivo " + iso + "?")) return;
+        HOLIDAYS = HOLIDAYS.filter(x=>x!==iso);
+        HOLSET = new Set(HOLIDAYS);
+        saveAll();
+        renderGestion();
+        renderAll();
+      }
+
+      function renderGestion(){
+        // cats
+        catList.innerHTML = "";
+        CATS.forEach(cat=>{
+          let row = document.createElement("div");
+          row.className = "item";
+          row.innerHTML = `
+            <div class="l">
+              <span class="dot" style="background:${cat.color}; box-shadow:0 0 0 3px color-mix(in srgb, ${cat.color} 20%, transparent 80%);"></span>
+              <div style="min-width:0">
+                <div class="name">${cat.name}</div>
+                <div class="meta">id: ${cat.id} · trabajo: ${cat.trabajo ? "sí" : "no"}</div>
+              </div>
+            </div>
+            <div class="miniBtns">
+              <button class="btn xs" data-act="edit">Editar</button>
+              <button class="btn xs danger" data-act="del">Eliminar</button>
+            </div>
+          `;
+          row.querySelector('[data-act="edit"]').onclick = ()=>editCategory(cat.id);
+          row.querySelector('[data-act="del"]').onclick  = ()=>deleteCategory(cat.id);
+          catList.appendChild(row);
+        });
+
+        // holidays
+        holList.innerHTML = "";
+        HOLIDAYS.forEach(iso=>{
+          let row = document.createElement("div");
+          row.className = "item";
+          row.innerHTML = `
+            <div class="l">
+              <span class="badge holiday">Festivo</span>
+              <div style="min-width:0">
+                <div class="name">${iso}</div>
+                <div class="meta">${new Date(iso).toLocaleDateString("es-ES",{weekday:"long", year:"numeric", month:"long", day:"2-digit"})}</div>
+              </div>
+            </div>
+            <div class="miniBtns">
+              <button class="btn xs danger">Eliminar</button>
+            </div>
+          `;
+          row.querySelector("button").onclick = ()=>removeHoliday(iso);
+          holList.appendChild(row);
+        });
+      }
+
+      // -------------------------------
+      // renderAll
+      // -------------------------------
+      function renderAll(){
+        // recarga coherente desde storage
+        CATS = loadCats();
+        HOLIDAYS = loadHolidays();
+        HOLSET = new Set(HOLIDAYS);
+        CATS_BY_ID = new Map(CATS.map(c=>[c.id,c]));
+
+        EVENTOS = loadEvents(CATS); // migración incluida
+
+        renderCatsBar();
+        fillCatSelect();
+
+        if(vista==="Semana"){ mostrarSemana(); return; }
+        if(vista==="Dia"){ mostrarDia(); return; }
+
+        renderYearAndMonths();
+      }
+
+      // -------------------------------
+      // latido (auto-save)
+      // -------------------------------
+      let temporizador = setTimeout("latido()",1000);
+      function latido(){
+        // guarda en latido
+        saveAll();
+        clearTimeout(temporizador);
+        temporizador = setTimeout("latido()",1000);
+      }
+
+      // -------------------------------
+      // init
+      // -------------------------------
+      renderCatsBar();
+      setActiveCat(calendario_activo);
+      fillCatSelect();
+      estado.textContent = "Vista: Mes · click en una franja para crear evento";
+      renderAll();
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,12 @@
+{
+  "cliente":{
+    "nombre":"fdsafsdf",
+    "apellidos":"fdsfasdfs"
+  },
+  "productos":[
+    {"nombre":"fdsfsdf","cantidad":3,"precio":43},
+    {"nombre":"fdsfsdf","cantidad":3,"precio":43},
+    {"nombre":"fdsfsdf","cantidad":3,"precio":43},
+    {"nombre":"fdsfsdf","cantidad":3,"precio":43}
+  ]
+}

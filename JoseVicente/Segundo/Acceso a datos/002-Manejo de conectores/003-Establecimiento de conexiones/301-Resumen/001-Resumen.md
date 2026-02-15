@@ -1,0 +1,1 @@
+Inserción SQL desde Python

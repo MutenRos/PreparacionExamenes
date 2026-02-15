@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Calendario</title>
+
+    <style>
+      :root{
+        --bg1:#0b1220;
+        --bg2:#0f1b33;
+        --panel: rgba(255,255,255,.08);
+        --panel2: rgba(255,255,255,.06);
+        --stroke: rgba(255,255,255,.12);
+        --stroke2: rgba(255,255,255,.18);
+        --text: rgba(255,255,255,.92);
+        --muted: rgba(255,255,255,.60);
+        --shadow: 0 18px 50px rgba(0,0,0,.40);
+        --shadow2: 0 10px 25px rgba(0,0,0,.25);
+        --r: 18px;
+      }
+
+      *{box-sizing:border-box}
+      body{
+        margin:0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", Arial, "Apple Color Emoji","Segoe UI Emoji";
+        color:var(--text);
+        background:
+          radial-gradient(1100px 600px at 15% 10%, rgba(56,189,248,.18), transparent 55%),
+          radial-gradient(900px 520px at 85% 15%, rgba(167,139,250,.18), transparent 55%),
+          radial-gradient(900px 600px at 70% 90%, rgba(34,197,94,.12), transparent 55%),
+          linear-gradient(180deg, var(--bg1), var(--bg2));
+        min-height:100vh;
+      }
+
+      .app{
+        max-width: 1520px;
+        margin: 0 auto;
+        padding: 18px 16px 30px;
+      }
+
+      /* Topbar */
+      .topbar{
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        margin-bottom: 14px;
+        padding: 14px;
+        border:1px solid var(--stroke);
+        background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+        border-radius: var(--r);
+        box-shadow: var(--shadow2);
+        backdrop-filter: blur(10px);
+        display:flex;
+        gap:14px;
+        align-items:center;
+        justify-content:space-between;
+        flex-wrap:wrap;
+      }
+
+      .brand{
+        display:flex;
+        align-items:baseline;
+        gap:10px;
+        min-width: 220px;
+      }
+      .brand .t{
+        font-weight: 800;
+        letter-spacing:.2px;
+        font-size: 16px;
+      }
+      .brand .s{
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .grupo{
+        display:flex;
+        gap:10px;
+        align-items:center;
+        flex-wrap:wrap;
+      }
+
+      .boton{
+        border:1px solid var(--stroke);
+        border-radius: 999px;
+        background: rgba(255,255,255,.06);
+        color: var(--text);
+        padding: 10px 14px;
+        font-size: 13px;
+        cursor:pointer;
+        transition: transform .12s ease, background .12s ease, border-color .12s ease;
+        user-select:none;
+      }
+      .boton:hover{ transform: translateY(-1px); border-color: var(--stroke2); background: rgba(255,255,255,.10); }
+      .boton:active{ transform: translateY(0px); }
+
+      .acciones{
+        border:1px solid var(--stroke);
+        border-radius: 999px;
+        background: rgba(255,255,255,.08);
+        color: var(--text);
+        padding: 10px 14px;
+        font-size: 13px;
+        cursor:pointer;
+        transition: background .12s ease, border-color .12s ease;
+      }
+      .acciones.activa{
+        background: rgba(56,189,248,.18);
+        border-color: rgba(56,189,248,.35);
+      }
+
+      .chip{
+        border:1px solid var(--stroke);
+        border-radius: 999px;
+        background: rgba(255,255,255,.04);
+        padding: 8px 12px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      /* tipos */
+      .personal{ background: rgba(239,68,68,.90); color:white; }
+      .laboral{ background: rgba(34,197,94,.85); color:white; }
+      .vacaciones{ background: rgba(59,130,246,.85); color:white; }
+
+      /* Layout principal */
+      #jvcalendario{
+        border-radius: var(--r);
+      }
+
+      /* Vistas */
+      .oculto{ display:none !important; }
+
+      /* ---------- VISTA AÑO ---------- */
+      .vista_anual{
+        display:grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap:14px;
+      }
+      @media (max-width: 1200px){
+        .vista_anual{ grid-template-columns: 1fr; }
+      }
+
+      .vista_anual .mes{
+        width: 100% !important;
+        border-radius: var(--r);
+        border:1px solid var(--stroke);
+        background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+        box-shadow: var(--shadow2);
+        overflow:hidden;
+      }
+      .vista_anual .mes .cabecera_mes{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--stroke);
+        background: rgba(0,0,0,.12);
+      }
+      .vista_anual .mes .cabecera_mes .nombre{ font-weight:800; font-size:13px; letter-spacing:.2px; }
+      .vista_anual .mes .cabecera_mes .info{ color:var(--muted); font-size:11px; }
+      .vista_anual .mes .dia{
+        height: 44px !important;
+        padding: 6px !important;
+        font-size: 11px !important;
+        justify-content:flex-start !important;
+      }
+      .vista_anual .mes .dia .hora{ display:none !important; }
+      .vista_anual .mes .dia .mini_eventos{
+        margin-top: 4px;
+        display:flex;
+        gap:4px;
+        flex-wrap:wrap;
+      }
+      .vista_anual .mes .dia .punto{
+        width:8px;height:8px;border-radius:999px;
+        border:1px solid rgba(255,255,255,.25);
+        opacity:.95;
+      }
+
+      /* ---------- VISTA MES (por defecto) ---------- */
+      #jvcalendario .mes{
+        display:grid;
+        width: 1400px;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap:0;
+        margin-bottom: 14px;
+        border-radius: var(--r);
+        overflow:hidden;
+        border:1px solid var(--stroke);
+        background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+        box-shadow: var(--shadow);
+      }
+
+      /* Cabecera mes dentro del grid (ocupa 7 columnas) */
+      .cabecera_mes{
+        grid-column: 1 / -1;
+      }
+
+      #jvcalendario .mes .dia{
+        border-right:1px solid rgba(255,255,255,.08);
+        border-bottom:1px solid rgba(255,255,255,.08);
+        height: 250px;
+        padding: 10px;
+        font-size: 11px;
+        display:flex;
+        flex-direction:column;
+        justify-content:space-between;
+        position:relative;
+        background: rgba(255,255,255,.02);
+      }
+      #jvcalendario .mes .dia:hover{
+        background: rgba(255,255,255,.04);
+      }
+
+      #jvcalendario .mes .dia .numdia{
+        font-weight:800;
+        font-size:12px;
+        letter-spacing:.2px;
+        color: rgba(255,255,255,.86);
+        cursor:pointer;
+        user-select:none;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:8px;
+      }
+      #jvcalendario .mes .dia .numdia .pill{
+        font-size:10px;
+        color: var(--muted);
+        border:1px solid var(--stroke);
+        padding: 3px 8px;
+        border-radius:999px;
+        background: rgba(255,255,255,.03);
+      }
+
+      #jvcalendario .mes .dia .hora{
+        border-bottom:1px dashed rgba(255,255,255,.10);
+        display:flex;
+        align-items:flex-start;
+        gap:10px;
+        padding: 4px 6px;
+        border-radius: 10px;
+        transition: background .10s ease;
+      }
+      #jvcalendario .mes .dia .hora:hover{
+        background: rgba(255,255,255,.06);
+      }
+      #jvcalendario .mes .dia .hora:nth-child(even){
+        background: rgba(255,255,255,.03);
+      }
+
+      #jvcalendario .mes .desactivado{
+        background: rgba(255,255,255,.03);
+        opacity:.55;
+      }
+
+      #jvcalendario .mes .dia .hora .h{
+        width: 18px;
+        color: var(--muted);
+        font-size: 10px;
+        padding-top: 2px;
+        user-select:none;
+      }
+
+      #jvcalendario .mes .dia .hora .evento{
+        color:white;
+        padding: 6px 8px;
+        border-radius: 12px;
+        width: 100%;
+        min-height: 24px;
+        outline:none;
+        border: 1px solid rgba(255,255,255,.16);
+        box-shadow: 0 8px 18px rgba(0,0,0,.25);
+      }
+      #jvcalendario .mes .dia .hora .evento:focus{
+        border-color: rgba(255,255,255,.40);
+        box-shadow: 0 10px 22px rgba(0,0,0,.35);
+      }
+
+      /* ---------- VISTA SEMANA / DÍA (panel dedicado) ---------- */
+      #panel_vista{
+        border:1px solid var(--stroke);
+        background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+        border-radius: var(--r);
+        box-shadow: var(--shadow);
+        overflow:hidden;
+      }
+      #panel_vista .panel_head{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding: 12px 14px;
+        border-bottom:1px solid var(--stroke);
+        background: rgba(0,0,0,.12);
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      #panel_vista .panel_head .ttl{
+        font-weight:800;
+        letter-spacing:.2px;
+      }
+      #panel_vista .panel_body{
+        padding: 12px;
+      }
+
+      .grid_semana{
+        display:grid;
+        grid-template-columns: 70px repeat(7, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .grid_semana .celda{
+        border:1px solid rgba(255,255,255,.10);
+        background: rgba(255,255,255,.03);
+        border-radius: 14px;
+        min-height: 44px;
+        padding: 8px;
+      }
+      .grid_semana .hora_lbl{
+        color: var(--muted);
+        font-size: 12px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      }
+      .grid_semana .dia_lbl{
+        font-weight:800;
+        font-size: 12px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background: rgba(255,255,255,.04);
+      }
+      .slot_semana{
+        cursor:pointer;
+      }
+      .slot_semana:hover{
+        background: rgba(255,255,255,.06);
+        border-color: rgba(255,255,255,.18);
+      }
+      .slot_semana .evento{
+        margin-top: 2px;
+        width:100%;
+      }
+
+      .lista_dia{
+        display:flex;
+        flex-direction:column;
+        gap:8px;
+      }
+      .fila_dia{
+        display:flex;
+        gap:10px;
+        align-items:flex-start;
+        border:1px solid rgba(255,255,255,.10);
+        background: rgba(255,255,255,.03);
+        border-radius: 14px;
+        padding: 10px;
+        cursor:pointer;
+      }
+      .fila_dia:hover{
+        background: rgba(255,255,255,.06);
+        border-color: rgba(255,255,255,.18);
+      }
+      .fila_dia .h{
+        width:38px;
+        color: var(--muted);
+        font-size: 12px;
+        padding-top: 4px;
+        user-select:none;
+      }
+
+      /* Responsivo: ancho mes */
+      @media (max-width: 1500px){
+        #jvcalendario .mes{ width: 100% !important; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app">
+      <div class="topbar">
+        <div class="brand">
+          <div class="t">Calendario</div>
+          <div class="s" id="estado"></div>
+        </div>
+
+        <div class="grupo">
+          <button id="guardar" class="boton">Guardar</button>
+          <span class="chip">Calendario activo: <b id="activo_lbl">personal</b></span>
+          <button class="boton personal">personal</button>
+          <button class="boton laboral">laboral</button>
+          <button class="boton vacaciones">vacaciones</button>
+        </div>
+
+        <div class="grupo">
+          <button class="acciones anio">Año</button>
+          <button class="acciones mes activa">Mes</button>
+          <button class="acciones semana">Semana</button>
+          <button class="acciones dia">Dia</button>
+        </div>
+      </div>
+
+      <div id="panel_vista" class="oculto">
+        <div class="panel_head">
+          <div class="ttl" id="panel_titulo">Vista</div>
+          <div class="grupo">
+            <button id="prev" class="boton">◀</button>
+            <button id="hoy" class="boton">Hoy</button>
+            <button id="next" class="boton">▶</button>
+          </div>
+        </div>
+        <div class="panel_body" id="panel_body"></div>
+      </div>
+
+      <div id="jvcalendario"></div>
+    </div>
+
+    <script>
+      function bindEvento(el){
+        el.addEventListener("click", function(e){
+          e.stopPropagation();
+        });
+      }
+
+      function diasEnMes(year, month) {
+        return new Date(year, month, 0).getDate();
+      }
+
+      function primerDiaDelMes(year, month) {
+        return new Date(year, month - 1, 1).getDay();
+      }
+
+      function pad2(n){ return String(n).padStart(2,"0"); }
+
+      function fechaKey(a,m,d){
+        return a+"-"+pad2(m)+"-"+pad2(d);
+      }
+
+      function readStorage(){
+        let raw = localStorage.getItem("jvcalendario");
+        if(!raw) return [];
+        try { return JSON.parse(raw) || []; } catch(e){ return []; }
+      }
+
+      function writeStorage(){
+        let eventos = document.querySelectorAll(".evento");
+        let json = [];
+        eventos.forEach(function(evento){
+          json.push({
+            anio: evento.getAttribute("anio"),
+            mes:  evento.getAttribute("mes"),
+            dia:  evento.getAttribute("dia"),
+            hora: evento.getAttribute("hora"),
+            tipo: evento.classList.contains("personal") ? "personal"
+                 : evento.classList.contains("laboral") ? "laboral"
+                 : evento.classList.contains("vacaciones") ? "vacaciones"
+                 : "",
+            texto: evento.textContent
+          });
+        });
+        localStorage.setItem("jvcalendario", JSON.stringify(json));
+      }
+
+      function crearEvento(slot, a, m, d, h, tipo, texto){
+        let evento = document.createElement("div");
+        evento.setAttribute("anio", a);
+        evento.setAttribute("mes", m);
+        evento.setAttribute("dia", d);
+        evento.setAttribute("hora", h);
+        evento.classList.add("evento");
+        if(tipo) evento.classList.add(tipo);
+        evento.setAttribute("contenteditable", true);
+        evento.textContent = texto || "";
+
+        evento.onkeydown = function(e){
+          if (e.key === "Delete" || e.code === "Delete") {
+            this.remove();
+          }
+        };
+
+        slot.appendChild(evento);
+        bindEvento(evento);
+        return evento;
+      }
+
+      function cargarEventosEnMes(mesEl, mesNum){
+        let eventos = readStorage();
+        eventos.forEach(function(ev){
+          if (Number(ev.mes) !== Number(mesNum)) return;
+          let selector = `.hora[anio="${ev.anio}"][mes="${ev.mes}"][dia="${ev.dia}"][hora="${ev.hora}"]`;
+          let slotHora = mesEl.querySelector(selector);
+          if(!slotHora) return;
+          crearEvento(slotHora, ev.anio, ev.mes, ev.dia, ev.hora, ev.tipo, ev.texto);
+        });
+      }
+
+      function puntosMiniEventos(diaEl, a, m, d){
+        // para vista año: renderiza puntos por tipo si existen eventos ese día
+        let mini = document.createElement("div");
+        mini.classList.add("mini_eventos");
+
+        let eventos = readStorage().filter(function(ev){
+          return Number(ev.anio)===Number(a) && Number(ev.mes)===Number(m) && Number(ev.dia)===Number(d) && (ev.texto||"").trim()!=="";
+        });
+
+        // máximo 4 puntos para no ensuciar
+        eventos.slice(0,4).forEach(function(ev){
+          let p = document.createElement("div");
+          p.classList.add("punto");
+          if(ev.tipo==="personal") p.style.background = "rgba(239,68,68,.90)";
+          if(ev.tipo==="laboral") p.style.background = "rgba(34,197,94,.85)";
+          if(ev.tipo==="vacaciones") p.style.background = "rgba(59,130,246,.85)";
+          mini.appendChild(p);
+        });
+
+        if(eventos.length>0) diaEl.appendChild(mini);
+      }
+
+      // -------------------------------
+      // Estado general
+      // -------------------------------
+      let contenedor = document.querySelector("#jvcalendario");
+      let panel = document.querySelector("#panel_vista");
+      let panelBody = document.querySelector("#panel_body");
+      let panelTitulo = document.querySelector("#panel_titulo");
+      let estado = document.querySelector("#estado");
+
+      let anio = 2026;
+      let meses = 12;
+      let nombres_meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+      let calendario_activo = "personal";
+      let activo_lbl = document.querySelector("#activo_lbl");
+
+      let vista = "Mes"; // Año | Mes | Semana | Dia
+      let seleccion = { anio: anio, mes: 1, dia: 1 };  // fecha seleccionada para semana/día
+      let semanaOffset = 0; // navegación semanal
+      let diaOffset = 0;    // navegación diaria
+
+      // -------------------------------
+      // Botones calendario (tipo)
+      // -------------------------------
+      let botones_calendario = document.querySelectorAll(".boton.personal, .boton.laboral, .boton.vacaciones");
+      botones_calendario.forEach(function(boton){
+        boton.onclick = function(){
+          calendario_activo = this.textContent.trim();
+          activo_lbl.textContent = calendario_activo;
+        };
+      });
+
+      // -------------------------------
+      // Guardar
+      // -------------------------------
+      document.querySelector("#guardar").onclick = function(){
+        writeStorage();
+      };
+
+      // -------------------------------
+      // Render año/mes (tu estructura, mejorada)
+      // -------------------------------
+      function renderYearAndMonths(){
+        contenedor.innerHTML = "";
+
+        for(let i=1;i<=meses;i++){
+          let dias_en_mes = diasEnMes(anio,i);
+
+          let mes = document.createElement("div");
+          mes.classList.add("mes");
+          mes.setAttribute("mes", nombres_meses[i-1]);
+          mes.setAttribute("mesnum", i);
+
+          // cabecera mes (ocupa todo el ancho del grid)
+          let cab = document.createElement("div");
+          cab.classList.add("cabecera_mes");
+          cab.innerHTML = `
+            <div class="cabecera_mes">
+              <div class="nombre">${nombres_meses[i-1]}</div>
+              <div class="info">${anio}</div>
+            </div>
+          `;
+          mes.appendChild(cab);
+
+          // offset inicio (lunes como primero)
+          let inicio_mes = primerDiaDelMes(anio, i) + 6; // tu fórmula
+          for(let j=1;j<=inicio_mes;j++){
+            let dia = document.createElement("div");
+            dia.classList.add("dia","desactivado");
+            mes.appendChild(dia);
+          }
+
+          for(let j=1;j<=dias_en_mes;j++){
+            let dia = document.createElement("div");
+            dia.classList.add("dia");
+
+            // header día
+            let num = document.createElement("div");
+            num.classList.add("numdia");
+            num.innerHTML = `<span>${j}</span><span class="pill">${nombres_meses[i-1].slice(0,3)}</span>`;
+            dia.appendChild(num);
+
+            // seleccionar día para semana/día
+            num.onclick = function(e){
+              e.stopPropagation();
+              seleccion = { anio: anio, mes: i, dia: j };
+              semanaOffset = 0;
+              diaOffset = 0;
+              estado.textContent = "Selección: " + fechaKey(seleccion.anio, seleccion.mes, seleccion.dia);
+              // si estás en semana o día, re-render
+              if(vista==="Semana") mostrarSemana();
+              if(vista==="Dia") mostrarDia();
+              // si estás en año, saltar a mes del click
+              if(vista==="Año"){
+                cambiarVista("Mes");
+                mostrarSoloMes(i);
+              }
+            };
+
+            // horas
+            for(let k=8;k<=21;k++){
+              let hora = document.createElement("div");
+              hora.setAttribute("anio", anio);
+              hora.setAttribute("mes", i);
+              hora.setAttribute("dia", j);
+              hora.setAttribute("hora", k);
+              hora.classList.add("hora");
+              hora.innerHTML = `<div class="h">${k}</div>`;
+
+              hora.onclick = function(){
+                let evento = crearEvento(hora, anio, i, j, k, calendario_activo, "");
+                evento.focus();
+              };
+
+              dia.appendChild(hora);
+            }
+
+            // mini puntos (solo se ven en vista año por CSS)
+            puntosMiniEventos(dia, anio, i, j);
+
+            mes.appendChild(dia);
+          }
+
+          contenedor.appendChild(mes);
+
+          // cargar eventos de este mes dentro de sus slots
+          cargarEventosEnMes(mes, i);
+        }
+      }
+
+      function mostrarSoloMes(mesNum){
+        let mesesDom = contenedor.querySelectorAll(".mes");
+        mesesDom.forEach(function(m){
+          if(Number(m.getAttribute("mesnum"))===Number(mesNum)){
+            m.classList.remove("oculto");
+          }else{
+            m.classList.add("oculto");
+          }
+        });
+        contenedor.classList.remove("vista_anual");
+      }
+
+      function mostrarTodosLosMeses(){
+        let mesesDom = contenedor.querySelectorAll(".mes");
+        mesesDom.forEach(function(m){ m.classList.remove("oculto"); });
+      }
+
+      // -------------------------------
+      // VISTA SEMANA / DÍA (panel)
+      // -------------------------------
+      function toDateObj(a,m,d){
+        return new Date(a, m-1, d);
+      }
+
+      function startOfWeekMonday(dateObj){
+        // devuelve lunes de la semana (00:00)
+        let d = new Date(dateObj);
+        d.setHours(0,0,0,0);
+        let day = d.getDay(); // 0 domingo
+        let diff = (day===0 ? -6 : 1-day);
+        d.setDate(d.getDate() + diff);
+        return d;
+      }
+
+      function fmtDia(dateObj){
+        let a = dateObj.getFullYear();
+        let m = dateObj.getMonth()+1;
+        let d = dateObj.getDate();
+        return fechaKey(a,m,d);
+      }
+
+      function mostrarSemana(){
+        panel.classList.remove("oculto");
+        contenedor.classList.add("oculto");
+
+        let base = toDateObj(seleccion.anio, seleccion.mes, seleccion.dia);
+        base.setDate(base.getDate() + (semanaOffset*7));
+        let lunes = startOfWeekMonday(base);
+
+        panelTitulo.textContent = "Semana · " + fmtDia(lunes);
+
+        panelBody.innerHTML = "";
+        let grid = document.createElement("div");
+        grid.classList.add("grid_semana");
+
+        // fila labels (0, +7)
+        let vacio = document.createElement("div");
+        vacio.classList.add("celda","dia_lbl");
+        vacio.textContent = "";
+        grid.appendChild(vacio);
+
+        for(let i=0;i<7;i++){
+          let dd = new Date(lunes);
+          dd.setDate(lunes.getDate()+i);
+          let lbl = document.createElement("div");
+          lbl.classList.add("celda","dia_lbl");
+          lbl.textContent = dd.toLocaleDateString("es-ES",{weekday:"short", day:"2-digit", month:"2-digit"});
+          grid.appendChild(lbl);
+        }
+
+        // horas
+        for(let h=8;h<=21;h++){
+          let hl = document.createElement("div");
+          hl.classList.add("celda","hora_lbl");
+          hl.textContent = h+":00";
+          grid.appendChild(hl);
+
+          for(let i=0;i<7;i++){
+            let dd = new Date(lunes);
+            dd.setDate(lunes.getDate()+i);
+
+            let a = dd.getFullYear();
+            let m = dd.getMonth()+1;
+            let d = dd.getDate();
+
+            let slot = document.createElement("div");
+            slot.classList.add("celda","slot_semana");
+            slot.setAttribute("anio", a);
+            slot.setAttribute("mes", m);
+            slot.setAttribute("dia", d);
+            slot.setAttribute("hora", h);
+
+            slot.onclick = function(){
+              let evento = crearEvento(slot, a, m, d, h, calendario_activo, "");
+              evento.focus();
+            };
+
+            grid.appendChild(slot);
+          }
+        }
+
+        panelBody.appendChild(grid);
+
+        // cargar eventos (solo los que caen en esa semana)
+        let eventos = readStorage();
+        eventos.forEach(function(ev){
+          let selector = `.slot_semana[anio="${ev.anio}"][mes="${ev.mes}"][dia="${ev.dia}"][hora="${ev.hora}"]`;
+          let slot = panelBody.querySelector(selector);
+          if(!slot) return;
+          crearEvento(slot, ev.anio, ev.mes, ev.dia, ev.hora, ev.tipo, ev.texto);
+        });
+      }
+
+      function mostrarDia(){
+        panel.classList.remove("oculto");
+        contenedor.classList.add("oculto");
+
+        let base = toDateObj(seleccion.anio, seleccion.mes, seleccion.dia);
+        base.setDate(base.getDate() + diaOffset);
+
+        let a = base.getFullYear();
+        let m = base.getMonth()+1;
+        let d = base.getDate();
+
+        panelTitulo.textContent = "Día · " + base.toLocaleDateString("es-ES",{weekday:"long", year:"numeric", month:"long", day:"2-digit"});
+
+        panelBody.innerHTML = "";
+        let lista = document.createElement("div");
+        lista.classList.add("lista_dia");
+
+        for(let h=8;h<=21;h++){
+          let fila = document.createElement("div");
+          fila.classList.add("fila_dia");
+          fila.setAttribute("anio", a);
+          fila.setAttribute("mes", m);
+          fila.setAttribute("dia", d);
+          fila.setAttribute("hora", h);
+
+          let hh = document.createElement("div");
+          hh.classList.add("h");
+          hh.textContent = h+":00";
+          fila.appendChild(hh);
+
+          let cont = document.createElement("div");
+          cont.style.flex = "1";
+          fila.appendChild(cont);
+
+          fila.onclick = function(){
+            let evento = crearEvento(cont, a, m, d, h, calendario_activo, "");
+            evento.focus();
+          };
+
+          lista.appendChild(fila);
+        }
+
+        panelBody.appendChild(lista);
+
+        // cargar eventos del día
+        let eventos = readStorage();
+        eventos.forEach(function(ev){
+          if(Number(ev.anio)!==Number(a) || Number(ev.mes)!==Number(m) || Number(ev.dia)!==Number(d)) return;
+          let selector = `.fila_dia[hora="${ev.hora}"]`;
+          let fila = panelBody.querySelector(selector);
+          if(!fila) return;
+          let cont = fila.children[1];
+          crearEvento(cont, ev.anio, ev.mes, ev.dia, ev.hora, ev.tipo, ev.texto);
+        });
+      }
+
+      // -------------------------------
+      // Cambiar vista (botones)
+      // -------------------------------
+      function marcarAccionActiva(txt){
+        document.querySelectorAll(".acciones").forEach(function(b){
+          if(b.textContent.trim()===txt){ b.classList.add("activa"); }
+          else{ b.classList.remove("activa"); }
+        });
+      }
+
+      function cambiarVista(nueva){
+        vista = nueva;
+        marcarAccionActiva(nueva);
+
+        if(vista==="Año"){
+          panel.classList.add("oculto");
+          contenedor.classList.remove("oculto");
+          mostrarTodosLosMeses();
+          contenedor.classList.add("vista_anual");
+          estado.textContent = "Vista: Año · " + anio;
+        }
+
+        if(vista==="Mes"){
+          panel.classList.add("oculto");
+          contenedor.classList.remove("oculto");
+          contenedor.classList.remove("vista_anual");
+          mostrarTodosLosMeses();
+          estado.textContent = "Vista: Mes · haz click en un día para seleccionar";
+        }
+
+        if(vista==="Semana"){
+          contenedor.classList.remove("vista_anual");
+          mostrarSemana();
+          estado.textContent = "Vista: Semana · selección " + fechaKey(seleccion.anio, seleccion.mes, seleccion.dia);
+        }
+
+        if(vista==="Dia"){
+          contenedor.classList.remove("vista_anual");
+          mostrarDia();
+          estado.textContent = "Vista: Día · selección " + fechaKey(seleccion.anio, seleccion.mes, seleccion.dia);
+        }
+      }
+
+      document.querySelectorAll(".acciones").forEach(function(accion){
+        accion.onclick = function(){
+          cambiarVista(this.textContent.trim());
+        };
+      });
+
+      // Navegación panel
+      document.querySelector("#prev").onclick = function(){
+        if(vista==="Semana"){ semanaOffset--; mostrarSemana(); }
+        if(vista==="Dia"){ diaOffset--; mostrarDia(); }
+      };
+      document.querySelector("#next").onclick = function(){
+        if(vista==="Semana"){ semanaOffset++; mostrarSemana(); }
+        if(vista==="Dia"){ diaOffset++; mostrarDia(); }
+      };
+      document.querySelector("#hoy").onclick = function(){
+        let now = new Date();
+        seleccion = { anio: now.getFullYear(), mes: now.getMonth()+1, dia: now.getDate() };
+        semanaOffset = 0;
+        diaOffset = 0;
+        if(vista==="Semana") mostrarSemana();
+        if(vista==="Dia") mostrarDia();
+        estado.textContent = "Selección: " + fechaKey(seleccion.anio, seleccion.mes, seleccion.dia);
+      };
+
+      // -------------------------------
+      // Auto-guardado (tu latido)
+      // -------------------------------
+      let temporizador = setTimeout("latido()",1000);
+      function latido(){
+        writeStorage();
+        clearTimeout(temporizador);
+        temporizador = setTimeout("latido()",1000);
+      }
+
+      // -------------------------------
+      // INIT
+      // -------------------------------
+      renderYearAndMonths();
+      activo_lbl.textContent = calendario_activo;
+      estado.textContent = "Vista: Mes · haz click en un día para seleccionar";
+    </script>
+  </body>
+</html>
+

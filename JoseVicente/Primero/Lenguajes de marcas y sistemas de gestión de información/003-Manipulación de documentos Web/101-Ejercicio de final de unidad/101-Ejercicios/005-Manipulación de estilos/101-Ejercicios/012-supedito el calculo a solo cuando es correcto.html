@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      input{background:lightsteelblue;border:none;padding:5px;}
+      .error{background:lightcoral;}
+      .correcto{background:lightgreen;}
+    </style>
+  </head>
+  <body> 
+    <header><h1>jocarsa | dni</h1></header>
+    <main>
+      <input type="number"><div id="letra">
+    </main>
+    <footer>(c) 2025 Jose Vicente Carratalá</footer>
+    <script>
+      function calculaLetra(numero){
+        let cadena = "TRWAGMYFPDXBNJZSQVHLCKE";
+        return cadena[numero % 23];
+      }
+ 
+      let entrada = document.querySelector("input");
+      let salida = document.querySelector("#letra")
+      entrada.onkeyup = function(){
+        let contenido = this.value;
+        // Compruebo la longitud del campo
+        if(contenido.length == 8){
+          entrada.classList.add("correcto")
+          salida.textContent = calculaLetra(contenido)
+        }else{
+          entrada.classList = ""
+          entrada.classList.add("error")
+        }
+        
+      }
+    </script>
+  </body>
+</html>

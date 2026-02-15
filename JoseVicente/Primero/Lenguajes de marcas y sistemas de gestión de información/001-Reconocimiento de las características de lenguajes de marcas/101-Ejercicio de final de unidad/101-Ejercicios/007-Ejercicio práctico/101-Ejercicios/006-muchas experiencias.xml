@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- En este documento voy a describir a un ser humano -->
+<persona>
+  <datospersonales>
+    <nombre>Jose Vicente</nombre>
+    <apellido1>Carratalá</apellido1>
+    <apellido2>Sanchis</apellido2>
+    <telefonos>
+      <movil>620891718</movil>
+      <fijo>963778757</fijo>
+    </telefonos>
+    <emails>
+      <empresa>info@jocarsa.com</empresa>
+      <personal>info@josevicentecarratala.com</personal>
+    </emails>
+  </datospersonales>
+  <experiencialaboral>
+    <experiencia>
+      <nombreempresa>
+        Empresa 1
+      </nombreempresa>
+      <fechadeinicio>XXXX-XX-XX</fechadeinicio>
+      <fechadefinal>XXXX-XX-XX</fechadefinal>
+      <descripcion>
+        Aqui pondré una pequeña descripción del puesto de trabajo
+      </descripcion>
+      <logo>logo.jpg</logo>
+    </experiencia>
+    <experiencia>
+      <nombreempresa>
+        Empresa 1
+      </nombreempresa>
+      <fechadeinicio>XXXX-XX-XX</fechadeinicio>
+      <fechadefinal>XXXX-XX-XX</fechadefinal>
+      <descripcion>
+        Aqui pondré una pequeña descripción del puesto de trabajo
+      </descripcion>
+      <logo>logo.jpg</logo>
+    </experiencia>
+    <experiencia>
+      <nombreempresa>
+        Empresa 1
+      </nombreempresa>
+      <fechadeinicio>XXXX-XX-XX</fechadeinicio>
+      <fechadefinal>XXXX-XX-XX</fechadefinal>
+      <descripcion>
+        Aqui pondré una pequeña descripción del puesto de trabajo
+      </descripcion>
+      <logo>logo.jpg</logo>
+    </experiencia>
+  </experiencialaboral>
+  <formacion>
+    <titulo>
+      <nombre>Título en XXXXXX</titulo>
+      <fechadeinicio>XXXX-XX-XX</fechadeinicio>
+      <fechadefinal>XXXX-XX-XX</fechadefinal>
+      <institucion>Nombre de la institución</institucion>
+      <descripcion>
+        Aqui pondré una pequeña descripción del titulo obtenido
+      </descripcion>
+      <logo>logo.jpg</logo>
+    </titulo>
+  </formacion>
+</persona>
+
+  
+

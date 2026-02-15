@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body> 
+    <section>
+    </section>
+    
+    <template id="plantilla1">
+      <article>
+        <h1>Titulo de prueba</h1>
+        <time>Fecha de prueba</time>
+        <p>Texto de prueba</p>
+        <img src="">
+      </article>
+    </template>
+    
+    <script>
+      var plantilla = document.querySelector("#plantilla1");
+      var clon1 = plantilla.content.cloneNode(true);  // Nuevo en este ejercicio
+      var seccion = document.querySelector("section")
+      seccion.appendChild(clon1)
+      
+      var clon2 = plantilla.content.cloneNode(true);
+      seccion.appendChild(clon2)
+      
+      var clon3 = plantilla.content.cloneNode(true);
+      seccion.appendChild(clon3)
+      
+    </script>
+  </body>
+</html>

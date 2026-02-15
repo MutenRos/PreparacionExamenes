@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control — Tienda Online</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --bg:#0a0e17;--card:#111827;--border:#1e293b;
+            --accent:#3b82f6;--accent2:#8b5cf6;--accent3:#06b6d4;
+            --green:#22c55e;--red:#ef4444;--amber:#f59e0b;
+            --text:#e2e8f0;--muted:#94a3b8;--dim:#64748b;
+        }
+        body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+        .grain{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+        /* Hero */
+        .hero{position:relative;padding:5rem 2rem 4rem;text-align:center;overflow:hidden}
+        .hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 50% 0%,rgba(59,130,246,.12) 0%,transparent 60%);pointer-events:none}
+        .hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:-.02em;background:linear-gradient(135deg,#fff 0%,var(--accent) 50%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem}
+        .hero .sub{font-size:1.15rem;color:var(--muted);max-width:700px;margin:0 auto 2rem}
+        .badge-row{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem}
+        .badge{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .85rem;border-radius:999px;font-size:.78rem;font-weight:600;letter-spacing:.02em;border:1px solid}
+        .badge.java{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.25);color:#f87171}
+        .badge.mysql{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.25);color:#60a5fa}
+        .badge.jdbc{background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.25);color:#a78bfa}
+        .badge.crud{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.25);color:#4ade80}
+        .badge.join{background:rgba(6,182,212,.1);border-color:rgba(6,182,212,.25);color:#22d3ee}
+
+        /* Container */
+        .container{max-width:1100px;margin:0 auto;padding:0 1.5rem}
+
+        /* Section titles */
+        .section-title{font-size:1.4rem;font-weight:700;margin:3rem 0 1.5rem;padding-left:1rem;border-left:3px solid var(--accent);display:flex;align-items:center;gap:.5rem}
+        .section-title .icon{font-size:1.1rem}
+
+        /* Arch cards */
+        .arch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+        .arch-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.4rem;position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
+        .arch-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+        .arch-card .card-icon{font-size:1.8rem;margin-bottom:.6rem}
+        .arch-card h3{font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+        .arch-card p{font-size:.8rem;color:var(--muted);line-height:1.5}
+        .arch-card .lines{position:absolute;top:.8rem;right:.8rem;font-size:.65rem;color:var(--dim);font-weight:600;background:rgba(255,255,255,.05);padding:.15rem .5rem;border-radius:999px}
+
+        /* Console */
+        .console{background:#0d1117;border:1px solid #21262d;border-radius:12px;overflow:hidden;margin-bottom:2rem;font-family:'Cascadia Code','Fira Code','Consolas',monospace}
+        .console-header{background:#161b22;padding:.6rem 1rem;display:flex;align-items:center;gap:.5rem;border-bottom:1px solid #21262d}
+        .console-dot{width:10px;height:10px;border-radius:50%}
+        .console-dot.r{background:#ff5f57}.console-dot.y{background:#febc2e}.console-dot.g{background:#28c840}
+        .console-header span{color:var(--dim);font-size:.75rem;margin-left:.5rem}
+        .console-body{padding:1.2rem 1.5rem;font-size:.82rem;line-height:1.7;color:#c9d1d9;overflow-x:auto;white-space:pre}
+        .console-body .prompt{color:var(--green)}
+        .console-body .title{color:var(--accent);font-weight:700}
+        .console-body .section-head{color:var(--accent2);font-weight:600}
+        .console-body .option{color:#c9d1d9}
+        .console-body .dim{color:#484f58}
+        .console-body .hl{color:var(--amber)}
+        .console-body .val{color:var(--accent3)}
+
+        /* Data tables */
+        .data-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-bottom:2rem}
+        .data-table th{background:var(--card);color:var(--accent);font-weight:700;text-align:left;padding:.7rem 1rem;border-bottom:2px solid var(--accent);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em}
+        .data-table td{padding:.6rem 1rem;border-bottom:1px solid var(--border);color:var(--text)}
+        .data-table tr:hover td{background:rgba(59,130,246,.04)}
+        .data-table .price{text-align:right;font-weight:600;color:var(--green);font-family:'Cascadia Code',monospace}
+        .data-table .qty{text-align:center;color:var(--amber)}
+        .data-table .id-col{color:var(--dim);font-family:monospace;font-size:.75rem}
+
+        /* Stats cards */
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:2rem}
+        .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.3rem 1.5rem;position:relative;overflow:hidden}
+        .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+        .stat-card.blue::before{background:linear-gradient(90deg,var(--accent),var(--accent3))}
+        .stat-card.green::before{background:linear-gradient(90deg,var(--green),#10b981)}
+        .stat-card.purple::before{background:linear-gradient(90deg,var(--accent2),#ec4899)}
+        .stat-card.amber::before{background:linear-gradient(90deg,var(--amber),var(--red))}
+        .stat-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);font-weight:600;margin-bottom:.3rem}
+        .stat-value{font-size:1.8rem;font-weight:800;letter-spacing:-.02em}
+        .stat-card.blue .stat-value{color:var(--accent)}
+        .stat-card.green .stat-value{color:var(--green)}
+        .stat-card.purple .stat-value{color:var(--accent2)}
+        .stat-card.amber .stat-value{color:var(--amber)}
+        .stat-detail{font-size:.75rem;color:var(--muted);margin-top:.2rem}
+
+        /* Features */
+        .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-bottom:2rem}
+        .feature{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.4rem 1.5rem;transition:border-color .3s}
+        .feature:hover{border-color:var(--accent2)}
+        .feature h4{font-size:.9rem;font-weight:700;margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
+        .feature p{font-size:.8rem;color:var(--muted);line-height:1.5}
+        .feature code{background:rgba(139,92,246,.12);color:var(--accent2);padding:.1rem .4rem;border-radius:4px;font-size:.75rem;font-family:'Cascadia Code',monospace}
+
+        /* Footer */
+        footer{text-align:center;padding:3rem 1rem;color:var(--dim);font-size:.75rem;border-top:1px solid var(--border);margin-top:3rem}
+        footer a{color:var(--accent);text-decoration:none}
+        footer a:hover{text-decoration:underline}
+    </style>
+</head>
+<body>
+    <div class="grain"></div>
+
+    <!-- Hero -->
+    <header class="hero">
+        <h1>Panel de Control — Tienda Online</h1>
+        <p class="sub">Aplicación de consola en Java que gestiona la base de datos MySQL de la tienda online mediante JDBC. CRUD de productos y clientes, consultas con JOINs, detalle de pedidos y estadísticas de facturación.</p>
+        <div class="badge-row">
+            <span class="badge java">☕ Java</span>
+            <span class="badge mysql">🛢 MySQL</span>
+            <span class="badge jdbc">🔗 JDBC</span>
+            <span class="badge crud">✏️ CRUD</span>
+            <span class="badge join">⛓ JOINs</span>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Arquitectura -->
+        <h2 class="section-title"><span class="icon">🏗</span> Arquitectura del Panel</h2>
+        <div class="arch-grid">
+            <div class="arch-card">
+                <span class="lines">66 líneas</span>
+                <div class="card-icon">🔌</div>
+                <h3>Conexion.java</h3>
+                <p>Singleton JDBC que gestiona la conexión MySQL a <code>tiendadam</code> con driver <code>com.mysql.cj</code></p>
+            </div>
+            <div class="arch-card">
+                <span class="lines">58 líneas</span>
+                <div class="card-icon">👕</div>
+                <h3>Producto.java</h3>
+                <p>Modelo de la tabla <code>producto</code>. Encapsula id, título, descripción, precio (EUR) e imagen</p>
+            </div>
+            <div class="arch-card">
+                <span class="lines">49 líneas</span>
+                <div class="card-icon">👤</div>
+                <h3>Cliente.java</h3>
+                <p>Modelo de la tabla <code>cliente</code>. Getters/setters para nombre, apellidos y email</p>
+            </div>
+            <div class="arch-card">
+                <span class="lines">49 líneas</span>
+                <div class="card-icon">📦</div>
+                <h3>Pedido.java</h3>
+                <p>Modelo de <code>pedido</code> con dato extra <code>nombreCliente</code> obtenido por JOIN</p>
+            </div>
+            <div class="arch-card">
+                <span class="lines">527 líneas</span>
+                <div class="card-icon">⚙️</div>
+                <h3>GestorPanel.java</h3>
+                <p>Lógica CRUD completa: listar, alta, baja, detalle, estadísticas y búsqueda</p>
+            </div>
+            <div class="arch-card">
+                <span class="lines">79 líneas</span>
+                <div class="card-icon">🎛</div>
+                <h3>Principal.java</h3>
+                <p>Punto de entrada con menú de 10 opciones organizado en 4 secciones</p>
+            </div>
+        </div>
+
+        <!-- Console: Menú principal -->
+        <h2 class="section-title"><span class="icon">💻</span> Menú del Panel de Control</h2>
+        <div class="console">
+            <div class="console-header">
+                <div class="console-dot r"></div><div class="console-dot y"></div><div class="console-dot g"></div>
+                <span>java Principal — Panel de Control Tienda Online</span>
+            </div>
+            <div class="console-body">
+<span class="dim">  ╔════════════════════════════════════════════════╗</span>
+<span class="dim">  ║</span>  <span class="title">   PANEL DE CONTROL — TIENDA ONLINE</span>       <span class="dim">║</span>
+<span class="dim">  ╠════════════════════════════════════════════════╣</span>
+<span class="dim">  ║</span>  <span class="section-head">▸ PRODUCTOS</span>                                <span class="dim">║</span>
+<span class="dim">  ║</span>    <span class="option">1. Listar productos</span>                      <span class="dim">║</span>
+<span class="dim">  ║</span>    <span class="option">2. Buscar producto</span>                       <span class="dim">║</span>
+<span class="dim">  ║</span>    <span class="option">3. Alta de producto</span>                      <span class="dim">║</span>
+<span class="dim">  ║</span>    <span class="option">4. Eliminar producto</span>                     <span class="dim">║</span>
+<span class="dim">  ║</span>  <span class="section-head">▸ CLIENTES</span>                                 <span class="dim">║</span>
+<span class="dim">  ║</span>    <span class="option">5. Listar clientes</span>                       <span class="dim">║</span>
+<span class="dim">  ║</span>    <span class="option">6. Registrar cliente</span>                     <span class="dim">║</span>
+<span class="dim">  ║</span>  <span class="section-head">▸ PEDIDOS</span>                                  <span class="dim">║</span>
+<span class="dim">  ║</span>    <span class="option">7. Listar pedidos</span>                        <span class="dim">║</span>
+<span class="dim">  ║</span>    <span class="option">8. Detalle de pedido</span>                     <span class="dim">║</span>
+<span class="dim">  ║</span>  <span class="section-head">▸ RESUMEN</span>                                  <span class="dim">║</span>
+<span class="dim">  ║</span>    <span class="option">9. Estadisticas</span>                          <span class="dim">║</span>
+<span class="dim">  ║</span>    <span class="hl">0. Salir</span>                                 <span class="dim">║</span>
+<span class="dim">  ╚════════════════════════════════════════════════╝</span>
+
+<span class="prompt">  Seleccione una opcion: </span><span class="hl">1</span></div>
+        </div>
+
+        <!-- Tabla de productos -->
+        <h2 class="section-title"><span class="icon">👕</span> Catálogo de Productos</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th style="text-align:right">Precio</th>
+                    <th>Imagen</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="id-col">1</td>
+                    <td>Camiseta Azul</td>
+                    <td>Camiseta de algodón 100%</td>
+                    <td class="price">19,99 EUR</td>
+                    <td>camiseta_azul.webp</td>
+                </tr>
+                <tr>
+                    <td class="id-col">2</td>
+                    <td>Pantalón Negro</td>
+                    <td>Pantalón largo slim fit</td>
+                    <td class="price">39,90 EUR</td>
+                    <td>pantalon_negro.webp</td>
+                </tr>
+                <tr>
+                    <td class="id-col">3</td>
+                    <td>Sudadera Roja</td>
+                    <td>Sudadera con capucha unisex</td>
+                    <td class="price">29,95 EUR</td>
+                    <td>sudadera_roja.webp</td>
+                </tr>
+                <tr>
+                    <td class="id-col">4</td>
+                    <td>Zapatillas Deportivas</td>
+                    <td>Zapatillas running ligeras</td>
+                    <td class="price">59,99 EUR</td>
+                    <td>zapatillas.webp</td>
+                </tr>
+                <tr>
+                    <td class="id-col">5</td>
+                    <td>Gorra Negra</td>
+                    <td>Gorra ajustable de algodón</td>
+                    <td class="price">12,50 EUR</td>
+                    <td>gorra_negra.webp</td>
+                </tr>
+                <tr>
+                    <td class="id-col">6</td>
+                    <td>Calcetines Técnicos</td>
+                    <td>Pack de 3 pares deportivos</td>
+                    <td class="price">8,99 EUR</td>
+                    <td>calcetines.webp</td>
+                </tr>
+                <tr>
+                    <td class="id-col">7</td>
+                    <td>Chaqueta Impermeable</td>
+                    <td>Cortavientos con membrana</td>
+                    <td class="price">79,99 EUR</td>
+                    <td>chaqueta.webp</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Console: Detalle de pedido -->
+        <h2 class="section-title"><span class="icon">📋</span> Detalle de Pedido (JOIN doble)</h2>
+        <div class="console">
+            <div class="console-header">
+                <div class="console-dot r"></div><div class="console-dot y"></div><div class="console-dot g"></div>
+                <span>Opción 8 — Detalle de pedido</span>
+            </div>
+            <div class="console-body">
+<span class="prompt">  Introduzca el ID del pedido: </span><span class="hl">1</span>
+
+<span class="dim">  ┌──────────────────────────────────────────────┐</span>
+<span class="dim">  │</span>  <span class="title">DETALLE DEL PEDIDO #1</span>                      <span class="dim">│</span>
+<span class="dim">  ├──────────────────────────────────────────────┤</span>
+<span class="dim">  │</span>  Fecha:   <span class="val">2025-01-10</span>                         <span class="dim">│</span>
+<span class="dim">  │</span>  Cliente: <span class="val">Laura Martínez López</span>               <span class="dim">│</span>
+<span class="dim">  └──────────────────────────────────────────────┘</span>
+
+<span class="dim">  ┌──────┬──────────────────────┬──────┬───────────┐</span>
+<span class="dim">  │</span> <span class="section-head">Cant.</span> <span class="dim">│</span> <span class="section-head">Producto</span>              <span class="dim">│</span> <span class="section-head">P.Ud</span>  <span class="dim">│</span> <span class="section-head">Subtotal</span>   <span class="dim">│</span>
+<span class="dim">  ├──────┼──────────────────────┼──────┼───────────┤</span>
+<span class="dim">  │</span>  <span class="qty">2</span>    <span class="dim">│</span> Camiseta Azul        <span class="dim">│</span> <span class="val">19.99</span> <span class="dim">│</span>  <span class="hl">39.98 EUR</span> <span class="dim">│</span>
+<span class="dim">  │</span>  <span class="qty">1</span>    <span class="dim">│</span> Pantalón Negro       <span class="dim">│</span> <span class="val">39.90</span> <span class="dim">│</span>  <span class="hl">39.90 EUR</span> <span class="dim">│</span>
+<span class="dim">  └──────┴──────────────────────┴──────┴───────────┘</span>
+                                    TOTAL: <span class="hl">79.88 EUR</span></div>
+        </div>
+
+        <!-- Tabla de clientes -->
+        <h2 class="section-title"><span class="icon">👥</span> Clientes Registrados</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="id-col">1</td><td>Laura</td><td>Martínez López</td><td>laura@correo.com</td></tr>
+                <tr><td class="id-col">2</td><td>Carlos</td><td>Gómez Ruiz</td><td>carlos@correo.com</td></tr>
+                <tr><td class="id-col">3</td><td>María</td><td>Serrano Díaz</td><td>maria@correo.com</td></tr>
+                <tr><td class="id-col">4</td><td>Jorge</td><td>Pérez Sánchez</td><td>jorge@correo.com</td></tr>
+                <tr><td class="id-col">5</td><td>Elena</td><td>Ruiz Navarro</td><td>elena@correo.com</td></tr>
+            </tbody>
+        </table>
+
+        <!-- Estadísticas -->
+        <h2 class="section-title"><span class="icon">📊</span> Estadísticas de la Tienda</h2>
+        <div class="stats-grid">
+            <div class="stat-card blue">
+                <div class="stat-label">Productos en catálogo</div>
+                <div class="stat-value">7</div>
+                <div class="stat-detail">Desde Camiseta Azul hasta Chaqueta Impermeable</div>
+            </div>
+            <div class="stat-card green">
+                <div class="stat-label">Clientes registrados</div>
+                <div class="stat-value">5</div>
+                <div class="stat-detail">Laura, Carlos, María, Jorge, Elena</div>
+            </div>
+            <div class="stat-card purple">
+                <div class="stat-label">Pedidos realizados</div>
+                <div class="stat-value">8</div>
+                <div class="stat-detail">Con 18 líneas de pedido en total</div>
+            </div>
+            <div class="stat-card amber">
+                <div class="stat-label">Facturación total</div>
+                <div class="stat-value">817,62 €</div>
+                <div class="stat-detail">SUM(cantidad × precio) de todas las líneas</div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card blue">
+                <div class="stat-label">Producto más caro</div>
+                <div class="stat-value">79,99 €</div>
+                <div class="stat-detail">Chaqueta Impermeable</div>
+            </div>
+            <div class="stat-card green">
+                <div class="stat-label">Producto más barato</div>
+                <div class="stat-value">8,99 €</div>
+                <div class="stat-detail">Calcetines Técnicos</div>
+            </div>
+            <div class="stat-card purple">
+                <div class="stat-label">Cliente con más pedidos</div>
+                <div class="stat-value">Laura</div>
+                <div class="stat-detail">Martínez López — la más fiel cliente</div>
+            </div>
+        </div>
+
+        <!-- Funcionalidades -->
+        <h2 class="section-title"><span class="icon">🔧</span> Funcionalidades Implementadas</h2>
+        <div class="features-grid">
+            <div class="feature">
+                <h4>🔒 PreparedStatement</h4>
+                <p>Todas las consultas con entrada de usuario usan <code>PreparedStatement</code> con marcadores <code>?</code> para prevenir inyección SQL. INSERT, DELETE y SELECT parametrizados.</p>
+            </div>
+            <div class="feature">
+                <h4>🔗 JOINs SQL</h4>
+                <p>Pedidos se listan con <code>JOIN cliente</code> usando <code>CONCAT()</code> para el nombre completo. El detalle usa un JOIN doble con <code>lineapedido</code> y <code>producto</code>.</p>
+            </div>
+            <div class="feature">
+                <h4>📊 Funciones de Agregación</h4>
+                <p>Estadísticas con <code>COUNT(*)</code>, <code>MAX</code>/<code>MIN</code>, <code>GROUP BY</code> + <code>ORDER BY</code>, y <code>SUM(cantidad*precio)</code> con <code>CAST</code> a DECIMAL.</p>
+            </div>
+            <div class="feature">
+                <h4>🔍 Búsqueda LIKE</h4>
+                <p>Buscador de productos con <code>LIKE '%texto%'</code> en título y descripción. Case-insensitive gracias al collation UTF-8 de MySQL.</p>
+            </div>
+            <div class="feature">
+                <h4>✅ Validación de Entrada</h4>
+                <p>Título obligatorio, precio numérico positivo, email con arroba. InputMismatchException controlado con <code>try-catch</code> devolviendo -1.</p>
+            </div>
+            <div class="feature">
+                <h4>🔌 Singleton JDBC</h4>
+                <p>Patrón Singleton en <code>Conexion.java</code>: una sola conexión compartida para todo el panel. Carga del driver con <code>Class.forName()</code>.</p>
+            </div>
+        </div>
+
+        <!-- Console: Búsqueda -->
+        <h2 class="section-title"><span class="icon">🔍</span> Búsqueda de Productos</h2>
+        <div class="console">
+            <div class="console-header">
+                <div class="console-dot r"></div><div class="console-dot y"></div><div class="console-dot g"></div>
+                <span>Opción 2 — Buscar producto</span>
+            </div>
+            <div class="console-body">
+<span class="prompt">  Texto a buscar: </span><span class="hl">deporti</span>
+
+<span class="dim">  ┌──────────────────────────────────────────────────────────────────────────────────────┐</span>
+<span class="dim">  │</span> <span class="section-head">ID</span>   <span class="dim">│</span> <span class="section-head">Título</span>                 <span class="dim">│</span> <span class="section-head">Descripción</span>                     <span class="dim">│</span> <span class="section-head">Precio</span>      <span class="dim">│</span>
+<span class="dim">  ├──────────────────────────────────────────────────────────────────────────────────────┤</span>
+<span class="dim">  │</span> 4    <span class="dim">│</span> Zapatillas <span class="hl">Deporti</span>vas  <span class="dim">│</span> Zapatillas running ligeras      <span class="dim">│</span> <span class="val">59.99 EUR</span>  <span class="dim">│</span>
+<span class="dim">  │</span> 6    <span class="dim">│</span> Calcetines Técnicos    <span class="dim">│</span> Pack de 3 pares <span class="hl">deporti</span>vos      <span class="dim">│</span>  <span class="val">8.99 EUR</span>  <span class="dim">│</span>
+<span class="dim">  └──────────────────────────────────────────────────────────────────────────────────────┘</span>
+
+  <span class="prompt">✔</span> Se encontraron <span class="val">2</span> productos</div>
+        </div>
+
+        <!-- Intermodularidad -->
+        <h2 class="section-title"><span class="icon">🔗</span> Intermodularidad BD ↔ Java</h2>
+        <div class="console">
+            <div class="console-header">
+                <div class="console-dot r"></div><div class="console-dot y"></div><div class="console-dot g"></div>
+                <span>Conexión entre proyectos</span>
+            </div>
+            <div class="console-body">
+  <span class="section-head">Bases-de-datos-001</span>          <span class="dim">→</span>    <span class="section-head">Programacion-002</span>
+  <span class="dim">─────────────────────</span>              <span class="dim">────────────────────</span>
+
+  <span class="val">diagrama.sql</span>                 <span class="dim">→</span>    <span class="val">Conexion.java</span>
+  <span class="dim">(CREATE TABLE producto,</span>              <span class="dim">(JDBC → tiendadam)</span>
+  <span class="dim"> cliente, pedido,</span>
+  <span class="dim"> lineapedido)</span>
+
+  <span class="val">insercion.sql</span>                <span class="dim">→</span>    <span class="val">GestorPanel.java</span>
+  <span class="dim">(7 productos, 5 clientes,</span>          <span class="dim">(SELECT, INSERT, DELETE,</span>
+  <span class="dim"> 8 pedidos, 18 líneas)</span>              <span class="dim"> JOIN, COUNT, SUM)</span>
+
+  <span class="val">usuario.sql</span>                  <span class="dim">→</span>    <span class="val">Credenciales JDBC</span>
+  <span class="dim">(CREATE USER tiendadam</span>             <span class="dim">(tiendadam / Tiendadam123$)</span>
+  <span class="dim"> GRANT ALL ON tiendadam)</span></div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>Panel de Control — Tienda Online · Java + MySQL (JDBC) · Preparación Examen DAM</p>
+        <p style="margin-top:.4rem">
+            <a href="https://github.com/MutenRos/Programacion-002-Panel-de-control-de-tienda-online" target="_blank">Repositorio en GitHub</a>
+            &nbsp;·&nbsp;
+            <a href="https://github.com/MutenRos/Bases-de-datos-001-Proyecto-tienda-online" target="_blank">Tienda Online (BD)</a>
+        </p>
+    </footer>
+</body>
+</html>

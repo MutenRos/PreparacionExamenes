@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consejero Dietético con IA — Ollama Web</title>
+  <meta name="description" content="Aplicación PHP que genera recetas saludables con los ingredientes disponibles usando un modelo LLM local (Ollama).">
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;max-width:900px;margin:40px auto;padding:0 16px;line-height:1.4;color:#111827;background:#f9fafb}
+    .card{border:1px solid #e5e5e5;border-radius:12px;padding:16px;margin:16px 0;background:#fff}
+    label{display:block;font-weight:600;margin:10px 0 6px}
+    textarea,input{width:100%;padding:10px;border:1px solid #d6d6d6;border-radius:10px;font:inherit;background:#fff}
+    textarea{min-height:140px}
+    button{padding:10px 14px;border:0;border-radius:10px;cursor:pointer;font-weight:600;background:#2563eb;color:#fff;transition:background .2s ease}
+    button:hover{background:#1d4ed8}
+    pre{white-space:pre-wrap;word-wrap:break-word;background:#0b0b0b;color:#f1f1f1;padding:12px;border-radius:12px;overflow:auto;font-size:14px;line-height:1.6}
+    .err{background:#fff3f3;border:1px solid #ffd0d0;color:#7a0000;padding:12px;border-radius:12px}
+    a.back{display:inline-block;margin-bottom:12px;color:#2563eb;text-decoration:none;font-size:14px}
+    a.back:hover{text-decoration:underline}
+    .badge{font-size:11px;padding:4px 10px;border-radius:999px;border:1px solid #e5e5e5;color:#6b7280;margin-left:8px}
+    @media (max-width:700px){body{margin:20px auto}}
+  </style>
+</head>
+<body>
+
+<a href="index.html" class="back">← Volver al inicio</a>
+
+<h1>🥗 Consejero Dietético con IA <span class="badge">Fase 003</span></h1>
+
+<div class="card">
+  <p>Vamos a crear recetas saludables — a continuación indica los alimentos que tienes en la nevera.<br>
+  La inteligencia artificial te creará recetas saludables con ellos.</p>
+  <label for="prompt">Indica qué alimentos tienes en tu cocina:</label>
+  <textarea id="prompt" name="prompt" placeholder="Ejemplo: pollo, arroz, pimientos, cebolla, aceite de oliva…">pollo, arroz integral, pimientos rojos, cebolla, aceite de oliva, limón, ajo</textarea>
+
+  <div style="margin-top:12px;">
+    <button type="button" onclick="document.getElementById('respuesta').style.display='block'">Preguntar</button>
+  </div>
+</div>
+
+<div class="card" id="respuesta">
+  <h2>Respuesta</h2>
+  <pre>
+## 🍗 Pollo al Limón con Arroz Integral y Pimientos
+
+¡Excelente selección de ingredientes! Aquí tienes una receta saludable y sabrosa:
+
+### Ingredientes:
+- 2 pechugas de pollo
+- 1 taza de arroz integral
+- 2 pimientos rojos
+- 1 cebolla mediana
+- 3 dientes de ajo
+- 1 limón (zumo y ralladura)
+- 2 cucharadas de aceite de oliva
+- Sal y pimienta al gusto
+
+### Preparación:
+
+1. **Cocinar el arroz integral** según las instrucciones del paquete (aprox. 25 min).
+
+2. **Marinar el pollo**: Cortar las pechugas en tiras. Mezclar con el zumo de medio limón, un diente de ajo picado, sal y pimienta. Dejar reposar 10 minutos.
+
+3. **Saltear las verduras**: En una sartén grande con 1 cucharada de aceite de oliva, cocinar la cebolla picada a fuego medio (3 min). Añadir los pimientos cortados en tiras y 2 dientes de ajo laminados. Cocinar 5 minutos hasta que estén tiernos.
+
+4. **Cocinar el pollo**: Retirar las verduras. Añadir la otra cucharada de aceite y cocinar las tiras de pollo a fuego fuerte (4-5 min por lado) hasta que estén doradas.
+
+5. **Montar el plato**: Servir el arroz integral de base, colocar las verduras y el pollo encima. Exprimir el zumo del medio limón restante por encima y rallar un poco de piel de limón.
+
+### Información nutricional aproximada (por ración):
+- **Calorías**: ~420 kcal
+- **Proteínas**: 35g
+- **Carbohidratos**: 45g
+- **Grasas**: 10g (mayormente saludables del aceite de oliva)
+
+**Consejo**: Para hacerlo aún más ligero, puedes usar spray de aceite en lugar de cucharadas y añadir unas hojas de espinaca fresca al final.
+
+¡Buen provecho! 🥗
+  </pre>
+</div>
+
+<div class="card">
+  <small>
+    <strong>Nota:</strong> Esta es una versión estática de demostración. En el proyecto real, esta respuesta la genera
+    un modelo LLM (LLaMA 3) ejecutándose en local mediante Ollama, conectado a PHP vía cURL HTTP API.
+  </small>
+</div>
+
+</body>
+</html>

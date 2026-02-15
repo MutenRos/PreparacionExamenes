@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuevas MotorSport | Portes de Vehículos y Alquiler de Coches de Competición</title>
+  <meta name="description" content="Servicios profesionales de portes de vehículos, alquiler de coches deportivos y plataformas portacoches. Servicio 24/7 en España.">
+  <link rel="icon" type="image/png" href="cuevas-logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold: #d4af37;
+      --gold-light: #f4d03f;
+      --gold-dark: #b8941f;
+      --black: #0a0a0a;
+      --black-soft: #121212;
+      --gray-900: #1a1a1a;
+      --gray-800: #252525;
+      --gray-700: #333;
+      --gray-500: #666;
+      --gray-400: #888;
+      --gray-300: #aaa;
+      --text: #fff;
+      --text-sec: #e0e0e0;
+      --text-muted: #999;
+      --red: #d62828;
+      --green: #22c55e;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background: var(--black);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--gold), var(--gold-dark)); border-radius: 4px; }
+
+    /* ===== HEADER ===== */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(212,175,55,0.12);
+      padding: 0.75rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .header-brand { display: flex; align-items: center; gap: 0.75rem; }
+    .header-brand img { width: 40px; height: 40px; border-radius: 50%; }
+    .header-brand h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; color: var(--gold); }
+    .header-brand small { font-size: 0.65rem; color: var(--gray-400); display: block; }
+    .header-nav { display: flex; gap: 2rem; align-items: center; }
+    .header-nav a { font-size: 0.875rem; font-weight: 500; color: var(--gray-300); transition: color 0.3s; }
+    .header-nav a:hover { color: var(--gold); }
+    .header-cta {
+      background: var(--gold); color: var(--black); padding: 0.5rem 1.25rem;
+      border-radius: 999px; font-weight: 600; font-size: 0.85rem;
+      transition: all 0.3s; border: none; cursor: pointer;
+    }
+    .header-cta:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(212,175,55,0.3); }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 8rem 2rem 6rem;
+      background: radial-gradient(ellipse at 50% 30%, rgba(212,175,55,0.08) 0%, transparent 60%),
+                  linear-gradient(180deg, var(--black) 0%, var(--black-soft) 100%);
+      position: relative;
+    }
+    .hero::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.3), transparent);
+    }
+    .hero-content { max-width: 800px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.2);
+      padding: 0.4rem 1rem; border-radius: 999px; font-size: 0.8rem; color: var(--gold);
+      margin-bottom: 2rem;
+    }
+    .hero h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800;
+      line-height: 1.1; margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #fff 30%, var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p { font-size: 1.15rem; color: var(--text-sec); margin-bottom: 2.5rem; max-width: 600px; margin-inline: auto; }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--gold); color: var(--black); padding: 0.875rem 2rem;
+      border-radius: 999px; font-weight: 700; font-size: 0.95rem;
+      transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.5rem;
+      border: none; cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(212,175,55,0.35); }
+    .btn-outline {
+      background: transparent; color: var(--text); padding: 0.875rem 2rem;
+      border-radius: 999px; font-weight: 600; font-size: 0.95rem;
+      border: 1px solid var(--gray-700); transition: all 0.3s; cursor: pointer;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .hero-stats {
+      display: flex; gap: 3rem; justify-content: center; margin-top: 4rem;
+      padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .stat { text-align: center; }
+    .stat strong { display: block; font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; color: var(--gold); }
+    .stat span { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* ===== SERVICES ===== */
+    .services {
+      padding: 6rem 2rem;
+      background: var(--black-soft);
+      position: relative;
+    }
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-header h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2.25rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .section-header p { color: var(--text-muted); font-size: 1.05rem; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+    .service-card {
+      background: var(--gray-900); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px; padding: 2.5rem; transition: all 0.4s;
+      position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--card-color, var(--gold)); opacity: 0; transition: opacity 0.4s;
+    }
+    .service-card:hover { transform: translateY(-8px); border-color: rgba(212,175,55,0.2); }
+    .service-card:hover::before { opacity: 1; }
+    .card-icon {
+      width: 60px; height: 60px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem; margin-bottom: 1.5rem;
+      background: rgba(212,175,55,0.1);
+    }
+    .service-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; margin-bottom: 0.75rem; }
+    .service-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.6; }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .feature-list li { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--gray-300); }
+    .feature-list li::before { content: '✓'; color: var(--gold); font-weight: 700; }
+
+    /* ===== ABOUT ===== */
+    .about {
+      padding: 6rem 2rem;
+      background: linear-gradient(180deg, var(--black) 0%, var(--gray-900) 100%);
+    }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1100px; margin: 0 auto; align-items: center; }
+    .about-gallery {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+      border-radius: 16px; overflow: hidden;
+    }
+    .about-gallery .gallery-img {
+      width: 100%; height: 160px; object-fit: cover;
+      background: var(--gray-800); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gray-500); font-size: 2rem;
+    }
+    .about-text h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; margin-bottom: 0.5rem; }
+    .about-text .subtitle { color: var(--gold); font-size: 0.95rem; margin-bottom: 1.5rem; font-weight: 500; }
+    .about-text p { color: var(--text-sec); margin-bottom: 1.5rem; }
+    .values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+    .value-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      padding: 1.25rem; border-radius: 12px; transition: all 0.3s;
+    }
+    .value-card:hover { border-color: rgba(212,175,55,0.2); transform: translateY(-2px); }
+    .value-card strong { display: block; font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .value-card span { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* ===== CONTACT ===== */
+    .contact {
+      padding: 6rem 2rem;
+      background: linear-gradient(180deg, var(--black-soft) 0%, var(--black) 100%);
+      position: relative;
+    }
+    .contact::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.3), transparent);
+    }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; max-width: 1100px; margin: 0 auto; }
+    .contact-info h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; margin-bottom: 0.5rem; }
+    .contact-info > p { color: var(--text-muted); margin-bottom: 2rem; }
+    .detail-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; border-radius: 12px; transition: background 0.3s; }
+    .detail-item:hover { background: rgba(255,255,255,0.03); }
+    .detail-icon { width: 40px; height: 40px; background: rgba(212,175,55,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--gold); flex-shrink: 0; }
+    .detail-item h4 { font-size: 0.85rem; margin-bottom: 0.125rem; }
+    .detail-item p { font-size: 0.85rem; color: var(--text-muted); }
+    .contact-form {
+      background: var(--gray-900); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px; padding: 2.5rem;
+    }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.4rem; color: var(--gray-300); }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 0.875rem 1rem; background: var(--gray-800);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+      color: var(--text); font-size: 0.9rem; font-family: inherit;
+      transition: border-color 0.3s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none; border-color: var(--gold);
+    }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .submit-btn {
+      width: 100%; padding: 1rem; background: var(--gold); color: var(--black);
+      border: none; border-radius: 12px; font-weight: 700; font-size: 1rem;
+      cursor: pointer; transition: all 0.3s;
+    }
+    .submit-btn:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212,175,55,0.3); }
+
+    /* ===== ADMIN PREVIEW ===== */
+    .admin-section {
+      padding: 6rem 2rem;
+      background: var(--gray-900);
+    }
+    .admin-preview { max-width: 1200px; margin: 0 auto; }
+    .admin-layout-demo {
+      display: grid; grid-template-columns: 250px 1fr; gap: 0;
+      background: var(--black); border-radius: 16px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06); min-height: 500px;
+    }
+    .sidebar-demo {
+      background: var(--black-soft); border-right: 1px solid rgba(255,255,255,0.06);
+      padding: 1.5rem;
+    }
+    .sidebar-brand { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .sidebar-brand .avatar { width: 36px; height: 36px; background: var(--gold); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--black); font-size: 0.8rem; }
+    .sidebar-brand div h3 { font-size: 0.85rem; }
+    .sidebar-brand div span { font-size: 0.7rem; color: var(--gray-500); }
+    .sidebar-nav { display: flex; flex-direction: column; gap: 0.25rem; }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem;
+      border-radius: 10px; font-size: 0.85rem; color: var(--gray-400);
+      transition: all 0.3s; cursor: pointer;
+    }
+    .sidebar-link:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+    .sidebar-link.active { background: rgba(212,175,55,0.1); color: var(--gold); }
+    .dashboard-content { padding: 2rem; }
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; padding: 1.25rem;
+    }
+    .stat-card .icon { width: 36px; height: 36px; background: rgba(212,175,55,0.1); border-radius: 8px; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .stat-card h4 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 0.125rem; }
+    .stat-card p { font-size: 0.8rem; color: var(--gray-400); }
+    .stat-card small { font-size: 0.7rem; color: var(--green); }
+    .recent-section h3 { font-size: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .booking-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 1rem; background: rgba(255,255,255,0.02);
+      border-radius: 8px; margin-bottom: 0.5rem;
+    }
+    .booking-row .name { font-weight: 500; font-size: 0.85rem; }
+    .booking-row .service { font-size: 0.75rem; color: var(--gray-400); }
+    .status-badge {
+      font-size: 0.7rem; padding: 0.25rem 0.75rem; border-radius: 999px; font-weight: 600;
+    }
+    .status-badge.pendiente { background: rgba(234,179,8,0.15); color: #eab308; }
+    .status-badge.confirmada { background: rgba(34,197,94,0.15); color: #22c55e; }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: 4rem 2rem 1.5rem;
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 3rem; max-width: 1200px; margin: 0 auto 3rem; }
+    .footer h3, .footer h4 { margin-bottom: 1rem; }
+    .footer h3 { font-family: 'Space Grotesk', sans-serif; color: var(--gold); }
+    .footer p, .footer li { font-size: 0.85rem; color: var(--gray-400); line-height: 2; }
+    .footer ul { list-style: none; }
+    .footer a:hover { color: var(--gold); }
+    .social-links { display: flex; gap: 0.75rem; }
+    .social-links a {
+      width: 36px; height: 36px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; color: var(--gray-400); transition: all 0.3s;
+    }
+    .social-links a:hover { border-color: var(--gold); color: var(--gold); }
+    .footer-bottom { text-align: center; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-bottom p { font-size: 0.8rem; color: var(--gray-500); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .about-grid, .contact-grid { grid-template-columns: 1fr; }
+      .admin-layout-demo { grid-template-columns: 1fr; }
+      .sidebar-demo { display: none; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .header-nav { display: none; }
+      .hero h2 { font-size: 2rem; }
+      .hero-stats { flex-direction: column; gap: 1.5rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .values-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-brand">
+      <img src="cuevas-logo.png" alt="Cuevas MotorSport">
+      <div>
+        <h1>Cuevas MotorSport</h1>
+        <small>S. Grúa y Alquiler Vehículos Competición</small>
+      </div>
+    </div>
+    <nav class="header-nav">
+      <a href="#vehiculos">Vehículos</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#sobre">Sobre Nosotros</a>
+      <a href="#contacto">Contacto</a>
+      <a href="#admin" class="header-cta">Panel Admin</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="hero-content">
+      <div class="hero-badge">🏁 Servicio disponible 24/7</div>
+      <h2>¿Necesitas Ayuda en la Carretera?</h2>
+      <p>Portes de vehículos, alquiler de coches deportivos de competición y plataformas portacoches. Tu aliado en la carretera en toda España.</p>
+      <div class="hero-btns">
+        <a href="tel:+34686531422" class="btn-primary">📞 Llamar Ahora</a>
+        <a href="#servicios" class="btn-outline">Conocer Servicios</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><strong>24/7</strong><span>Disponibilidad</span></div>
+        <div class="stat"><strong>8+</strong><span>Años Experiencia</span></div>
+        <div class="stat"><strong>500+</strong><span>Servicios Realizados</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="servicios">
+    <div class="section-header">
+      <h2>Nuestros Servicios</h2>
+      <p>Soluciones profesionales para el transporte y alquiler de vehículos</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card" style="--card-color: #d62828">
+        <div class="card-icon">🚛</div>
+        <h3>Portes de Vehículos</h3>
+        <p>Transporte seguro de vehículos clásicos, deportivos y de proyecto entre talleres, circuitos y cualquier ubicación.</p>
+        <ul class="feature-list">
+          <li>Vehículos de proyecto o en restauración</li>
+          <li>Coches clásicos y de colección</li>
+          <li>Vehículos deportivos de alto valor</li>
+          <li>Servicio puerta a puerta</li>
+        </ul>
+      </div>
+      <div class="service-card" style="--card-color: #f6c452">
+        <div class="card-icon">🏁</div>
+        <h3>Alquiler de Coches Deportivos</h3>
+        <p>Flota de vehículos de alta performance listos para competición, eventos o experiencias de conducción premium.</p>
+        <ul class="feature-list">
+          <li>Ferrari, Porsche, y más</li>
+          <li>Preparados para competición</li>
+          <li>Documentación en regla</li>
+          <li>Seguro incluido</li>
+        </ul>
+      </div>
+      <div class="service-card" style="--card-color: #3b82f6">
+        <div class="card-icon">🚗</div>
+        <h3>Alquiler de Plataforma Portacoches</h3>
+        <p>Plataforma profesional para transportar tus vehículos con total seguridad a eventos, rallys o carreras.</p>
+        <ul class="feature-list">
+          <li>Plataforma hasta 3500kg</li>
+          <li>Sistema de anclaje profesional</li>
+          <li>Rampas hidráulicas</li>
+          <li>Alquiler flexible</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="sobre">
+    <div class="about-grid">
+      <div class="about-gallery">
+        <div class="gallery-img">🚛</div>
+        <div class="gallery-img">🏎️</div>
+        <div class="gallery-img">🔧</div>
+        <div class="gallery-img">🏁</div>
+      </div>
+      <div class="about-text">
+        <h2>Sobre Cuevas MotorSport</h2>
+        <p class="subtitle">Tu aliado en la carretera desde 2015</p>
+        <p>Somos una empresa de servicios automotriz especializada en grúa 24/7, alquiler de vehículos deportivos y plataformas de remolque. Contamos con más de 8 años de experiencia y un equipo profesional comprometido con la excelencia.</p>
+        <div class="values-grid">
+          <div class="value-card">
+            <strong>⚙️ Profesionalismo</strong>
+            <span>Técnicos capacitados y certificados</span>
+          </div>
+          <div class="value-card">
+            <strong>🕐 Disponibilidad</strong>
+            <span>Servicio 24/7 todos los días</span>
+          </div>
+          <div class="value-card">
+            <strong>🛡️ Confianza</strong>
+            <span>Comprometidos con tu satisfacción</span>
+          </div>
+          <div class="value-card">
+            <strong>⚡ Rapidez</strong>
+            <span>Respuesta inmediata garantizada</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contacto">
+    <div class="section-header">
+      <h2>Contacta con Nosotros</h2>
+      <p>Responderemos tu solicitud en el menor tiempo posible</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="detail-item">
+          <span class="detail-icon">📞</span>
+          <div><h4>Teléfono</h4><p>+34 686 531 422</p></div>
+        </div>
+        <div class="detail-item">
+          <span class="detail-icon">💬</span>
+          <div><h4>WhatsApp</h4><p style="color:#25D366;font-weight:bold">Enviar mensaje</p></div>
+        </div>
+        <div class="detail-item">
+          <span class="detail-icon">✉️</span>
+          <div><h4>Email</h4><p>info@cuevasmotorsport.es</p></div>
+        </div>
+        <div class="detail-item">
+          <span class="detail-icon">📍</span>
+          <div><h4>Ubicación</h4><p>España</p></div>
+        </div>
+        <div class="detail-item">
+          <span class="detail-icon">🕐</span>
+          <div><h4>Horario</h4><p>24/7 — Servicio de grúa disponible</p></div>
+        </div>
+      </div>
+      <form class="contact-form" onsubmit="event.preventDefault(); alert('¡Demo! En la app real se envía el formulario.')">
+        <div class="form-group">
+          <label>Nombre *</label>
+          <input type="text" placeholder="Tu nombre" required>
+        </div>
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" placeholder="tu@email.com" required>
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="tel" placeholder="+34 600 000 000">
+        </div>
+        <div class="form-group">
+          <label>Servicio *</label>
+          <select required>
+            <option value="grua">Servicio de Grúa</option>
+            <option value="alquiler-coches">Alquiler de Coches Deportivos</option>
+            <option value="plataforma">Alquiler de Plataforma Portacoches</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Mensaje *</label>
+          <textarea rows="4" placeholder="Cuéntanos qué necesitas..." required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Enviar Solicitud</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ADMIN PREVIEW -->
+  <section class="admin-section" id="admin">
+    <div class="admin-preview">
+      <div class="section-header">
+        <h2>Panel de Administración</h2>
+        <p>Dashboard, inventario, reservas, calendario y facturación</p>
+      </div>
+      <div class="admin-layout-demo">
+        <aside class="sidebar-demo">
+          <div class="sidebar-brand">
+            <div class="avatar">CM</div>
+            <div>
+              <h3>Admin Cuevas</h3>
+              <span>Administrador</span>
+            </div>
+          </div>
+          <nav class="sidebar-nav">
+            <div class="sidebar-link active">📊 Dashboard</div>
+            <div class="sidebar-link">ℹ️ Sobre Nosotros</div>
+            <div class="sidebar-link">🚗 Inventario</div>
+            <div class="sidebar-link">📅 Agenda</div>
+            <div class="sidebar-link">📋 Reservas</div>
+            <div class="sidebar-link">💶 Facturas</div>
+          </nav>
+        </aside>
+        <div class="dashboard-content">
+          <h2 style="margin-bottom:1.5rem;font-family:'Space Grotesk',sans-serif;">📊 Dashboard</h2>
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="icon">🚗</div>
+              <h4>5</h4>
+              <p>Vehículos Totales</p>
+              <small>5 disponibles</small>
+            </div>
+            <div class="stat-card">
+              <div class="icon">📋</div>
+              <h4>3</h4>
+              <p>Reservas Activas</p>
+              <small>2 pendientes</small>
+            </div>
+            <div class="stat-card">
+              <div class="icon">💶</div>
+              <h4>7</h4>
+              <p>Facturas</p>
+              <small>1 pendiente</small>
+            </div>
+            <div class="stat-card">
+              <div class="icon">📈</div>
+              <h4>€1.050</h4>
+              <p>Ingresos Est.</p>
+              <small>Este mes</small>
+            </div>
+          </div>
+          <div class="recent-section">
+            <h3>📅 Últimas Reservas</h3>
+            <div class="booking-row">
+              <div><div class="name">Carlos García</div><div class="service">Porte de vehículo — Ferrari 488 GTB</div></div>
+              <span class="status-badge confirmada">confirmada</span>
+            </div>
+            <div class="booking-row">
+              <div><div class="name">Ana Martínez</div><div class="service">Alquiler deportivo — Porsche 911 GT3</div></div>
+              <span class="status-badge pendiente">pendiente</span>
+            </div>
+            <div class="booking-row">
+              <div><div class="name">Luis Rodríguez</div><div class="service">Grúa — Mercedes Atego 1530</div></div>
+              <span class="status-badge confirmada">confirmada</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <h3>Cuevas MotorSport</h3>
+        <p>S. Grúa y alquiler vehículos competición. Siempre listos, también para remolques y asistencia.</p>
+      </div>
+      <div>
+        <h4>Servicios</h4>
+        <ul>
+          <li><a href="#servicios">Portes de Vehículos</a></li>
+          <li><a href="#servicios">Alquiler de Coches Deportivos</a></li>
+          <li><a href="#servicios">Alquiler de Plataforma Portacoches</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li>📞 +34 686 531 422</li>
+          <li>💬 WhatsApp</li>
+          <li>✉️ info@cuevasmotorsport.es</li>
+          <li>📍 España</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Redes Sociales</h4>
+        <div class="social-links">
+          <a href="#" title="Facebook">f</a>
+          <a href="#" title="Instagram">📷</a>
+          <a href="#" title="Twitter">X</a>
+          <a href="#" title="LinkedIn">in</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Cuevas MotorSport. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

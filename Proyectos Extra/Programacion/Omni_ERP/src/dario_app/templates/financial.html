@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Financiera - OmniERP</title>
+    <!-- Design system variables and base styles for unified palette -->
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <link rel="stylesheet" href="/static/css/tutorial.css">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 28px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            position: sticky; top:0; z-index: 10;
+        }
+        .logo { font-weight: 700; color: var(--brand-primary); letter-spacing: 0.6px; }
+        .nav a { color: var(--text-secondary); margin-left: 14px; text-decoration: none; padding: 8px 12px; border-radius: var(--border-radius); border:1px solid transparent; }
+        .nav a:hover { border-color: var(--border-color); background: inherit; }
+        .page { max-width: 1300px; margin: 0 auto; padding: 24px; }
+        h1 { margin: 0; font-size: 28px; color: var(--text-primary); }
+        p.lead { color: var(--text-secondary); margin: 6px 0 16px; }
+        .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+        .card { background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--border-radius-lg); padding: var(--spacing-xl); box-shadow: var(--shadow); }
+        .card h2 { margin: 0 0 10px; font-size: var(--font-size-lg); color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+        .card p.desc { margin: 0 0 12px; color: var(--text-secondary); font-size: 14px; opacity: 0.9; }
+        label { display: block; margin-bottom: 6px; color: var(--text-primary); font-weight: var(--font-weight-medium); font-size: 13px; }
+        input, select, textarea { width: 100%; padding: 10px 12px; border-radius: var(--border-radius); border: 1px solid var(--border-color); background: var(--bg-primary); color: var(--text-primary); font-size: 14px; transition: all var(--transition-fast); }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--brand-primary); box-shadow: 0 0 0 3px rgba(102,126,234,0.12); }
+        textarea { min-height: 80px; resize: vertical; }
+        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 10px; }
+        button { border: none; background: linear-gradient(120deg, var(--brand-primary), var(--brand-primary-dark)); color: var(--text-inverse); padding: 0 var(--spacing-lg); height: 40px; border-radius: var(--border-radius); font-weight: var(--font-weight-semibold); cursor: pointer; margin-top: 10px; width: 100%; box-shadow: var(--shadow-sm); transition: all var(--transition-base); }
+        button:hover { transform: none; box-shadow: var(--shadow-sm); }
+        button.secondary { background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--border-color); }
+        .list { border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 10px; max-height: 220px; overflow-y: auto; background: var(--bg-secondary); }
+        .list-item { padding: 8px 6px; border-bottom: 1px solid var(--border-color-light); font-size: 13px; color: var(--text-secondary); }
+        .list-item:last-child { border-bottom: none; }
+        .pill { padding: 4px 8px; border-radius: var(--border-radius-sm); background: var(--brand-primary-light); color: var(--brand-primary-dark); font-size: 12px; margin-right: 6px; }
+        .inline { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        @media (max-width: 720px) { header { flex-direction: column; align-items: flex-start; gap: 8px; } }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+{% include '_assistant_panel.html' %}
+
+<header>
+    <div class="logo">🏦 Gestión Financiera</div>
+    <div class="nav">
+        <a href="/app/dashboard">← Volver al dashboard</a>
+        <a href="/api/enterprise/docs">API</a>
+    </div>
+</header>
+
+<main class="page">
+    <h1>Suite financiera</h1>
+    <p class="lead">Presupuestos, conciliación bancaria, devengos y cash-flow con control de dimensiones.</p>
+
+    <div class="grid">
+        <div class="card">
+            <h2>📊 Dimensiones</h2>
+            <p class="desc">Segmenta por centro de coste, proyecto o mercado.</p>
+            <div class="row">
+                <div><label>Tipo</label><input id="dimTipo" placeholder="CostCenter"></div>
+                <div><label>Código</label><input id="dimCodigo" placeholder="CC-001"></div>
+                <div><label>Nombre</label><input id="dimNombre" placeholder="Marketing Iberia"></div>
+                <div><label>Parent ID</label><input id="dimParent" type="number" placeholder="Opcional"></div>
+                <div><label>Manager ID</label><input id="dimManager" type="number" placeholder="Opcional"></div>
+            </div>
+            <button onclick="createDimension()">Crear dimensión</button>
+            <div class="list" id="dimList" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="card">
+            <h2>🗓️ Presupuestos</h2>
+            <p class="desc">Carga presupuesto y consolida reales.</p>
+            <div class="row">
+                <div><label>Nombre</label><input id="budNombre" placeholder="FY25"></div>
+                <div><label>Año fiscal</label><input id="budYear" type="number" value="2025"></div>
+                <div><label>Periodo</label><input id="budPeriodo" placeholder="Q1"></div>
+                <div><label>Inicio</label><input id="budInicio" type="date"></div>
+                <div><label>Fin</label><input id="budFin" type="date"></div>
+                <div><label>Dimensión ID</label><input id="budDim" type="number" placeholder="Opcional"></div>
+                <div><label>Ingresos</label><input id="budRev" type="number" step="0.01"></div>
+                <div><label>Gastos</label><input id="budExp" type="number" step="0.01"></div>
+                <div><label>CapEx</label><input id="budCapex" type="number" step="0.01"></div>
+            </div>
+            <div class="inline">
+                <button onclick="createBudget()">Crear presupuesto</button>
+                <button class="secondary" onclick="loadBudgets()">Refrescar</button>
+            </div>
+            <div class="list" id="budList" style="margin-top:10px;"></div>
+            <div class="inline" style="margin-top:8px;">
+                <input id="budCalcId" type="number" placeholder="ID presupuesto" style="flex:1;">
+                <button class="secondary" onclick="calcActuals()">Calcular reales</button>
+            </div>
+            <div class="list" id="budActuals" style="margin-top:6px; max-height:120px;"></div>
+        </div>
+
+        <div class="card">
+            <h2>🏦 Bancos</h2>
+            <p class="desc">Cuentas, extractos y auto-match.</p>
+            <div class="row">
+                <div><label>Nombre cuenta</label><input id="bankName" placeholder="BBVA Principal"></div>
+                <div><label>Número</label><input id="bankNumber" placeholder="ES76..."></div>
+                <div><label>Banco</label><input id="bankBank" placeholder="BBVA"></div>
+                <div><label>IBAN</label><input id="bankIban" placeholder="Opcional"></div>
+                <div><label>Moneda</label><input id="bankCurrency" value="EUR"></div>
+            </div>
+            <button onclick="createBankAccount()">Crear cuenta</button>
+            <div class="list" id="bankList" style="margin-top:10px;"></div>
+            <div class="row" style="margin-top:12px;">
+                <div><label>Cuenta ID</label><input id="stmtAccount" type="number"></div>
+                <div><label>Fecha extracto</label><input id="stmtFecha" type="date"></div>
+                <div><label>Apertura</label><input id="stmtOpen" type="number" step="0.01"></div>
+                <div><label>Cierre</label><input id="stmtClose" type="number" step="0.01"></div>
+            </div>
+            <button class="secondary" onclick="createStatement()">Importar extracto</button>
+            <div class="row" style="margin-top:10px;">
+                <div><label>Extracto ID</label><input id="txStmt" type="number"></div>
+                <div><label>Fecha</label><input id="txFecha" type="date"></div>
+                <div><label>Importe</label><input id="txAmount" type="number" step="0.01"></div>
+                <div><label>Tipo</label><input id="txTipo" placeholder="credit/debit"></div>
+                <div><label>Referencia</label><input id="txRef" placeholder="Factura 123"></div>
+            </div>
+            <button class="secondary" onclick="addTransaction()">Añadir transacción</button>
+            <div class="inline" style="margin-top:8px;">
+                <button class="secondary" onclick="autoMatch()">Auto-match</button>
+                <button class="secondary" onclick="loadTransactions()">Ver transacciones</button>
+            </div>
+            <div class="list" id="txList" style="margin-top:10px; max-height:140px;"></div>
+        </div>
+
+        <div class="card">
+            <h2>⏳ Devengos</h2>
+            <p class="desc">Diferidos/periodificaciones con calendario.</p>
+            <div class="row">
+                <div><label>Tipo</label><input id="defTipo" placeholder="Revenue/Expense"></div>
+                <div><label>Total</label><input id="defTotal" type="number" step="0.01"></div>
+                <div><label>Inicio</label><input id="defInicio" type="date"></div>
+                <div><label>Fin</label><input id="defFin" type="date"></div>
+                <div><label>Descripción</label><input id="defDesc" placeholder="SaaS anual"></div>
+            </div>
+            <button onclick="createDeferral()">Crear devengo</button>
+            <div class="inline" style="margin-top:8px;">
+                <input id="defId" type="number" placeholder="ID devengo" style="flex:1;">
+                <button class="secondary" onclick="createSchedule()">Crear plan</button>
+                <button class="secondary" onclick="getSchedule()">Ver plan</button>
+            </div>
+            <div class="inline" style="margin-top:8px;">
+                <input id="defRecognizeDate" type="date" style="flex:1;">
+                <button class="secondary" onclick="recognizeDeferrals()">Reconocer hasta fecha</button>
+            </div>
+            <div class="list" id="defList" style="margin-top:10px;"></div>
+            <div class="list" id="defSchedule" style="margin-top:8px; max-height:120px;"></div>
+        </div>
+
+        <div class="card">
+            <h2>💧 Cash Flow</h2>
+            <p class="desc">Forecast de liquidez.</p>
+            <div class="row">
+                <div><label>Fecha forecast</label><input id="cfFecha" type="date"></div>
+            </div>
+            <button onclick="calcCashFlow()">Calcular</button>
+            <div class="list" id="cfList" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="card">
+            <h2>💶 Remesas SEPA</h2>
+            <p class="desc">Generación de XML ISO 20022.</p>
+            <div class="row">
+                <div><label>Cuenta Banco ID</label><input id="sepaBankId" type="number"></div>
+                <div><label>Fecha Ejecución</label><input id="sepaDate" type="date"></div>
+                <div><label>Esquema</label>
+                    <select id="sepaScheme">
+                        <option value="CORE">CORE</option>
+                        <option value="B2B">B2B</option>
+                    </select>
+                </div>
+                <div><label>Descripción</label><input id="sepaDesc" placeholder="Remesa mensual"></div>
+            </div>
+            <div class="row" style="margin-top:10px; border-top:1px solid var(--border-color); padding-top:10px;">
+                <div><label>Deudor</label><input id="sepaDebtor" placeholder="Cliente SL"></div>
+                <div><label>IBAN</label><input id="sepaIban" placeholder="ES..."></div>
+                <div><label>Importe</label><input id="sepaAmount" type="number" step="0.01"></div>
+                <div><label>Concepto</label><input id="sepaConcept" placeholder="Factura..."></div>
+            </div>
+            <button class="secondary" onclick="addSepaLine()">Añadir línea (local)</button>
+            <div class="list" id="sepaLinesList" style="margin-top:10px; max-height:100px;"></div>
+            
+            <button onclick="createRemittance()">Crear Remesa</button>
+            
+            <div class="inline" style="margin-top:10px;">
+                <input id="remittanceId" type="number" placeholder="ID Remesa" style="flex:1;">
+                <button class="secondary" onclick="generateXml()">Generar XML</button>
+            </div>
+            <div class="list" id="sepaList" style="margin-top:10px;"></div>
+            <textarea id="xmlOutput" readonly style="margin-top:10px; font-family:monospace; font-size:11px;" placeholder="XML generado..."></textarea>
+        </div>
+
+        <div class="card">
+            <h2>📸 Smart Scan (Gastos)</h2>
+            <p class="desc">Digitalización certificada de tickets (OCR).</p>
+            <div class="row">
+                <input type="file" id="receiptFile" accept="image/*">
+            </div>
+            <button onclick="uploadReceipt()">Subir y Escanear</button>
+            <div class="list" id="receiptList" style="margin-top:10px;"></div>
+        </div>
+    </div>
+</main>
+
+<script>
+const api = async (url, options = {}) => {
+    const opts = Object.assign({credentials:'include', headers:{'Content-Type':'application/json'}}, options);
+    const resp = await fetch(url, opts);
+    if (!resp.ok) {
+        const text = await resp.text();
+        throw new Error(text || resp.statusText);
+    }
+    const ct = resp.headers.get('content-type') || '';
+    return ct.includes('application/json') ? resp.json() : resp.text();
+};
+
+async function createDimension(){
+    try {
+        await api('/api/financial/dimensions', {
+            method:'POST',
+            body: JSON.stringify({
+                dimension_type: document.getElementById('dimTipo').value,
+                dimension_code: document.getElementById('dimCodigo').value,
+                dimension_name: document.getElementById('dimNombre').value,
+                parent_id: document.getElementById('dimParent').value ? Number(document.getElementById('dimParent').value) : null,
+                manager_id: document.getElementById('dimManager').value ? Number(document.getElementById('dimManager').value) : null
+            })
+        });
+        loadDimensions();
+    } catch (e) { alert(e.message); }
+}
+
+async function loadDimensions(){
+    try {
+        const data = await api('/api/financial/dimensions');
+        const list = document.getElementById('dimList');
+        list.innerHTML = data.map(d => `<div class="list-item"><span class="pill">${d.dimension_type}</span><strong>${d.dimension_code}</strong> · ${d.dimension_name}</div>`).join('') || '<div class="list-item" style="color: var(--text-tertiary); opacity: 0.8">Sin dimensiones</div>';
+    } catch (e) { document.getElementById('dimList').innerHTML = `<div class='list-item' style='color: var(--color-danger-light)'>${e.message}</div>`; }
+}
+
+async function createBudget(){
+    try {
+        await api('/api/financial/budgets', {
+            method:'POST',
+            body: JSON.stringify({
+                budget_name: document.getElementById('budNombre').value,
+                fiscal_year: Number(document.getElementById('budYear').value || 0),
+                period: document.getElementById('budPeriodo').value,
+                start_date: document.getElementById('budInicio').value ? new Date(document.getElementById('budInicio').value).toISOString() : null,
+                end_date: document.getElementById('budFin').value ? new Date(document.getElementById('budFin').value).toISOString() : null,
+                dimension_id: document.getElementById('budDim').value ? Number(document.getElementById('budDim').value) : null,
+                revenue_budget: Number(document.getElementById('budRev').value || 0),
+                expense_budget: Number(document.getElementById('budExp').value || 0),
+                capex_budget: Number(document.getElementById('budCapex').value || 0)
+            })
+        });
+        loadBudgets();
+    } catch (e) { alert(e.message); }
+}
+
+async function loadBudgets(){
+    try {
+        const data = await api('/api/financial/budgets');
+        const list = document.getElementById('budList');
+        list.innerHTML = data.map(b => `<div class="list-item"><strong>#${b.id}</strong> · ${b.budget_name} ${b.fiscal_year} (${b.period}) · ${b.status || 'draft'} · Dim ${b.dimension_code || '-'} · Rev ${b.revenue_budget || 0} / Exp ${b.expense_budget || 0}</div>`).join('') || '<div class="list-item" style="color: var(--text-tertiary); opacity: 0.8">Sin presupuestos</div>';
+    } catch (e) { document.getElementById('budList').innerHTML = `<div class='list-item' style='color: var(--color-danger-light)'>${e.message}</div>`; }
+}
+
+async function calcActuals(){
+    const id = document.getElementById('budCalcId').value;
+    if (!id) return alert('Indica ID de presupuesto');
+    try {
+        const res = await api(`/api/financial/budgets/${id}/calculate-actuals`, {method:'POST'});
+        const act = await api(`/api/financial/budgets/${id}/actuals`);
+        document.getElementById('budActuals').innerHTML = act ? `<div class="list-item">Ingresos reales: ${act.revenue_actual || 0} · Gastos reales: ${act.expense_actual || 0} · CapEx real: ${act.capex_actual || 0}</div>` : '<div class="list-item">Sin datos</div>';
+    } catch (e) { document.getElementById('budActuals').innerHTML = `<div class='list-item' style='color:var(--color-danger-light)'>${e.message}</div>`; }
+}
+
+async function createBankAccount(){
+    try {
+        await api('/api/financial/bank-accounts', {
+            method:'POST',
+            body: JSON.stringify({
+                account_name: document.getElementById('bankName').value,
+                account_number: document.getElementById('bankNumber').value,
+                bank_name: document.getElementById('bankBank').value,
+                iban: document.getElementById('bankIban').value || null,
+                currency: document.getElementById('bankCurrency').value || 'EUR'
+            })
+        });
+        loadBankAccounts();
+    } catch (e) { alert(e.message); }
+}
+
+async function loadBankAccounts(){
+    try {
+        const data = await api('/api/financial/bank-accounts');
+        const list = document.getElementById('bankList');
+        list.innerHTML = data.map(b => `<div class="list-item"><strong>${b.account_name}</strong> · ${b.bank_name} · ${b.account_number} (${b.currency})</div>`).join('') || '<div class="list-item" style="color: var(--text-tertiary); opacity: 0.8">Sin cuentas</div>';
+    } catch (e) { document.getElementById('bankList').innerHTML = `<div class='list-item' style='color: var(--color-danger-light)'>${e.message}</div>`; }
+}
+
+async function createStatement(){
+    try {
+        await api('/api/financial/bank-statements', {
+            method:'POST',
+            body: JSON.stringify({
+                bank_account_id: Number(document.getElementById('stmtAccount').value),
+                statement_date: document.getElementById('stmtFecha').value ? new Date(document.getElementById('stmtFecha').value).toISOString() : null,
+                opening_balance: Number(document.getElementById('stmtOpen').value || 0),
+                closing_balance: Number(document.getElementById('stmtClose').value || 0)
+            })
+        });
+    } catch (e) { alert(e.message); }
+}
+
+async function addTransaction(){
+    try {
+        const stmt = document.getElementById('txStmt').value;
+        await api(`/api/financial/bank-statements/${stmt}/transactions`, {
+            method:'POST',
+            body: JSON.stringify({
+                transaction_date: document.getElementById('txFecha').value ? new Date(document.getElementById('txFecha').value).toISOString() : null,
+                amount: Number(document.getElementById('txAmount').value || 0),
+                transaction_type: document.getElementById('txTipo').value,
+                reference: document.getElementById('txRef').value || null
+            })
+        });
+        loadTransactions();
+    } catch (e) { alert(e.message); }
+}
+
+async function autoMatch(){
+    try {
+        const stmt = document.getElementById('txStmt').value;
+        if (!stmt) return alert('Indica extracto ID');
+        await api(`/api/financial/bank-statements/${stmt}/auto-match`, {method:'POST'});
+        loadTransactions();
+    } catch (e) { alert(e.message); }
+}
+
+async function loadTransactions(){
+    try {
+        const stmt = document.getElementById('txStmt').value;
+        if (!stmt) return;
+        const data = await api(`/api/financial/bank-statements/${stmt}/transactions`);
+        const list = document.getElementById('txList');
+        list.innerHTML = data.map(t => `<div class="list-item"><span class="pill">${t.reconciliation_status || 'pendiente'}</span>${new Date(t.transaction_date).toLocaleDateString()} · ${t.transaction_type} · ${t.amount} · ${t.reference || ''}</div>`).join('') || '<div class="list-item" style="color: var(--text-tertiary); opacity: 0.8">Sin transacciones</div>';
+    } catch (e) { document.getElementById('txList').innerHTML = `<div class='list-item' style='color: var(--color-danger-light)'>${e.message}</div>`; }
+}
+
+async function createDeferral(){
+    try {
+        await api('/api/financial/deferrals', {
+            method:'POST',
+            body: JSON.stringify({
+                deferral_type: document.getElementById('defTipo').value,
+                total_amount: Number(document.getElementById('defTotal').value || 0),
+                start_date: document.getElementById('defInicio').value ? new Date(document.getElementById('defInicio').value).toISOString() : null,
+                end_date: document.getElementById('defFin').value ? new Date(document.getElementById('defFin').value).toISOString() : null,
+                descripcion: document.getElementById('defDesc').value || null
+            })
+        });
+        loadDeferrals();
+    } catch (e) { alert(e.message); }
+}
+
+async function createSchedule(){
+    const id = document.getElementById('defId').value;
+    if (!id) return alert('Indica ID de devengo');
+    try { await api(`/api/financial/deferrals/${id}/create-schedule`, {method:'POST'}); getSchedule(); loadDeferrals(); } catch(e){ alert(e.message); }
+}
+
+async function getSchedule(){
+    const id = document.getElementById('defId').value;
+    if (!id) return;
+    try {
+        const data = await api(`/api/financial/deferrals/${id}/schedule`);
+        const list = document.getElementById('defSchedule');
+        list.innerHTML = data.map(s => `<div class="list-item">${new Date(s.schedule_date).toLocaleDateString()} · ${s.amount} · Reconocido: ${s.recognized ? 'Sí' : 'No'}</div>`).join('') || '<div class="list-item" style="color: var(--text-tertiary); opacity: 0.8">Sin plan</div>';
+    } catch (e) { document.getElementById('defSchedule').innerHTML = `<div class='list-item' style='color: var(--color-danger-light)'>${e.message}</div>`; }
+}
+
+async function recognizeDeferrals(){
+    try {
+        const date = document.getElementById('defRecognizeDate').value;
+        if (!date) return alert('Selecciona fecha');
+        await api(`/api/financial/deferrals/recognize?up_to_date=${encodeURIComponent(new Date(date).toISOString())}`, {method:'POST'});
+        loadDeferrals();
+        getSchedule();
+    } catch (e) { alert(e.message); }
+}
+
+async function loadDeferrals(){
+    try {
+        const data = await api('/api/financial/deferrals');
+        const list = document.getElementById('defList');
+        list.innerHTML = data.map(d => `<div class="list-item" onclick="document.getElementById('defId').value=${d.id}" style="cursor:pointer"><span class="pill">${d.deferral_type}</span>#${d.id} · ${d.status} · ${d.total_amount} · Restante ${d.remaining_amount}</div>`).join('') || '<div class="list-item" style="color: var(--text-tertiary); opacity: 0.8">Sin devengos</div>';
+    } catch (e) { document.getElementById('defList').innerHTML = `<div class='list-item' style='color: var(--color-danger-light)'>${e.message}</div>`; }
+}
+
+async function calcCashFlow(){
+    try {
+        const date = document.getElementById('cfFecha').value;
+        if (!date) return alert('Selecciona fecha');
+        const data = await api(`/api/financial/cash-flow/forecast?forecast_date=${encodeURIComponent(new Date(date).toISOString())}`, {method:'POST'});
+        const list = document.getElementById('cfList');
+        list.innerHTML = (data.forecast_lines || []).map(l => `<div class="list-item">${new Date(l.date).toLocaleDateString()} · ${l.category} · ${l.amount}</div>`).join('') || '<div class="list-item" style="color: var(--text-tertiary); opacity: 0.8">Sin forecast</div>';
+    } catch (e) { document.getElementById('cfList').innerHTML = `<div class='list-item' style='color: var(--color-danger-light)'>${e.message}</div>`; }
+}
+
+// SEPA Functions
+let sepaLines = [];
+
+function addSepaLine() {
+    const debtor = document.getElementById('sepaDebtor').value;
+    const iban = document.getElementById('sepaIban').value;
+    const amount = parseFloat(document.getElementById('sepaAmount').value);
+    const concept = document.getElementById('sepaConcept').value;
+    
+    if (!debtor || !iban || !amount) return alert('Faltan datos de línea');
+    
+    sepaLines.push({
+        debtor_name: debtor,
+        iban: iban,
+        amount: amount,
+        concept: concept
+    });
+    
+    renderSepaLines();
+    
+    // Clear inputs
+    document.getElementById('sepaDebtor').value = '';
+    document.getElementById('sepaIban').value = '';
+    document.getElementById('sepaAmount').value = '';
+    document.getElementById('sepaConcept').value = '';
+}
+
+function renderSepaLines() {
+    const el = document.getElementById('sepaLinesList');
+    el.innerHTML = sepaLines.map((l, i) => 
+        `<div class="list-item">${i+1}. ${l.debtor_name} - ${l.amount}€ (${l.concept})</div>`
+    ).join('');
+}
+
+async function createRemittance() {
+    try {
+        const bankId = document.getElementById('sepaBankId').value;
+        const date = document.getElementById('sepaDate').value;
+        const scheme = document.getElementById('sepaScheme').value;
+        const desc = document.getElementById('sepaDesc').value;
+        
+        if (!bankId || !date || sepaLines.length === 0) return alert('Faltan datos o líneas');
+        
+        const res = await api('/api/financial/sepa/remittances', {
+            method: 'POST',
+            body: JSON.stringify({
+                bank_account_id: parseInt(bankId),
+                execution_date: new Date(date).toISOString(),
+                scheme: scheme,
+                description: desc,
+                lines: sepaLines
+            })
+        });
+        
+        alert('Remesa creada: ' + res.id);
+        sepaLines = [];
+        renderSepaLines();
+        loadRemittances();
+    } catch(e) { alert(e.message); }
+}
+
+async function loadRemittances() {
+    try {
+        const res = await api('/api/financial/sepa/remittances');
+        const el = document.getElementById('sepaList');
+        el.innerHTML = res.map(r => 
+            `<div class="list-item">
+                <b>#${r.id}</b> ${r.execution_date.split('T')[0]} - ${r.total_amount}€ (${r.status})
+                <br><small>${r.description || ''}</small>
+            </div>`
+        ).join('') || '<div class="list-item" style="color: var(--text-tertiary); opacity: 0.8">Sin remesas</div>';
+    } catch(e) { console.error(e); }
+}
+
+async function generateXml() {
+    try {
+        const id = document.getElementById('remittanceId').value;
+        if (!id) return alert('Introduce ID');
+        
+        const res = await api(`/api/financial/sepa/remittances/${id}/generate-xml`, { method: 'POST' });
+        document.getElementById('xmlOutput').value = res.xml_content;
+        loadRemittances();
+    } catch(e) { alert(e.message); }
+}
+
+// Smart Scan Functions
+async function uploadReceipt() {
+    const fileInput = document.getElementById('receiptFile');
+    if (!fileInput.files[0]) return alert('Selecciona una imagen');
+    
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+    
+    try {
+        const res = await fetch('/api/financial/expenses/upload', {
+            method: 'POST',
+            body: formData
+        });
+        if (!res.ok) throw new Error(await res.text());
+        
+        alert('Ticket procesado correctamente');
+        loadReceipts();
+    } catch(e) { alert(e.message); }
+}
+
+async function loadReceipts() {
+    try {
+        const res = await api('/api/financial/expenses');
+        const el = document.getElementById('receiptList');
+        el.innerHTML = res.map(r => 
+            `<div class="list-item">
+                <span class="pill">${r.status}</span>
+                <b>${r.merchant || 'Desconocido'}</b> - ${r.total_amount || 0}€
+                <br><small>${r.date} · ${r.category}</small>
+            </div>`
+        ).join('') || '<div class="list-item" style="color: var(--text-tertiary); opacity: 0.8">Sin tickets</div>';
+    } catch(e) { console.error(e); }
+}
+
+// Init
+loadReceipts();
+loadRemittances();
+loadDimensions();
+loadBudgets();
+loadBankAccounts();
+loadDeferrals();
+</script>
+<script src="/static/js/module-tutorial.js?v=2"></script>
+    <script defer src="/static/assistant.js?v=2"></script>
+    <script defer src="/static/assistant-basic-panel.js?v=2"></script>
+    <script defer src="/static/voice-widget.js?v=2"></script>
+</body>
+</html>

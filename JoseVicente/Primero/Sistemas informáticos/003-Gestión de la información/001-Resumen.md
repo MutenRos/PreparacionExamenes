@@ -1,0 +1,11 @@
+La gestión de la información es un aspecto fundamental del funcionamiento de cualquier sistema informático. En esta unidad didáctica, nos adentramos en los métodos y herramientas utilizados para organizar, almacenar y recuperar datos de manera eficiente y segura. Comenzamos por explorar las estructuras de directorios de sistemas operativos libres y propietarios, comprendiendo cómo se organizan y gestionan los archivos y carpetas. A continuación, nos centramos en la búsqueda de información dentro del sistema, utilizando tanto comandos como herramientas gráficas para localizar rápidamente los recursos necesarios.
+
+La unidad también aborda el tema de la seguridad de la información, enseñándonos cómo realizar copias de seguridad y restaurarlos en caso de fallo. Además, se introduce la gestión de discos, incluyendo la creación de particiones, volúmenes y la desfragmentación del espacio de almacenamiento para optimizar el rendimiento del sistema.
+
+El recorrido continúa con el estudio de tareas automáticas y planificación, mostrando cómo automatizar procesos repetitivos para ahorrar tiempo y reducir errores humanos. También se explora la configuración de usuarios y grupos, así como las políticas de acceso a recursos, lo que es crucial para mantener la integridad y confidencialidad de los datos.
+
+En el ámbito de la red, se enseña cómo gestionar puertos y resolver problemas de conectividad, lo que es fundamental para mantener una red funcional. Además, se introducen herramientas de monitorización del sistema y registros, permitiendo un seguimiento continuo del estado del sistema y la detección temprana de problemas.
+
+Finalmente, el curso concluye con una visión general sobre los sistemas de gestión empresarial, mostrando cómo estos métodos de gestión pueden ser aplicados en entornos comerciales para mejorar la eficiencia operativa. A lo largo de esta unidad, se enfatiza la importancia de mantener un enfoque práctico y orientado a la solución de problemas, utilizando herramientas y técnicas específicas para cada situación.
+
+Este recorrido te proporcionará una sólida base en la gestión de la información, preparándote para abordar desafíos más complejos en el campo de los sistemas informáticos.

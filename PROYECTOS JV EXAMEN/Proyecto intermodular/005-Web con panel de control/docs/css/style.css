@@ -1,0 +1,81 @@
+:root{
+  --brand:#0f766e;
+  --brand-soft:#d1faf5;
+  --bg:#f6f7fb;
+  --surface:#f1f5f9;
+  --text:#0f172a;
+  --muted:#64748b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);font-family:sans-serif;color:var(--text);display:flex;flex-direction:column;align-items:center;padding:20px;line-height:1.6}
+
+/* Layout */
+.w-900{width:900px;max-width:100%}
+.card{background:#fff;padding:20px;border-radius:16px;box-shadow:0 10px 30px rgba(15,23,42,.08)}
+
+/* Flex/Grid helpers */
+.flex{display:flex}.fd-col{flex-direction:column}.fd-row{flex-direction:row}
+.fa-center{align-items:center}.fj-center{justify-content:center}.fj-between{justify-content:space-between}
+.fw-wrap{flex-wrap:wrap}
+.g-6{gap:6px}.g-10{gap:10px}.g-12{gap:12px}.g-16{gap:16px}.g-20{gap:20px}
+.grid{display:grid}.gc-2{grid-template-columns:repeat(2,1fr)}.gc-3{grid-template-columns:repeat(3,1fr)}
+
+/* Typography */
+.fs-10{font-size:10px}.fs-12{font-size:12px}.fs-14{font-size:14px}.fs-16{font-size:16px}.fs-20{font-size:20px}.fs-22{font-size:22px}.fs-32{font-size:32px}
+.ta-center{text-align:center}.ta-justify{text-align:justify}
+.c-muted{color:var(--muted)}.c-brand{color:var(--brand)}.c-white{color:#fff}
+
+/* Backgrounds */
+.b-white{background:#fff}.b-surface{background:var(--surface)}.b-brand{background:var(--brand)}.b-brand-soft{background:var(--brand-soft)}
+
+/* Spacing */
+.p-10{padding:10px}.p-16{padding:16px}.p-20{padding:20px}
+.bradius-10{border-radius:10px}.bradius-14{border-radius:14px}.bradius-16{border-radius:16px}
+
+/* Buttons */
+.btn{display:inline-block;padding:10px 12px;border-radius:12px;text-decoration:none;font-size:12px;transition:border-color .2s,color .2s,background .2s}
+.btn-ghost{background:#fff;color:var(--text);border:1px solid #e7e9f2}
+.btn-ghost:hover{border-color:var(--brand);color:var(--brand)}
+.btn-brand{background:var(--brand);color:#fff;border:1px solid transparent}
+.btn-brand:hover{filter:brightness(.95)}
+.btn:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+
+/* Badge */
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:11px;background:#fff;border:1px solid #e7e9f2;color:var(--brand)}
+
+/* Markdown */
+.markdown p{margin:0}.markdown h1,.markdown h2,.markdown h3{margin:0}
+.markdown ul,.markdown ol{margin:0;padding-left:18px}
+.markdown code{background:#e2e8f0;padding:2px 6px;border-radius:8px;font-family:monospace;font-size:12px}
+.markdown pre{overflow:auto;padding:10px;background:#f1f5f9;border-radius:10px}
+.markdown blockquote{padding:10px;background:#fff;border-radius:10px;border-left:4px solid var(--brand)}
+.lh-24{line-height:24px}
+
+/* Cards hover */
+.b-surface{transition:transform .2s,box-shadow .2s}
+.b-surface:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(15,23,42,.10)}
+
+/* Admin */
+.sidebar{background:linear-gradient(180deg,teal,#0ea5a5);min-height:100vh;padding:20px;display:flex;flex-direction:column;gap:10px}
+.sidebar a{padding:10px;text-decoration:none;border-radius:10px;background:#fff;color:teal;display:block}
+.sidebar .brand{padding:10px;border-radius:14px;background:rgba(255,255,255,.12);color:#fff}
+.sidebar .brand strong{font-size:16px}
+.sidebar .logout{background:rgba(255,255,255,.18);color:#fff}
+table{border-collapse:collapse;width:100%}
+th,td{padding:10px;border-bottom:1px solid #eef2f7;text-align:left;vertical-align:top}
+thead{background:#eef2f7}
+tr:hover{background:#f9fbfc}
+.btn-teal{background:teal;color:#fff;border:1px solid teal;padding:10px;border-radius:10px;text-decoration:none;display:inline-block}
+.btn-outline{background:#eef2f7;border:1px solid #d7dee5;padding:10px;border-radius:10px;text-decoration:none;color:teal;display:inline-block}
+input,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid lightgray;box-sizing:border-box;transition:border-color .2s}
+input:focus,textarea:focus{border-color:teal;outline:none}
+textarea{min-height:220px}
+.delete-link{color:#b91c1c;text-decoration:none}
+
+footer{padding:20px;text-align:center;color:var(--muted);font-size:10px}
+
+/* Responsive */
+@media(max-width:960px){.w-900{width:100%!important}}
+@media(max-width:600px){.gc-2,.gc-3{grid-template-columns:1fr!important}.admin-layout{flex-direction:column!important}.sidebar{min-height:auto}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}

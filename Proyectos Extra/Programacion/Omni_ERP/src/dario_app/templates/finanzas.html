@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finanzas y Contabilidad - OmniERP</title>
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: var(--font-sans); background: var(--bg-primary); color: var(--text-primary); }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 28px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .logo { font-weight: 700; color: var(--brand-primary); letter-spacing: 0.6px; font-size: 20px; }
+        .nav a { color: var(--text-secondary); margin-left: 14px; text-decoration: none; padding: 8px 12px; border-radius: var(--border-radius); border: 1px solid transparent; }
+        .nav a:hover { border-color: var(--border-color); background: inherit; }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+        .header-text h1 { margin: 0; font-size: 28px; color: var(--text-primary); }
+        .header-text p { color: var(--text-secondary); margin: 6px 0 16px; }
+        
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid #e0e0e0;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #999;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s;
+        }
+        .tab:hover { color: #667eea; }
+        .tab.active { color: #667eea; border-bottom-color: #667eea; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+        .card h2 { margin: 0 0 10px; font-size: var(--font-size-lg); color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+        .card p.desc { margin: 0 0 12px; color: var(--text-secondary); font-size: 14px; opacity: 0.9; }
+        
+        .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+        
+        label { display: block; margin-bottom: 6px; color: var(--text-primary); font-weight: var(--font-weight-medium); font-size: 13px; }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all var(--transition-fast);
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.12);
+        }
+        textarea { min-height: 80px; resize: vertical; }
+        
+        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 10px; }
+        
+        button, .btn {
+            border: none;
+            background: linear-gradient(120deg, var(--brand-primary), var(--brand-primary-dark));
+            color: var(--text-inverse);
+            padding: 0 var(--spacing-lg);
+            height: 40px;
+            border-radius: var(--border-radius);
+            font-weight: var(--font-weight-semibold);
+            cursor: pointer;
+            width: 100%;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-base);
+        }
+        button:hover, .btn:hover { transform: none; box-shadow: var(--shadow-sm); }
+        button.secondary { background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--border-color); }
+        
+        .list {
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 10px;
+            max-height: 220px;
+            overflow-y: auto;
+            background: var(--bg-secondary);
+        }
+        .list-item {
+            padding: 8px 6px;
+            border-bottom: 1px solid var(--border-color-light);
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .list-item:last-child { border-bottom: none; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        table thead { background: var(--bg-secondary); }
+        table th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-bottom: 2px solid var(--border-color);
+        }
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color-light);
+        }
+        table tr:hover { background: var(--bg-secondary); }
+        
+        .badge {
+            padding: 4px 8px;
+            border-radius: var(--border-radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-success { background: var(--success-light); color: var(--success-dark); }
+        .badge-warning { background: var(--warning-light); color: var(--warning-dark); }
+        .badge-danger { background: var(--danger-light); color: var(--danger-dark); }
+        .badge-info { background: var(--info-light); color: var(--info-dark); }
+        
+        .success-msg, .error-msg {
+            padding: 12px;
+            border-radius: var(--border-radius);
+            margin-bottom: 16px;
+            display: none;
+        }
+        .success-msg { background: var(--success-light); color: var(--success-dark); border: 1px solid var(--success); }
+        .error-msg { background: var(--danger-light); color: var(--danger-dark); border: 1px solid var(--danger); }
+        
+        .inline { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .pill {
+            padding: 4px 8px;
+            border-radius: var(--border-radius-sm);
+            background: var(--brand-primary-light);
+            color: var(--brand-primary-dark);
+            font-size: 12px;
+            margin-right: 6px;
+        }
+        
+        @media (max-width: 720px) {
+            header { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .tabs { overflow-x: auto; flex-wrap: nowrap; }
+        }
+    </style>
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+{% include '_assistant_panel.html' %}
+
+<header>
+    <div class="logo">💰 Finanzas y Contabilidad</div>
+    <div class="nav">
+        <a href="/app/dashboard">← Dashboard</a>
+        <a href="/api/docs">API</a>
+    </div>
+</header>
+
+<main class="container">
+    <div class="header-text">
+        <h1>Suite Financiera y Contable</h1>
+        <p>Gestión integral de finanzas, contabilidad, presupuestos y reportes fiscales</p>
+    </div>
+
+    <div class="success-msg" id="successMsg"></div>
+    <div class="error-msg" id="errorMsg"></div>
+
+    <!-- TABS NAVIGATION -->
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('plan-cuentas')">📊 Plan de Cuentas</button>
+        <button class="tab" onclick="switchTab('asientos')">📝 Asientos</button>
+        <button class="tab" onclick="switchTab('balance')">⚖️ Balance</button>
+        <button class="tab" onclick="switchTab('presupuestos')">📈 Presupuestos</button>
+        <button class="tab" onclick="switchTab('dimensiones')">📐 Dimensiones</button>
+        <button class="tab" onclick="switchTab('conciliacion')">🏦 Conciliación</button>
+        <button class="tab" onclick="switchTab('cashflow')">💵 Cash Flow</button>
+        <button class="tab" onclick="switchTab('historico')">📦 Históricos</button>
+        <button class="tab" onclick="switchTab('reportes')">📄 Reportes</button>
+    </div>
+
+    <!-- TAB: PLAN DE CUENTAS -->
+    <div id="tab-plan-cuentas" class="tab-content active">
+        <div class="card">
+            <h2>📊 Plan de Cuentas</h2>
+            <p class="desc">Gestión del catálogo de cuentas contables de tu empresa.</p>
+            
+            <div class="row">
+                <div>
+                    <label>Nueva Cuenta:</label>
+                    <input type="text" id="newAccount" placeholder="Ej: 1010 - Caja General">
+                </div>
+                <div>
+                    <label>Tipo de Cuenta:</label>
+                    <select id="accountType">
+                        <option value="">Seleccionar...</option>
+                        <option value="activo">Activo</option>
+                        <option value="pasivo">Pasivo</option>
+                        <option value="patrimonio">Patrimonio</option>
+                        <option value="ingreso">Ingreso</option>
+                        <option value="gasto">Gasto</option>
+                    </select>
+                </div>
+            </div>
+            <button onclick="agregarCuenta()">Agregar Cuenta</button>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Descripción</th>
+                        <th>Tipo</th>
+                        <th>Saldo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="cuentasTable">
+                    <tr>
+                        <td>1010</td>
+                        <td>Caja General</td>
+                        <td><span class="badge badge-success">Activo</span></td>
+                        <td>€45,230.00</td>
+                        <td><button class="btn" style="padding: 5px 10px; width: auto;">Editar</button></td>
+                    </tr>
+                    <tr>
+                        <td>2010</td>
+                        <td>Cuentas por Pagar</td>
+                        <td><span class="badge badge-warning">Pasivo</span></td>
+                        <td>€18,500.00</td>
+                        <td><button class="btn" style="padding: 5px 10px; width: auto;">Editar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB: ASIENTOS CONTABLES -->
+    <div id="tab-asientos" class="tab-content">
+        <div class="card">
+            <h2>📝 Asientos Contables</h2>
+            <p class="desc">Registro de movimientos contables con partida doble.</p>
+            
+            <div class="row">
+                <div>
+                    <label>Fecha:</label>
+                    <input type="date" id="asientoFecha">
+                </div>
+                <div>
+                    <label>Concepto:</label>
+                    <input type="text" id="asientoConcepto" placeholder="Descripción del asiento">
+                </div>
+                <div>
+                    <label>Cuenta Debe:</label>
+                    <input type="text" id="asientoDebe" placeholder="1010">
+                </div>
+                <div>
+                    <label>Importe Debe:</label>
+                    <input type="number" step="0.01" id="asientoImporteDebe" placeholder="1000.00">
+                </div>
+                <div>
+                    <label>Cuenta Haber:</label>
+                    <input type="text" id="asientoHaber" placeholder="4010">
+                </div>
+                <div>
+                    <label>Importe Haber:</label>
+                    <input type="number" step="0.01" id="asientoImporteHaber" placeholder="1000.00">
+                </div>
+            </div>
+            <button onclick="registrarAsiento()">Registrar Asiento</button>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Nº Asiento</th>
+                        <th>Concepto</th>
+                        <th>Debe</th>
+                        <th>Haber</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="asientosTable">
+                    <tr>
+                        <td>2025-12-26</td>
+                        <td>AST-001</td>
+                        <td>Venta de producto</td>
+                        <td>€1,000.00</td>
+                        <td>€1,000.00</td>
+                        <td><button class="btn" style="padding: 5px 10px; width: auto;">Ver</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB: BALANCE GENERAL -->
+    <div id="tab-balance" class="tab-content">
+        <div class="card">
+            <h2>⚖️ Balance General</h2>
+            <p class="desc">Estado de situación financiera actual de la empresa.</p>
+            
+            <div class="grid">
+                <div>
+                    <h3>Activos</h3>
+                    <table>
+                        <tbody>
+                            <tr><td>Caja y Bancos</td><td style="text-align: right;">€85,420.00</td></tr>
+                            <tr><td>Cuentas por Cobrar</td><td style="text-align: right;">€45,200.00</td></tr>
+                            <tr><td>Inventario</td><td style="text-align: right;">€120,300.00</td></tr>
+                            <tr><td><strong>Total Activos</strong></td><td style="text-align: right;"><strong>€250,920.00</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h3>Pasivos + Patrimonio</h3>
+                    <table>
+                        <tbody>
+                            <tr><td>Cuentas por Pagar</td><td style="text-align: right;">€32,100.00</td></tr>
+                            <tr><td>Préstamos</td><td style="text-align: right;">€50,000.00</td></tr>
+                            <tr><td>Capital Social</td><td style="text-align: right;">€150,000.00</td></tr>
+                            <tr><td>Resultado del Ejercicio</td><td style="text-align: right;">€18,820.00</td></tr>
+                            <tr><td><strong>Total Pasivo + Patrimonio</strong></td><td style="text-align: right;"><strong>€250,920.00</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: PRESUPUESTOS -->
+    <div id="tab-presupuestos" class="tab-content">
+        <div class="grid">
+            <div class="card">
+                <h2>📈 Presupuestos Anuales</h2>
+                <p class="desc">Carga presupuesto y consolida reales.</p>
+                <div class="row">
+                    <div><label>Nombre</label><input id="budNombre" placeholder="FY25"></div>
+                    <div><label>Año fiscal</label><input id="budYear" type="number" value="2025"></div>
+                    <div><label>Periodo</label><input id="budPeriodo" placeholder="Q1"></div>
+                    <div><label>Inicio</label><input id="budInicio" type="date"></div>
+                    <div><label>Fin</label><input id="budFin" type="date"></div>
+                    <div><label>Ingresos</label><input id="budRev" type="number" step="0.01"></div>
+                    <div><label>Gastos</label><input id="budExp" type="number" step="0.01"></div>
+                    <div><label>CapEx</label><input id="budCapex" type="number" step="0.01"></div>
+                </div>
+                <button onclick="createBudget()">Crear Presupuesto</button>
+                <div class="list" id="budList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: DIMENSIONES FINANCIERAS -->
+    <div id="tab-dimensiones" class="tab-content">
+        <div class="card">
+            <h2>📐 Dimensiones Financieras</h2>
+            <p class="desc">Segmenta por centro de coste, proyecto o mercado.</p>
+            <div class="row">
+                <div><label>Tipo</label><input id="dimTipo" placeholder="CostCenter"></div>
+                <div><label>Código</label><input id="dimCodigo" placeholder="CC-001"></div>
+                <div><label>Nombre</label><input id="dimNombre" placeholder="Marketing Iberia"></div>
+                <div><label>Parent ID</label><input id="dimParent" type="number" placeholder="Opcional"></div>
+                <div><label>Manager ID</label><input id="dimManager" type="number" placeholder="Opcional"></div>
+            </div>
+            <button onclick="createDimension()">Crear dimensión</button>
+            <div class="list" id="dimList"></div>
+        </div>
+    </div>
+
+    <!-- TAB: CONCILIACIÓN BANCARIA -->
+    <div id="tab-conciliacion" class="tab-content">
+        <div class="card">
+            <h2>🏦 Conciliación Bancaria</h2>
+            <p class="desc">Concilia extractos bancarios con registros contables.</p>
+            <div class="row">
+                <div><label>Cuenta Bancaria</label><input id="concBanco" placeholder="ES12..."></div>
+                <div><label>Fecha Extracto</label><input id="concFecha" type="date"></div>
+                <div><label>Saldo Extracto</label><input id="concSaldo" type="number" step="0.01"></div>
+            </div>
+            <button onclick="reconcile()">Conciliar</button>
+            <div class="list" id="concList"></div>
+        </div>
+    </div>
+
+    <!-- TAB: CASH FLOW -->
+    <div id="tab-cashflow" class="tab-content">
+        <div class="card">
+            <h2>💵 Flujo de Caja</h2>
+            <p class="desc">Proyección de ingresos y gastos futuros.</p>
+            <div class="row">
+                <div><label>Periodo</label><input id="cfPeriod" type="month"></div>
+                <div><label>Categoría</label><select id="cfCategory"><option>Operaciones</option><option>Inversión</option><option>Financiación</option></select></div>
+                <div><label>Tipo</label><select id="cfType"><option>Ingreso</option><option>Egreso</option></select></div>
+                <div><label>Monto</label><input id="cfAmount" type="number" step="0.01"></div>
+                <div><label>Descripción</label><input id="cfDesc" placeholder="Concepto"></div>
+            </div>
+            <button onclick="addCashFlow()">Registrar Flujo</button>
+            <div class="list" id="cfList"></div>
+        </div>
+    </div>
+
+    <!-- TAB: HISTÓRICOS -->
+    <div id="tab-historico" class="tab-content">
+        <div class="grid">
+            <div class="card">
+                <h2>📦 Histórico de Compras</h2>
+                <p class="desc">Registro completo de compras realizadas.</p>
+                <table>
+                    <thead>
+                        <tr><th>Fecha</th><th>Proveedor</th><th>Importe</th><th>Estado</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2025-12-20</td><td>Proveedor A</td><td>€5,200.00</td><td><span class="badge badge-success">Pagado</span></td></tr>
+                        <tr><td>2025-12-18</td><td>Proveedor B</td><td>€3,800.00</td><td><span class="badge badge-warning">Pendiente</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card">
+                <h2>📦 Histórico de Albaranes</h2>
+                <p class="desc">Registro de albaranes de entrega.</p>
+                <table>
+                    <thead>
+                        <tr><th>Fecha</th><th>Nº Albarán</th><th>Cliente</th><th>Estado</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2025-12-25</td><td>ALB-001</td><td>Cliente X</td><td><span class="badge badge-success">Entregado</span></td></tr>
+                        <tr><td>2025-12-24</td><td>ALB-002</td><td>Cliente Y</td><td><span class="badge badge-info">En tránsito</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: REPORTES -->
+    <div id="tab-reportes" class="tab-content">
+        <div class="card">
+            <h2>📄 Reportes Financieros y Fiscales</h2>
+            <p class="desc">Generación de informes y declaraciones.</p>
+            
+            <div class="grid">
+                <button class="btn" onclick="generarReporte('balance')">📊 Balance de Situación</button>
+                <button class="btn" onclick="generarReporte('perdidas-ganancias')">💹 Pérdidas y Ganancias</button>
+                <button class="btn" onclick="generarReporte('iva')">📑 Declaración IVA</button>
+                <button class="btn" onclick="generarReporte('cashflow')">💵 Estado de Flujos</button>
+                <button class="btn" onclick="generarReporte('libro-mayor')">📖 Libro Mayor</button>
+                <button class="btn" onclick="generarReporte('libro-diario')">📘 Libro Diario</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // ===== GESTIÓN DE TABS =====
+    function switchTab(tabName) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById(`tab-${tabName}`).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    // ===== PLAN DE CUENTAS =====
+    function agregarCuenta() {
+        const cuenta = document.getElementById('newAccount').value;
+        const tipo = document.getElementById('accountType').value;
+        if (!cuenta || !tipo) {
+            showError('Por favor complete todos los campos');
+            return;
+        }
+        showSuccess('Cuenta agregada correctamente');
+        document.getElementById('newAccount').value = '';
+        document.getElementById('accountType').value = '';
+    }
+
+    // ===== ASIENTOS CONTABLES =====
+    function registrarAsiento() {
+        const fecha = document.getElementById('asientoFecha').value;
+        const concepto = document.getElementById('asientoConcepto').value;
+        const debe = parseFloat(document.getElementById('asientoImporteDebe').value);
+        const haber = parseFloat(document.getElementById('asientoImporteHaber').value);
+        
+        if (!fecha || !concepto || !debe || !haber) {
+            showError('Complete todos los campos');
+            return;
+        }
+        if (debe !== haber) {
+            showError('El debe y el haber deben ser iguales');
+            return;
+        }
+        showSuccess('Asiento registrado correctamente');
+    }
+
+    // ===== PRESUPUESTOS =====
+    function createBudget() {
+        const nombre = document.getElementById('budNombre').value;
+        const year = document.getElementById('budYear').value;
+        if (!nombre || !year) {
+            showError('Complete nombre y año');
+            return;
+        }
+        showSuccess('Presupuesto creado');
+    }
+
+    // ===== DIMENSIONES =====
+    function createDimension() {
+        const tipo = document.getElementById('dimTipo').value;
+        const codigo = document.getElementById('dimCodigo').value;
+        const nombre = document.getElementById('dimNombre').value;
+        if (!tipo || !codigo || !nombre) {
+            showError('Complete los campos obligatorios');
+            return;
+        }
+        showSuccess('Dimensión creada');
+    }
+
+    // ===== CONCILIACIÓN =====
+    function reconcile() {
+        const banco = document.getElementById('concBanco').value;
+        const fecha = document.getElementById('concFecha').value;
+        const saldo = document.getElementById('concSaldo').value;
+        if (!banco || !fecha || !saldo) {
+            showError('Complete todos los campos');
+            return;
+        }
+        showSuccess('Conciliación iniciada');
+    }
+
+    // ===== CASH FLOW =====
+    function addCashFlow() {
+        const period = document.getElementById('cfPeriod').value;
+        const amount = document.getElementById('cfAmount').value;
+        if (!period || !amount) {
+            showError('Complete periodo y monto');
+            return;
+        }
+        showSuccess('Flujo registrado');
+    }
+
+    // ===== REPORTES =====
+    function generarReporte(tipo) {
+        showSuccess(`Generando reporte de ${tipo}...`);
+        setTimeout(() => {
+            alert(`Reporte ${tipo} generado. En producción se descargará como PDF.`);
+        }, 1000);
+    }
+
+    // ===== MENSAJES =====
+    function showSuccess(msg) {
+        const el = document.getElementById('successMsg');
+        el.textContent = msg;
+        el.style.display = 'block';
+        setTimeout(() => { el.style.display = 'none'; }, 3000);
+    }
+
+    function showError(msg) {
+        const el = document.getElementById('errorMsg');
+        el.textContent = msg;
+        el.style.display = 'block';
+        setTimeout(() => { el.style.display = 'none'; }, 3000);
+    }
+</script>
+
+<script defer src="/static/assistant.js"></script>
+<script defer src="/static/assistant-basic-panel.js"></script>
+<script defer src="/static/voice-widget.js"></script>
+</body>
+</html>

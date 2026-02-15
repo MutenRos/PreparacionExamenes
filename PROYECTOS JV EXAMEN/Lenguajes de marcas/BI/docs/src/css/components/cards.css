@@ -1,0 +1,467 @@
+/**
+ * =============================================================================
+ * BOMBAS IDEAL - Componente: Cards
+ * =============================================================================
+ * 
+ * @description  Sistema de tarjetas reutilizables para productos, servicios,
+ *               noticias y contenido general. Incluye variantes para
+ *               diferentes contextos y layouts.
+ * 
+ * @author       Bombas Ideal Development Team
+ * @version      2.0.0
+ * 
+ * VARIANTES:
+ * - .card                  Card básica
+ * - .card--product         Tarjeta de producto
+ * - .card--service         Tarjeta de servicio/característica
+ * - .card--news            Tarjeta de noticia
+ * - .card--horizontal      Layout horizontal
+ * - .card--featured        Destacada
+ * =============================================================================
+ */
+
+/* =========================================================================
+ * CARD BASE
+ * =========================================================================
+ */
+
+.card {
+    position: relative;
+    
+    display: flex;
+    flex-direction: column;
+    
+    background-color: var(--bi-bg-primary);
+    border-radius: var(--bi-radius-lg);
+    box-shadow: var(--bi-shadow-sm);
+    
+    overflow: hidden;
+    
+    transition: var(--bi-transition-normal);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--bi-shadow-lg);
+}
+
+/* =========================================================================
+ * CARD IMAGEN
+ * =========================================================================
+ */
+
+.card-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--bi-duration-slow) ease;
+}
+
+.card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+/* Overlay en imagen */
+.card-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.6) 0%,
+        transparent 50%
+    );
+    opacity: 0;
+    transition: opacity var(--bi-duration-normal) ease;
+    z-index: 1;
+}
+
+.card:hover .card-image::before {
+    opacity: 1;
+}
+
+/* Badge sobre imagen */
+.card-badge {
+    position: absolute;
+    top: var(--bi-space-4);
+    left: var(--bi-space-4);
+    z-index: 2;
+    
+    display: inline-block;
+    padding: var(--bi-space-1) var(--bi-space-3);
+    
+    background-color: var(--bi-accent);
+    border-radius: var(--bi-radius-full);
+    
+    font-size: var(--bi-text-xs);
+    font-weight: var(--bi-font-semibold);
+    color: var(--bi-text-dark);
+    text-transform: uppercase;
+    letter-spacing: var(--bi-tracking-wide);
+}
+
+.card-badge--new {
+    background-color: var(--bi-success-500);
+    color: white;
+}
+
+.card-badge--sale {
+    background-color: var(--bi-error-500);
+    color: white;
+}
+
+/* =========================================================================
+ * CARD BODY
+ * =========================================================================
+ */
+
+.card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: var(--bi-space-6);
+}
+
+/* Categoría o etiqueta */
+.card-category {
+    font-size: var(--bi-text-xs);
+    font-weight: var(--bi-font-semibold);
+    color: var(--bi-primary-500);
+    text-transform: uppercase;
+    letter-spacing: var(--bi-tracking-wider);
+    margin-bottom: var(--bi-space-2);
+}
+
+/* Título */
+.card-title {
+    font-family: var(--bi-font-primary);
+    font-size: var(--bi-text-lg);
+    font-weight: var(--bi-font-bold);
+    color: var(--bi-text-primary);
+    line-height: var(--bi-leading-snug);
+    
+    margin-bottom: var(--bi-space-3);
+    
+    transition: var(--bi-transition-colors);
+}
+
+.card:hover .card-title {
+    color: var(--bi-primary-500);
+}
+
+/* Link en título */
+.card-title a {
+    color: inherit;
+}
+
+.card-title a:hover {
+    color: var(--bi-primary-500);
+}
+
+/* Descripción */
+.card-text {
+    font-size: var(--bi-text-sm);
+    color: var(--bi-text-secondary);
+    line-height: var(--bi-leading-relaxed);
+    
+    margin-bottom: var(--bi-space-4);
+}
+
+/* Lista de características */
+.card-features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--bi-space-2);
+    margin-bottom: var(--bi-space-4);
+}
+
+.card-features li {
+    display: flex;
+    align-items: center;
+    gap: var(--bi-space-2);
+    
+    font-size: var(--bi-text-sm);
+    color: var(--bi-text-secondary);
+}
+
+.card-features li::before {
+    content: '✓';
+    color: var(--bi-success-500);
+    font-weight: var(--bi-font-bold);
+}
+
+/* =========================================================================
+ * CARD FOOTER
+ * =========================================================================
+ */
+
+.card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    padding: var(--bi-space-4) var(--bi-space-6);
+    border-top: 1px solid var(--bi-gray-100);
+    
+    margin-top: auto;
+}
+
+.card-price {
+    font-family: var(--bi-font-primary);
+    font-size: var(--bi-text-xl);
+    font-weight: var(--bi-font-bold);
+    color: var(--bi-primary-500);
+}
+
+.card-price-old {
+    font-size: var(--bi-text-sm);
+    color: var(--bi-text-muted);
+    text-decoration: line-through;
+    margin-right: var(--bi-space-2);
+}
+
+/* =========================================================================
+ * CARD PRODUCTO
+ * =========================================================================
+ */
+
+.card--product {
+    text-align: center;
+}
+
+.card--product .card-image {
+    aspect-ratio: 1;
+    padding: var(--bi-space-4);
+    background-color: var(--bi-gray-50);
+}
+
+.card--product .card-image img {
+    object-fit: contain;
+}
+
+.card--product .card-body {
+    align-items: center;
+}
+
+.card--product .card-title {
+    font-size: var(--bi-text-base);
+}
+
+/* Serie/referencia */
+.card-series {
+    font-size: var(--bi-text-xs);
+    color: var(--bi-text-muted);
+    margin-bottom: var(--bi-space-1);
+}
+
+/* Aplicaciones del producto */
+.card-applications {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--bi-space-2);
+    margin-top: auto;
+}
+
+.card-applications span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--bi-space-1);
+    
+    padding: var(--bi-space-1) var(--bi-space-2);
+    
+    background-color: var(--bi-gray-100);
+    border-radius: var(--bi-radius-sm);
+    
+    font-size: 0.65rem;
+    color: var(--bi-text-secondary);
+}
+
+.card-applications i {
+    font-size: 0.8em;
+    color: var(--bi-primary-500);
+}
+
+/* =========================================================================
+ * CARD SERVICIO
+ * =========================================================================
+ */
+
+.card--service {
+    text-align: center;
+    padding: var(--bi-space-8);
+}
+
+.card--service .card-icon {
+    width: 80px;
+    height: 80px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    margin: 0 auto var(--bi-space-5);
+    
+    background: linear-gradient(135deg, var(--bi-primary-500), var(--bi-secondary-500));
+    border-radius: var(--bi-radius-lg);
+    
+    font-size: var(--bi-text-3xl);
+    color: var(--bi-text-inverse);
+    
+    transition: var(--bi-transition-normal);
+}
+
+.card--service:hover .card-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.card--service .card-title {
+    font-size: var(--bi-text-xl);
+}
+
+/* =========================================================================
+ * CARD NOTICIA
+ * =========================================================================
+ */
+
+.card--news .card-image {
+    aspect-ratio: 16 / 9;
+}
+
+.card--news .card-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--bi-space-4);
+    
+    font-size: var(--bi-text-xs);
+    color: var(--bi-text-muted);
+    margin-bottom: var(--bi-space-3);
+}
+
+.card--news .card-meta span {
+    display: flex;
+    align-items: center;
+    gap: var(--bi-space-1);
+}
+
+/* =========================================================================
+ * CARD HORIZONTAL
+ * =========================================================================
+ */
+
+.card--horizontal {
+    flex-direction: row;
+}
+
+.card--horizontal .card-image {
+    width: 40%;
+    min-width: 200px;
+    aspect-ratio: auto;
+}
+
+.card--horizontal .card-body {
+    width: 60%;
+}
+
+@media (max-width: 768px) {
+    .card--horizontal {
+        flex-direction: column;
+    }
+    
+    .card--horizontal .card-image,
+    .card--horizontal .card-body {
+        width: 100%;
+    }
+}
+
+/* =========================================================================
+ * CARD DESTACADA
+ * =========================================================================
+ */
+
+.card--featured {
+    border: 2px solid var(--bi-primary-500);
+}
+
+.card--featured::before {
+    content: 'Destacado';
+    position: absolute;
+    top: -1px;
+    right: var(--bi-space-4);
+    
+    padding: var(--bi-space-1) var(--bi-space-4);
+    
+    background-color: var(--bi-primary-500);
+    border-radius: 0 0 var(--bi-radius-md) var(--bi-radius-md);
+    
+    font-size: var(--bi-text-xs);
+    font-weight: var(--bi-font-bold);
+    color: var(--bi-text-inverse);
+    text-transform: uppercase;
+}
+
+/* =========================================================================
+ * CARD CLICKABLE (Link completo)
+ * =========================================================================
+ */
+
+.card--clickable {
+    cursor: pointer;
+}
+
+.card--clickable .card-link {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+}
+
+/* =========================================================================
+ * GRID DE CARDS
+ * =========================================================================
+ */
+
+.card-grid {
+    display: grid;
+    gap: var(--bi-space-6);
+}
+
+.card-grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.card-grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.card-grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1024px) {
+    .card-grid--4 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .card-grid--2,
+    .card-grid--3,
+    .card-grid--4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .card-grid--2,
+    .card-grid--3,
+    .card-grid--4 {
+        grid-template-columns: 1fr;
+    }
+}

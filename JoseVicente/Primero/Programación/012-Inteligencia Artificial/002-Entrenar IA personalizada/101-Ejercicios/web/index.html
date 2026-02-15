@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Micro Chat (local)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">◎</div>
+        <div class="brandText">
+          <div class="title">Micro Chat</div>
+          <div class="subtitle">Modelo local fine-tuned</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="clearBtn" class="btn ghost" title="Limpiar chat">Limpiar</button>
+      </div>
+    </header>
+
+    <main id="chat" class="chat" aria-live="polite">
+      <div class="hint">
+        Escribe una pregunta y pulsa <b>Enviar</b>. Usa <b>Shift+Enter</b> para salto de línea.
+      </div>
+    </main>
+
+    <footer class="composer">
+      <div class="composerInner">
+        <textarea id="input" rows="1" placeholder="Escribe tu mensaje…" spellcheck="false"></textarea>
+        <button id="sendBtn" class="btn primary">Enviar</button>
+      </div>
+      <div class="composerMeta">
+        <span class="metaItem">Enter: enviar</span>
+        <span class="metaDot">•</span>
+        <span class="metaItem">Shift+Enter: salto</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+

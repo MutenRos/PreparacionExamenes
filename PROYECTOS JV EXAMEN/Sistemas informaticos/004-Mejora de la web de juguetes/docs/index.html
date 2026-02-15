@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="es">
+<head>
+	<title>recortabl.es — Juguetes recortables para imprimir</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="description" content="Recortables de papel para imprimir: vehículos, edificios, robots, animales y más. Descarga, imprime, recorta y juega.">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Delius&display=swap" rel="stylesheet">
+	<style>
+		*{padding:0;margin:0;text-decoration:none;color:inherit;box-sizing:border-box;}
+		body{font-family:Delius,sans-serif;background:#f5f7fa;color:#333;}
+
+		/* ── Header ── */
+		header{display:flex;justify-content:space-between;align-items:center;padding:12px 24px;
+			box-shadow:0 2px 12px rgba(0,0,0,0.1);position:sticky;top:0;background:white;z-index:10;}
+		header h1{font-size:26px;color:#267eca;letter-spacing:-0.5px;}
+		header h1 span{color:#e74c3c;}
+		nav{display:flex;align-items:center;gap:4px;}
+		nav a{padding:8px 14px;border-radius:6px;transition:background .2s,color .2s;font-size:15px;}
+		nav a:hover{background:#267eca;color:white;}
+		nav input[type="search"]{padding:8px 14px;border:2px solid #e0e0e0;border-radius:20px;font-family:inherit;
+			font-size:14px;transition:border-color .2s,box-shadow .2s;width:160px;}
+		nav input[type="search"]:focus{border-color:#267eca;outline:none;box-shadow:0 0 0 3px rgba(38,126,202,0.15);}
+
+		/* ── Hero ── */
+		#heroe{background:linear-gradient(135deg,#267eca 0%,#1a5fa0 100%);text-align:center;color:white;
+			padding:60px 20px;display:flex;flex-direction:column;justify-content:center;align-items:center;}
+		#heroe h3{font-size:38px;text-shadow:0 3px 8px rgba(0,0,0,0.25);margin-bottom:8px;}
+		#heroe h4{font-size:20px;font-weight:normal;text-shadow:0 2px 6px rgba(0,0,0,0.2);margin-bottom:28px;opacity:0.95;}
+		#heroe .cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+		#heroe a{background:#e74c3c;padding:12px 28px;border:none;border-radius:8px;color:white;font-weight:bold;
+			font-size:15px;box-shadow:0 4px 12px rgba(231,76,60,0.35);transition:transform .15s,box-shadow .15s;font-family:inherit;}
+		#heroe a:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(231,76,60,0.45);}
+		#heroe a.secondary{background:transparent;border:2px solid white;box-shadow:none;}
+		#heroe a.secondary:hover{background:rgba(255,255,255,0.15);box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+
+		/* ── Secciones ── */
+		section{padding:40px 24px;}
+		section h3{text-align:center;margin-bottom:24px;font-size:26px;color:#2c3e50;}
+
+		/* ── Categorías principales ── */
+		#categoriasprincipales{background:white;}
+		#categoriasprincipales .contenedor{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;max-width:1100px;margin:0 auto;}
+		#categoriasprincipales .contenedor article{background:#f8fafc;border-radius:12px;padding:24px 16px;
+			text-align:center;width:130px;transition:transform .2s,box-shadow .2s;cursor:pointer;border:2px solid #eef2f7;}
+		#categoriasprincipales .contenedor article:hover{transform:translateY(-5px);box-shadow:0 8px 24px rgba(38,126,202,0.12);border-color:#267eca;}
+		#categoriasprincipales .contenedor article .icon{font-size:40px;margin-bottom:8px;display:block;}
+		#categoriasprincipales .contenedor article p{font-size:14px;font-weight:bold;color:#555;}
+
+		/* ── Recortables destacados ── */
+		#recortablesdestacados{background:#f0f5fb;}
+		#recortablesdestacados .contenedor{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;max-width:1100px;margin:0 auto;}
+		#recortablesdestacados .contenedor article{background:white;border-radius:12px;padding:0;width:220px;
+			overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:pointer;border:2px solid #eef2f7;}
+		#recortablesdestacados .contenedor article:hover{transform:translateY(-5px);box-shadow:0 8px 24px rgba(0,0,0,0.1);border-color:#267eca;}
+		#recortablesdestacados .contenedor article .card-img{height:140px;display:flex;align-items:center;
+			justify-content:center;font-size:56px;}
+		#recortablesdestacados .contenedor article .card-body{padding:14px 16px;text-align:center;}
+		#recortablesdestacados .contenedor article .card-body p.name{font-weight:bold;font-size:15px;margin-bottom:4px;}
+		#recortablesdestacados .contenedor article .card-body p.stars{font-size:14px;letter-spacing:2px;}
+		.badge{display:inline-block;background:#e74c3c;color:white;font-size:11px;padding:3px 8px;border-radius:4px;
+			position:absolute;top:10px;right:10px;font-weight:bold;}
+		#recortablesdestacados .contenedor article{position:relative;}
+
+		/* ── Galería ── */
+		#galeria{background:white;}
+		#galeria .grid{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;max-width:1100px;margin:0 auto;}
+		#galeria .grid a{display:block;width:180px;height:180px;border-radius:12px;overflow:hidden;
+			border:3px solid #eef2f7;transition:transform .2s,border-color .2s;background:#f0f5fb;}
+		#galeria .grid a:hover{transform:scale(1.04);border-color:#267eca;}
+		#galeria .grid a svg{width:100%;height:100%;}
+
+		/* ── Información ── */
+		#informacion{background:#f0f5fb;}
+		#informacion .contenedor{max-width:700px;margin:0 auto;padding:30px;border:2px dashed #267eca;
+			background:#fffdf0;border-radius:14px;text-align:center;}
+		#informacion h3{margin-bottom:16px;color:#267eca;}
+		#informacion p{margin:10px 0;font-size:16px;}
+		#informacion .check{color:#27ae60;font-weight:bold;margin-right:4px;}
+
+		/* ── Footer ── */
+		footer{background:#1a252f;color:white;text-align:center;padding:30px 20px;}
+		footer nav{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-bottom:12px;}
+		footer nav a{color:rgba(255,255,255,0.7);font-size:14px;transition:color .2s;}
+		footer nav a:hover{color:white;}
+		footer .copy{font-size:13px;opacity:0.5;margin-top:8px;}
+
+		/* ── Responsive ── */
+		@media(max-width:768px){
+			header{flex-direction:column;gap:10px;padding:12px 16px;}
+			nav{flex-wrap:wrap;justify-content:center;}
+			#heroe h3{font-size:26px;}
+			#heroe h4{font-size:16px;}
+			#categoriasprincipales .contenedor article{width:calc(33% - 12px);}
+			#recortablesdestacados .contenedor article{width:calc(50% - 12px);}
+			#galeria .grid a{width:calc(50% - 10px);height:150px;}
+		}
+		@media(max-width:480px){
+			#categoriasprincipales .contenedor article{width:calc(50% - 10px);}
+			#recortablesdestacados .contenedor article{width:100%;}
+			#galeria .grid a{width:100%;height:180px;}
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>recortabl<span>.</span>es</h1>
+		<nav>
+			<a href="#categoriasprincipales">Categorías</a>
+			<a href="#informacion">Sobre nosotros</a>
+			<a href="#galeria">Descargas</a>
+			<a href="#" onclick="alert('Función de inicio de sesión próximamente.');return false;">Iniciar sesión</a>
+			<input type="search" placeholder="🔍 Buscar recortable…" id="buscador" oninput="filtrarRecortables()">
+		</nav>
+	</header>
+
+	<main>
+		<!-- ═══ HERO ═══ -->
+		<section id="heroe">
+			<h3>✂️ Juguetes recortables para imprimir y jugar</h3>
+			<h4>Descarga · Imprime · Recorta · Pega · ¡Juega!</h4>
+			<div class="cta">
+				<a href="#recortablesdestacados">Explorar recortables</a>
+				<a href="#informacion" class="secondary">Cómo funciona</a>
+			</div>
+		</section>
+
+		<!-- ═══ CATEGORÍAS ═══ -->
+		<section id="categoriasprincipales">
+			<h3>Categorías principales</h3>
+			<div class="contenedor">
+				<article>
+					<span class="icon">🚗</span>
+					<p>Vehículos</p>
+				</article>
+				<article>
+					<span class="icon">🏰</span>
+					<p>Edificios</p>
+				</article>
+				<article>
+					<span class="icon">🤖</span>
+					<p>Robots</p>
+				</article>
+				<article>
+					<span class="icon">🦁</span>
+					<p>Animales</p>
+				</article>
+				<article>
+					<span class="icon">🎄</span>
+					<p>Navidad</p>
+				</article>
+				<article>
+					<span class="icon">📚</span>
+					<p>Educativos</p>
+				</article>
+				<article>
+					<span class="icon">🧸</span>
+					<p>Muñecos</p>
+				</article>
+			</div>
+		</section>
+
+		<!-- ═══ DESTACADOS ═══ -->
+		<section id="recortablesdestacados">
+			<h3>Recortables destacados</h3>
+			<div class="contenedor">
+				<article>
+					<span class="badge">Nuevo</span>
+					<div class="card-img" style="background:linear-gradient(135deg,#f6d365,#fda085);">🏰</div>
+					<div class="card-body">
+						<p class="name">Castillo medieval</p>
+						<p class="stars">⭐⭐⭐⭐⭐</p>
+					</div>
+				</article>
+				<article>
+					<div class="card-img" style="background:linear-gradient(135deg,#a1c4fd,#c2e9fb);">🏎️</div>
+					<div class="card-body">
+						<p class="name">Coche fórmula 1</p>
+						<p class="stars">⭐⭐⭐⭐⭐</p>
+					</div>
+				</article>
+				<article>
+					<span class="badge">Popular</span>
+					<div class="card-img" style="background:linear-gradient(135deg,#d4fc79,#96e6a1);">🦖</div>
+					<div class="card-body">
+						<p class="name">Dinosaurio T-Rex</p>
+						<p class="stars">⭐⭐⭐⭐⭐</p>
+					</div>
+				</article>
+				<article>
+					<div class="card-img" style="background:linear-gradient(135deg,#e0c3fc,#8ec5fc);">🤖</div>
+					<div class="card-body">
+						<p class="name">Robot XL</p>
+						<p class="stars">⭐⭐⭐⭐⭐</p>
+					</div>
+				</article>
+			</div>
+		</section>
+
+		<!-- ═══ GALERÍA ═══ -->
+		<section id="galeria">
+			<h3>Galería</h3>
+			<div class="grid">
+				<a href="#">
+					<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+						<rect width="200" height="200" fill="#e8f4fd"/>
+						<text x="100" y="80" text-anchor="middle" font-size="48">🚀</text>
+						<text x="100" y="120" text-anchor="middle" font-size="13" fill="#267eca" font-family="Delius">Cohete espacial</text>
+					</svg>
+				</a>
+				<a href="#">
+					<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+						<rect width="200" height="200" fill="#fef5e7"/>
+						<text x="100" y="80" text-anchor="middle" font-size="48">🦋</text>
+						<text x="100" y="120" text-anchor="middle" font-size="13" fill="#e67e22" font-family="Delius">Mariposa</text>
+					</svg>
+				</a>
+				<a href="#">
+					<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+						<rect width="200" height="200" fill="#eafaf1"/>
+						<text x="100" y="80" text-anchor="middle" font-size="48">🏠</text>
+						<text x="100" y="120" text-anchor="middle" font-size="13" fill="#27ae60" font-family="Delius">Casita</text>
+					</svg>
+				</a>
+				<a href="#">
+					<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+						<rect width="200" height="200" fill="#f4ecf7"/>
+						<text x="100" y="80" text-anchor="middle" font-size="48">🎪</text>
+						<text x="100" y="120" text-anchor="middle" font-size="13" fill="#8e44ad" font-family="Delius">Circo</text>
+					</svg>
+				</a>
+				<a href="#">
+					<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+						<rect width="200" height="200" fill="#fdebd0"/>
+						<text x="100" y="80" text-anchor="middle" font-size="48">⛵</text>
+						<text x="100" y="120" text-anchor="middle" font-size="13" fill="#d35400" font-family="Delius">Velero</text>
+					</svg>
+				</a>
+			</div>
+		</section>
+
+		<!-- ═══ INFORMACIÓN ═══ -->
+		<section id="informacion">
+			<div class="contenedor">
+				<h3>🎓 Para familias y educación</h3>
+				<p><span class="check">✅</span> Manualidades educativas para todas las edades</p>
+				<p><span class="check">✅</span> Desarrollo de la psicomotricidad fina</p>
+				<p><span class="check">✅</span> Uso en aula y en casa</p>
+				<p><span class="check">✅</span> PDFs listos para imprimir en A4</p>
+			</div>
+		</section>
+	</main>
+
+	<footer>
+		<nav>
+			<a href="#">Acerca de</a>
+			<a href="#">Contacto</a>
+			<a href="#">Licencias</a>
+			<a href="#">Aviso Legal</a>
+			<a href="#">Facebook</a>
+			<a href="#">X.com</a>
+			<a href="#">YouTube</a>
+			<a href="#">Instagram</a>
+		</nav>
+		<p class="copy">© 2026 recortabl.es — Todos los derechos reservados</p>
+	</footer>
+
+	<script>
+	function filtrarRecortables(){
+		var q=document.getElementById('buscador').value.toLowerCase();
+		document.querySelectorAll('#recortablesdestacados .contenedor article').forEach(function(c){
+			var n=c.querySelector('.name')||c.querySelector('p');
+			c.style.display=n.textContent.toLowerCase().includes(q)?'':'none';
+		});
+	}
+	</script>
+</body>
+</html>

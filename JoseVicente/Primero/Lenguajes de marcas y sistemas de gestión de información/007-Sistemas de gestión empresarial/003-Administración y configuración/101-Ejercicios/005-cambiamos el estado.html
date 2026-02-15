@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Plataforma de videos</title>
+    <meta charset="utf-8">
+    <style>
+      html,body{
+        padding:0px;
+        margin:0px;
+        width:100%;
+        height:100%;
+      }
+      nav{
+        width:300px;
+        background:red;
+        position:fixed;
+        height:100%;
+        padding:20px;
+        color:white;
+        box-sizing:border-box;
+        left:-300px;
+        transition:all 1s;
+      }
+      .sacado{
+        left:0px;
+      }
+      header,main,footer{padding:20px;}
+      header{display:flex;align-items:center;justify-content: space-between;}
+    </style>
+  </head>
+  <body>
+    <nav>
+      Yo soy el menú de navegación
+    </nav>
+    <header>
+      <h1>Logo</h1>
+      <div id="hamburguesa">☰</div>
+    </header>
+    <main> 
+    </main>
+    <footer>
+    </footer>
+    <script>
+      let hamburguesa = document.querySelector("#hamburguesa")
+      hamburguesa.onclick = function(){
+        hamburguesa.textContent = "🗙"
+        let navegacion = document.querySelector("nav");
+        navegacion.classList.add("sacado");
+      }
+    </script>
+  </body>
+</html>

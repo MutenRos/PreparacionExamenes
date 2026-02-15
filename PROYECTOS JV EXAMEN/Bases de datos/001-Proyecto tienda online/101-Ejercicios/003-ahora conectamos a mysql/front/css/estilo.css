@@ -1,0 +1,81 @@
+html, body {
+    padding: 0px;
+    margin: 0px;
+}
+
+header, main, footer {
+    width: 800px;
+    margin: auto;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.catalogo {
+    display: grid;
+    grid-template-columns: repeat(3, 100fr);
+    gap: 20px;
+}
+
+main article .imagen {
+    height: 100px;
+}
+
+main a {
+    background: orange;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+header {
+    width: 100%;
+    height: 200px;
+    background: url("../img/blanco.png"),
+                url("../img/blanco.png"),
+                url("../img/cabeceratienda.avif");
+    padding: 20px;
+    background-size: cover;
+    background-position: center top;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section {
+    width: 100%;
+    display: flex;
+}
+
+section .izquierda {
+    flex: 1;
+}
+
+section .derecha {
+    flex: 2;
+}
+
+section .izquierda img {
+    width: 100%;
+}
+
+table {
+    width: 100%;
+}
+
+table thead {
+    background: orange;
+    color: black;
+    text-align: left;
+}
+
+table tbody {
+    text-align: left;
+}
+
+.finalizacion {
+    display: flex;
+    flex-direction: column;
+}
+

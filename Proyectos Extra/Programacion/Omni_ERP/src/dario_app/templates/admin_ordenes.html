@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Órdenes - OmniERP Admin</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; background: #f5f7fa; }
+        
+        .header { 
+            background: white; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+            padding: 1rem 2rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #667eea; }
+        .back-link { 
+            text-decoration: none; 
+            color: #667eea; 
+            font-weight: 500; 
+        }
+        .back-link:hover { color: #764ba2; }
+        
+        .container { max-width: 1400px; width: 100%; margin: 0 auto; padding: 2rem; }
+        
+        .page-title { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; 
+            padding: 2rem; 
+            border-radius: 12px; 
+            margin-bottom: 2rem; 
+        }
+        .page-title h1 { font-size: 2rem; margin: 0 0 0.5rem 0; }
+        .page-title p { margin: 0; opacity: 0.9; }
+        
+        .layout { display: grid; grid-template-columns: 400px 1fr; gap: 2rem; }
+        
+        .orders-list { 
+            background: white; 
+            border-radius: 12px; 
+            padding: 1.5rem; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+            max-height: 85vh; 
+            overflow-y: auto;
+        }
+        .orders-list h3 { margin: 0 0 1rem 0; color: #1f2937; font-size: 1.1rem; }
+        
+        .order-item { 
+            padding: 1rem; 
+            border: 2px solid #e5e7eb; 
+            border-radius: 8px; 
+            margin-bottom: 0.75rem; 
+            cursor: pointer; 
+            transition: all 0.2s;
+        }
+        .order-item:hover { border-color: #667eea; background: #f3f4ff; }
+        .order-item.active { 
+            border-color: #667eea; 
+            background: #eef2ff; 
+            font-weight: 600; 
+        }
+        .order-numero { color: #667eea; font-weight: 700; font-size: 0.95rem; }
+        .order-info { color: #6b7280; font-size: 0.85rem; margin-top: 0.3rem; }
+        .order-badge { 
+            display: inline-block; 
+            margin-top: 0.5rem; 
+            padding: 0.25rem 0.6rem; 
+            border-radius: 4px; 
+            font-size: 0.75rem; 
+            font-weight: 600;
+        }
+        .badge-sin-asignar { background: #fee2e2; color: #991b1b; }
+        .badge-asignada { background: #dbeafe; color: #1e40af; }
+        
+        .detail-panel { 
+            background: white; 
+            border-radius: 12px; 
+            padding: 2rem; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+        }
+        
+        .detail-header { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e5e7eb; }
+        .detail-header h2 { margin: 0 0 1rem 0; color: #1f2937; font-size: 1.8rem; }
+        .detail-info-row { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 1rem; 
+            margin-bottom: 0.75rem; 
+            font-size: 0.95rem;
+        }
+        .info-label { color: #6b7280; font-weight: 600; }
+        .info-value { color: #1f2937; }
+        
+        .movements-section { margin-top: 2rem; }
+        .movements-section h3 { margin: 0 0 1rem 0; color: #1f2937; }
+        
+        .movements-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+            gap: 1rem; 
+            margin-bottom: 2rem;
+        }
+        
+        .movement-item { 
+            border: 1px solid #e5e7eb; 
+            border-radius: 8px; 
+            padding: 1rem; 
+            background: #f9fafb;
+        }
+        .movement-product { font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; }
+        .movement-detail { font-size: 0.85rem; color: #6b7280; margin-bottom: 0.3rem; }
+        .location-box { 
+            background: white; 
+            padding: 0.5rem; 
+            border-radius: 4px; 
+            margin: 0.5rem 0; 
+            border-left: 3px solid #667eea;
+            font-size: 0.85rem;
+        }
+        .location-label { color: #6b7280; font-weight: 600; }
+        .location-value { color: #1f2937; }
+        
+        .carretillero-section { 
+            background: #f0f4ff; 
+            border: 2px solid #e5ecff; 
+            border-radius: 8px; 
+            padding: 1.5rem; 
+            margin-bottom: 2rem;
+        }
+        .carretillero-section h3 { margin: 0 0 1rem 0; color: #667eea; }
+        
+        .carretillero-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+            gap: 1rem;
+        }
+        
+        .carretillero-btn { 
+            padding: 1rem; 
+            border: 2px solid #dde4f0; 
+            border-radius: 8px; 
+            background: white; 
+            cursor: pointer; 
+            transition: all 0.2s;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .carretillero-btn:hover { 
+            border-color: #667eea; 
+            background: #eef2ff;
+        }
+        .carretillero-btn.selected { 
+            border-color: #667eea; 
+            background: #667eea; 
+            color: white;
+        }
+        
+        .action-buttons { 
+            display: flex; 
+            gap: 1rem; 
+            margin-top: 2rem; 
+            padding-top: 2rem; 
+            border-top: 2px solid #e5e7eb;
+        }
+        
+        .btn { 
+            padding: 0.8rem 1.5rem; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; 
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .empty-state { 
+            text-align: center; 
+            padding: 3rem 1rem; 
+            color: #6b7280; 
+        }
+        .empty-state-icon { font-size: 3rem; margin-bottom: 1rem; }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-asignada { background: #dbeafe; color: #1e40af; }
+        .status-pendiente { background: #fee2e2; color: #991b1b; }
+        
+        @media (max-width: 1024px) {
+            .layout { grid-template-columns: 1fr; }
+            .orders-list { max-height: none; }
+        }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">⚙️ Admin - Gestión de Órdenes</div>
+        <a href="/app/dashboard" class="back-link">← Volver al Dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="page-title">
+            <h1>Gestión de Órdenes de Producción</h1>
+            <p>Asigna carretilleros a órdenes y gestiona su distribución</p>
+        </div>
+
+        <div class="layout">
+            <!-- Panel de Órdenes -->
+            <div class="orders-list">
+                <h3>📋 Órdenes</h3>
+                <div id="ordersList"></div>
+            </div>
+
+            <!-- Panel de Detalle -->
+            <div class="detail-panel" id="detailPanel">
+                <div class="empty-state">
+                    <div class="empty-state-icon">👈</div>
+                    <p>Selecciona una orden para ver sus detalles</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ordenes = [];
+        let selectedOrden = null;
+        let selectedCarretillero = null;
+
+        const carretilleros = [
+            { id: 90, nombre: 'Sergio' },
+            { id: 91, nombre: 'Ramón' },
+            { id: 92, nombre: 'Rubén' },
+            { id: 93, nombre: 'Roberto' }
+        ];
+
+        async function loadOrdenes() {
+            try {
+                const res = await fetch('/api/produccion-ordenes/');
+                if (!res.ok) throw new Error('Error al cargar órdenes');
+                ordenes = await res.json();
+                renderOrdenes();
+            } catch (err) {
+                console.error(err);
+                document.getElementById('ordersList').innerHTML = '<div style="color:red;padding:1rem;">Error al cargar órdenes</div>';
+            }
+        }
+
+        function renderOrdenes() {
+            const html = ordenes.map(o => `
+                <div class="order-item ${selectedOrden?.id === o.id ? 'active' : ''}" onclick="selectOrden(${o.id})">
+                    <div class="order-numero">${o.numero}</div>
+                    <div class="order-info">Producto: ${o.producto_id}</div>
+                    <div class="order-info">Cantidad: ${o.cantidad_ordenada}</div>
+                    <span class="order-badge ${o.carretillero_id ? 'badge-asignada' : 'badge-sin-asignar'}">
+                        ${o.carretillero_id ? `Asignada: ${getCarretilleroNombre(o.carretillero_id)}` : 'Sin asignar'}
+                    </span>
+                </div>
+            `).join('');
+            document.getElementById('ordersList').innerHTML = html || '<div style="color: var(--text-tertiary); padding: 1rem;">Sin órdenes</div>';
+        }
+
+        function getCarretilleroNombre(id) {
+            return carretilleros.find(c => c.id === id)?.nombre || 'Desconocido';
+        }
+
+        async function selectOrden(ordenId) {
+            try {
+                const res = await fetch(`/api/produccion-ordenes/${ordenId}`);
+                if (!res.ok) throw new Error('Error al cargar orden');
+                selectedOrden = await res.json();
+                selectedCarretillero = selectedOrden.carretillero_id || null;
+                renderDetalle();
+                renderOrdenes();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function renderDetalle() {
+            if (!selectedOrden) return;
+            
+            const movimientos = selectedOrden.movimientos_material || [];
+            const entregados = movimientos.filter(m => m.estado === 'entregado').length;
+            const enTransito = movimientos.filter(m => m.estado === 'en_transito').length;
+            const asignados = movimientos.filter(m => m.estado === 'asignado').length;
+            const pendientes = movimientos.filter(m => m.estado === 'pendiente').length;
+
+            const detailPanel = document.getElementById('detailPanel');
+            detailPanel.innerHTML = `
+                <div class="detail-header">
+                    <h2>${selectedOrden.numero}</h2>
+                    <span class="status-badge ${selectedOrden.carretillero_id ? 'status-asignada' : 'status-pendiente'}">
+                        ${selectedOrden.carretillero_id ? '✓ ASIGNADA' : '⏳ PENDIENTE DE ASIGNAR'}
+                    </span>
+                </div>
+
+                <div style="background: var(--bg-tertiary); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                    <div class="detail-info-row">
+                        <div><span class="info-label">📦 Producto:</span> <span class="info-value">${selectedOrden.producto_id}</span></div>
+                        <div><span class="info-label">📊 Cantidad:</span> <span class="info-value">${selectedOrden.cantidad_ordenada}</span></div>
+                    </div>
+                    <div class="detail-info-row">
+                        <div><span class="info-label">🎯 Estado Orden:</span> <span class="info-value">${selectedOrden.estado}</span></div>
+                        <div><span class="info-label">📋 Venta ID:</span> <span class="info-value">${selectedOrden.venta_id}</span></div>
+                    </div>
+                    <div class="detail-info-row">
+                        <div><span class="info-label">👷 Carretillero Actual:</span> <span class="info-value">${selectedOrden.carretillero_id ? getCarretilleroNombre(selectedOrden.carretillero_id) : 'No asignado'}</span></div>
+                        <div><span class="info-label">📅 Creada:</span> <span class="info-value">${new Date(selectedOrden.fecha_creacion).toLocaleDateString('es-ES')}</span></div>
+                    </div>
+                </div>
+
+                <div class="movements-section">
+                    <h3>📦 Movimientos de Almacén (${movimientos.length})</h3>
+                    <div style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
+                        ✅ Entregados: ${entregados} | 🚚 En tránsito: ${enTransito} | 📋 Asignados: ${asignados} | ⏳ Pendientes: ${pendientes}
+                    </div>
+                    <div class="movements-grid">
+                        ${movimientos.map(m => `
+                            <div class="movement-item">
+                                <div class="movement-product">${m.producto_id}</div>
+                                <div class="movement-detail">Cantidad: ${m.cantidad} un.</div>
+                                <div class="location-box">
+                                    <div class="location-label">📍 Origen</div>
+                                    <div class="location-value">${m.ubicacion_origen || 'N/A'}</div>
+                                </div>
+                                <div class="location-box">
+                                    <div class="location-label">🎯 Destino</div>
+                                    <div class="location-value">${m.ubicacion_destino || 'N/A'}</div>
+                                </div>
+                                <div class="movement-detail" style="margin-top:0.5rem;">Estado: <strong>${m.estado}</strong></div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="carretillero-section">
+                    <h3>👷 Asignar Carretillero</h3>
+                    <div class="carretillero-grid">
+                        ${carretilleros.map(c => `
+                            <button class="carretillero-btn ${selectedCarretillero === c.id ? 'selected' : ''}" 
+                                    onclick="selectCarretillero(${c.id})">
+                                ${c.nombre}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="asignarCarretillero()" 
+                            ${!selectedCarretillero || selectedOrden.carretillero_id === selectedCarretillero ? 'disabled' : ''}>
+                        ✓ Asignar Carretillero
+                    </button>
+                </div>
+            `;
+        }
+
+        function selectCarretillero(carretilleroId) {
+            selectedCarretillero = selectedCarretillero === carretilleroId ? null : carretilleroId;
+            renderDetalle();
+        }
+
+        async function asignarCarretillero() {
+            if (!selectedOrden || !selectedCarretillero) {
+                alert('Por favor selecciona un carretillero');
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/produccion-ordenes/${selectedOrden.id}/asignar-carretillero?usuario_asignado_id=${selectedCarretillero}`, {
+                    method: 'POST'
+                });
+
+                if (res.ok) {
+                    alert('✅ Carretillero asignado exitosamente');
+                    const ordenId = selectedOrden.id;
+                    await selectOrden(ordenId);
+                } else {
+                    const error = await res.text();
+                    alert(`❌ Error: ${error}`);
+                }
+            } catch (err) {
+                console.error(err);
+                alert(`❌ Error: ${err.message}`);
+            }
+        }
+
+        // Cargar al iniciar
+        loadOrdenes();
+        setInterval(loadOrdenes, 10000); // Refresh cada 10 segundos
+    </script>
+</body>
+</html>

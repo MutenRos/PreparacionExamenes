@@ -1,0 +1,284 @@
+/**
+ * ==========================================================================
+ * MUTENROS Portfolio - Section Styles
+ * ==========================================================================
+ * 
+ * Page-specific section styles:
+ * - Hero section
+ * - About section
+ * - Skills section
+ * - Projects section
+ * - Contact section
+ * 
+ * Author: Dario (MutenRos)
+ * Version: 2.0.0
+ * ==========================================================================
+ */
+
+/* =========================================================================
+ * HERO SECTION
+ * =========================================================================
+ */
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 var(--spacing-md);
+}
+
+.hero__title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-hero);
+    font-weight: var(--font-weight-black);
+    margin-bottom: var(--spacing-md);
+    background: linear-gradient(
+        180deg,
+        var(--color-text-primary) 0%,
+        var(--color-neon-pink) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 60px rgba(255, 42, 109, 0.5);
+    animation: hero-glow 3s ease-in-out infinite;
+}
+
+@keyframes hero-glow {
+    0%, 100% {
+        filter: drop-shadow(0 0 20px rgba(255, 42, 109, 0.8));
+    }
+    50% {
+        filter: drop-shadow(0 0 40px rgba(5, 217, 232, 0.8));
+    }
+}
+
+.hero__subtitle {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--color-neon-cyan);
+    letter-spacing: var(--letter-spacing-wide);
+    margin-bottom: var(--spacing-lg);
+    text-shadow: var(--text-glow-cyan);
+}
+
+.hero__tagline {
+    font-size: 20px;
+    color: var(--color-text-muted);
+    max-width: 600px;
+    line-height: var(--line-height-relaxed);
+}
+
+.hero__cta {
+    margin-top: var(--spacing-xl);
+}
+
+/* =========================================================================
+ * ABOUT SECTION
+ * =========================================================================
+ */
+
+.about {
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(13, 2, 33, 0.95)
+    );
+}
+
+.about__content {
+    max-width: var(--container-wide);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    align-items: center;
+}
+
+/* Profile image/avatar container */
+.about__image {
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+    border: 3px solid var(--color-neon-cyan);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+        135deg,
+        rgba(5, 217, 232, 0.1),
+        rgba(211, 0, 197, 0.1)
+    );
+}
+
+/* Decorative border frames */
+.about__image::before,
+.about__image::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--color-neon-pink);
+}
+
+.about__image::before {
+    top: 10px;
+    left: 10px;
+}
+
+.about__image::after {
+    top: -10px;
+    left: -10px;
+}
+
+.about__avatar {
+    font-family: var(--font-display);
+    font-size: 80px;
+    color: var(--color-neon-cyan);
+    text-shadow: 0 0 30px var(--color-neon-cyan);
+}
+
+/* About text content */
+.about__text {
+    /* Text container styles */
+}
+
+.about__greeting {
+    font-family: var(--font-display);
+    font-size: var(--font-size-h3);
+    color: var(--color-neon-pink);
+    margin-bottom: var(--spacing-md);
+}
+
+.about__alias {
+    font-size: var(--font-size-body);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-md);
+}
+
+.about__description {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-md);
+}
+
+/* =========================================================================
+ * SKILLS SECTION
+ * =========================================================================
+ */
+
+.skills {
+    background: rgba(13, 2, 33, 0.98);
+}
+
+.skills__grid {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+/* =========================================================================
+ * PROJECTS SECTION
+ * =========================================================================
+ */
+
+.projects {
+    background: linear-gradient(
+        to bottom,
+        rgba(13, 2, 33, 0.98),
+        transparent
+    );
+}
+
+.projects__grid {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+/* Loading state */
+.projects__loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--spacing-xl);
+}
+
+/* =========================================================================
+ * CONTACT SECTION
+ * =========================================================================
+ */
+
+.contact {
+    background: rgba(13, 2, 33, 0.98);
+    text-align: center;
+}
+
+.contact__content {
+    max-width: var(--container-narrow);
+    margin: 0 auto;
+}
+
+.contact__description {
+    font-size: 20px;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-lg);
+    line-height: var(--line-height-relaxed);
+}
+
+.contact__links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+/* =========================================================================
+ * RESPONSIVE ADJUSTMENTS
+ * =========================================================================
+ */
+
+@media (max-width: 768px) {
+    /* Hero adjustments */
+    .hero__subtitle {
+        font-size: 16px;
+    }
+    
+    .hero__tagline {
+        font-size: 16px;
+    }
+    
+    /* About adjustments */
+    .about__content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .about__image {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .about__avatar {
+        font-size: 60px;
+    }
+    
+    /* Projects grid */
+    .projects__grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Contact links */
+    .contact__links {
+        flex-direction: column;
+        align-items: center;
+    }
+}

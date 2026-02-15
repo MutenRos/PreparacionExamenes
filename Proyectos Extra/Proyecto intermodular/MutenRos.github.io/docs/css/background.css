@@ -1,0 +1,280 @@
+/**
+ * ==========================================================================
+ * MUTENROS Portfolio - Background Components
+ * ==========================================================================
+ * 
+ * Synthwave animated background including:
+ * - Gradient sky
+ * - Animated sun with scanlines
+ * - Retro grid perspective
+ * - Mountain silhouettes
+ * - Twinkling stars
+ * - CRT scanlines overlay
+ * 
+ * Author: Dario (MutenRos)
+ * Version: 2.0.0
+ * ==========================================================================
+ */
+
+/* =========================================================================
+ * BACKGROUND CONTAINER
+ * =========================================================================
+ */
+
+.bg-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: var(--z-background);
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* =========================================================================
+ * SKY GRADIENT
+ * =========================================================================
+ * Multi-stop gradient creating dusk/synthwave sky effect
+ */
+
+.bg-sky {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background: linear-gradient(
+        to bottom,
+        var(--color-sky-top) 0%,
+        var(--color-sky-mid-1) 30%,
+        var(--color-sky-mid-2) 50%,
+        var(--color-sky-mid-3) 70%,
+        var(--color-sky-bottom) 100%
+    );
+}
+
+/* =========================================================================
+ * NEON SUN
+ * =========================================================================
+ * Glowing sun with horizontal scan lines effect
+ */
+
+.bg-sun {
+    position: absolute;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    will-change: transform; /* GPU acceleration para parallax */
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(
+        to bottom,
+        var(--color-sun-top),
+        var(--color-sun-mid),
+        var(--color-sun-bottom)
+    );
+    border-radius: var(--radius-full);
+    box-shadow: var(--sun-glow);
+    animation: sun-pulse 4s ease-in-out infinite;
+}
+
+/* Sun horizontal scan lines (retro VHS effect) */
+.bg-sun::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 8px,
+        var(--color-bg-primary) 8px,
+        var(--color-bg-primary) 12px
+    );
+    border-radius: var(--radius-full);
+}
+
+@keyframes sun-pulse {
+    0%, 100% {
+        transform: translateX(-50%) scale(1);
+    }
+    50% {
+        transform: translateX(-50%) scale(1.05);
+    }
+}
+
+/* =========================================================================
+ * RETRO GRID
+ * =========================================================================
+ * Perspective grid moving towards the horizon
+ */
+
+.bg-grid-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 45%;
+    perspective: 400px;
+    overflow: hidden;
+}
+
+.bg-grid {
+    position: absolute;
+    bottom: 0;
+    left: -50%;
+    width: 200%;
+    height: 100%;
+    background-image: 
+        linear-gradient(var(--color-grid) 2px, transparent 2px),
+        linear-gradient(90deg, var(--color-grid) 2px, transparent 2px);
+    background-size: 80px 40px;
+    transform: rotateX(60deg);
+    animation: grid-move 2s linear infinite;
+}
+
+@keyframes grid-move {
+    0% {
+        transform: rotateX(60deg) translateY(0);
+    }
+    100% {
+        transform: rotateX(60deg) translateY(40px);
+    }
+}
+
+/* =========================================================================
+ * MOUNTAIN SILHOUETTES
+ * =========================================================================
+ * CSS-only triangular mountain shapes
+ */
+
+.bg-mountains {
+    position: absolute;
+    bottom: 40%;
+    left: 0;
+    width: 100%;
+    height: 200px;
+}
+
+.bg-mountain {
+    position: absolute;
+    bottom: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 200px solid var(--color-mountain-primary);
+    filter: drop-shadow(0 0 20px rgba(211, 0, 197, 0.5));
+}
+
+/* Mountain highlight/glow effect */
+.bg-mountain::after {
+    content: '';
+    position: absolute;
+    left: -150px;
+    bottom: -200px;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 200px solid transparent;
+    border-bottom-color: var(--color-mountain-highlight);
+}
+
+/* Mountain positioning and scale variations */
+.bg-mountain:nth-child(1) {
+    left: 5%;
+}
+
+.bg-mountain:nth-child(2) {
+    left: 25%;
+    transform: scale(0.7);
+}
+
+.bg-mountain:nth-child(3) {
+    left: 50%;
+    transform: scale(1.2);
+}
+
+.bg-mountain:nth-child(4) {
+    left: 70%;
+    transform: scale(0.8);
+}
+
+/* =========================================================================
+ * STARS
+ * =========================================================================
+ * Container for dynamically generated stars (via JavaScript)
+ */
+
+.bg-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+}
+
+.bg-star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--color-text-primary);
+    border-radius: var(--radius-full);
+    animation: star-twinkle 2s ease-in-out infinite;
+}
+
+@keyframes star-twinkle {
+    0%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* =========================================================================
+ * CRT SCANLINES OVERLAY
+ * =========================================================================
+ * Subtle scanline effect for retro CRT monitor appearance
+ */
+
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.1) 2px,
+        rgba(0, 0, 0, 0.1) 4px
+    );
+}
+
+/* =========================================================================
+ * RESPONSIVE ADJUSTMENTS
+ * =========================================================================
+ */
+
+@media (max-width: 768px) {
+    .bg-sun {
+        width: 200px;
+        height: 200px;
+        bottom: 35%;
+    }
+    
+    .bg-mountain {
+        border-left-width: 100px;
+        border-right-width: 100px;
+        border-bottom-width: 150px;
+    }
+    
+    .bg-mountain::after {
+        left: -100px;
+        bottom: -150px;
+        border-left-width: 100px;
+        border-right-width: 100px;
+        border-bottom-width: 150px;
+    }
+}

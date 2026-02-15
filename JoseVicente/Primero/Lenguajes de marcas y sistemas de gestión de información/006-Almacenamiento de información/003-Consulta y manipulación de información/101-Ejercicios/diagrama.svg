@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="576.0000055486504" height="198.82811112837354" viewBox="0 0 576.0000055486504 198.82811112837354">
+
+  <defs>
+    <style>
+      text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 12px; fill: #111827; }
+      .shape-rect { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-entity { fill: #ffffff; stroke: #111827; stroke-width: 2; }
+      .shape-circle { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-pill { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-db { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .conn { stroke: #111827; stroke-width: 2; fill: none; }
+    </style>
+    <marker id="arrow-end" markerWidth="10" markerHeight="7" refX="10" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#111827"/>
+    </marker>
+    <marker id="arrow-start" markerWidth="10" markerHeight="7" refX="0" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="10 0, 0 3.5, 10 7" fill="#111827"/>
+    </marker>
+  </defs>
+        
+<rect class="shape-rect" x="40" y="40" width="119.99999999999994" height="39.99999999999998" rx="4" ry="4" />
+<text x="99.99999999999997" y="63.999999999999986" text-anchor="middle">Home</text>
+<rect class="shape-rect" x="220.07812499999991" y="41.531261097301126" width="133.45317493785504" height="39.99999999999998" rx="4" ry="4" />
+<text x="286.80471246892745" y="65.53126109730111" text-anchor="middle">Página de producto</text>
+<rect class="shape-rect" x="416.0000055486504" y="41.5625" width="119.99999999999994" height="39.99999999999998" rx="4" ry="4" />
+<text x="476.0000055486504" y="65.56249999999999" text-anchor="middle">Carrito</text>
+<rect class="shape-rect" x="415.54690274325264" y="118.82812499999997" width="119.99999999999994" height="39.99998612837356" rx="4" ry="4" />
+<text x="475.54690274325264" y="142.82811806418675" text-anchor="middle">Finalizacion</text>
+<path class="conn" d="M 159.99999999999997 60.49182734538002 L 220.07812499999991 60.9842950909493" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 353.531299937855 61.542278630239906 L 416.0000055486504 61.55259312477378" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 475.8827210910223 81.56249999999997 L 475.6641871602076 118.82812499999997" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 415.54690274325264 126.23398654745122 L 159.99999999999997 72.59413151673547" marker-end="url(#arrow-end)" />
+</svg>

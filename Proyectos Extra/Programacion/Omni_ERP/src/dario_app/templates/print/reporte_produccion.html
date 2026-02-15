@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reporte de Producción - {{ orden.numero }}</title>
+  <link rel="stylesheet" href="/static/print.css" />
+  <style>
+    .meta-grid { display: grid; grid-template-columns: 220px 1fr; gap: 6px 14px; }
+    .kv { color:#555; }
+    .section-title { margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <header class="doc-header">
+    <div>
+      <h1>Reporte de Producción</h1>
+      <div class="subtitle">Orden {{ orden.numero }}</div>
+    </div>
+    <div>
+      <button onclick="window.print()" class="print-btn">Imprimir</button>
+    </div>
+  </header>
+
+  <section class="doc-section">
+    <div class="meta-grid">
+      <div class="kv">Organización</div><div>{{ org.razon_social or org.nombre if org else 'N/A' }}</div>
+      <div class="kv">Producto</div><div>{{ producto.codigo if producto else '' }} — {{ producto.nombre if producto else '' }}</div>
+      <div class="kv">Cantidad</div><div>{{ orden.cantidad_ordenada }}</div>
+      <div class="kv">Sección</div><div>{{ seccion.codigo if seccion else '' }} {{ seccion.nombre if seccion else '' }}</div>
+      <div class="kv">Estado</div><div>{{ orden.estado }}</div>
+      <div class="kv">Fechas</div><div>Inicio {{ orden.fecha_inicio_real or '—' }} · Fin {{ orden.fecha_fin_real or '—' }}</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <h2 class="section-title">Operaciones</h2>
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th>#</th><th>Nombre</th><th>Centro</th><th>Estimada</th><th>Real</th><th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for op in operaciones %}
+        <tr>
+          <td>{{ op.secuencia }}</td>
+          <td>{{ op.bom_operacion.nombre if op.bom_operacion else '' }}</td>
+          <td>{{ op.centro_trabajo or (op.bom_operacion.centro_trabajo if op.bom_operacion else '') }}</td>
+          <td>{{ op.duracion_estimada or '—' }}</td>
+          <td>{{ op.duracion_real or '—' }}</td>
+          <td>{{ op.estado }}</td>
+        </tr>
+        {% endfor %}
+        {% if operaciones|length == 0 %}
+        <tr><td colspan="6" class="empty">Sin operaciones.</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="doc-section">
+    <h2 class="section-title">Registros de Trabajo</h2>
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th>Trabajador</th><th>Fecha</th><th>Inicio</th><th>Fin</th><th>Notas</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in registros %}
+        <tr>
+          <td>{{ r.trabajador_nombre }}</td>
+          <td>{{ r.fecha }}</td>
+          <td>{{ r.hora_inicio }}</td>
+          <td>{{ r.hora_fin or '—' }}</td>
+          <td>{{ r.notas or '' }}</td>
+        </tr>
+        {% endfor %}
+        {% if registros|length == 0 %}
+        <tr><td colspan="5" class="empty">Sin registros.</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="doc-section">
+    <h2 class="section-title">Incidencias</h2>
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th>Tipo</th><th>Descripción</th><th>Fecha</th><th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in incidencias %}
+        <tr>
+          <td>{{ i.tipo_incidencia }}</td>
+          <td>{{ i.descripcion }}</td>
+          <td>{{ i.fecha_reporte }}</td>
+          <td>{{ i.estado }}</td>
+        </tr>
+        {% endfor %}
+        {% if incidencias|length == 0 %}
+        <tr><td colspan="4" class="empty">Sin incidencias.</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="doc-section">
+    <h2 class="section-title">Solicitudes de Material</h2>
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th>Producto</th><th>Cantidad</th><th>Urgencia</th><th>Motivo</th><th>Fecha</th><th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in solicitudes %}
+        <tr>
+          <td>{{ s.producto_descripcion }}</td>
+          <td>{{ s.cantidad }}</td>
+          <td>{{ s.urgencia }}</td>
+          <td>{{ s.motivo or '' }}</td>
+          <td>{{ s.fecha_solicitud }}</td>
+          <td>{{ s.estado }}</td>
+        </tr>
+        {% endfor %}
+        {% if solicitudes|length == 0 %}
+        <tr><td colspan="6" class="empty">Sin solicitudes.</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </section>
+</body>
+</html>

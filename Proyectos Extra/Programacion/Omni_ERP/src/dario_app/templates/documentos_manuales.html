@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentos - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/aaaaa-animations.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <style>
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideDown var(--transition-base);
+        }
+
+        .navbar h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .navbar-links a {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            transition: all 0.2s;
+        }
+
+        .navbar-links a:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--gray-200);
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-600);
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            margin-bottom: -2px;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+        }
+
+        .tab-btn.activo {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.activo {
+            display: block;
+        }
+
+        .formulario {
+            background: white;
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 20px;
+        }
+
+        .form-grupo {
+            margin-bottom: 20px;
+        }
+
+        .form-grupo label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--gray-700);
+        }
+
+        .form-grupo input,
+        .form-grupo select,
+        .form-grupo textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .form-grupo input:focus,
+        .form-grupo select:focus,
+        .form-grupo textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-grupo textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-fila {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-fila.dos-columnas {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .items-seccion {
+            background: var(--gray-50);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .item-fila {
+            display: grid;
+            grid-template-columns: 100px 2fr 100px 100px auto;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: flex-end;
+        }
+
+        .item-fila input {
+            padding: 8px;
+            border: 1px solid var(--gray-300);
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .btn-sm-danger {
+            padding: 8px 12px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-sm-danger:hover {
+            background: #dc2626;
+        }
+
+        .totales-box {
+            background: #f0f9ff;
+            border: 2px solid var(--info);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin: 20px 0;
+        }
+
+        .total-fila {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+
+        .total-final {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-top: 2px solid var(--info);
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--info);
+            margin-top: 10px;
+        }
+
+        .acciones {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            justify-content: flex-end;
+        }
+
+        .lista-documentos {
+            background: white;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tabla {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tabla thead {
+            background: var(--gray-50);
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .tabla th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--gray-600);
+        }
+
+        .tabla td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 13px;
+        }
+
+        .tabla tr:hover {
+            background: var(--gray-50);
+        }
+
+        .acciones-tabla {
+            display: flex;
+            gap: 8px;
+        }
+
+        .modal-contenido {
+            background: white;
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-cerrar {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray-600);
+            transition: color 0.2s;
+        }
+
+        .modal-cerrar:hover {
+            color: var(--danger);
+        }
+
+        .alerta {
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            font-size: 13px;
+            border: 1px solid;
+        }
+
+        .alerta-exito {
+            background: #dcfce7;
+            color: var(--success);
+            border-color: #86efac;
+        }
+
+        .alerta-error {
+            background: #fee2e2;
+            color: var(--danger);
+            border-color: #fca5a5;
+        }
+
+        .alerta-info {
+            background: #e0f2fe;
+            color: var(--info);
+            border-color: #7dd3fc;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    <div class="navbar">
+        <h1>📄 Documentos</h1>
+        <div class="navbar-links">
+            <a href="/app/dashboard">← Dashboard</a>
+            <a href="/app/editor-documentos">🎨 Editor</a>
+            <a href="/app/settings">⚙️ Configuración</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn activo" onclick="cambiarTab('crear')">
+                ➕ Crear Documento
+            </button>
+            <button class="tab-btn" onclick="cambiarTab('lista')">
+                📋 Mis Documentos
+            </button>
+            <button class="tab-btn" onclick="cambiarTab('plantillas')">
+                🎨 Plantillas
+            </button>
+        </div>
+
+        <!-- TAB: Crear Documento -->
+        <div id="tab-crear" class="tab-content activo">
+            <div class="formulario">
+                <h2 style="margin-top: 0; margin-bottom: 25px;">Crear Nuevo Documento</h2>
+
+                <div id="alertas"></div>
+
+                <div class="form-fila">
+                    <div class="form-grupo">
+                        <label>Tipo de Documento</label>
+                        <select id="tipoDocumento" onchange="actualizarPrefijo()" class="form-control">
+                            <option value="factura">Factura</option>
+                            <option value="albarán">Albarán</option>
+                            <option value="pedido_compra">Pedido de compra</option>
+                        </select>
+                    </div>
+                    <div class="form-grupo">
+                        <label>Número de Documento</label>
+                        <input type="text" id="numeroDocumento" value="F-00001" placeholder="F-00001" class="form-control">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Plantilla a usar</label>
+                        <select id="plantillaTemplate" class="form-control">
+                            <option value="">Cargando plantillas...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-fila dos-columnas">
+                    <div class="form-grupo">
+                        <label>Nombre del Cliente</label>
+                        <input type="text" id="clienteNombre" placeholder="Nombre completo" class="form-control">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Email</label>
+                        <input type="email" id="clienteEmail" placeholder="cliente@example.com" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-fila dos-columnas">
+                    <div class="form-grupo">
+                        <label>Teléfono</label>
+                        <input type="tel" id="clienteTelefono" placeholder="+51 999 999 999" class="form-control">
+                    </div>
+                    <div class="form-grupo">
+                        <label>Dirección</label>
+                        <input type="text" id="clienteDireccion" placeholder="Calle y número" class="form-control">
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; margin-bottom: 15px;">Items</h3>
+
+                <div class="items-seccion">
+                    <div id="itemsContainer"></div>
+                    <button class="btn btn-secondary btn-sm" onclick="agregarItem()" style="width: 100%; margin-top: 10px;">
+                        ➕ Agregar Item
+                    </button>
+                </div>
+
+                <div class="totales-box">
+                    <div class="total-fila">
+                        <span>Subtotal:</span>
+                        <span id="subtotalDisplay">S/ 0.00</span>
+                    </div>
+                    <div class="total-fila">
+                        <span>IGV (18%):</span>
+                        <span id="impuestoDisplay">S/ 0.00</span>
+                    </div>
+                    <div class="total-final">
+                        <span>TOTAL:</span>
+                        <span id="totalDisplay">S/ 0.00</span>
+                    </div>
+                </div>
+
+                <div class="form-grupo">
+                    <label>Notas / Observaciones</label>
+                    <textarea id="notasDocumento" placeholder="Notas adicionales del documento..." class="form-control"></textarea>
+                </div>
+
+                <div class="acciones">
+                    <button class="btn btn-secondary" onclick="limpiarFormulario()">Cancelar</button>
+                    <button class="btn btn-primary" onclick="guardarDocumento()">Guardar Documento</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: Lista de Documentos -->
+        <div id="tab-lista" class="tab-content">
+            <div class="lista-documentos">
+                <table class="tabla">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Cliente</th>
+                            <th>Tipo</th>
+                            <th>Total</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaCuerpo">
+                        <tr>
+                            <td colspan="6" class="text-center text-gray-500 p-30">
+                                Cargando documentos...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB: Plantillas -->
+        <div id="tab-plantillas" class="tab-content">
+            <div id="plantillasList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+                <p class="text-gray-600">Cargando plantillas...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver PDF -->
+    <div id="modalPDF" class="modal">
+        <div class="modal-contenido">
+            <div class="modal-cerrar" onclick="cerrarModal()">×</div>
+            <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 20px;">Previsualizar PDF</h3>
+            <div id="pdfViewer" style="width: 100%; height: 500px; border: 1px solid var(--gray-300); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; background: var(--gray-50);">
+                Cargando PDF...
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="btn btn-secondary" onclick="cerrarModal()">Cerrar</button>
+                <button class="btn btn-primary" onclick="descargarPDFActual()">Descargar PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let documentoActualId = null;
+        let itemsCount = 0;
+
+        // Cambiar tabs
+        function cambiarTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('activo'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('activo'));
+
+            document.getElementById(`tab-${tab}`).classList.add('activo');
+            event.target.classList.add('activo');
+
+            if (tab === 'lista') {
+                cargarDocumentos();
+            } else if (tab === 'plantillas') {
+                cargarPlantillas();
+            }
+        }
+
+        // Cargar plantillas al iniciar
+        async function cargarPlantillas() {
+            try {
+                const response = await fetch('/api/templates/', {
+                    headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+                });
+                const plantillas = await response.json();
+
+                let html = '';
+                plantillas.forEach(p => {
+                    html += `
+                        <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                            <h4 style="margin-bottom: 10px;">${p.tipo_documento.toUpperCase()}</h4>
+                            <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                                Color: <span style="display: inline-block; width: 20px; height: 20px; background: ${p.color_primario}; border-radius: 4px; vertical-align: middle;"></span>
+                            </p>
+                            <button class="btn btn-sm btn-primary" onclick="usarPlantilla(${p.id})">Usar</button>
+                        </div>
+                    `;
+                });
+
+                document.getElementById('plantillasList').innerHTML = html;
+
+                // Llenar select de plantillas
+                const select = document.getElementById('plantillaTemplate');
+                select.innerHTML = plantillas.map(p =>
+                    `<option value="${p.id}">${p.tipo_documento.toUpperCase()}</option>`
+                ).join('');
+            } catch (error) {
+                console.error('Error cargando plantillas:', error);
+            }
+        }
+
+        function usarPlantilla(id) {
+            document.getElementById('plantillaTemplate').value = id;
+            cambiarTab('crear');
+        }
+
+        // Actualizar prefijo según tipo
+        function actualizarPrefijo() {
+            const tipo = document.getElementById('tipoDocumento').value;
+            let prefijo = 'F-';
+            if (tipo === 'albarán') {
+                prefijo = 'A-';
+            } else if (tipo === 'pedido_compra') {
+                prefijo = 'PO-';
+            }
+            document.getElementById('numeroDocumento').value = `${prefijo}00001`;
+        }
+
+        // Agregar item
+        function agregarItem() {
+            itemsCount++;
+            const container = document.getElementById('itemsContainer');
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'item-fila';
+            itemDiv.id = `item-${itemsCount}`;
+            itemDiv.innerHTML = `
+                <input type="number" step="0.01" placeholder="Cantidad" class="cantidad" onchange="calcularTotales()">
+                <input type="text" placeholder="Descripción" class="descripcion">
+                <input type="number" step="0.01" placeholder="P. Unitario" class="precio" onchange="calcularTotales()">
+                <input type="number" step="0.01" placeholder="Subtotal" class="subtotal" readonly>
+                <button class="btn-sm-danger" onclick="eliminarItem(${itemsCount})">✕</button>
+            `;
+            container.appendChild(itemDiv);
+        }
+
+        function eliminarItem(id) {
+            const item = document.getElementById(`item-${id}`);
+            if (item) item.remove();
+            calcularTotales();
+        }
+
+        function calcularTotales() {
+            let subtotal = 0;
+
+            document.querySelectorAll('.item-fila').forEach(fila => {
+                const cant = parseFloat(fila.querySelector('.cantidad').value) || 0;
+                const precio = parseFloat(fila.querySelector('.precio').value) || 0;
+                const sub = cant * precio;
+                fila.querySelector('.subtotal').value = sub.toFixed(2);
+                subtotal += sub;
+            });
+
+            const impuesto = subtotal * 0.18;
+            const total = subtotal + impuesto;
+
+            document.getElementById('subtotalDisplay').textContent = `S/ ${subtotal.toFixed(2)}`;
+            document.getElementById('impuestoDisplay').textContent = `S/ ${impuesto.toFixed(2)}`;
+            document.getElementById('totalDisplay').textContent = `S/ ${total.toFixed(2)}`;
+        }
+
+        async function guardarDocumento() {
+            const items = [];
+            document.querySelectorAll('.item-fila').forEach(fila => {
+                items.push({
+                    cantidad: parseFloat(fila.querySelector('.cantidad').value),
+                    descripcion: fila.querySelector('.descripcion').value,
+                    precio_unitario: parseFloat(fila.querySelector('.precio').value)
+                });
+            });
+
+            if (items.length === 0) {
+                mostrarAlerta('error', 'Agrega al menos un item');
+                return;
+            }
+
+            const subtotal = parseFloat(document.getElementById('subtotalDisplay').textContent.replace('S/ ', ''));
+            const impuesto = parseFloat(document.getElementById('impuestoDisplay').textContent.replace('S/ ', ''));
+            const total = parseFloat(document.getElementById('totalDisplay').textContent.replace('S/ ', ''));
+
+            const datos = {
+                tipo_documento: document.getElementById('tipoDocumento').value,
+                numero_documento: document.getElementById('numeroDocumento').value,
+                cliente_nombre: document.getElementById('clienteNombre').value,
+                cliente_email: document.getElementById('clienteEmail').value,
+                cliente_telefono: document.getElementById('clienteTelefono').value,
+                cliente_direccion: document.getElementById('clienteDireccion').value,
+                items: items,
+                subtotal: subtotal,
+                impuesto: impuesto,
+                total: total,
+                template_id: parseInt(document.getElementById('plantillaTemplate').value),
+                notas: document.getElementById('notasDocumento').value
+            };
+
+            try {
+                const response = await fetch('/api/templates/manuales/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(datos)
+                });
+
+                if (response.ok) {
+                    mostrarAlerta('exito', '✅ Documento guardado exitosamente');
+                    limpiarFormulario();
+                    cargarDocumentos();
+                    cambiarTab('lista');
+                } else {
+                    const error = await response.json();
+                    mostrarAlerta('error', `❌ ${error.detail || 'Error al guardar'}`);
+                }
+            } catch (error) {
+                mostrarAlerta('error', `❌ Error: ${error.message}`);
+            }
+        }
+
+        async function cargarDocumentos() {
+            try {
+                const response = await fetch('/api/templates/manuales/', {
+                    headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+                });
+                const documentos = await response.json();
+
+                let html = '';
+                if (documentos.length === 0) {
+                    html = '<tr><td colspan="6" style="text-align: center; padding: 30px; color: #999;">No hay documentos creados</td></tr>';
+                } else {
+                    documentos.forEach(doc => {
+                        const fecha = new Date(doc.creado_en).toLocaleDateString('es-PE');
+                        html += `
+                            <tr>
+                                <td>${doc.numero_documento}</td>
+                                <td>${doc.cliente_nombre}</td>
+                                <td>${doc.tipo_documento}</td>
+                                <td>S/ ${doc.total.toFixed(2)}</td>
+                                <td>${fecha}</td>
+                                <td>
+                                    <div class="acciones-tabla">
+                                        <button class="btn btn-sm btn-primary" onclick="previewPDF(${doc.id})">PDF</button>
+                                        <button class="btn btn-sm btn-danger" onclick="eliminarDocumento(${doc.id})">✕</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+                document.getElementById('tablaCuerpo').innerHTML = html;
+            } catch (error) {
+                console.error('Error cargando documentos:', error);
+            }
+        }
+
+        async function previewPDF(id) {
+            documentoActualId = id;
+            document.getElementById('modalPDF').classList.add('activo');
+
+            try {
+                const response = await fetch(`/api/templates/manuales/${id}/generar-pdf`, {
+                    headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    document.getElementById('pdfViewer').innerHTML = `
+                        <embed src="${url}" type="application/pdf" width="100%" height="100%">
+                    `;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalPDF').classList.remove('activo');
+        }
+
+        async function descargarPDFActual() {
+            const response = await fetch(`/api/templates/manuales/${documentoActualId}/generar-pdf`, {
+                headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+            });
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `documento_${documentoActualId}.pdf`;
+            a.click();
+        }
+
+        async function eliminarDocumento(id) {
+            if (!confirm('¿Estás seguro de que deseas eliminar este documento?')) return;
+
+            try {
+                const response = await fetch(`/api/templates/manuales/${id}`, {
+                    method: 'DELETE',
+                    headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+                });
+
+                if (response.ok) {
+                    mostrarAlerta('exito', '✅ Documento eliminado');
+                    cargarDocumentos();
+                } else {
+                    mostrarAlerta('error', '❌ Error al eliminar');
+                }
+            } catch (error) {
+                mostrarAlerta('error', `❌ Error: ${error.message}`);
+            }
+        }
+
+        function limpiarFormulario() {
+            document.getElementById('itemsContainer').innerHTML = '';
+            document.getElementById('clienteNombre').value = '';
+            document.getElementById('clienteEmail').value = '';
+            document.getElementById('clienteTelefono').value = '';
+            document.getElementById('clienteDireccion').value = '';
+            document.getElementById('notasDocumento').value = '';
+            calcularTotales();
+            itemsCount = 0;
+        }
+
+        function mostrarAlerta(tipo, mensaje) {
+            const alertas = document.getElementById('alertas');
+            const alerta = document.createElement('div');
+            alerta.className = `alerta alerta-${tipo}`;
+            alerta.textContent = mensaje;
+            alertas.innerHTML = '';
+            alertas.appendChild(alerta);
+
+            setTimeout(() => alerta.remove(), 5000);
+        }
+
+        // Inicializar
+        window.addEventListener('load', () => {
+            cargarPlantillas();
+            agregarItem();
+        });
+    </script>
+    <script defer src="/static/voice-widget.js"></script>
+</body>
+<script defer src="/static/assistant.js"></script>
+<script defer src="/static/assistant-basic-panel.js"></script>
+</html>

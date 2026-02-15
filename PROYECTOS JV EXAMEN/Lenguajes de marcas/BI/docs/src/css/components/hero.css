@@ -1,0 +1,453 @@
+/**
+ * =============================================================================
+ * BOMBAS IDEAL - Componente: Hero / Slider
+ * =============================================================================
+ * 
+ * @description  Sección hero principal con slider de imágenes a pantalla
+ *               completa. Incluye controles de navegación, indicadores
+ *               y overlay con contenido.
+ * 
+ * @author       Bombas Ideal Development Team
+ * @version      2.0.0
+ * 
+ * ESTRUCTURA HTML:
+ * <section class="hero">
+ *   <div class="hero-slider">
+ *     <div class="slide active">
+ *       <img class="slide-bg" src="..." alt="">
+ *       <div class="slide-content">
+ *         <h1>...</h1>
+ *         <p>...</p>
+ *         <a class="btn">...</a>
+ *       </div>
+ *     </div>
+ *   </div>
+ *   <div class="slider-controls">...</div>
+ *   <div class="slider-indicators">...</div>
+ * </section>
+ * =============================================================================
+ */
+
+/* =========================================================================
+ * HERO CONTAINER
+ * =========================================================================
+ */
+
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+    max-height: 900px;
+    overflow: hidden;
+}
+
+/* Reducir altura en móviles */
+@media (max-width: 768px) {
+    .hero {
+        height: 85vh;
+        min-height: 500px;
+    }
+}
+
+/* =========================================================================
+ * SLIDER
+ * =========================================================================
+ */
+
+.hero-slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Slide individual */
+.slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: 
+        opacity var(--bi-duration-slow) ease,
+        visibility var(--bi-duration-slow) ease;
+}
+
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Imagen de fondo */
+.slide-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Overlay oscuro */
+.slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(10, 22, 40, 0.85) 0%,
+        rgba(10, 22, 40, 0.6) 50%,
+        rgba(10, 22, 40, 0.4) 100%
+    );
+    z-index: 1;
+}
+
+/* Patrón decorativo (opcional) */
+.slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* =========================================================================
+ * CONTENIDO DEL SLIDE
+ * =========================================================================
+ */
+
+.slide-content {
+    position: relative;
+    z-index: 2;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    
+    height: 100%;
+    max-width: var(--bi-container-xl);
+    margin: 0 auto;
+    padding: var(--bi-space-20) var(--bi-space-8);
+}
+
+/* Título principal */
+.slide-title {
+    font-family: var(--bi-font-primary);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: var(--bi-font-bold);
+    color: var(--bi-text-inverse);
+    line-height: var(--bi-leading-tight);
+    
+    max-width: 700px;
+    margin-bottom: var(--bi-space-6);
+    
+    /* Animación entrada */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 
+        opacity var(--bi-duration-normal) ease,
+        transform var(--bi-duration-normal) ease;
+    transition-delay: 0.3s;
+}
+
+.slide.active .slide-title {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Destacar palabra */
+.slide-title .highlight {
+    color: var(--bi-accent);
+    position: relative;
+}
+
+/* Subtítulo */
+.slide-subtitle {
+    font-family: var(--bi-font-primary);
+    font-size: var(--bi-text-lg);
+    font-weight: var(--bi-font-normal);
+    color: rgba(255, 255, 255, 0.8);
+    line-height: var(--bi-leading-relaxed);
+    
+    max-width: 500px;
+    margin-bottom: var(--bi-space-8);
+    
+    /* Animación entrada */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 
+        opacity var(--bi-duration-normal) ease,
+        transform var(--bi-duration-normal) ease;
+    transition-delay: 0.5s;
+}
+
+.slide.active .slide-subtitle {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Botones */
+.slide-actions {
+    display: flex;
+    gap: var(--bi-space-4);
+    flex-wrap: wrap;
+    
+    /* Animación entrada */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 
+        opacity var(--bi-duration-normal) ease,
+        transform var(--bi-duration-normal) ease;
+    transition-delay: 0.7s;
+}
+
+.slide.active .slide-actions {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =========================================================================
+ * CONTROLES DEL SLIDER
+ * =========================================================================
+ */
+
+.slider-controls {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    z-index: 5;
+    
+    display: flex;
+    justify-content: space-between;
+    padding: 0 var(--bi-space-4);
+    pointer-events: none;
+}
+
+.slider-btn {
+    width: 50px;
+    height: 50px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--bi-radius-full);
+    
+    color: var(--bi-text-inverse);
+    font-size: var(--bi-text-lg);
+    
+    cursor: pointer;
+    pointer-events: all;
+    
+    transition: var(--bi-transition-normal);
+}
+
+.slider-btn:hover {
+    background-color: var(--bi-primary-500);
+    border-color: var(--bi-primary-500);
+    transform: scale(1.1);
+}
+
+/* Iconos de flechas */
+.slider-btn-prev::before {
+    content: '←';
+    font-family: inherit;
+}
+
+.slider-btn-next::before {
+    content: '→';
+    font-family: inherit;
+}
+
+/* =========================================================================
+ * INDICADORES
+ * =========================================================================
+ */
+
+.slider-indicators {
+    position: absolute;
+    bottom: var(--bi-space-8);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    
+    display: flex;
+    gap: var(--bi-space-3);
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: var(--bi-radius-full);
+    background-color: transparent;
+    
+    cursor: pointer;
+    transition: var(--bi-transition-normal);
+}
+
+.indicator:hover {
+    border-color: var(--bi-text-inverse);
+}
+
+.indicator.active {
+    background-color: var(--bi-accent);
+    border-color: var(--bi-accent);
+    transform: scale(1.2);
+}
+
+/* Variante: líneas */
+.slider-indicators--lines {
+    gap: var(--bi-space-2);
+}
+
+.slider-indicators--lines .indicator {
+    width: 40px;
+    height: 3px;
+    border-radius: var(--bi-radius-sm);
+}
+
+.slider-indicators--lines .indicator.active {
+    width: 60px;
+}
+
+/* =========================================================================
+ * SCROLL INDICATOR
+ * =========================================================================
+ */
+
+.scroll-indicator {
+    position: absolute;
+    bottom: var(--bi-space-6);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--bi-space-2);
+    
+    color: rgba(255, 255, 255, 0.6);
+    font-size: var(--bi-text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--bi-tracking-widest);
+    
+    animation: bounce 2s ease-in-out infinite;
+}
+
+.scroll-indicator::after {
+    content: '';
+    width: 20px;
+    height: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 10px;
+    position: relative;
+}
+
+.scroll-indicator::before {
+    content: '';
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 8px;
+    background-color: var(--bi-accent);
+    border-radius: 2px;
+    animation: scrollMouse 2s ease-in-out infinite;
+}
+
+@keyframes scrollMouse {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(-50%) translateY(10px);
+        opacity: 0.3;
+    }
+}
+
+/* =========================================================================
+ * HERO ALTERNATIVO (Sin slider)
+ * =========================================================================
+ */
+
+.hero--static {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    
+    background: 
+        linear-gradient(135deg, rgba(10, 22, 40, 0.9), rgba(10, 22, 40, 0.7)),
+        url('../assets/images/hero-bg.webp') center/cover no-repeat;
+}
+
+.hero--static .slide-content {
+    align-items: center;
+    text-align: center;
+}
+
+.hero--static .slide-title {
+    max-width: 900px;
+}
+
+/* =========================================================================
+ * HERO PEQUEÑO (Páginas internas)
+ * =========================================================================
+ */
+
+.hero--small {
+    height: 400px;
+    min-height: 300px;
+    max-height: 400px;
+}
+
+.hero--small .slide-content {
+    padding-top: var(--bi-space-24);
+}
+
+/* =========================================================================
+ * RESPONSIVE
+ * =========================================================================
+ */
+
+@media (max-width: 768px) {
+    .slide-content {
+        padding: var(--bi-space-24) var(--bi-space-4);
+        align-items: center;
+        text-align: center;
+    }
+    
+    .slide-title {
+        font-size: clamp(1.75rem, 6vw, 2.5rem);
+    }
+    
+    .slide-subtitle {
+        font-size: var(--bi-text-base);
+    }
+    
+    .slider-controls {
+        display: none;
+    }
+    
+    .slider-indicators {
+        bottom: var(--bi-space-4);
+    }
+    
+    .scroll-indicator {
+        display: none;
+    }
+    
+    .hero--small {
+        height: 300px;
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "pregunta": "Indica lo que no es una base de datos",
+    "respuestas": [
+        "MySQL",
+        "SQLite",
+        "Python"
+    ]
+}

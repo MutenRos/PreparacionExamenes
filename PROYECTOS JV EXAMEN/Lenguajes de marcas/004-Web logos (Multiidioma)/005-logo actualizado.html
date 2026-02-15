@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lenguaje de Programación Logos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+</head>
+<body>
+    <!-- Selector de idioma -->
+    <div class="lang-selector">
+        <select id="languageSelect">
+            <option value="es">Español</option>
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+        </select>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                λ
+                <span id="nav-title">Logos</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" id="nav-home">Inicio</a></li>
+                <li><a href="#features" id="nav-features">Características</a></li>
+                <li><a href="#syntax" id="nav-syntax">Sintaxis</a></li>
+                <li><a href="#examples" id="nav-examples">Ejemplos</a></li>
+                <li><a href="#download" id="nav-download">Descargar</a></li>
+                <li><a href="#docs" id="nav-docs">Documentación</a></li>
+                <li><a href="https://github.com" target="_blank" id="nav-github">
+                    <i class="fab fa-github"></i> GitHub
+                </a></li>
+            </ul>
+            <button class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Sección Hero -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 id="hero-title">Lenguaje de Programación Logos</h1>
+            <p id="hero-subtitle">La simplicidad se une a la elegancia con una sintaxis inspirada en el latín</p>
+            <div class="hero-buttons">
+                <a href="#download" class="btn btn-primary" id="hero-cta1">Empezar</a>
+                <a href="#examples" class="btn btn-secondary" id="hero-cta2">Ver ejemplos</a>
+            </div>
+        </div>
+        <div class="hero-code">
+            <pre><code class="language-Logos" id="hero-code-example">
+# Logos Example
+nomen = "Mundo"
+salutatio = "Salve " + nomen + "!"
+sonus.dic(salutatio)
+
+si nomen == "Logos":
+    sonus.dic("Optime!")
+alio:
+    sonus.dic("Bene venisti!")
+            </code></pre>
+        </div>
+    </section>
+
+    <!-- Características -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 id="features-title">¿Por qué Logos?</h2>
+            <div class="features-grid" id="features-items">
+                <!-- Rellenado por JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sintaxis -->
+    <section id="syntax" class="syntax">
+        <div class="container">
+            <h2 id="syntax-title">Ejemplos de sintaxis</h2>
+            <div class="syntax-grid">
+                <div class="code-card">
+                    <h3 id="syntax-code1-title">Hola Mundo</h3>
+                    <pre><code class="language-Logos" id="syntax-code1">sonus.dic("Salve mundus!")</code></pre>
+                </div>
+                <div class="code-card">
+                    <h3 id="syntax-code2-title">Variables y condiciones</h3>
+                    <pre><code class="language-Logos" id="syntax-code2">nomen = "Logos"
+si nomen == "Logos":
+    sonus.dic("Optime!")
+alio:
+    sonus.dic("Quis es?")</code></pre>
+                </div>
+                <div class="code-card">
+                    <h3 id="syntax-code3-title">Aritmética</h3>
+                    <pre><code class="language-Logos" id="syntax-code3">x = 10
+y = 5
+summa = x + y
+differentia = x - y
+sonus.dic(summa)</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ejemplos -->
+    <section id="examples" class="examples">
+        <div class="container">
+            <h2 id="examples-title">Más ejemplos</h2>
+            <div class="examples-grid" id="examples-items">
+                <!-- Rellenado por JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Palabras clave -->
+    <section class="keywords">
+        <div class="container">
+            <h2 id="keywords-title">Palabras clave en latín</h2>
+            <div class="keywords-table-container">
+                <table class="keywords-table">
+                    <thead>
+                        <tr>
+                            <th>Palabra clave Logos</th>
+                            <th>Equivalente en inglés</th>
+                        </tr>
+                    </thead>
+                    <tbody id="keywords-table">
+                        <!-- Rellenado por JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Descarga -->
+    <section id="download" class="download">
+        <div class="container">
+            <h2 id="download-title">Obtén Logos</h2>
+            <p id="download-description" class="download-desc">
+                Descarga la última versión o compílala desde el código fuente
+            </p>
+            <div class="download-info">
+                <div class="version-badge" id="download-version">Versión actual: 0.1.0</div>
+                <div class="download-requirements" id="download-requirements">
+                    Requisitos: compilador C (GCC/Clang), Make
+                </div>
+            </div>
+            <div class="download-buttons">
+                <a href="https://github.com/yourusername/Logos" target="_blank" class="btn btn-primary">
+                    <i class="fab fa-github"></i> <span id="download-btn-source">Código fuente</span>
+                </a>
+                <a href="#" class="btn btn-secondary" id="download-btn-binary">Descargar binario</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pie de página -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        λ Logos
+                    </div>
+                    <p id="footer-description">
+                        Logos es un lenguaje de programación de código abierto diseñado para la simplicidad y la elegancia.
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <h4>Enlaces</h4>
+                    <ul id="footer-links">
+                        <!-- Rellenado por JavaScript -->
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Comunidad</h4>
+                    <div class="social-icons">
+                        <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-stack-overflow"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p id="footer-copyright">
+                    © 2024 Proyecto del Lenguaje Logos. Licencia MIT.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+</body>
+</html>
+

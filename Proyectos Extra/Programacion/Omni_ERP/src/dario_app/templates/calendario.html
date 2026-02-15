@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/aaaaa-animations.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <style>
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #667eea; }
+        .user-menu a {
+            margin-left: 1.5rem;
+            text-decoration: none;
+            color: var(--text-secondary);
+        }
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .top-bar h1 { color: #333; }
+        .btn {
+            padding: 0.7rem 1.3rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            margin-left: 0.5rem;
+        }
+
+        .calendar-wrapper {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .calendar-header h2 {
+            font-size: 1.8rem;
+            color: #333;
+        }
+        .calendar-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .calendar-nav button {
+            padding: 0.6rem 1rem;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #667eea;
+        }
+        .calendar-nav button:hover {
+            background: #e5e5e5;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(110px, 1fr));
+            grid-auto-rows: 120px; /* fuerza 6 filas visibles (después de la cabecera) */
+            gap: 8px;
+        }
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 700;
+            color: #667eea;
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+        .calendar-day {
+            min-height: 110px;
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        .calendar-day:hover {
+            background: #f0f0f0;
+            border-color: var(--brand-primary);
+        }
+        .calendar-day.today {
+            background: var(--primary-light);
+            border-color: var(--brand-primary);
+        }
+        .calendar-day.other-month {
+            opacity: 0.4;
+        }
+        .day-number {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+        }
+        .event-dot {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: white;
+            font-weight: 600;
+        }
+        .event-compra { background: var(--color-success); }
+        .event-venta { background: var(--color-info); }
+        .event-recordatorio { background: var(--color-warning); }
+        .event-reunion { background: var(--brand-secondary); }
+        .event-deadline { background: var(--color-danger); }
+
+        .sidebar {
+            position: fixed;
+            right: 20px;
+            top: 100px;
+            width: 300px;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+        .sidebar h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        .event-item {
+            padding: 0.8rem;
+            background: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            border-left: 4px solid #667eea;
+        }
+        .event-item h4 {
+            font-size: 0.9rem;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+        .event-item p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .event-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: white;
+            margin-top: 4px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.show { display: flex; }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .modal-header h2 {
+            color: #667eea;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-tertiary);
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            color: #333;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.7rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+        .form-actions button {
+            flex: 1;
+        }
+
+        @media (max-width: 1200px) {
+            .sidebar {
+                position: static;
+                width: 100%;
+                margin-top: 2rem;
+            }
+            .container {
+                max-width: 100%;
+            }
+        }
+        @media (max-width: 768px) {
+            .calendar-day {
+                min-height: 80px;
+                padding: 4px;
+            }
+            .event-dot {
+                font-size: 0.6rem;
+                padding: 1px 4px;
+            }
+            .calendar-grid {
+                grid-template-columns: repeat(7, minmax(70px, 1fr));
+                grid-auto-rows: 90px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">⚡ OmniERP</div>
+        <div class="user-menu">
+            <a href="/app/dashboard">📊 Dashboard</a>
+            <a href="/app/settings">⚙️ Configuración</a>
+            <a href="/app/logout">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="top-bar">
+            <h1>📅 Calendario</h1>
+            <div>
+                <button class="btn btn-primary" onclick="abrirModalEvento()">+ Nuevo Evento</button>
+                <button class="btn btn-secondary" onclick="cargarEventos()">🔄 Actualizar</button>
+                <button class="btn btn-secondary" style="background: var(--gray-400); color: white; border-color: var(--gray-400); cursor: not-allowed;" title="Disponible en Plan Pro">🔒 Widget Citas (Pro)</button>
+            </div>
+        </div>
+
+        <div class="calendar-wrapper">
+            <div class="calendar-header">
+                <h2 id="mesActual">Enero 2024</h2>
+                <div class="calendar-nav">
+                    <button onclick="cambiarMes(-1)">◀ Anterior</button>
+                    <button onclick="hoy()">Hoy</button>
+                    <button onclick="cambiarMes(1)">Siguiente ▶</button>
+                </div>
+            </div>
+
+            <div class="calendar-grid" id="calendarioGrid">
+                <!-- Cabeceras de días -->
+                <div class="calendar-day-header">Lun</div>
+                <div class="calendar-day-header">Mar</div>
+                <div class="calendar-day-header">Mié</div>
+                <div class="calendar-day-header">Jue</div>
+                <div class="calendar-day-header">Vie</div>
+                <div class="calendar-day-header">Sáb</div>
+                <div class="calendar-day-header">Dom</div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <h3>📋 Próximos eventos</h3>
+            <div id="proximosEventos">
+                <p style="color: var(--text-tertiary);">Cargando...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de evento -->
+    <div class="modal" id="modalEvento">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitulo">Nuevo Evento</h2>
+                <button class="close-btn" onclick="cerrarModal()">&times;</button>
+            </div>
+            <form id="formEvento" onsubmit="guardarEvento(event)">
+                <div class="form-group">
+                    <label>Título *</label>
+                    <input type="text" name="titulo" required>
+                </div>
+                <div class="form-group">
+                    <label>Tipo *</label>
+                    <select name="tipo" required>
+                        <option value="recordatorio">📌 Recordatorio</option>
+                        <option value="reunion">👥 Reunión</option>
+                        <option value="deadline">⏰ Fecha límite</option>
+                        <option value="compra">🛒 Compra</option>
+                        <option value="venta">💰 Venta</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fecha y hora inicio *</label>
+                    <input type="datetime-local" name="fecha_inicio" required>
+                </div>
+                <div class="form-group">
+                    <label>Fecha y hora fin</label>
+                    <input type="datetime-local" name="fecha_fin">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="todo_el_dia" style="width: auto; margin-right: 8px;">
+                        Todo el día
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea name="descripcion"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Color</label>
+                    <input type="color" name="color" value="#667eea">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- AI assistant widget -->
+    <script defer src="/static/assistant.js"></script>
+    <script defer src="/static/assistant-basic-panel.js"></script>
+    <link rel="stylesheet" href="/static/assistant.css">
+
+    <script>
+        let mesActual = new Date();
+        let eventos = [];
+        let editandoEventoId = null;
+
+        const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+        async function cargarEventos() {
+            try {
+                const resp = await fetch('/api/calendario/eventos');
+                if (!resp.ok) throw new Error('Error al cargar eventos');
+                eventos = await resp.json();
+                renderizarCalendario();
+                cargarProximos();
+            } catch (err) {
+                alert('Error al cargar eventos: ' + err.message);
+            }
+        }
+
+        async function cargarProximos() {
+            try {
+                const resp = await fetch('/api/calendario/proximos?dias=30');
+                if (!resp.ok) throw new Error('Error al cargar próximos');
+                const proximos = await resp.json();
+                const container = document.getElementById('proximosEventos');
+
+                if (proximos.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-tertiary);">No hay eventos próximos</p>';
+                    return;
+                }
+
+                container.innerHTML = proximos.map(e => {
+                    const fecha = new Date(e.fecha_inicio);
+                    const colorMap = {
+                        compra: 'var(--color-success)', venta: 'var(--color-info)', recordatorio: 'var(--color-warning)',
+                        reunion: 'var(--brand-secondary)', deadline: 'var(--color-danger)'
+                    };
+                    return `
+                        <div class="event-item" style="border-left-color: ${colorMap[e.tipo] || e.color}">
+                            <h4>${e.titulo}</h4>
+                            <p>${fecha.toLocaleDateString('es-ES', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'})}</p>
+                            <span class="event-badge" style="background: ${colorMap[e.tipo] || e.color}">${e.tipo}</span>
+                        </div>
+                    `;
+                }).join('');
+            } catch (err) {
+                console.error('Error cargando próximos:', err);
+            }
+        }
+
+        function renderizarCalendario() {
+            const año = mesActual.getFullYear();
+            const mes = mesActual.getMonth();
+
+            document.getElementById('mesActual').textContent = `${meses[mes]} ${año}`;
+
+            const primerDia = new Date(año, mes, 1);
+            const ultimoDia = new Date(año, mes + 1, 0);
+            const diasMes = ultimoDia.getDate();
+
+            // Lunes = 1, Domingo = 0 -> ajustar para empezar en lunes
+            let primerDiaSemana = primerDia.getDay();
+            primerDiaSemana = primerDiaSemana === 0 ? 6 : primerDiaSemana - 1;
+
+            const grid = document.getElementById('calendarioGrid');
+            // Mantener cabeceras
+            const cabeceras = Array.from(grid.children).slice(0, 7);
+            grid.innerHTML = '';
+            cabeceras.forEach(c => grid.appendChild(c));
+
+            // Días del mes anterior
+            const ultimoDiaMesAnterior = new Date(año, mes, 0).getDate();
+            for (let i = primerDiaSemana - 1; i >= 0; i--) {
+                const dia = ultimoDiaMesAnterior - i;
+                const cell = crearCeldaDia(dia, mes - 1, año, true);
+                grid.appendChild(cell);
+            }
+
+            // Días del mes actual
+            for (let dia = 1; dia <= diasMes; dia++) {
+                const cell = crearCeldaDia(dia, mes, año, false);
+                grid.appendChild(cell);
+            }
+
+            // Completar con días del siguiente mes para tener siempre 6 semanas completas (42 celdas)
+            const totalCeldasActuales = primerDiaSemana + diasMes;
+            const celdasParaCompletar = 42 - totalCeldasActuales;
+            for (let dia = 1; dia <= celdasParaCompletar; dia++) {
+                const cell = crearCeldaDia(dia, mes + 1, año, true);
+                grid.appendChild(cell);
+            }
+        }
+
+        function crearCeldaDia(dia, mes, año, otroMes) {
+            const cell = document.createElement('div');
+            cell.className = 'calendar-day';
+            if (otroMes) cell.classList.add('other-month');
+
+            const hoy = new Date();
+            if (dia === hoy.getDate() && mes === hoy.getMonth() && año === hoy.getFullYear() && !otroMes) {
+                cell.classList.add('today');
+            }
+
+            const dayNumber = document.createElement('div');
+            dayNumber.className = 'day-number';
+            dayNumber.textContent = dia;
+            cell.appendChild(dayNumber);
+
+            // Añadir eventos del día
+            const fecha = new Date(año, mes, dia);
+            const eventosDelDia = eventos.filter(e => {
+                const fechaEvento = new Date(e.fecha_inicio);
+                return fechaEvento.getDate() === dia &&
+                       fechaEvento.getMonth() === mes &&
+                       fechaEvento.getFullYear() === año;
+            });
+
+            eventosDelDia.forEach(e => {
+                const dot = document.createElement('div');
+                dot.className = `event-dot event-${e.tipo}`;
+                dot.textContent = e.titulo.substring(0, 12);
+                dot.title = e.titulo;
+                dot.onclick = (ev) => {
+                    ev.stopPropagation();
+                    verEvento(e.id);
+                };
+                cell.appendChild(dot);
+            });
+
+            cell.onclick = () => {
+                const fechaISO = `${año}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}T09:00`;
+                abrirModalEvento(fechaISO);
+            };
+
+            return cell;
+        }
+
+        function cambiarMes(delta) {
+            mesActual.setMonth(mesActual.getMonth() + delta);
+            renderizarCalendario();
+        }
+
+        function hoy() {
+            mesActual = new Date();
+            renderizarCalendario();
+        }
+
+        function abrirModalEvento(fechaInicio = null) {
+            editandoEventoId = null;
+            document.getElementById('modalTitulo').textContent = 'Nuevo Evento';
+            document.getElementById('formEvento').reset();
+            if (fechaInicio) {
+                document.querySelector('input[name="fecha_inicio"]').value = fechaInicio;
+            }
+            document.getElementById('modalEvento').classList.add('show');
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalEvento').classList.remove('show');
+        }
+
+        async function guardarEvento(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+
+            const data = {
+                titulo: formData.get('titulo'),
+                tipo: formData.get('tipo'),
+                fecha_inicio: formData.get('fecha_inicio'),
+                fecha_fin: formData.get('fecha_fin') || null,
+                todo_el_dia: formData.get('todo_el_dia') === 'on',
+                descripcion: formData.get('descripcion') || '',
+                color: formData.get('color')
+            };
+
+            try {
+                const url = editandoEventoId ? `/api/calendario/eventos/${editandoEventoId}` : '/api/calendario/eventos';
+                const method = editandoEventoId ? 'PUT' : 'POST';
+
+                const resp = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (!resp.ok) throw new Error('Error al guardar evento');
+
+                cerrarModal();
+                await cargarEventos();
+            } catch (err) {
+                alert('Error al guardar: ' + err.message);
+            }
+        }
+
+        async function verEvento(id) {
+            const evento = eventos.find(e => e.id === id);
+            if (!evento) return;
+
+            alert(`${evento.titulo}\n\nTipo: ${evento.tipo}\nFecha: ${new Date(evento.fecha_inicio).toLocaleString('es-ES')}\n\n${evento.descripcion || ''}`);
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarEventos();
+        });
+    </script>
+    <script defer src="/static/voice-widget.js"></script>
+</body>
+</html>

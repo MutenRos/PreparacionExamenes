@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedido de Compra - {{ compra.numero }}</title>
+  <link rel="stylesheet" href="/static/print.css" />
+  <style>
+    .meta-grid { display: grid; grid-template-columns: 220px 1fr; gap: 6px 14px; }
+    .kv { color:#555; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:12px; background:#eef; font-size:12px; }
+    .section-title { margin-top: 18px; }
+    .totals { margin-top: 10px; display:grid; grid-template-columns: 1fr 200px; }
+    .totals div { text-align: right; }
+  </style>
+</head>
+<body>
+  <header class="doc-header">
+    <div>
+      <h1>Pedido de Compra</h1>
+      <div class="subtitle">{{ compra.numero }}</div>
+    </div>
+    <div>
+      <button onclick="window.print()" class="print-btn">Imprimir</button>
+    </div>
+  </header>
+
+  <section class="doc-section">
+    <div class="meta-grid">
+      <div class="kv">Organización</div><div>{{ org.razon_social or org.nombre if org else 'N/A' }}</div>
+      <div class="kv">Estado</div><div><span class="badge">{{ compra.estado }}</span></div>
+      <div class="kv">Fecha</div><div>{{ compra.fecha }}</div>
+      <div class="kv">Proveedor</div><div>{{ compra.proveedor_nombre }}</div>
+      <div class="kv">Documento</div><div>{{ compra.proveedor_documento or '—' }}</div>
+      <div class="kv">Notas</div><div>{{ compra.notas or '—' }}</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <h2 class="section-title">Productos</h2>
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Cantidad</th>
+          <th>Precio Unitario</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for detalle, producto in items %}
+        <tr>
+          <td>{{ producto.codigo }}</td>
+          <td>{{ producto.nombre }}</td>
+          <td>{{ detalle.cantidad }}</td>
+          <td>{{ detalle.precio_unitario }}</td>
+          <td>{{ detalle.subtotal }}</td>
+        </tr>
+        {% endfor %}
+        {% if items|length == 0 %}
+        <tr><td colspan="5" class="empty">Sin productos.</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+    <div class="totals">
+      <div>Total</div>
+      <div>{{ compra.total }}</div>
+    </div>
+  </section>
+</body>
+</html>

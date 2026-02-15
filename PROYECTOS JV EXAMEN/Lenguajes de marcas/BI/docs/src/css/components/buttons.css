@@ -1,0 +1,382 @@
+/**
+ * =============================================================================
+ * BOMBAS IDEAL - Componente: Botones
+ * =============================================================================
+ * 
+ * @description  Sistema de botones modular con variantes, tamaños y estados.
+ *               Diseñado para mantener consistencia visual y accesibilidad.
+ * 
+ * @author       Bombas Ideal Development Team
+ * @version      2.0.0
+ * 
+ * USO:
+ * <button class="btn btn-primary">Botón Primario</button>
+ * <a href="#" class="btn btn-secondary btn-lg">Enlace Secundario</a>
+ * <button class="btn btn-outline btn-sm" disabled>Deshabilitado</button>
+ * 
+ * VARIANTES:
+ * - .btn-primary    : Azul corporativo (acciones principales)
+ * - .btn-secondary  : Cian/turquesa (acciones secundarias)
+ * - .btn-outline    : Solo borde (acciones terciarias)
+ * - .btn-ghost      : Sin fondo (enlaces sutiles)
+ * - .btn-danger     : Rojo (acciones destructivas)
+ * - .btn-success    : Verde (confirmaciones)
+ * 
+ * TAMAÑOS:
+ * - .btn-sm         : Pequeño
+ * - (default)       : Normal
+ * - .btn-lg         : Grande
+ * 
+ * MODIFICADORES:
+ * - .btn-block      : Ancho completo
+ * - .btn-icon       : Solo icono (cuadrado)
+ * - .btn-loading    : Estado de carga
+ * =============================================================================
+ */
+
+/* =========================================================================
+ * BASE DEL BOTÓN
+ * =========================================================================
+ */
+
+.btn {
+    /* Layout */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--bi-space-2);
+    
+    /* Dimensiones */
+    padding: var(--bi-space-3) var(--bi-space-6);
+    min-height: 44px; /* Mínimo para touch targets accesibles */
+    
+    /* Tipografía */
+    font-family: var(--bi-font-primary);
+    font-size: var(--bi-text-sm);
+    font-weight: var(--bi-font-semibold);
+    line-height: var(--bi-leading-tight);
+    text-align: center;
+    text-decoration: none;
+    letter-spacing: var(--bi-tracking-wide);
+    white-space: nowrap;
+    
+    /* Apariencia */
+    border: 2px solid transparent;
+    border-radius: var(--bi-radius-md);
+    cursor: pointer;
+    
+    /* Transiciones */
+    transition: 
+        background-color var(--bi-duration-fast) ease,
+        border-color var(--bi-duration-fast) ease,
+        color var(--bi-duration-fast) ease,
+        box-shadow var(--bi-duration-fast) ease,
+        transform var(--bi-duration-fast) ease;
+    
+    /* Prevenir selección de texto */
+    user-select: none;
+    
+    /* Posicionamiento para pseudo-elementos */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto de ripple en hover */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: left var(--bi-duration-slow) ease;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+/* Estado hover base */
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Estado focus */
+.btn:focus-visible {
+    outline: 2px solid var(--bi-primary-500);
+    outline-offset: 2px;
+}
+
+/* Estado active */
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Estado disabled */
+.btn:disabled,
+.btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    pointer-events: none;
+}
+
+/* =========================================================================
+ * VARIANTE: PRIMARY
+ * =========================================================================
+ * Botón principal para acciones destacadas.
+ */
+
+.btn-primary {
+    background: var(--bi-gradient-primary);
+    color: var(--bi-text-inverse);
+    border-color: transparent;
+    box-shadow: var(--bi-shadow-sm);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%);
+    box-shadow: var(--bi-shadow-md), var(--bi-shadow-primary);
+}
+
+.btn-primary:active {
+    background: linear-gradient(135deg, #003d7a 0%, #002952 100%);
+}
+
+/* =========================================================================
+ * VARIANTE: SECONDARY
+ * =========================================================================
+ * Botón secundario para acciones complementarias.
+ */
+
+.btn-secondary {
+    background: linear-gradient(135deg, var(--bi-secondary-500) 0%, var(--bi-secondary-600) 100%);
+    color: var(--bi-text-inverse);
+    border-color: transparent;
+    box-shadow: var(--bi-shadow-sm);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, var(--bi-secondary-600) 0%, var(--bi-secondary-700) 100%);
+    box-shadow: var(--bi-shadow-md), 0 0 20px rgba(0, 168, 232, 0.3);
+}
+
+/* =========================================================================
+ * VARIANTE: OUTLINE
+ * =========================================================================
+ * Botón con solo borde para acciones terciarias.
+ */
+
+.btn-outline {
+    background: transparent;
+    color: var(--bi-primary-500);
+    border-color: var(--bi-primary-500);
+}
+
+.btn-outline:hover {
+    background: var(--bi-primary-500);
+    color: var(--bi-text-inverse);
+}
+
+/* Variante outline light (para fondos oscuros) */
+.btn-outline-light {
+    background: transparent;
+    color: var(--bi-text-inverse);
+    border-color: var(--bi-text-inverse);
+}
+
+.btn-outline-light:hover {
+    background: var(--bi-text-inverse);
+    color: var(--bi-primary-500);
+}
+
+/* =========================================================================
+ * VARIANTE: GHOST
+ * =========================================================================
+ * Botón sin fondo ni borde para acciones sutiles.
+ */
+
+.btn-ghost {
+    background: transparent;
+    color: var(--bi-primary-500);
+    border-color: transparent;
+}
+
+.btn-ghost:hover {
+    background: var(--bi-primary-50);
+}
+
+.btn-ghost::before {
+    display: none;
+}
+
+/* =========================================================================
+ * VARIANTE: DANGER
+ * =========================================================================
+ * Botón rojo para acciones destructivas.
+ */
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--bi-error) 0%, var(--bi-error-dark) 100%);
+    color: var(--bi-text-inverse);
+    border-color: transparent;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, var(--bi-error-dark) 0%, #9b2c2c 100%);
+    box-shadow: var(--bi-shadow-md), 0 0 20px rgba(229, 62, 62, 0.3);
+}
+
+/* =========================================================================
+ * VARIANTE: SUCCESS
+ * =========================================================================
+ * Botón verde para confirmaciones.
+ */
+
+.btn-success {
+    background: linear-gradient(135deg, var(--bi-success) 0%, var(--bi-success-dark) 100%);
+    color: var(--bi-text-inverse);
+    border-color: transparent;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, var(--bi-success-dark) 0%, #1e4620 100%);
+    box-shadow: var(--bi-shadow-md), 0 0 20px rgba(56, 161, 105, 0.3);
+}
+
+/* =========================================================================
+ * VARIANTE: BIPS (Especial para selector de bombas)
+ * =========================================================================
+ */
+
+.btn-bips {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: var(--bi-text-inverse);
+    border-color: transparent;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.btn-bips:hover {
+    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+    box-shadow: var(--bi-shadow-md), 0 0 25px rgba(99, 102, 241, 0.4);
+    animation: none;
+}
+
+/* =========================================================================
+ * TAMAÑOS
+ * =========================================================================
+ */
+
+/* Pequeño */
+.btn-sm {
+    padding: var(--bi-space-2) var(--bi-space-4);
+    min-height: 36px;
+    font-size: var(--bi-text-xs);
+}
+
+/* Grande */
+.btn-lg {
+    padding: var(--bi-space-4) var(--bi-space-8);
+    min-height: 52px;
+    font-size: var(--bi-text-base);
+}
+
+/* Extra grande */
+.btn-xl {
+    padding: var(--bi-space-5) var(--bi-space-10);
+    min-height: 60px;
+    font-size: var(--bi-text-lg);
+}
+
+/* =========================================================================
+ * MODIFICADORES
+ * =========================================================================
+ */
+
+/* Ancho completo */
+.btn-block {
+    display: flex;
+    width: 100%;
+}
+
+/* Solo icono */
+.btn-icon {
+    padding: var(--bi-space-3);
+    min-width: 44px;
+    aspect-ratio: 1;
+}
+
+.btn-icon.btn-sm {
+    padding: var(--bi-space-2);
+    min-width: 36px;
+}
+
+.btn-icon.btn-lg {
+    padding: var(--bi-space-4);
+    min-width: 52px;
+}
+
+/* Estado de carga */
+.btn-loading {
+    color: transparent !important;
+    pointer-events: none;
+}
+
+.btn-loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 0.8s linear infinite;
+    color: var(--bi-text-inverse);
+}
+
+/* =========================================================================
+ * GRUPO DE BOTONES
+ * =========================================================================
+ */
+
+.btn-group {
+    display: inline-flex;
+}
+
+.btn-group .btn {
+    border-radius: 0;
+}
+
+.btn-group .btn:first-child {
+    border-radius: var(--bi-radius-md) 0 0 var(--bi-radius-md);
+}
+
+.btn-group .btn:last-child {
+    border-radius: 0 var(--bi-radius-md) var(--bi-radius-md) 0;
+}
+
+.btn-group .btn:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* =========================================================================
+ * RESPONSIVE
+ * =========================================================================
+ */
+
+@media (max-width: 768px) {
+    .btn {
+        padding: var(--bi-space-3) var(--bi-space-5);
+    }
+    
+    .btn-lg {
+        padding: var(--bi-space-3) var(--bi-space-6);
+        font-size: var(--bi-text-sm);
+    }
+}

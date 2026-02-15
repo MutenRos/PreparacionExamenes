@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body> 
+    <input type="text" id="nombre">
+    <button>Pulsame</button>
+    <script>
+      var boton = document.querySelector("button")
+      // Puedo establecer acciones sobre los elementos HTML
+      boton.onclick = function(){
+        // Puedo coger el valor de campos HTML
+        let nombre = document.querySelector("#nombre").value
+        alert("Tu nombre es: "+nombre)
+      }
+    </script>
+  </body>
+</html>

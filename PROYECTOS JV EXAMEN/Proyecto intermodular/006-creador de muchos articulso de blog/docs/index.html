@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Generador masivo de artículos de blog con IA</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="w-900 card flex fd-col g-16">
+    <div class="flex fd-col g-6">
+      <h1 style="font-size:28px">🤖 Blog Generator</h1>
+      <h2 class="fs-14 c-muted" style="font-weight:normal">Generación masiva de artículos con Ollama + Python + SQLite</h2>
+    </div>
+    <nav class="flex g-10 fa-center fw-wrap">
+      <a href="index.html" class="btn btn-ghost" style="border-color:var(--brand);color:var(--brand)">Inicio</a>
+      <a href="pipeline.html" class="btn btn-ghost">Pipeline</a>
+      <a href="articulos.html" class="btn btn-ghost">Artículos</a>
+      <a href="tecnologias.html" class="btn btn-ghost">Tecnologías</a>
+      <a href="blog.html" class="btn btn-brand">Blog de ejemplo</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="w-900 hero flex fd-col g-16" style="margin-top:16px">
+    <h2 style="font-size:26px;color:var(--brand)">De Markdown a cientos de artículos en un solo comando</h2>
+    <p class="fs-14 c-muted" style="max-width:620px;margin:0 auto">Un script Python lee 60+ cursos de IA en Markdown, extrae cada lección, genera un artículo completo con un LLM local y lo almacena en SQLite listo para servir.</p>
+  </section>
+
+  <!-- Stats -->
+  <section class="w-900 grid-3" style="margin-top:16px">
+    <div class="card stat">
+      <div class="num">60+</div>
+      <div class="label">Documentos Markdown</div>
+    </div>
+    <div class="card stat">
+      <div class="num">~400</div>
+      <div class="label">Artículos generados</div>
+    </div>
+    <div class="card stat">
+      <div class="num">0 €</div>
+      <div class="label">Coste API (todo local)</div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="w-900 grid-2" style="margin-top:16px">
+    <div class="card-item flex fd-col g-8">
+      <span class="badge">Corpus</span>
+      <h3 class="fs-18">60+ cursos de IA</h3>
+      <p class="fs-14 c-muted">Desde NLP hasta visión por computador, cada curso con estructura H1 → H2 → H3.</p>
+    </div>
+    <div class="card-item flex fd-col g-8">
+      <span class="badge">LLM local</span>
+      <h3 class="fs-18">Ollama qwen2.5:7b</h3>
+      <p class="fs-14 c-muted">Generación de 900-1400 palabras por artículo sin depender de APIs externas.</p>
+    </div>
+    <div class="card-item flex fd-col g-8">
+      <span class="badge">Caché</span>
+      <h3 class="fs-18">JSON en disco</h3>
+      <p class="fs-14 c-muted">Cada artículo se guarda como JSON, permitiendo reanudar sin regenerar.</p>
+    </div>
+    <div class="card-item flex fd-col g-8">
+      <span class="badge">Storage</span>
+      <h3 class="fs-18">SQLite indexada</h3>
+      <p class="fs-14 c-muted">Tabla <code>posts</code> con índices en fecha y categoría para consultas rápidas.</p>
+    </div>
+  </section>
+
+  <footer class="w-900">© 2026 — Proyecto intermodular · Generador de blog con IA</footer>
+
+</body>
+</html>

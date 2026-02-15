@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIPS - Bombas Ideal Pump Selector | Selector Inteligente de Bombas</title>
+    <meta name="description" content="BIPS - Selector inteligente de bombas Bombas Ideal. Encuentra la serie de bomba perfecta para tu instalación.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="src/css/main.css">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="BIPS - Bombas Ideal Pump Selector">
+    <meta property="og:description" content="Selector inteligente de bombas. Encuentra la solución perfecta para tu instalación.">
+    <meta property="og:image" content="https://mutenros.github.io/BI/assets/images/bips-og.jpg">
+    <meta property="og:url" content="https://mutenros.github.io/BI/bips.html">
+</head>
+
+<body class="bips-page">
+    <!-- Skip Link -->
+    <a href="#bips-main" class="skip-link">Saltar al selector</a>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container" role="alert" aria-live="polite"></div>
+
+    <!-- Header -->
+    <header class="bips-header">
+        <div class="container">
+            <a href="index.html" class="bips-header__logo">
+                <img src="assets/images/logo.svg" alt="Bombas Ideal">
+            </a>
+            
+            <div class="bips-header__title">
+                <h1>
+                    <i class="fas fa-microchip" aria-hidden="true"></i> 
+                    BIPS
+                </h1>
+                <p>Bombas Ideal Pump Selector</p>
+            </div>
+            
+            <div class="bips-header__actions">
+                <button class="btn-icon" id="theme-toggle" 
+                        aria-label="Cambiar tema"
+                        aria-pressed="false">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn-icon" id="history-btn" 
+                        aria-label="Ver historial"
+                        aria-expanded="false"
+                        aria-controls="history-sidebar">
+                    <i class="fas fa-history"></i>
+                    <span class="badge" id="history-count">0</span>
+                </button>
+                <a href="index.html" class="btn btn-outline btn-sm">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- History Sidebar -->
+    <aside class="bips-sidebar" id="history-sidebar" aria-label="Historial de búsquedas">
+        <div class="bips-sidebar__header">
+            <h3><i class="fas fa-history"></i> Historial</h3>
+            <button id="sidebar-close" aria-label="Cerrar historial">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="bips-sidebar__content" id="history-list">
+            <!-- Historial dinámico -->
+        </div>
+        <div class="bips-sidebar__footer">
+            <button id="clear-history" class="btn btn-outline btn-sm btn-block">
+                <i class="fas fa-trash"></i> Limpiar historial
+            </button>
+        </div>
+    </aside>
+    <div class="bips-sidebar__overlay" id="sidebar-overlay"></div>
+
+    <!-- Main -->
+    <main class="bips-main" id="bips-main">
+        <div class="container">
+
+            <!-- Intro -->
+            <section class="bips-intro" data-animate="fade-up">
+                <div class="bips-intro__text">
+                    <h2>Selecciona la Serie de Bomba Perfecta</h2>
+                    <p>
+                        Introduce los parámetros de tu instalación y te recomendaremos 
+                        las series más adecuadas. El modelo exacto se determina consultando 
+                        el catálogo oficial.
+                    </p>
+                </div>
+                <div class="bips-intro__stats">
+                    <div class="bips-stat">
+                        <span id="total-pumps-count">35</span>
+                        <small>Series</small>
+                    </div>
+                    <div class="bips-stat">
+                        <span>+500</span>
+                        <small>Modelos</small>
+                    </div>
+                    <div class="bips-stat">
+                        <span>+120</span>
+                        <small>Años</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calculator -->
+            <section class="bips-calculator" data-animate="fade-up" data-animate-delay="100">
+                <h3><i class="fas fa-calculator"></i> Calculadora Hidráulica</h3>
+                <div class="bips-calculator__grid">
+                    <div class="form-field">
+                        <label for="calc-flow">Caudal (m³/h)</label>
+                        <input type="number" 
+                               id="calc-flow" 
+                               placeholder="50" 
+                               min="0" 
+                               step="0.1"
+                               inputmode="decimal">
+                    </div>
+                    <div class="form-field">
+                        <label for="calc-head">Altura (m)</label>
+                        <input type="number" 
+                               id="calc-head" 
+                               placeholder="30" 
+                               min="0" 
+                               step="0.1"
+                               inputmode="decimal">
+                    </div>
+                    <div class="form-field">
+                        <label for="calc-density">Densidad (kg/m³)</label>
+                        <input type="number" 
+                               id="calc-density" 
+                               placeholder="1000" 
+                               value="1000" 
+                               min="0"
+                               inputmode="decimal">
+                    </div>
+                    <div class="bips-calculator__result">
+                        <span class="bips-calculator__label">Potencia estimada</span>
+                        <span class="bips-calculator__value" id="calc-result-value">-- kW</span>
+                        <span class="bips-calculator__hp" id="calc-result-hp">-- HP</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Selector Grid -->
+            <div class="bips-selector-grid" data-animate="fade-up" data-animate-delay="200">
+                
+                <!-- Filters Panel -->
+                <aside class="bips-filters">
+                    <form id="bips-form" class="bips-form">
+                        <h3 class="bips-filters__title">
+                            <i class="fas fa-sliders-h"></i> Parámetros
+                        </h3>
+
+                        <!-- Caudal -->
+                        <div class="form-field">
+                            <label for="bips-flow">
+                                <i class="fas fa-tint"></i> Caudal (m³/h)
+                            </label>
+                            <input type="number" 
+                                   id="bips-flow" 
+                                   name="flow"
+                                   placeholder="Ej: 50"
+                                   min="0"
+                                   max="10000"
+                                   step="0.1"
+                                   inputmode="decimal">
+                            <small class="form-hint">Caudal requerido</small>
+                        </div>
+
+                        <!-- Altura -->
+                        <div class="form-field">
+                            <label for="bips-head">
+                                <i class="fas fa-arrow-up"></i> Altura (m)
+                            </label>
+                            <input type="number" 
+                                   id="bips-head" 
+                                   name="head"
+                                   placeholder="Ej: 30"
+                                   min="0"
+                                   max="300"
+                                   step="0.1"
+                                   inputmode="decimal">
+                            <small class="form-hint">Altura manométrica total</small>
+                        </div>
+
+                        <!-- Sector -->
+                        <div class="form-field">
+                            <label for="bips-sector">
+                                <i class="fas fa-industry"></i> Sector
+                            </label>
+                            <select id="bips-sector" name="sector">
+                                <option value="">Todos los sectores</option>
+                                <option value="abastecimiento">Abastecimiento de agua</option>
+                                <option value="riego">Riego agrícola</option>
+                                <option value="industrial">Industrial</option>
+                                <option value="edificacion">Edificación</option>
+                                <option value="contraincendios">Contra incendios</option>
+                                <option value="residuales">Aguas residuales</option>
+                                <option value="piscinas">Piscinas</option>
+                                <option value="hvac">HVAC</option>
+                            </select>
+                        </div>
+
+                        <!-- Instalación -->
+                        <div class="form-field">
+                            <label for="bips-installation">
+                                <i class="fas fa-cog"></i> Instalación
+                            </label>
+                            <select id="bips-installation" name="installation">
+                                <option value="">Cualquier tipo</option>
+                                <option value="superficie">Superficie</option>
+                                <option value="sumergida">Sumergida</option>
+                                <option value="vertical">Vertical en línea</option>
+                            </select>
+                        </div>
+
+                        <!-- Fase -->
+                        <div class="form-field">
+                            <label for="bips-phase">
+                                <i class="fas fa-bolt"></i> Fase eléctrica
+                            </label>
+                            <select id="bips-phase" name="phase">
+                                <option value="">Cualquiera</option>
+                                <option value="mono">Monofásica</option>
+                                <option value="tri">Trifásica</option>
+                            </select>
+                        </div>
+
+                        <!-- Acciones -->
+                        <div class="bips-form__actions">
+                            <button type="submit" 
+                                    id="bips-search-btn" 
+                                    class="btn btn-bips btn-block">
+                                <i class="fas fa-search"></i> Buscar
+                            </button>
+                            <button type="reset" 
+                                    id="bips-reset-btn" 
+                                    class="btn btn-outline btn-block">
+                                <i class="fas fa-undo"></i> Limpiar
+                            </button>
+                        </div>
+                    </form>
+                </aside>
+
+                <!-- Results Panel -->
+                <section class="bips-results" aria-live="polite">
+                    <!-- Results Header -->
+                    <div class="bips-results__header">
+                        <div id="bips-results-count" class="bips-results__count">
+                            <!-- Actualizado dinámicamente -->
+                        </div>
+                        <div class="bips-results__view">
+                            <button class="bips-view-btn active" 
+                                    data-view="grid"
+                                    aria-label="Vista en cuadrícula"
+                                    aria-pressed="true">
+                                <i class="fas fa-th"></i>
+                            </button>
+                            <button class="bips-view-btn" 
+                                    data-view="list"
+                                    aria-label="Vista en lista"
+                                    aria-pressed="false">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Results Container -->
+                    <div id="bips-results" class="bips-results__container">
+                        <!-- Resultados dinámicos -->
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Help Section -->
+            <section class="bips-help" data-animate="fade-up">
+                <div class="bips-help__card">
+                    <div class="bips-help__icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="bips-help__content">
+                        <h4>¿Necesitas ayuda?</h4>
+                        <p>
+                            Si tienes dudas sobre qué bomba seleccionar, nuestro equipo técnico 
+                            puede asesorarte. Contáctanos y te ayudaremos a encontrar la solución 
+                            perfecta para tu instalación.
+                        </p>
+                        <a href="mailto:central@bombasideal.com" class="btn btn-primary btn-sm">
+                            <i class="fas fa-envelope"></i> Contactar
+                        </a>
+                        <a href="tel:+34961402143" class="btn btn-outline btn-sm">
+                            <i class="fas fa-phone"></i> +34 961 402 143
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Quote Modal -->
+    <div class="modal" id="quote-modal" aria-hidden="true" role="dialog" aria-labelledby="quote-modal-title">
+        <div class="modal__overlay" data-modal-close></div>
+        <div class="modal__container modal--lg">
+            <header class="modal__header">
+                <h3 class="modal__title" id="quote-modal-title">
+                    <i class="fas fa-file-invoice"></i> Solicitar Presupuesto
+                </h3>
+                <button class="modal__close" data-modal-close aria-label="Cerrar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </header>
+            <div class="modal__body">
+                <form id="quote-form" class="form">
+                    <div class="form-row">
+                        <div class="form-field form-field--required">
+                            <label for="quote-name">Nombre</label>
+                            <input type="text" id="quote-name" name="name" required>
+                        </div>
+                        <div class="form-field form-field--required">
+                            <label for="quote-company">Empresa</label>
+                            <input type="text" id="quote-company" name="company" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field form-field--required">
+                            <label for="quote-email">Email</label>
+                            <input type="email" id="quote-email" name="email" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="quote-phone">Teléfono</label>
+                            <input type="tel" id="quote-phone" name="phone">
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label for="quote-comments">Comentarios</label>
+                        <textarea id="quote-comments" name="comments" rows="3" 
+                                  placeholder="Describe tu proyecto o añade información adicional..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <footer class="modal__footer">
+                <button type="button" class="btn btn-outline" data-modal-close>Cancelar</button>
+                <button type="submit" form="quote-form" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Enviar Solicitud
+                </button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bips-footer">
+        <div class="container">
+            <p>
+                &copy; 2026 Bombas Ideal S.A. - 
+                <a href="index.html">www.bombasideal.com</a> - 
+                BIPS v4.1.0
+            </p>
+        </div>
+    </footer>
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
+    <!-- App Scripts -->
+    <script type="module" src="src/js/bundle.js"></script>
+    
+    <!-- Fallback -->
+    <script nomodule src="bips.js"></script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniERP - Sistema de Gestión (BETA GRATIS)</title>
+    <link rel="stylesheet" href="/static/assistant.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: #667eea; }
+        .nav-links a {
+            margin-left: 2rem;
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+        .hero h1 span {
+            font-size: 0.7em;
+            background: #ff6b6b;
+            padding: 0.3em 0.8em;
+            border-radius: 20px;
+            margin-left: 0.5em;
+            display: inline-block;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem auto;
+            max-width: 600px;
+            border-radius: 4px;
+            color: #856404;
+        }
+        .warning-box strong { font-weight: 600; }
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        /* Features */
+        .features {
+            padding: 5rem 2rem;
+            background: #f8f9fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        /* Pricing */
+        .pricing {
+            padding: 5rem 2rem;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .pricing-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        .pricing-card.featured {
+            border-color: #667eea;
+            transform: scale(1.05);
+        }
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #667eea;
+            margin: 1.5rem 0;
+        }
+        .price span {
+            font-size: 1.2rem;
+            color: #999;
+        }
+        .features-list {
+            list-style: none;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        .features-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .features-list li:before {
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        /* AI assistant widget */
+        .assistant-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 999px;
+            padding: 0.9rem 1.2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            cursor: pointer;
+            font-weight: 600;
+            z-index: 120;
+        }
+        .assistant-panel {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 360px;
+            max-height: 520px;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 120;
+        }
+        .assistant-header {
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 700;
+        }
+        .assistant-body {
+            padding: 1rem;
+            gap: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            max-height: 320px;
+        }
+        .bubble {
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            width: fit-content;
+            max-width: 90%;
+            line-height: 1.4;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        .bubble.user { margin-left: auto; background: #eef2ff; color: #333; }
+        .bubble.bot { background: #f8f9fa; color: #111; }
+        .assistant-footer { padding: 0.8rem; border-top: 1px solid #f0f0f0; display: flex; gap: 0.6rem; }
+        .assistant-footer textarea {
+            flex: 1;
+            resize: none;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 0.7rem;
+            font-family: inherit;
+            height: 60px;
+        }
+        .assistant-footer button {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 0.7rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/aaaaa-animations.css">
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">⚡ OmniERP</div>
+            <div class="nav-links">
+                <a href="#features">Características</a>
+                <a href="/app/login" class="btn-primary">Iniciar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>🏢 OmniERP <span>🚀 FASE BETA</span></h1>
+        <p><strong>Gestión Integral para tu Negocio</strong> - Inventario, ventas, compras, clientes y RRHH.</p>
+        
+        <div class="warning-box" style="background: #d4edda; border-left: 5px solid #28a745; color: #155724;">
+            <strong>🎉 ¡ESTAMOS EN BETA!</strong> Disfruta de todas las funcionalidades Premium de forma <strong>TOTALMENTE GRATUITA</strong> mientras estemos en fase beta.
+        </div>
+
+        <div class="cta-buttons">
+            <a href="/app/login" class="btn-primary">Empezar Gratis Ahora</a>
+            <a href="/api/demo/jdm-demo-login" class="btn-secondary">Ver Demo JDM 90s</a>
+        </div>
+        <p style="margin-top: 1.2rem; font-size: 1rem; opacity: 0.95;">Sin tarjeta de crédito. Sin compromiso.</p>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Todo lo que necesitas para gestionar tu tienda</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📦</div>
+                    <h3>Inventario en Tiempo Real</h3>
+                    <p>Control total de stock, alertas automáticas, gestión de categorías y proveedores.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Punto de Venta (POS)</h3>
+                    <p>Sistema de caja rápido, facturación electrónica, múltiples métodos de pago.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Gestión de Clientes</h3>
+                    <p>Base de datos de clientes, historial de compras, programas de fidelización.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Reportes y Analíticas</h3>
+                    <p>Dashboards en vivo, reportes de ventas, análisis de productos más vendidos.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🛒</div>
+                    <h3>Compras y Proveedores</h3>
+                    <p>Órdenes de compra, gestión de proveedores, control de costos.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">☁️</div>
+                    <h3>100% en la Nube</h3>
+                    <p>Acceso desde cualquier lugar, backups automáticos, actualizaciones incluidas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 OmniERP. Todos los derechos reservados.</p>
+            <p style="margin-top: 1rem;">
+                <a href="/terms">Términos</a> |
+                <a href="/privacy">Privacidad</a> |
+                <a href="/contact">Contacto</a>
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>

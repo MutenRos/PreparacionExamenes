@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      body,html{background:darkcyan;font-family:sans-serif;}
+      header,main,footer{width:800px;margin:auto;color:white;text-align:center;padding:20px;}
+      main{background:white;color:black;border-radius:10px;} 
+      main{display:grid;grid-template-columns:auto auto auto;gap:20px;}
+      main article{border:1px solid lightcyan;borde-radius:5px;display:flex;flex-direction:column;justify-content: space-between;}
+      main article button{background:darkcyan;color:white;padding:10px 20px;border-radius:10px;border:none;}
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Tienda</h1>
+    </header>
+    <main>
+    </main>
+    <footer>
+    </footer>
+  </body>
+  <script>
+    let principal = document.querySelector("main")        // Selecciono la etiqueta main
+    fetch("http://127.0.0.1:5000/api")                    // Pido una url
+    .then(function(respuesta){return respuesta.json()})   // La respuesta viene como json
+    .then(function(datos){                                // Cuando llegue la respuesta
+      console.log(datos)              
+      let productos = datos.productos;                    // Cargo solo los productos
+      productos.forEach(function(producto){               // PAra cada uno de los productos
+        let articulo = document.createElement("article")  // Creo un articulo
+        let titulo = document.createElement("h3")         // Creo un titulo
+        titulo.textContent = producto.nombre;             // Le pongo texto al titulo
+        articulo.appendChild(titulo)                      // Añado el titulo al articulo
+        let descripcion = document.createElement("p")     // Creo un texto
+        descripcion.textContent = producto.descripcion;   // Le pongo texto al texto
+        articulo.appendChild(descripcion)                 // Añado el texto al articulo
+        let boton = document.createElement("button")      // Creo un boton
+        boton.textContent = producto.precio               // Le pongo precio al boton
+        articulo.appendChild(boton)                       // Añado el boton al articulo
+        principal.appendChild(articulo)                   // Añado el articulo al main
+      })
+      
+    })
+  </script>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>El portafolio de Jose Vicente</title>
+    <meta charset="utf-8">
+    <style>
+      body,html{background:grey;font-family:sans-serif;}
+      header,main,footer{background:white;padding:20px;text-align:center;margin:auto;width:600px;}
+      main{display:grid;grid-template-columns:auto auto auto;gap:20px;}
+      article img{width:100%;}
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Jose Vicente Carratala</h1>
+      <h2>info@jocarsa.com</h2>
+    </header>
+    <main>
+      
+      
+    </main>
+    <footer>
+      (c) 2025 Jose Vicente Carratala
+    </footer>
+    <template id="plantilla_entrada">
+      <article>
+        <h3>Nombre de la pieza</h3>
+        <p>Explicación de la pieza</p>
+        <img src="josevicente.jpg">
+      </article>
+    </template>
+    <script>
+      fetch("portafolio.json")
+      .then(function(respuesta){return respuesta.json()})
+      .then(function(datos){
+        console.log(datos)
+      })
+    </script>
+  </body>
+</html>

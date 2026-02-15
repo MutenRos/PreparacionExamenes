@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240.00002774325282" height="261.9999833540482" viewBox="0 0 240.00002774325282 261.9999833540482">
+
+  <defs>
+    <style>
+      text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 12px; fill: #111827; }
+      .shape-rect { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-entity { fill: #ffffff; stroke: #111827; stroke-width: 2; }
+      .shape-circle { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-pill { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-db { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .conn { stroke: #111827; stroke-width: 2; fill: none; }
+    </style>
+    <marker id="arrow-end" markerWidth="10" markerHeight="7" refX="10" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#111827"/>
+    </marker>
+    <marker id="arrow-start" markerWidth="10" markerHeight="7" refX="0" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="10 0, 0 3.5, 10 7" fill="#111827"/>
+    </marker>
+  </defs>
+        
+<rect class="shape-entity" x="40" y="40" width="160.00002774325276" height="181.9999833540482" />
+<line x1="40" y1="69.99999999999999" x2="200.00002774325276" y2="69.99999999999999" stroke="#e5e7eb" stroke-width="1"/>
+<text x="120.00001387162638" y="59.500002774325274" text-anchor="middle">Cliente</text>
+<text x="93.76562499999994" y="90.00000554865056">id</text>
+<text x="93.76562499999994" y="114">nombre</text>
+<text x="93.76562499999994" y="137.99999445134938">apellidos</text>
+<text x="93.76562499999994" y="162.0000166459517">email</text>
+<text x="93.76562499999994" y="185.9999833540482">direccion</text>
+</svg>

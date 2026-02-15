@@ -1,0 +1,22 @@
+INSERT INTO productos (nombre, descripcion, precio, peso) VALUES
+('Portátil Lenovo ThinkPad E14', 'Portátil empresarial de 14 pulgadas con procesador Intel i5 y 16GB RAM.', 899.99, 1.50),
+('Smartphone Samsung Galaxy S24', 'Teléfono inteligente con pantalla AMOLED de 6.5 pulgadas y 128GB de memoria.', 1099.00, 0.18),
+('Auriculares Sony WH-1000XM5', 'Auriculares inalámbricos con cancelación activa de ruido.', 349.99, 0.25),
+('Impresora HP LaserJet Pro M404', 'Impresora láser monocromo rápida y compacta.', 229.50, 7.60),
+('Monitor LG UltraWide 34"', 'Monitor ultrapanorámico de 34 pulgadas con resolución QHD.', 599.90, 6.80),
+('Teclado Logitech MX Keys', 'Teclado inalámbrico retroiluminado con teclas silenciosas.', 119.00, 0.80),
+('Ratón Logitech MX Master 3S', 'Ratón inalámbrico ergonómico con precisión avanzada.', 99.99, 0.14),
+('Disco SSD Samsung 1TB', 'Unidad de estado sólido NVMe PCIe Gen4 de 1TB.', 139.90, 0.05),
+('Servidor Dell PowerEdge T40', 'Servidor torre para pymes con Intel Xeon.', 1150.00, 11.20),
+('Tablet Apple iPad 10.2"', 'Tablet de 10.2 pulgadas con 64GB de almacenamiento.', 429.00, 0.49),
+('Cámara Canon EOS 250D', 'Cámara réflex digital con lente 18-55mm.', 639.00, 0.90),
+('Proyector Epson EB-S41', 'Proyector SVGA de 3300 lúmenes para presentaciones.', 299.00, 2.50),
+('Silla ergonómica Hbada', 'Silla de oficina ergonómica con soporte lumbar.', 199.99, 13.00),
+('Disco Duro Externo WD 2TB', 'Disco duro externo portátil con conexión USB 3.0.', 79.90, 0.23),
+('Router ASUS RT-AX88U', 'Router WiFi 6 de alto rendimiento con 8 puertos LAN.', 289.00, 1.00),
+('Smartwatch Garmin Forerunner 255', 'Reloj inteligente multideporte con GPS integrado.', 349.90, 0.12),
+('Altavoz JBL Charge 5', 'Altavoz Bluetooth portátil resistente al agua.', 179.00, 0.95),
+('Microondas Samsung MG23', 'Microondas con grill de 23 litros.', 145.00, 13.00),
+('Cafetera Nespresso Essenza Mini', 'Cafetera de cápsulas compacta y rápida.', 89.00, 2.30),
+('Dispositivo NAS Synology DS220+', 'Servidor NAS de 2 bahías para uso doméstico o empresarial.', 329.00, 1.30);
+

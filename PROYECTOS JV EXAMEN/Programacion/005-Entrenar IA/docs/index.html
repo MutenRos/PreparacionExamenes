@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Micro Chat: interfaz web conectada a un modelo de IA local entrenado con fine-tuning LoRA sobre Qwen 2.5. Demo estática del proyecto.">
+  <title>Micro Chat — Entrenar IA (demo)</title>
+  <style>
+    :root{
+      --bg:#ffffff;--panel:#ffffff;--text:#0f172a;--muted:#64748b;
+      --border:#e5e7eb;--border2:#eef2f7;--shadow:0 1px 2px rgba(15,23,42,.06);
+      --primary:#10a37f;--primaryHover:#0e8e6f;
+      --bubbleUser:#f8fafc;--bubbleAI:#ffffff;
+      --radius:14px;
+      --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+    }
+    *{box-sizing:border-box;}
+    html,body{height:100%;}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);}
+
+    .app{max-width:980px;margin:0 auto;padding:20px 16px 18px;}
+
+    /* Hero intro */
+    .hero{text-align:center;padding:10px 0 20px;border-bottom:1px solid var(--border);margin-bottom:14px;}
+    .hero h1{font-size:26px;font-weight:800;margin:0 0 6px;letter-spacing:-.3px;}
+    .hero h1 span{color:var(--primary);}
+    .hero p{font-size:14px;color:var(--muted);line-height:1.5;margin:0 0 12px;}
+    .badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:8px;}
+    .heroBadge{font-size:11px;padding:4px 9px;border-radius:999px;border:1px solid var(--border);background:var(--bubbleUser);color:var(--muted);font-weight:600;}
+    .linkRepo{font-size:12px;color:var(--primary);text-decoration:none;font-weight:600;}
+    .linkRepo:hover{text-decoration:underline;}
+
+    /* Topbar */
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);}
+    .brand{display:flex;align-items:center;gap:10px;min-width:0;}
+    .mark{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;border:1px solid var(--border);background:#f8fafc;color:#111827;font-family:var(--mono);}
+    .brandText{min-width:0;}
+    .title{font-weight:650;letter-spacing:.2px;line-height:1.1;}
+    .subtitle{color:var(--muted);font-size:12px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .actions{display:flex;gap:8px;}
+
+    /* Chat */
+    .chat{margin-top:14px;height:calc(100vh - 340px);min-height:320px;overflow:auto;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:10px 0;}
+    .hint{color:var(--muted);font-size:13px;padding:10px 14px 12px;border-bottom:1px solid var(--border2);}
+    .msg{display:grid;grid-template-columns:36px 1fr;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border2);}
+    .msg:last-child{border-bottom:none;}
+    .avatar{width:36px;height:36px;border-radius:12px;border:1px solid var(--border);background:#f8fafc;color:#111827;display:grid;place-items:center;font-family:var(--mono);font-size:12px;}
+    .bubble{background:var(--bubbleAI);border:1px solid transparent;border-radius:12px;padding:10px;line-height:1.45;white-space:pre-wrap;color:var(--text);animation:fadeIn .4s ease-out;}
+    .msg.user .bubble{background:var(--bubbleUser);border-color:var(--border2);}
+    .msg.user .avatar{background:#eef2ff;border-color:#e0e7ff;}
+    .msg.assistant .avatar{background:#ecfdf5;border-color:#d1fae5;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+    /* Composer */
+    .composer{margin-top:14px;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:10px;}
+    .composerInner{display:flex;gap:10px;align-items:flex-end;}
+    textarea{flex:1;resize:none;border:1px solid var(--border);border-radius:12px;background:#fff;color:var(--text);padding:10px 11px;outline:none;min-height:42px;max-height:180px;line-height:1.35;font-family:var(--sans);}
+    textarea::placeholder{color:#94a3b8;}
+    textarea:focus{border-color:rgba(16,163,127,.45);box-shadow:0 0 0 3px rgba(16,163,127,.12);}
+    .btn{border:1px solid var(--border);border-radius:12px;padding:10px 12px;background:#fff;color:var(--text);cursor:pointer;user-select:none;transition:background .2s,border-color .2s,transform .15s;}
+    .btn:active{transform:scale(.97);}
+    .btn:hover{background:#f8fafc;}
+    .btn.primary{border-color:rgba(16,163,127,.35);background:rgba(16,163,127,.10);color:#064e3b;font-weight:600;}
+    .btn.primary:hover{background:rgba(16,163,127,.16);border-color:rgba(16,163,127,.50);}
+    .btn.ghost{background:transparent;}
+    .btn.ghost:hover{background:#f8fafc;}
+    .composerMeta{margin-top:8px;color:var(--muted);font-size:12px;display:flex;align-items:center;gap:8px;padding:0 2px;}
+    .metaDot{opacity:.6;}
+
+    /* Typing */
+    .typing{color:var(--muted);font-family:var(--mono);animation:blink 1.2s ease-in-out infinite;}
+    @keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+    /* Pipeline timeline */
+    .pipeline{margin-top:14px;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;}
+    .pipeline h2{margin:0 0 14px;font-size:16px;font-weight:700;}
+    .step{display:flex;align-items:flex-start;gap:12px;padding:7px 0;border-bottom:1px solid var(--border2);font-size:13px;}
+    .step:last-child{border-bottom:none;}
+    .stepNum{width:26px;height:26px;border-radius:50%;background:var(--bubbleUser);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:var(--muted);flex:0 0 auto;border:1px solid var(--border);}
+    .stepNum.active{background:rgba(16,163,127,.12);color:var(--primary);border-color:rgba(16,163,127,.3);}
+    .stepTxt{flex:1;line-height:1.4;}
+    .stepTxt strong{font-weight:700;}
+    .stepTxt .desc{color:var(--muted);font-size:12px;}
+
+    /* Dark mode */
+    @media(prefers-color-scheme:dark){
+      :root{--bg:#0f172a;--panel:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--border:#334155;--border2:#1e293b;--shadow:0 1px 2px rgba(0,0,0,.3);--primary:#34d399;--primaryHover:#2dd4a8;--bubbleUser:#1e293b;--bubbleAI:#0f172a;}
+      textarea{background:var(--panel);color:var(--text);border-color:var(--border);}
+      textarea::placeholder{color:var(--muted);}
+      .btn{background:var(--panel);color:var(--text);}
+      .btn.primary{background:rgba(52,211,153,.12);color:#a7f3d0;border-color:rgba(52,211,153,.3);}
+      .mark,.avatar{background:var(--panel);color:var(--text);border-color:var(--border);}
+      .msg.user .avatar{background:#1e1b4b;border-color:#312e81;}
+      .msg.assistant .avatar{background:#064e3b;border-color:#065f46;}
+    }
+    :focus-visible{outline:2px solid var(--primary);outline-offset:2px;}
+    @media(max-width:560px){.msg{grid-template-columns:30px 1fr;padding:10px;}.avatar{width:30px;height:30px;border-radius:10px;font-size:11px;}.app{padding:14px 10px;}}
+
+    footer{font-size:11px;color:var(--muted);text-align:center;padding:12px 0 6px;}
+    footer a{color:var(--primary);text-decoration:none;}
+    footer a:hover{text-decoration:underline;}
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <!-- HERO -->
+    <div class="hero">
+      <h1>Entrenar <span>IA</span></h1>
+      <p>Fine-tuning de Qwen 2.5 con LoRA · Dataset personalizado de 20 QA pairs · Interfaz chat con Flask</p>
+      <div class="badges">
+        <span class="heroBadge">Python</span>
+        <span class="heroBadge">LoRA / PEFT</span>
+        <span class="heroBadge">Qwen 2.5</span>
+        <span class="heroBadge">PyTorch</span>
+        <span class="heroBadge">Flask</span>
+        <span class="heroBadge">HTML/CSS/JS</span>
+        <span class="heroBadge">JSONL</span>
+      </div>
+      <a class="linkRepo" href="https://github.com/MutenRos/Programacion-005-Entrenar-IA" target="_blank" rel="noopener">Ver repositorio en GitHub →</a>
+    </div>
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">◎</div>
+        <div class="brandText">
+          <div class="title">Micro Chat</div>
+          <div class="subtitle">Modelo local fine-tuned · demo</div>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="clearBtn" class="btn ghost" title="Limpiar chat">Limpiar</button>
+      </div>
+    </header>
+
+    <!-- CHAT -->
+    <main id="chat" class="chat" aria-live="polite">
+      <div class="hint">
+        Escribe una pregunta y pulsa <b>Enviar</b>. Las respuestas son simuladas a partir de los datos de entrenamiento.
+      </div>
+    </main>
+
+    <!-- COMPOSER -->
+    <div class="composer">
+      <div class="composerInner">
+        <textarea id="input" rows="1" placeholder="Escribe tu mensaje…" spellcheck="false" aria-label="Escribe tu mensaje para el modelo de IA"></textarea>
+        <button id="sendBtn" class="btn primary">Enviar</button>
+      </div>
+      <div class="composerMeta">
+        <span class="metaItem">Enter: enviar</span>
+        <span class="metaDot">•</span>
+        <span class="metaItem">Shift+Enter: salto</span>
+      </div>
+    </div>
+
+    <!-- PIPELINE -->
+    <div class="pipeline">
+      <h2>Pipeline de entrenamiento</h2>
+      <div class="step"><div class="stepNum">1</div><div class="stepTxt"><strong>Chat PHP con Ollama</strong><div class="desc">Microchat conectado a modelo genérico — el modelo no conoce datos propios</div></div></div>
+      <div class="step"><div class="stepNum">2</div><div class="stepTxt"><strong>No inferencia</strong><div class="desc">Instrucción "no infieras" — demuestra la necesidad de fine-tuning</div></div></div>
+      <div class="step"><div class="stepNum">3</div><div class="stepTxt"><strong>Plantilla JSONL</strong><div class="desc">Formato {"question":"X","answer":"Y"} — estructura de datos de entrenamiento</div></div></div>
+      <div class="step"><div class="stepNum">4</div><div class="stepTxt"><strong>Dataset personalizado</strong><div class="desc">20 pares QA sobre Jose Vicente Carratalá Sanchis</div></div></div>
+      <div class="step"><div class="stepNum">5</div><div class="stepTxt"><strong>Entorno Python</strong><div class="desc">venv + torch + datasets + peft + transformers</div></div></div>
+      <div class="step"><div class="stepNum active">6</div><div class="stepTxt"><strong>Entrenamiento LoRA</strong><div class="desc">80 épocas, Qwen2.5-0.5B, rango 16, 7 capas, answer-only loss</div></div></div>
+      <div class="step"><div class="stepNum">7</div><div class="stepTxt"><strong>Exportar fusionado</strong><div class="desc">merge_and_unload() → modelo .safetensors independiente</div></div></div>
+      <div class="step"><div class="stepNum">8</div><div class="stepTxt"><strong>Inferencia básica</strong><div class="desc">Chat template + generate con temperature 0.6</div></div></div>
+      <div class="step"><div class="stepNum">9</div><div class="stepTxt"><strong>Inferencia mejorada</strong><div class="desc">Determinista, repetition_penalty, clean_answer(), fallback</div></div></div>
+      <div class="step"><div class="stepNum">10</div><div class="stepTxt"><strong>Diagnóstico</strong><div class="desc">Negative log-likelihood: verifica que el modelo prefiere la respuesta correcta</div></div></div>
+    </div>
+
+    <footer>
+      Entrenar IA · Fine-tuning LoRA · 10 ejercicios · PHP + Python + Flask + HTML/CSS/JS ·
+      <a href="https://github.com/MutenRos/Programacion-005-Entrenar-IA" target="_blank" rel="noopener">GitHub</a>
+    </footer>
+  </div>
+
+  <script>
+    // Training QA pairs from the JSONL dataset — used as simulated responses
+    var qaData = [
+      {q:"¿Quién es Jose Vicente Carratalá Sanchis?", a:"Jose Vicente Carratalá Sanchis es un desarrollador de software, formador y creador de contenidos técnicos especializado en programación, sistemas e inteligencia artificial."},
+      {q:"¿A qué se dedica Jose Vicente Carratalá Sanchis profesionalmente?", a:"Jose Vicente Carratalá Sanchis se dedica al desarrollo de software, a la formación técnica en programación y a la creación de proyectos tecnológicos educativos."},
+      {q:"¿Qué tipo de software desarrolla Jose Vicente Carratalá Sanchis?", a:"Jose Vicente Carratalá Sanchis desarrolla aplicaciones web, plataformas educativas, herramientas de gestión empresarial y sistemas basados en inteligencia artificial."},
+      {q:"¿Qué lenguajes de programación utiliza Jose Vicente Carratalá Sanchis habitualmente?", a:"Jose Vicente Carratalá Sanchis utiliza habitualmente Python, PHP, JavaScript, C, C++, Java, SQL y Bash."},
+      {q:"¿Qué experiencia tiene Jose Vicente Carratalá Sanchis en desarrollo web?", a:"Jose Vicente Carratalá Sanchis tiene amplia experiencia en desarrollo web utilizando HTML, CSS, JavaScript, PHP, bases de datos y servidores Linux con Apache."},
+      {q:"¿Qué relación tiene Jose Vicente Carratalá Sanchis con la educación y la formación?", a:"Jose Vicente Carratalá Sanchis es formador y autor de material educativo, incluyendo libros técnicos, cursos online y contenidos didácticos de programación."},
+      {q:"¿Ha escrito libros técnicos Jose Vicente Carratalá Sanchis?", a:"Sí, Jose Vicente Carratalá Sanchis ha escrito y publicado libros técnicos sobre programación, incluyendo un libro de introducción a Python."},
+      {q:"¿Qué es Jocarsa para Jose Vicente Carratalá Sanchis?", a:"Jocarsa es el ecosistema de proyectos tecnológicos desarrollado por Jose Vicente Carratalá Sanchis, orientado a software de gestión, formación e inteligencia artificial."},
+      {q:"¿Qué papel tiene la inteligencia artificial en el trabajo de Jose Vicente Carratalá Sanchis?", a:"La inteligencia artificial es un componente central en el trabajo de Jose Vicente Carratalá Sanchis, especialmente en asistentes educativos y automatización de procesos."},
+      {q:"¿Tiene experiencia Jose Vicente Carratalá Sanchis entrenando modelos de lenguaje?", a:"Sí, Jose Vicente Carratalá Sanchis entrena modelos de lenguaje locales utilizando técnicas como LoRA y QLoRA con datasets personalizados."},
+      {q:"¿Qué tipo de modelos de IA utiliza Jose Vicente Carratalá Sanchis?", a:"Jose Vicente Carratalá Sanchis utiliza modelos de lenguaje abiertos y ejecutables en local, como LLaMA, Mistral, Qwen y TinyLlama."},
+      {q:"¿Qué sistemas operativos utiliza Jose Vicente Carratalá Sanchis habitualmente?", a:"Jose Vicente Carratalá Sanchis trabaja principalmente con sistemas Linux, especialmente Ubuntu."},
+      {q:"¿Tiene experiencia Jose Vicente Carratalá Sanchis en administración de sistemas?", a:"Sí, Jose Vicente Carratalá Sanchis tiene experiencia en administración de servidores Linux, configuración de servicios web y gestión de bases de datos."},
+      {q:"¿Qué relación tiene Jose Vicente Carratalá Sanchis con Moodle?", a:"Jose Vicente Carratalá Sanchis gestiona, personaliza y automatiza plataformas Moodle mediante scripts y herramientas de línea de comandos."},
+      {q:"¿Qué tipo de proyectos gráficos desarrolla Jose Vicente Carratalá Sanchis?", a:"Jose Vicente Carratalá Sanchis desarrolla simulaciones visuales como campos estelares, terrenos fractales y sistemas gráficos avanzados en C++ y CUDA."},
+      {q:"¿Qué enfoque educativo utiliza Jose Vicente Carratalá Sanchis?", a:"Jose Vicente Carratalá Sanchis utiliza un enfoque educativo práctico, progresivo y estructurado, basado en ejercicios continuos y ejemplos reales."},
+      {q:"¿Qué tipo de productos ofrece Jose Vicente Carratalá Sanchis a través de Jocarsa?", a:"Jose Vicente Carratalá Sanchis ofrece soluciones SaaS de gestión empresarial, plataformas educativas y herramientas de productividad."},
+      {q:"¿Qué nivel de detalle prefiere Jose Vicente Carratalá Sanchis en las explicaciones técnicas?", a:"Jose Vicente Carratalá Sanchis prefiere explicaciones técnicas detalladas, estructuradas y precisas, evitando el lenguaje coloquial."},
+      {q:"¿Cómo prefiere Jose Vicente Carratalá Sanchis que una IA responda a sus consultas?", a:"Jose Vicente Carratalá Sanchis prefiere respuestas con tono neutro, profesional y con código completo cuando es necesario."},
+      {q:"¿Cuál es el objetivo de Jose Vicente Carratalá Sanchis al entrenar una IA con información propia?", a:"El objetivo de Jose Vicente Carratalá Sanchis es crear un asistente educativo y técnico que refleje su estilo, conocimientos y criterios pedagógicos."}
+    ];
+
+    var FALLBACK = "No lo sé basándome en mi entrenamiento.";
+
+    var chat = document.getElementById("chat");
+    var input = document.getElementById("input");
+    var sendBtn = document.getElementById("sendBtn");
+    var clearBtn = document.getElementById("clearBtn");
+
+    function el(tag, cls) { var n = document.createElement(tag); if (cls) n.className = cls; return n; }
+
+    function addMessage(role, text) {
+      var hint = chat.querySelector(".hint");
+      if (hint) hint.remove();
+      var row = el("div", "msg " + role);
+      var avatar = el("div", "avatar");
+      avatar.textContent = role === "user" ? "USR" : "AI";
+      var bubble = el("div", "bubble");
+      bubble.textContent = text;
+      row.appendChild(avatar);
+      row.appendChild(bubble);
+      chat.appendChild(row);
+      chat.scrollTop = chat.scrollHeight;
+      return { row: row, bubble: bubble };
+    }
+
+    function setTyping(on) {
+      if (on) {
+        var m = addMessage("assistant", "…");
+        m.bubble.classList.add("typing");
+        m.row.dataset.typing = "1";
+      } else {
+        var t = chat.querySelector('[data-typing="1"]');
+        if (t) t.remove();
+      }
+    }
+
+    function findAnswer(query) {
+      var q = query.toLowerCase().trim();
+      var best = null, bestScore = 0;
+      for (var i = 0; i < qaData.length; i++) {
+        var words = qaData[i].q.toLowerCase().split(/\s+/);
+        var score = 0;
+        for (var j = 0; j < words.length; j++) {
+          if (q.indexOf(words[j]) !== -1) score++;
+        }
+        if (score > bestScore) { bestScore = score; best = qaData[i]; }
+      }
+      return (best && bestScore >= 2) ? best.a : FALLBACK;
+    }
+
+    function autosize() {
+      input.style.height = "auto";
+      input.style.height = Math.min(input.scrollHeight, 180) + "px";
+    }
+
+    function send() {
+      var msg = (input.value || "").trim();
+      if (!msg) return;
+      addMessage("user", msg);
+      input.value = "";
+      autosize();
+      setTyping(true);
+      sendBtn.disabled = true;
+      setTimeout(function() {
+        setTyping(false);
+        var answer = findAnswer(msg);
+        addMessage("assistant", answer);
+        sendBtn.disabled = false;
+        input.focus();
+      }, 800 + Math.random() * 600);
+    }
+
+    sendBtn.addEventListener("click", send);
+    clearBtn.addEventListener("click", function() {
+      chat.innerHTML = '<div class="hint">Escribe una pregunta y pulsa <b>Enviar</b>. Las respuestas son simuladas a partir de los datos de entrenamiento.</div>';
+      input.focus();
+    });
+    input.addEventListener("input", autosize);
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
+    });
+    autosize();
+
+    // Auto-start with a demo question
+    setTimeout(function() {
+      addMessage("user", "¿Quién es Jose Vicente Carratalá Sanchis?");
+      setTyping(true);
+      setTimeout(function() {
+        setTyping(false);
+        addMessage("assistant", qaData[0].a);
+        input.focus();
+      }, 1200);
+    }, 500);
+  </script>
+</body>
+</html>

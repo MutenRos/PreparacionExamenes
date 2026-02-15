@@ -1,0 +1,13 @@
+La carpeta `Primero/Sistemas informáticos/001-Explotación de sistemas microinformáticos` aborda fundamentalmente la comprensión y gestión de los sistemas microinformáticos. Este nivel del contenido se centra en el estudio de las componentes físicas, funcionales y operativas de los ordenadores modernos, proporcionando una base sólida para entender cómo funcionan estos dispositivos.
+
+El propósito principal es familiarizar al lector con la estructura interna de un sistema microinformático, incluyendo la placa base, el procesador, la memoria RAM y otros componentes clave. Se aborda también la importancia de las redes en los sistemas informáticos, destacando sus ventajas e inconvenientes, así como los diferentes tipos de redes que existen.
+
+El enfoque del contenido es práctico y teórico, combinando explicaciones detalladas con ejemplos concretos. Se explora cómo se configuran y utilizan sistemas operativos, incluyendo la instalación, gestión y reparación de estos sistemas. Además, se aborda el tema de la seguridad en los sistemas informáticos, enseñando a los estudiantes sobre las normas de seguridad y prevención de riesgos laborales.
+
+El recorrido conceptual típico comienza con una introducción a los componentes físicos del sistema microinformático, describiendo su estructura y funcionalidad. Luego se profundiza en la instalación y configuración de sistemas operativos, enseñando cómo instalar diferentes tipos de sistemas operativos libres y propietarios, así como cómo gestionar las aplicaciones y realizar actualizaciones.
+
+Continuando con el tema de redes, se explica cómo funcionan los protocolos TCPIP y cómo se configuran los adaptadores de red en sistemas operativos. Se aborda también la gestión de recursos compartidos y la seguridad en los sistemas informáticos, enseñando a los estudiantes sobre las técnicas de conexión remota y el uso de cortafuegos.
+
+El contenido culmina con una exploración de aplicaciones informáticas de propósito general, incluyendo herramientas ofimáticas y utilidades antimalware. Este nivel proporciona un enfoque integral sobre la explotación de sistemas microinformáticos, preparando al lector para avanzar a niveles más específicos y complejos de gestión de sistemas informáticos.
+
+En resumen, esta carpeta ofrece una introducción exhaustiva y práctica a la explotación de sistemas microinformáticos, cubriendo desde los componentes físicos hasta las aplicaciones de propósito general. El enfoque práctico y el recorrido conceptual coherente hacen que este contenido sea invaluable para estudiantes y profesionales interesados en el campo de la informática.

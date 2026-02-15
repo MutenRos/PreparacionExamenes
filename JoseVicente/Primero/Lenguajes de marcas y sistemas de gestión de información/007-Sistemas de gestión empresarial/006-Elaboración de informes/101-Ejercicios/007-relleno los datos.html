@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>quiz.jocarsa.com</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		html,body{width:100%;height:100%;padding:0px;margin:0px;}
+		body{display:flex;flex-direction:column;justify-content:space-between;font-family:sans-serif;font-size:1.2em;}
+		header,footer{padding:5px;text-align:center;background:indigo;color:white;}
+		#login{display:flex;flex-direction:column;padding:20px;gap:20px;text-align:center;}
+		#login input,#login button{padding:10px;font-size:1.2em;}
+		#escenario{display:none;flex-direction:column;gap:10px;padding:20px;}
+		#escenario button{padding:10px;}
+		button{background:indigo;color:white;border:none;border-radius:50px;font-size:1.2em;border:4px solid indigo;}
+		#resultados{display:flex;flex-direction:column;padding:20px;gap:20px;text-align:center;}
+		.marcado{background:white;color:indigo;border:4px solid indigo;}
+	</style>
+	</head>
+	<body>
+		<header>
+			quiz.jocarsa.com
+		</header>
+		<main>
+			<section id="login">
+				<h3>Indica tu nombre para entrar</h3>
+				<input type="text" id="nombre">
+				<button>Iniciar</button>
+			</section>
+			<section id="escenario">
+				<h3>Pregunta:</h3>
+				<p>Esta es la pregunta que se va a realizar</p>
+				<div id="resultados">
+				</div>
+			</section>
+		</main>
+		<footer>
+			quiz.jocarsa.com
+		</footer>
+		<script>
+			let login = document.querySelector("#login")
+		 	let escenario = document.querySelector("#escenario")
+			let boton = document.querySelector("#login button")
+			let usuario = document.querySelector("#login input")
+			boton.onclick = function(){
+				login.style.display = "none" // Me escondes el login
+				escenario.style.display = "flex" // Me sacas el escenario
+			}
+			fetch("preguntas.json")
+			.then(function(respuesta){return respuesta.json()})
+			.then(function(datos){
+				let pregunta = document.querySelector("#escenario p")
+				pregunta.textContent = datos.pregunta
+				let resultados = document.querySelector("#escenario #resultados")
+				datos.respuestas.forEach(function(respuesta){
+					let botonrespuesta = document.createElement("button")
+					botonrespuesta.textContent = respuesta
+					botonrespuesta.onclick = function(){
+						this.classList.add("marcado")
+					}
+					resultados.appendChild(botonrespuesta)
+				})
+			})
+		</script>
+	</body>
+</html>

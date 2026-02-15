@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<persona>
+  <nombre>Jose Vicente</nombre>
+  <apellidos>Carratala</apellidos>
+  <email>info@jocarsa.com</email>
+  <fechaNacimiento>4323</fechaNacimiento>
+  <direccion>Mi calle</direccion>
+  <codigopostal>46920</codigopostal>
+</persona>

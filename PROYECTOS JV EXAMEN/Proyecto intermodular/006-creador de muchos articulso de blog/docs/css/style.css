@@ -1,0 +1,73 @@
+/* ===== Variables ===== */
+:root{
+  --brand:#7c3aed;--brand-light:#a78bfa;--brand-soft:#ede9fe;
+  --bg:#f8f8fc;--surface:#fff;--text:#1e1e2e;--muted:#6b7280;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,.07);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;padding:24px 16px}
+
+/* ===== Layout ===== */
+.w-900{max-width:900px;margin:0 auto}
+.card{background:var(--surface);border-radius:var(--radius);padding:28px 32px;box-shadow:var(--shadow)}
+.flex{display:flex}.fd-col{flex-direction:column}.fw-wrap{flex-wrap:wrap}
+.fa-center{align-items:center}.g-6{gap:6px}.g-8{gap:8px}.g-10{gap:10px}.g-12{gap:12px}.g-14{gap:14px}.g-16{gap:16px}.g-20{gap:20px}.g-24{gap:24px}
+
+/* ===== Grid ===== */
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+
+/* ===== Typography ===== */
+.fs-13{font-size:13px}.fs-14{font-size:14px}.fs-18{font-size:18px}.fs-20{font-size:20px}.fs-22{font-size:22px}
+.c-muted{color:var(--muted)}
+.lh-24{line-height:1.75}
+.ta-justify{text-align:justify}
+
+/* ===== Buttons ===== */
+.btn{display:inline-block;padding:7px 18px;border-radius:6px;font-size:14px;text-decoration:none;border:1.5px solid transparent;cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s}
+.btn-brand{background:var(--brand);color:#fff;border-color:var(--brand)}.btn-brand:hover{background:var(--brand-light)}
+.btn-ghost{background:transparent;color:var(--text);border-color:#d1d5db}.btn-ghost:hover{background:var(--brand-soft)}
+.btn-sm{padding:4px 12px;font-size:13px}
+
+/* ===== Badge ===== */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;background:var(--brand-soft);color:var(--brand)}
+
+/* ===== Hero ===== */
+.hero{background:var(--brand-soft);border-radius:var(--radius);padding:40px 32px;text-align:center}
+
+/* ===== Code block ===== */
+pre{background:#1e1e2e;color:#cdd6f4;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:13px;line-height:1.55}
+code{font-family:'Cascadia Code','Fira Code',monospace}
+p code{background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:13px}
+
+/* ===== Markdown content ===== */
+.markdown h2{margin-top:20px;margin-bottom:8px;font-size:20px;color:var(--brand)}
+.markdown h3{margin-top:16px;margin-bottom:6px;font-size:17px}
+.markdown p{margin-bottom:10px}
+.markdown ul,.markdown ol{margin:8px 0 12px 24px}
+.markdown li{margin-bottom:4px}
+.markdown blockquote{border-left:4px solid var(--brand-light);padding:8px 16px;margin:12px 0;background:var(--brand-soft);border-radius:0 6px 6px 0;font-style:italic}
+
+/* ===== Cards hover ===== */
+.card-item{background:var(--surface);border-radius:var(--radius);padding:20px 24px;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s}
+.card-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+
+/* ===== Pipeline diagram ===== */
+.pipeline{display:flex;align-items:center;gap:0;flex-wrap:wrap;justify-content:center}
+.pipeline .step{background:var(--brand);color:#fff;padding:10px 18px;border-radius:6px;font-size:13px;font-weight:600;white-space:nowrap}
+.pipeline .arrow{font-size:22px;color:var(--brand-light);padding:0 6px}
+
+/* ===== Stats grid ===== */
+.stat{text-align:center;padding:16px}
+.stat .num{font-size:32px;font-weight:700;color:var(--brand)}
+.stat .label{font-size:13px;color:var(--muted)}
+
+/* ===== Footer ===== */
+footer{text-align:center;padding:24px 0;font-size:13px;color:var(--muted)}
+
+/* ===== Responsive ===== */
+@media(max-width:700px){
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .pipeline{flex-direction:column}.pipeline .arrow{transform:rotate(90deg)}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}

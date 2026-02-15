@@ -1,0 +1,171 @@
+{
+  "formas": [
+    {
+      "id": "forma-1",
+      "tipo": "rectangle",
+      "left": "547.156px",
+      "top": "271.078px",
+      "width": "",
+      "height": "",
+      "texto": "HTML"
+    },
+    {
+      "id": "forma-2",
+      "tipo": "rectangle",
+      "left": "546.646px",
+      "top": "231.609px",
+      "width": "",
+      "height": "",
+      "texto": "CSS"
+    },
+    {
+      "id": "forma-3",
+      "tipo": "rectangle",
+      "left": "547.063px",
+      "top": "310.344px",
+      "width": "",
+      "height": "",
+      "texto": "JS"
+    },
+    {
+      "id": "forma-4",
+      "tipo": "rectangle",
+      "left": "615.802px",
+      "top": "384.922px",
+      "width": "",
+      "height": "",
+      "texto": "AI"
+    },
+    {
+      "id": "forma-5",
+      "tipo": "rectangle",
+      "left": "497.479px",
+      "top": "384.938px",
+      "width": "",
+      "height": "",
+      "texto": "Controlador"
+    },
+    {
+      "id": "forma-6",
+      "tipo": "rectangle",
+      "left": "378.307px",
+      "top": "459.505px",
+      "width": "",
+      "height": "",
+      "texto": "SQL"
+    },
+    {
+      "id": "forma-7",
+      "tipo": "rectangle",
+      "left": "498.307px",
+      "top": "460.339px",
+      "width": "",
+      "height": "",
+      "texto": "MongoDB"
+    },
+    {
+      "id": "forma-8",
+      "tipo": "rectangle",
+      "left": "617.906px",
+      "top": "459.943px",
+      "width": "",
+      "height": "",
+      "texto": "ModelosIA"
+    },
+    {
+      "id": "forma-9",
+      "tipo": "rectangle",
+      "left": "737.896px",
+      "top": "460.354px",
+      "width": "",
+      "height": "",
+      "texto": "RAG (Chroma)"
+    }
+  ],
+  "flechas": [
+    {
+      "desde": {
+        "shapeId": "forma-5",
+        "propId": null,
+        "side": null
+      },
+      "hasta": {
+        "shapeId": "forma-3",
+        "propId": null,
+        "side": null
+      },
+      "tipo": "simple",
+      "estilo": "straight"
+    },
+    {
+      "desde": {
+        "shapeId": "forma-4",
+        "propId": null,
+        "side": null
+      },
+      "hasta": {
+        "shapeId": "forma-3",
+        "propId": null,
+        "side": null
+      },
+      "tipo": "simple",
+      "estilo": "straight"
+    },
+    {
+      "desde": {
+        "shapeId": "forma-6",
+        "propId": null,
+        "side": null
+      },
+      "hasta": {
+        "shapeId": "forma-5",
+        "propId": null,
+        "side": null
+      },
+      "tipo": "simple",
+      "estilo": "straight"
+    },
+    {
+      "desde": {
+        "shapeId": "forma-7",
+        "propId": null,
+        "side": null
+      },
+      "hasta": {
+        "shapeId": "forma-5",
+        "propId": null,
+        "side": null
+      },
+      "tipo": "simple",
+      "estilo": "straight"
+    },
+    {
+      "desde": {
+        "shapeId": "forma-8",
+        "propId": null,
+        "side": null
+      },
+      "hasta": {
+        "shapeId": "forma-4",
+        "propId": null,
+        "side": null
+      },
+      "tipo": "simple",
+      "estilo": "straight"
+    },
+    {
+      "desde": {
+        "shapeId": "forma-9",
+        "propId": null,
+        "side": null
+      },
+      "hasta": {
+        "shapeId": "forma-4",
+        "propId": null,
+        "side": null
+      },
+      "tipo": "simple",
+      "estilo": "straight"
+    }
+  ]
+}

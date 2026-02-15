@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<productos>
+    <producto>
+        <nombre>jocarsa | teal</nombre>
+        <descripcion>Software de gestión de empresa low-code</descripcion>
+        <logo>https://static.jocarsa.com/logos/teal.png</logo>
+        <enlace>?producto=jocarsa | teal</enlace>
+    </producto>
+    <producto>
+        <nombre>jocarsa | rosybrown</nombre>
+        <descripcion>Software de facturación para autónomos y PYMEs</descripcion>
+        <logo>https://static.jocarsa.com/logos/rosybrown.png</logo>
+        <enlace>?producto=jocarsa | rosybrown</enlace>
+    </producto>
+    <producto>
+        <nombre>jocarsa | royalblue</nombre>
+        <descripcion>Software de gestión de reservas online</descripcion>
+        <logo>https://static.jocarsa.com/logos/royalblue.png</logo>
+        <enlace>?producto=jocarsa | royalblue</enlace>
+    </producto>
+
+    <producto>
+        <nombre>jocarsa | ghostwhite</nombre>
+        <descripcion>Software de analítica web</descripcion>
+        <logo>https://static.jocarsa.com/logos/ghostwhite.png</logo>
+        <enlace>?producto=jocarsa | ghostwhite</enlace>
+    </producto>
+    <producto>
+        <nombre>jocarsa | darkolivegreen</nombre>
+        <descripcion>Cliente de correo electrónico</descripcion>
+        <logo>https://static.jocarsa.com/logos/darkolivegreen.png</logo>
+        <enlace>?producto=jocarsa | darkolivegreen</enlace>
+    </producto>
+    <producto>
+        <nombre>jocarsa | darkkhaki</nombre>
+        <descripcion>Toma de notas flotantes online</descripcion>
+        <logo>https://static.jocarsa.com/logos/darkkhaki.png</logo>
+        <enlace>?producto=jocarsa | darkkhaki</enlace>
+    </producto>
+    <producto>
+        <nombre>jocarsa | lightsalmon</nombre>
+        <descripcion>Gestiona tus propios calendarios</descripcion>
+        <logo>https://static.jocarsa.com/logos/lightsalmon.png</logo>
+        <enlace>?producto=jocarsa | lightsalmon</enlace>
+    </producto>
+    <producto>
+        <nombre>jocarsa | lightgreen</nombre>
+        <descripcion>Software de documentación de proyecto</descripcion>
+        <logo>https://static.jocarsa.com/logos/lightgreen.png</logo>
+        <enlace>?producto=jocarsa | lightgreen</enlace>
+    </producto>
+    <producto>
+        <nombre>jocarsa | lightpink</nombre>
+        <descripcion>Agenda personal</descripcion>
+        <logo>https://static.jocarsa.com/logos/lightpink.png</logo>
+        <enlace>?producto=jocarsa | lightpink</enlace>
+    </producto>
+
+    <producto>
+        <nombre>jocarsa | lightgrey</nombre>
+        <descripcion>Descripción del producto 10</descripcion>
+        <logo>https://static.jocarsa.com/logos/lightgrey.png</logo>
+        <enlace>?producto=jocarsa | lightgrey</enlace>
+    </producto>
+    <producto>
+        <nombre>jocarsa | mediumorchid</nombre>
+        <descripcion>Descripción del producto 11</descripcion>
+        <logo>https://static.jocarsa.com/logos/mediumorchid.png</logo>
+        <enlace>?producto=jocarsa | mediumorchid</enlace>
+    </producto>
+    <producto>
+        <nombre>jocarsa | purple</nombre>
+        <descripcion>Descripción del producto 12</descripcion>
+        <logo>https://static.jocarsa.com/logos/purple.png</logo>
+        <enlace>?producto=jocarsa | purple</enlace>
+    </producto>
+    <producto>
+        <nombre>jocarsa | gainsboro</nombre>
+        <descripcion>Descripción del producto 13</descripcion>
+        <logo>https://static.jocarsa.com/logos/gainsboro.png</logo>
+        <enlace>?producto=jocarsa | gainsboro</enlace>
+    </producto>
+    <producto>
+        <nombre>jocarsa | firebrick</nombre>
+        <descripcion>Descripción del producto 14</descripcion>
+        <logo>https://static.jocarsa.com/logos/firebrick.png</logo>
+        <enlace>?producto=jocarsa | firebrick</enlace>
+    </producto>
+    <producto>
+        <nombre>jocarsa | cornflowerblue</nombre>
+        <descripcion>Descripción del producto 15</descripcion>
+        <logo>https://static.jocarsa.com/logos/cornflowerblue.png</logo>
+        <enlace>?producto=jocarsa | cornflowerblue</enlace>
+    </producto>
+
+    <producto>
+        <nombre>jocarsa | chartreuse</nombre>
+        <descripcion>Descripción del producto 16</descripcion>
+        <logo>https://static.jocarsa.com/logos/chartreuse.png</logo>
+        <enlace>?producto=jocarsa | chartreuse</enlace>
+    </producto>
+    <producto>
+        <nombre>jocarsa | grey</nombre>
+        <descripcion>Descripción del producto 17</descripcion>
+        <logo>https://static.jocarsa.com/logos/grey.png</logo>
+        <enlace></enlace>
+    </producto>
+    <producto>
+        <nombre>jocarsa | beige</nombre>
+        <descripcion>Descripción del producto 18</descripcion>
+        <logo>https://static.jocarsa.com/logos/beige.png</logo>
+        <enlace>?producto=jocarsa | beige</enlace>
+    </producto>
+    <producto>
+        <nombre>jocarsa | darksalmon</nombre>
+        <descripcion>Software de fichaje laboral</descripcion>
+        <logo>https://static.jocarsa.com/logos/darksalmon.png</logo>
+        <enlace>?producto=jocarsa | darksalmon</enlace>
+    </producto>
+</productos>
+

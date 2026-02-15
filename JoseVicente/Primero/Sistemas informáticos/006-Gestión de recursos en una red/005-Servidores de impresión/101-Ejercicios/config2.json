@@ -1,0 +1,17 @@
+{
+  "smtp": {
+    "host": "smtp.ionos.es",
+    "port": 587,
+    "user": "python@jocarsa.com",
+    "password": "TAME123$",
+    "use_tls": true
+  },
+  "email": {
+    "from": "info@jocarsa.com",
+    "to": ["jocarsa2@gmail.com"],
+    "subject": "Envio de prueba con HTML",
+    "body_text": "Hola,\n\nEste es el cuerpo de texto plano.\n\nSaludos.",
+    "html_template": "template.html"
+  }
+}
+

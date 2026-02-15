@@ -1,0 +1,10 @@
+#!/bin/sh
+'''exec' "/var/www/html/dam2526/Segundo/Acceso a datos/001-Manejo de ficheros/003-Clases para gestión de flujos de datos desdehacia ficheros/101-Ejercicios/aplicacionweb/.venv/bin/python3" "$0" "$@"
+' '''
+# -*- coding: utf-8 -*-
+import re
+import sys
+from flask.cli import main
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())

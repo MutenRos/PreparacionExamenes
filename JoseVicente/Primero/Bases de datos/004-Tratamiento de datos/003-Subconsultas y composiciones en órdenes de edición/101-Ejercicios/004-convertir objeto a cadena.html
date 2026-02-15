@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>
+      Local Storage
+    </title>
+  </head>
+  <body>
+    <script>
+      var mis_datos = {
+        "nombre":"Jose Vicente",
+        "apellidos":"Carratala Sanchis",
+        "email":"info@jocarsa.com"
+      };
+      var cadena_json = JSON.stringify(mis_datos);
+      localStorage.setItem("mis_datos",cadena_json);
+    </script>
+  </body>
+</html>

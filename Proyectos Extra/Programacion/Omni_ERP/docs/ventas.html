@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventas - OmniERP</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/modules-base.css">
+    <style>
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f4f6f8; }
+        .navbar {
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .navbar h1 { margin: 0; color: #667eea; font-size: 1.3rem; }
+        .navbar a { text-decoration: none; color: #5a6370; margin-left: 1rem; }
+        .navbar a:hover { color: #667eea; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .section-header { margin-bottom: 5px; color: #111; }
+        .section-desc { color: #666; margin-top: 0; margin-bottom: 20px; }
+        .table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .table th, .table td { padding: 12px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        .table th { background: #667eea; color: white; font-size: 0.85rem; }
+        .table tbody tr:hover { background: #f8f9fa; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .badge-completada { background: #d1fae5; color: #059669; }
+        .badge-pendiente { background: #fef3c7; color: #d97706; }
+        .badge-enviada { background: #d1fae5; color: #059669; }
+        .badge-generada { background: #dbeafe; color: #2563eb; }
+        .btn { padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: 600; margin: 2px; }
+        .btn-success { background: #059669; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-primary { background: #667eea; color: white; }
+        .btn:hover { opacity: 0.9; }
+        .pending-row { background: #fff3cd !important; }
+        hr.divider { margin: 30px 0; border: none; border-top: 2px solid #eee; }
+        .details-content {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+        .details-content.show { display: block; }
+        .details-table { width: 100%; background: white; border: 1px solid #ddd; font-size: 0.85rem; }
+        .details-table th { background: #e9ecef; color: #495057; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>💰 Órdenes de Venta - OmniERP</h1>
+        <div>
+            <a href="pos.html">🛒 Ir a POS</a>
+            <a href="index.html">⬅️ Dashboard</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="content">
+            <h2 class="section-header">⏳ Pendientes de Aprobación</h2>
+            <p class="section-desc">Ventas del POS que requieren aprobación para generar órdenes de producción</p>
+
+            <table class="table">
+                <thead>
+                    <tr><th>ID</th><th>Número</th><th>Total</th><th>Fecha</th><th>Observaciones</th><th>Acciones</th></tr>
+                </thead>
+                <tbody>
+                    <tr class="pending-row">
+                        <td>#12</td>
+                        <td><strong>VTA-2026-012</strong></td>
+                        <td><strong>1.249,97 €</strong></td>
+                        <td>14/02/2026</td>
+                        <td>Cliente: Empresa ABC S.L.</td>
+                        <td>
+                            <button class="btn btn-success" title="Aprobar esta venta" onclick="alert('✅ Venta VTA-2026-012 aprobada')">✅ Aprobar</button>
+                            <button class="btn btn-secondary" title="Rechazar esta solicitud" onclick="alert('✖ Venta rechazada')">✖ Rechazar</button>
+                        </td>
+                    </tr>
+                    <tr class="pending-row">
+                        <td>#13</td>
+                        <td><strong>VTA-2026-013</strong></td>
+                        <td><strong>89,97 €</strong></td>
+                        <td>15/02/2026</td>
+                        <td>Venta rápida POS</td>
+                        <td>
+                            <button class="btn btn-success" title="Aprobar esta venta" onclick="alert('✅ Venta VTA-2026-013 aprobada')">✅ Aprobar</button>
+                            <button class="btn btn-secondary" title="Rechazar esta solicitud" onclick="alert('✖ Venta rechazada')">✖ Rechazar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <hr class="divider">
+
+            <h2 class="section-header">📋 Todas las Ventas</h2>
+            <p class="section-desc">Historial completo de ventas aprobadas</p>
+
+            <table class="table">
+                <thead>
+                    <tr><th>ID</th><th>Número</th><th>Cliente</th><th>Fecha</th><th>Total</th><th>Estado</th><th>Factura</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#11</td>
+                        <td>VTA-2026-011</td>
+                        <td>María García</td>
+                        <td>13/02/2026</td>
+                        <td>599,99 €</td>
+                        <td><span class="badge badge-completada">Completada</span></td>
+                        <td><span class="badge badge-enviada">Enviada</span></td>
+                    </tr>
+                    <tr>
+                        <td>#10</td>
+                        <td>VTA-2026-010</td>
+                        <td>Carlos López</td>
+                        <td>12/02/2026</td>
+                        <td>329,97 €</td>
+                        <td><span class="badge badge-completada">Completada</span></td>
+                        <td><span class="badge badge-generada">Generada</span></td>
+                    </tr>
+                    <tr>
+                        <td>#9</td>
+                        <td>VTA-2026-009</td>
+                        <td>Tech Solutions S.L.</td>
+                        <td>11/02/2026</td>
+                        <td>2.849,94 €</td>
+                        <td><span class="badge badge-completada">Completada</span></td>
+                        <td><span class="badge badge-enviada">Enviada</span></td>
+                    </tr>
+                    <tr>
+                        <td>#8</td>
+                        <td>VTA-2026-008</td>
+                        <td>Ana Martínez</td>
+                        <td>10/02/2026</td>
+                        <td>79,98 €</td>
+                        <td><span class="badge badge-completada">Completada</span></td>
+                        <td><span class="badge badge-enviada">Enviada</span></td>
+                    </tr>
+                    <tr>
+                        <td>#7</td>
+                        <td>VTA-2026-007</td>
+                        <td>Distribuciones Norte</td>
+                        <td>09/02/2026</td>
+                        <td>4.199,93 €</td>
+                        <td><span class="badge badge-completada">Completada</span></td>
+                        <td><span class="badge badge-enviada">Enviada</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

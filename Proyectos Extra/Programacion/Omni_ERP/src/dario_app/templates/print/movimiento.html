@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movimiento de Almacén - {{ mov.id }}</title>
+  <link rel="stylesheet" href="/static/print.css" />
+  <style>
+    .meta-grid { display:grid; grid-template-columns: 220px 1fr; gap:6px 14px; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:12px; background:#eef; font-size:12px; }
+    .kv { color:#555; }
+    .section-title { margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <header class="doc-header">
+    <div>
+      <h1>Orden de Movimiento</h1>
+      <div class="subtitle">Movimiento #{{ mov.id }}</div>
+    </div>
+    <div>
+      <button onclick="window.print()" class="print-btn">Imprimir</button>
+    </div>
+  </header>
+
+  <section class="doc-section">
+    <div class="meta-grid">
+      <div class="kv">Organización</div><div>{{ org.razon_social or org.nombre if org else 'N/A' }}</div>
+      <div class="kv">Estado</div><div><span class="badge">{{ mov.estado }}</span></div>
+      <div class="kv">Fecha creación</div><div>{{ mov.fecha_creacion }}</div>
+      <div class="kv">Fecha asignación</div><div>{{ mov.fecha_asignacion or '—' }}</div>
+      <div class="kv">Carretillero</div><div>{{ carretillero.nombre_completo or carretillero.username if carretillero else '—' }}</div>
+      <div class="kv">Responsable</div><div>{{ mov.responsable or '—' }}</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <h2 class="section-title">Pedido / Orden de Producción</h2>
+    <div class="meta-grid">
+      <div class="kv">Pedido</div><div>{{ venta.numero if venta else 'N/A' }}</div>
+      <div class="kv">Cliente</div><div>{{ venta.cliente_nombre if venta else 'N/A' }}</div>
+      <div class="kv">Orden Producción</div><div>{{ orden.numero if orden else 'N/A' }}</div>
+      <div class="kv">Sección</div><div>{{ seccion.codigo if seccion else '' }} {{ seccion.nombre if seccion else '' }}</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <h2 class="section-title">Detalle del Movimiento</h2>
+    <div class="meta-grid">
+      <div class="kv">Producto</div><div>{{ producto.codigo if producto else mov.producto_id }} — {{ producto.nombre if producto else '' }}</div>
+      <div class="kv">Cantidad</div><div>{{ mov.cantidad }}</div>
+      <div class="kv">Tipo</div><div>{{ mov.tipo_movimiento }}</div>
+      <div class="kv">Origen</div><div>{{ mov.ubicacion_origen }}</div>
+      <div class="kv">Destino</div><div>{{ mov.ubicacion_destino }}</div>
+      <div class="kv">Observaciones</div><div>{{ mov.observaciones or '—' }}</div>
+    </div>
+  </section>
+</body>
+</html>

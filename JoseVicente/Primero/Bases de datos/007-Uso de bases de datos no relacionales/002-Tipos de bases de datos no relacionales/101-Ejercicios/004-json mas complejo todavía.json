@@ -1,0 +1,15 @@
+{
+  "nombre":"Jose Vicente",
+  "apellidos":"Carratala Sanchis",
+  "email":"info@jocarsa.com",
+  "telefonos":{
+    "trabajo":[
+      123445,
+      325435
+    ],
+    "personal":[
+      21423423,
+      6245324534
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body> 
+    <input type="text">
+    <script>
+      let entrada = document.querySelector("input")
+      entrada.style.background = "lightgrey";
+      entrada.onfocus = function(){
+        entrada.style.background = "lightgreen";
+      }
+      entrada.onblur =  function(){
+        entrada.style.background = "lightgrey"
+      }
+    </script>
+  </body>
+</html>

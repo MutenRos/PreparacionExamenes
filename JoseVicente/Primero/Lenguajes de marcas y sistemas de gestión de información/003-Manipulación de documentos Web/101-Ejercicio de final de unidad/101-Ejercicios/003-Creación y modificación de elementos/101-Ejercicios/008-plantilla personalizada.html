@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body> 
+    <section>
+    </section>
+    
+    <template id="plantilla1">
+      <article>
+        <h1>Titulo de prueba</h1>
+        <time>Fecha de prueba</time>
+        <p>Texto de prueba</p>
+        <img src="">
+      </article>
+    </template>
+    
+    <script>
+      var plantilla = document.querySelector("#plantilla1");
+      
+      var seccion = document.querySelector("section")
+      
+      var clon1 = plantilla.content.cloneNode(true);  // Nuevo en este ejercicio
+      clon1.querySelector("h1").textContent = "Titulo del articulo 1"
+      clon1.querySelector("time").textContent = "2025-10-13"
+      clon1.querySelector("p").textContent = "Texto de prueba"
+      seccion.appendChild(clon1)
+      
+      var clon2 = plantilla.content.cloneNode(true);  // Nuevo en este ejercicio
+      clon2.querySelector("h1").textContent = "Titulo del articulo 2"
+      clon2.querySelector("time").textContent = "2025-10-14"
+      clon2.querySelector("p").textContent = "Texto de prueba"
+      seccion.appendChild(clon2)
+      
+    </script>
+  </body>
+</html>

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bombas Ideal | Fabricantes de Bombas de Agua desde 1902</title>
+    <meta name="description" content="Bombas Ideal S.A. - Fabricantes de bombas de agua y grupos de presión desde 1902. Presentes en 72 países. ISO 9001, ISO 14001, AENOR, ATEX.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles: Nuevo sistema modular -->
+    <link rel="stylesheet" href="src/css/main.css">
+    
+    <!-- Fallback para estilos legacy (eliminar cuando migración completa) -->
+    <noscript><link rel="stylesheet" href="styles.css"></noscript>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Bombas Ideal | Fabricantes de Bombas de Agua desde 1902">
+    <meta property="og:description" content="Más de 120 años fabricando bombas de agua. Presentes en 72 países.">
+    <meta property="og:image" content="https://mutenros.github.io/BI/assets/images/og-image.jpg">
+    <meta property="og:url" content="https://mutenros.github.io/BI/">
+    <meta property="og:type" content="website">
+</head>
+
+<body>
+    <!-- Skip Link (Accesibilidad) -->
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
+    <!-- Preloader -->
+    <div id="preloader" class="preloader" aria-hidden="true">
+        <div class="preloader__content">
+            <div class="preloader__spinner"></div>
+            <span class="preloader__brand">BOMBAS IDEAL</span>
+            <p class="preloader__tagline">Desde 1902</p>
+        </div>
+    </div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar__left">
+                <span class="top-bar__item">
+                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i> 
+                    Pol. Ind. Mediterráneo, C/Cid 8, 46560 Massalfassar (Valencia)
+                </span>
+                <span class="top-bar__item">
+                    <i class="fas fa-envelope" aria-hidden="true"></i> 
+                    <a href="mailto:central@bombasideal.com">central@bombasideal.com</a>
+                </span>
+            </div>
+            <div class="top-bar__right">
+                <span class="top-bar__item">
+                    <i class="fas fa-clock" aria-hidden="true"></i> 
+                    Lun-Vie: 8:00-17:00
+                </span>
+                <div class="top-bar__social">
+                    <a href="https://www.linkedin.com/company/bombas-ideal/" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       aria-label="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@bombasideal9948" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       aria-label="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+                <div class="top-bar__lang">
+                    <span class="active" aria-current="true">ES</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar" aria-label="Navegación principal">
+        <div class="navbar__container">
+            <a href="#inicio" class="navbar__logo">
+                <img src="assets/images/logo.svg" alt="Bombas Ideal" class="navbar__logo-img">
+            </a>
+            
+            <ul class="navbar__menu" id="nav-menu" role="menubar">
+                <li role="none">
+                    <a href="#inicio" class="navbar__link active" role="menuitem">Inicio</a>
+                </li>
+                <li class="navbar__dropdown" role="none">
+                    <a href="#empresa" class="navbar__link" role="menuitem" aria-haspopup="true" aria-expanded="false">
+                        La Empresa <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </a>
+                    <ul class="navbar__dropdown-menu" role="menu" aria-label="Submenú Empresa">
+                        <li role="none"><a href="#historia" role="menuitem">Historia</a></li>
+                        <li role="none"><a href="#info-corporativa" role="menuitem">Información Corporativa</a></li>
+                        <li role="none"><a href="#certificados" role="menuitem">Certificados de Calidad</a></li>
+                        <li role="none"><a href="#investigacion" role="menuitem">Investigación I+D+i</a></li>
+                        <li role="none"><a href="#delegaciones" role="menuitem">En el Mundo</a></li>
+                        <li role="none"><a href="#grupo-empresarial" role="menuitem">Grupo Empresarial</a></li>
+                        <li role="none"><a href="#formacion" role="menuitem">Centro de Formación</a></li>
+                    </ul>
+                </li>
+                <li class="navbar__dropdown navbar__dropdown--mega" role="none">
+                    <a href="#productos" class="navbar__link" role="menuitem" aria-haspopup="true" aria-expanded="false">
+                        Productos <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </a>
+                    <ul class="navbar__mega-menu" role="menu" aria-label="Submenú Productos">
+                        <li class="navbar__mega-column">
+                            <h4>Bombas</h4>
+                            <a href="#horizontales" role="menuitem">Bombas Horizontales</a>
+                            <a href="#verticales" role="menuitem">Bombas Verticales</a>
+                            <a href="#sumergidas" role="menuitem">Bombas Sumergidas</a>
+                            <a href="#multicelulares" role="menuitem">Bombas Multicelulares</a>
+                            <a href="#residuales" role="menuitem">Bombas Residuales</a>
+                        </li>
+                        <li class="navbar__mega-column">
+                            <h4>Equipos</h4>
+                            <a href="#contraincendios" role="menuitem">Equipos Contra Incendios</a>
+                            <a href="#grupos-hydro" role="menuitem">Grupos Hydro</a>
+                            <a href="#bombeo-solar" role="menuitem">Sistema Bombeo Solar</a>
+                            <a href="#cuadros-control" role="menuitem">Cuadros de Control</a>
+                        </li>
+                        <li class="navbar__mega-column">
+                            <h4>Complementos</h4>
+                            <a href="#accesorios" role="menuitem">Accesorios y Recambios</a>
+                            <a href="#motores" role="menuitem">Motores Sumergidos</a>
+                        </li>
+                    </ul>
+                </li>
+                <li role="none">
+                    <a href="#aplicaciones" class="navbar__link" role="menuitem">Aplicaciones</a>
+                </li>
+                <li role="none">
+                    <a href="#catalogo" class="navbar__link" role="menuitem">Catálogo</a>
+                </li>
+                <li role="none">
+                    <a href="bips.html" class="navbar__link navbar__link--bips" role="menuitem">
+                        <i class="fas fa-microchip" aria-hidden="true"></i> BIPS
+                    </a>
+                </li>
+                <li role="none">
+                    <a href="noticias.html" class="navbar__link" role="menuitem">Noticias</a>
+                </li>
+                <li role="none">
+                    <a href="#contacto" class="navbar__link" role="menuitem">Contacto</a>
+                </li>
+            </ul>
+            
+            <div class="navbar__actions">
+                <a href="tel:+34961402143" class="navbar__phone">
+                    <i class="fas fa-phone" aria-hidden="true"></i>
+                    <span>+34 961 402 143</span>
+                </a>
+                <button class="navbar__toggle" id="nav-toggle" 
+                        aria-label="Abrir menú" 
+                        aria-expanded="false"
+                        aria-controls="nav-menu">
+                    <span class="navbar__toggle-bar"></span>
+                    <span class="navbar__toggle-bar"></span>
+                    <span class="navbar__toggle-bar"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        
+        <!-- Hero Slider -->
+        <section class="hero" id="inicio" aria-label="Presentación">
+            <div class="hero__slider" id="hero-slider">
+                <!-- Slide 1 -->
+                <div class="hero__slide active" data-slide="0">
+                    <div class="hero__slide-bg" style="background-image: url('assets/images/hero/slide-1.jpg')"></div>
+                    <div class="hero__slide-overlay"></div>
+                    <div class="hero__slide-content">
+                        <span class="hero__badge" data-animate="fade-down">Desde 1902</span>
+                        <h1 class="hero__title" data-animate="fade-up">
+                            Más de 120 años de <span class="text-gradient">experiencia</span>
+                        </h1>
+                        <p class="hero__subtitle" data-animate="fade-up" data-animate-delay="200">
+                            Fabricantes de bombas de agua y grupos de presión
+                        </p>
+                        <div class="hero__actions" data-animate="fade-up" data-animate-delay="400">
+                            <a href="#productos" class="btn btn-primary btn-lg">
+                                Ver Productos <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="#contacto" class="btn btn-outline btn-lg">
+                                Contactar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 2 -->
+                <div class="hero__slide" data-slide="1">
+                    <div class="hero__slide-bg" style="background-image: url('assets/images/hero/slide-2.jpg')"></div>
+                    <div class="hero__slide-overlay"></div>
+                    <div class="hero__slide-content">
+                        <span class="hero__badge">Presencia Global</span>
+                        <h1 class="hero__title">
+                            Presentes en <span class="text-gradient">72 países</span>
+                        </h1>
+                        <p class="hero__subtitle">
+                            Red de distribución mundial con soporte técnico local
+                        </p>
+                        <div class="hero__actions">
+                            <a href="#delegaciones" class="btn btn-primary btn-lg">
+                                Ver Delegaciones <i class="fas fa-globe"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 3 -->
+                <div class="hero__slide" data-slide="2">
+                    <div class="hero__slide-bg" style="background-image: url('assets/images/hero/slide-3.jpg')"></div>
+                    <div class="hero__slide-overlay"></div>
+                    <div class="hero__slide-content">
+                        <span class="hero__badge">Innovación Constante</span>
+                        <h1 class="hero__title">
+                            Tecnología de <span class="text-gradient">vanguardia</span>
+                        </h1>
+                        <p class="hero__subtitle">
+                            I+D+i al servicio de la eficiencia energética
+                        </p>
+                        <div class="hero__actions">
+                            <a href="bips.html" class="btn btn-bips btn-lg">
+                                <i class="fas fa-microchip"></i> Probar BIPS
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slider Controls -->
+            <div class="hero__controls">
+                <button class="hero__control hero__control--prev" aria-label="Anterior">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="hero__control hero__control--next" aria-label="Siguiente">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <!-- Slider Indicators -->
+            <div class="hero__indicators" role="tablist" aria-label="Slides">
+                <button class="hero__indicator active" data-slide="0" role="tab" aria-selected="true" aria-label="Slide 1"></button>
+                <button class="hero__indicator" data-slide="1" role="tab" aria-selected="false" aria-label="Slide 2"></button>
+                <button class="hero__indicator" data-slide="2" role="tab" aria-selected="false" aria-label="Slide 3"></button>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <a href="#features" class="hero__scroll" aria-label="Scroll para más">
+                <span class="hero__scroll-text">Scroll</span>
+                <i class="fas fa-chevron-down"></i>
+            </a>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section section--features" id="features">
+            <div class="container">
+                <div class="section__header text-center" data-animate="fade-up">
+                    <span class="section__badge">¿Por qué elegirnos?</span>
+                    <h2 class="section__title">La mejor elección para tu proyecto</h2>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card" data-animate="fade-up">
+                        <div class="feature-card__icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <h3 class="feature-card__title">Calidad Certificada</h3>
+                        <p class="feature-card__text">
+                            ISO 9001, ISO 14001, AENOR y ATEX. Cumplimos los estándares más exigentes.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card" data-animate="fade-up" data-animate-delay="100">
+                        <div class="feature-card__icon">
+                            <i class="fas fa-globe-europe"></i>
+                        </div>
+                        <h3 class="feature-card__title">Alcance Global</h3>
+                        <p class="feature-card__text">
+                            Presentes en 72 países con una red de distribución y soporte técnico local.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card" data-animate="fade-up" data-animate-delay="200">
+                        <div class="feature-card__icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3 class="feature-card__title">Soluciones a Medida</h3>
+                        <p class="feature-card__text">
+                            Fabricación personalizada según las necesidades específicas de cada proyecto.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card" data-animate="fade-up" data-animate-delay="300">
+                        <div class="feature-card__icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3 class="feature-card__title">Soporte 24/7</h3>
+                        <p class="feature-card__text">
+                            Asistencia técnica permanente para garantizar el funcionamiento óptimo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section (Preview) -->
+        <section class="section section--products" id="productos">
+            <div class="container">
+                <div class="section__header text-center" data-animate="fade-up">
+                    <span class="section__badge">Nuestros Productos</span>
+                    <h2 class="section__title">Bombas y Equipos de Alta Calidad</h2>
+                    <p class="section__subtitle">
+                        Amplia gama de soluciones para todo tipo de aplicaciones
+                    </p>
+                </div>
+                
+                <div class="products-grid">
+                    <!-- Tarjetas de productos se cargarán dinámicamente o con contenido estático -->
+                    <div class="card card--product" data-animate="fade-up">
+                        <div class="card__image">
+                            <img src="assets/images/products/horizontales.jpg" 
+                                 alt="Bombas Horizontales" 
+                                 loading="lazy">
+                        </div>
+                        <div class="card__body">
+                            <span class="card__badge">Serie NXA</span>
+                            <h3 class="card__title">Bombas Horizontales</h3>
+                            <p class="card__text">
+                                Bombas centrífugas normalizadas según EN 733 / DIN 24255.
+                            </p>
+                            <a href="productos/serie-nxa.html" class="btn btn-outline btn-sm">
+                                Ver más <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="card card--product" data-animate="fade-up" data-animate-delay="100">
+                        <div class="card__image">
+                            <img src="assets/images/products/verticales.jpg" 
+                                 alt="Bombas Verticales" 
+                                 loading="lazy">
+                        </div>
+                        <div class="card__body">
+                            <span class="card__badge">Serie VIPV</span>
+                            <h3 class="card__title">Bombas Verticales</h3>
+                            <p class="card__text">
+                                Bombas multicelulares verticales de alta eficiencia IE3.
+                            </p>
+                            <a href="productos/serie-vipv.html" class="btn btn-outline btn-sm">
+                                Ver más <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="card card--product" data-animate="fade-up" data-animate-delay="200">
+                        <div class="card__image">
+                            <img src="assets/images/products/sumergidas.jpg" 
+                                 alt="Bombas Sumergidas" 
+                                 loading="lazy">
+                        </div>
+                        <div class="card__body">
+                            <span class="card__badge">Serie SP</span>
+                            <h3 class="card__title">Bombas Sumergidas</h3>
+                            <p class="card__text">
+                                Electrobombas sumergibles para pozos profundos.
+                            </p>
+                            <a href="productos/motores-sumergidos.html" class="btn btn-outline btn-sm">
+                                Ver más <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="card card--product" data-animate="fade-up" data-animate-delay="300">
+                        <div class="card__image">
+                            <img src="assets/images/products/contraincendios.jpg" 
+                                 alt="Equipos Contra Incendios" 
+                                 loading="lazy">
+                        </div>
+                        <div class="card__body">
+                            <span class="card__badge">UNE 23500</span>
+                            <h3 class="card__title">Equipos Contra Incendios</h3>
+                            <p class="card__text">
+                                Grupos de presión certificados UNE 23500 y NFPA 20.
+                            </p>
+                            <a href="productos/serie-une23500.html" class="btn btn-outline btn-sm">
+                                Ver más <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-8" data-animate="fade-up">
+                    <a href="#catalogo" class="btn btn-primary btn-lg">
+                        Ver Catálogo Completo <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="bips.html" class="btn btn-bips btn-lg ml-4">
+                        <i class="fas fa-microchip"></i> Usar BIPS
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="section section--stats">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat" data-animate="fade-up">
+                        <span class="stat__number" data-count="120">0</span>
+                        <span class="stat__label">Años de experiencia</span>
+                    </div>
+                    <div class="stat" data-animate="fade-up" data-animate-delay="100">
+                        <span class="stat__number" data-count="72">0</span>
+                        <span class="stat__label">Países</span>
+                    </div>
+                    <div class="stat" data-animate="fade-up" data-animate-delay="200">
+                        <span class="stat__number" data-count="500">0</span>
+                        <span class="stat__label">Modelos</span>
+                    </div>
+                    <div class="stat" data-animate="fade-up" data-animate-delay="300">
+                        <span class="stat__number" data-count="1000">0</span>
+                        <span class="stat__label">Proyectos anuales</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="section section--cta" id="contacto">
+            <div class="container">
+                <div class="cta-content" data-animate="fade-up">
+                    <h2 class="cta__title">¿Necesitas asesoramiento técnico?</h2>
+                    <p class="cta__text">
+                        Nuestro equipo de ingenieros está a tu disposición para ayudarte 
+                        a encontrar la solución perfecta para tu proyecto.
+                    </p>
+                    <div class="cta__actions">
+                        <a href="tel:+34961402143" class="btn btn-white btn-lg">
+                            <i class="fas fa-phone"></i> +34 961 402 143
+                        </a>
+                        <a href="mailto:central@bombasideal.com" class="btn btn-outline-white btn-lg">
+                            <i class="fas fa-envelope"></i> Enviar email
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__brand">
+                    <img src="assets/images/logo.svg" alt="Bombas Ideal" class="footer__logo">
+                    <p class="footer__description">
+                        Bombas Ideal S.A. - Fabricantes de bombas de agua y grupos de presión 
+                        desde 1902. Calidad, innovación y compromiso.
+                    </p>
+                    <div class="footer__certifications">
+                        <img src="assets/images/cert-iso9001.svg" alt="ISO 9001" loading="lazy">
+                        <img src="assets/images/cert-iso14001.svg" alt="ISO 14001" loading="lazy">
+                        <img src="assets/images/cert-aenor.svg" alt="AENOR" loading="lazy">
+                    </div>
+                </div>
+                
+                <div class="footer__links">
+                    <h4 class="footer__title">Productos</h4>
+                    <ul>
+                        <li><a href="#horizontales">Bombas Horizontales</a></li>
+                        <li><a href="#verticales">Bombas Verticales</a></li>
+                        <li><a href="#sumergidas">Bombas Sumergidas</a></li>
+                        <li><a href="#contraincendios">Contra Incendios</a></li>
+                        <li><a href="#catalogo">Catálogo</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer__links">
+                    <h4 class="footer__title">Empresa</h4>
+                    <ul>
+                        <li><a href="#historia">Historia</a></li>
+                        <li><a href="#certificados">Certificaciones</a></li>
+                        <li><a href="#delegaciones">Delegaciones</a></li>
+                        <li><a href="noticias.html">Noticias</a></li>
+                        <li><a href="#empleo">Trabaja con nosotros</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer__contact">
+                    <h4 class="footer__title">Contacto</h4>
+                    <address>
+                        <p><i class="fas fa-map-marker-alt"></i> 
+                            Pol. Ind. Mediterráneo, C/Cid 8<br>
+                            46560 Massalfassar (Valencia)
+                        </p>
+                        <p><i class="fas fa-phone"></i> 
+                            <a href="tel:+34961402143">+34 961 402 143</a>
+                        </p>
+                        <p><i class="fas fa-envelope"></i> 
+                            <a href="mailto:central@bombasideal.com">central@bombasideal.com</a>
+                        </p>
+                    </address>
+                    <div class="footer__social">
+                        <a href="https://www.linkedin.com/company/bombas-ideal/" 
+                           target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@bombasideal9948" 
+                           target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="https://www.facebook.com/BombasIdealCompany" 
+                           target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer__bottom">
+                <p>&copy; 2026 Bombas Ideal S.A. Todos los derechos reservados.</p>
+                <div class="footer__legal">
+                    <a href="aviso-legal.html">Aviso Legal</a>
+                    <a href="politica-cookies.html">Política de Cookies</a>
+                    <a href="politica-privacidad.html">Privacidad</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cookie Banner -->
+    <div id="cookie-banner" class="cookie-banner" role="dialog" aria-labelledby="cookie-title">
+        <div class="cookie-banner__content">
+            <p id="cookie-title">
+                BOMBAS IDEAL utiliza cookies de terceros con la finalidad de 
+                realizar una medición y análisis estadístico. 
+                <a href="politica-cookies.html">Más información</a>
+            </p>
+            <div class="cookie-banner__actions">
+                <button class="btn btn-primary btn-sm" id="accept-cookies">Aceptar</button>
+                <button class="btn btn-outline btn-sm" id="config-cookies">Configuración</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top -->
+    <button class="scroll-top" id="scroll-top" aria-label="Volver arriba">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script type="module" src="src/js/bundle.js"></script>
+    
+    <!-- Fallback para navegadores sin ES Modules -->
+    <script nomodule src="script.js"></script>
+</body>
+
+</html>

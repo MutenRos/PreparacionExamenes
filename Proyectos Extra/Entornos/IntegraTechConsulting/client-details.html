@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Cliente | Panel de Control</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-text">Integra Tech</div>
+        </div>
+        
+        <nav>
+            <a href="dashboard.html" class="nav-item">
+                <span>📊</span> Dashboard
+            </a>
+            <a href="agenda.html" class="nav-item">
+                <span>📅</span> Agenda
+            </a>
+            <a href="clients.html" class="nav-item active">
+                <span>👥</span> Clientes
+            </a>
+            <a href="#" class="nav-item">
+                <span>🚀</span> Proyectos
+            </a>
+            <a href="#" class="nav-item">
+                <span>💰</span> Finanzas
+            </a>
+            <a href="#" class="nav-item">
+                <span>⚙️</span> Configuración
+            </a>
+        </nav>
+
+        <div style="margin-top: auto;">
+            <a href="index.html" class="nav-item">
+                <span>⬅️</span> Volver a Web
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="breadcrumb">
+            <a href="clients.html">Clientes</a> / Logística Norte S.L.
+        </div>
+        
+        <header class="header">
+            <h1 class="page-title">Logística Norte S.L.</h1>
+            <span class="status-badge status-active">Cliente Activo</span>
+        </header>
+
+        <!-- Client Info Grid -->
+        <div class="client-info-grid">
+            <div class="info-card">
+                <h3>Información de Contacto</h3>
+                <p><strong>Persona:</strong> Carlos Ruiz</p>
+                <p><strong>Email:</strong> carlos@logisticanorte.com</p>
+                <p><strong>Teléfono:</strong> +34 600 123 456</p>
+                <p><strong>Cargo:</strong> Director de Operaciones</p>
+            </div>
+            <div class="info-card">
+                <h3>Datos Fiscales & Facturación</h3>
+                <p><strong>Razón Social:</strong> Logística Norte S.L.</p>
+                <p><strong>CIF:</strong> B-12345678</p>
+                <p><strong>Dirección:</strong> Polígono Ind. A, Nave 3, Madrid</p>
+                <p><strong>Condiciones:</strong> 50% inicio / 50% entrega</p>
+            </div>
+            <div class="info-card">
+                <h3>Notas Internas</h3>
+                <p>Cliente preferente. Interesados en módulo de IA para rutas en Q3 2026.</p>
+                <p style="margin-top: 12px; font-size: 0.85rem; color: var(--text-muted);">Último contacto: Ayer</p>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <div class="section-header-row">
+            <h2 class="section-title">Proyectos Asociados</h2>
+            <a href="new-project.html" class="btn-small">+ Añadir Proyecto</a>
+        </div>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Proyecto</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Progreso</th>
+                        <th>Entrega</th>
+                        <th>Presupuesto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="clickable">
+                        <td><strong>Sistema de Gestión de Flotas</strong></td>
+                        <td>Web App / Dashboard</td>
+                        <td><span class="status-badge status-active">En Desarrollo</span></td>
+                        <td>
+                            <div class="progress-bar"><div class="fill" style="width: 65%"></div></div>
+                        </td>
+                        <td>15 Ene 2026</td>
+                        <td>€4,500</td>
+                    </tr>
+                    <tr class="clickable" style="opacity: 0.7;">
+                        <td>Landing Page Corporativa</td>
+                        <td>Web Estática</td>
+                        <td><span class="status-badge status-active" style="background: rgba(255,255,255,0.1); color: var(--text-muted);">Completado</span></td>
+                        <td>
+                            <div class="progress-bar"><div class="fill" style="width: 100%; background: var(--success);"></div></div>
+                        </td>
+                        <td>10 Nov 2025</td>
+                        <td>€1,200</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

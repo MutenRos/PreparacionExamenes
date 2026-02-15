@@ -1,0 +1,1393 @@
+{
+  "basic": {
+    "timestamp": "2025-09-22 14:32:23",
+    "platform_system": "Linux",
+    "platform_release": "6.14.0-29-generic",
+    "platform_version": "#29~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Aug 14 16:52:50 UTC 2",
+    "architecture": "x86_64",
+    "platform": "Linux-6.14.0-29-generic-x86_64-with-glibc2.39",
+    "uname": "Linux josevicenteportatil 6.14.0-29-generic #29~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Aug 14 16:52:50 UTC 2 x86_64 x86_64",
+    "hostname": "josevicenteportatil",
+    "fqdn": "josevicenteportatil",
+    "node_id": "0xcc28aa49b637",
+    "python_version": "3.12.3 (main, Aug 14 2025, 17:47:21) [GCC 13.3.0]",
+    "python_executable": "/usr/bin/python3"
+  },
+  "cpu": {
+    "logical_cores": 16,
+    "processor": "x86_64",
+    "/proc/cpuinfo_sample": "processor\t: 0\n\nvendor_id\t: GenuineIntel\n\ncpu family\t: 6\n\nmodel\t\t: 186\n\nmodel name\t: 13th Gen Intel(R) Core(TM) i7-13620H\n\nstepping\t: 2\n\nmicrocode\t: 0x4128\n\ncpu MHz\t\t: 775.451\n\ncache size\t: 24576 KB\n\nphysical id\t: 0\n\nsiblings\t: 16\n\ncore id\t\t: 0\n\ncpu cores\t: 10\n\napicid\t\t: 0\n\ninitial apicid\t: 0\n\nfpu\t\t: yes\n\nfpu_exception\t: yes\n\ncpuid level\t: 32\n\nwp\t\t: yes\n\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb ssbd ibrs ibpb stibp ibrs_enhanced tpr_shadow flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb intel_pt sha_ni xsaveopt xsavec xgetbv1 xsaves split_lock_detect user_shstk avx_vnni dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp hwp_pkg_req hfi vnmi umip pku ospke waitpkg gfni vaes vpclmulqdq rdpid movdiri movdir64b fsrm md_clear serialize arch_lbr ibt flush_l1d arch_capabilities\n\nvmx flags\t: vnmi preemption_timer posted_intr invvpid ept_x_only ept_ad ept_1gb flexpriority apicv tsc_offset vtpr mtf vapic ept vpid unrestricted_guest vapic_reg vid ple shadow_vmcs ept_violation_ve ept_mode_based_exec tsc_scaling usr_wait_pause\n\nbugs\t\t: spectre_v1 spectre_v2 spec_store_bypass swapgs eibrs_pbrsb rfds bhi\n\nbogomips\t: 5836.80\n\nclflush size\t: 64\n\ncache_alignment\t: 64\n\naddress sizes\t: 39 bits physical, 48 bits virtual\n\npower management:\n\n\n\nprocessor\t: 1\n\nvendor_id\t: GenuineIntel\n",
+    "physical_cores": 10,
+    "cpu_freq": {
+      "current": 2736.6073125000003,
+      "min": 400.0,
+      "max": 4475.0
+    },
+    "cpu_percent_sample": 23.8
+  },
+  "memory": {
+    "virtual_memory": {
+      "total": 16369229824,
+      "available": 5532549120,
+      "percent": 66.2,
+      "used": 7624384512,
+      "free": 754970624,
+      "active": 4147240960,
+      "inactive": 7967748096,
+      "buffers": 467042304,
+      "cached": 7522832384,
+      "shared": 2859065344,
+      "slab": 1094336512
+    },
+    "swap_memory": {
+      "total": 4294963200,
+      "used": 1572864,
+      "free": 4293390336,
+      "percent": 0.0,
+      "sin": 0,
+      "sout": 532480
+    }
+  },
+  "disks": {
+    "cwd": "/var/www/html/dam2526/Primero/Sistemas informáticos/002-Instalación de sistemas operativos/001-Evolución histórica y clasificación/101-Ejercicios",
+    "root_usage": {
+      "total": 1005867986944,
+      "used": 773759553536,
+      "free": 180937662464
+    },
+    "cwd_usage": {
+      "total": 1005867986944,
+      "used": 773759553536,
+      "free": 180937662464
+    },
+    "partitions": [
+      {
+        "device": "/dev/nvme0n1p2",
+        "mountpoint": "/",
+        "fstype": "ext4",
+        "opts": "rw,relatime",
+        "usage": {
+          "total": 1005867986944,
+          "used": 773759553536,
+          "free": 180937662464,
+          "percent": 81.0
+        }
+      },
+      {
+        "device": "/dev/loop0",
+        "mountpoint": "/snap/android-studio/197",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 1606418432,
+          "used": 1606418432,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop1",
+        "mountpoint": "/snap/android-studio/205",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 1626341376,
+          "used": 1626341376,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop2",
+        "mountpoint": "/snap/ardour-snap/10",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 95027200,
+          "used": 95027200,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop3",
+        "mountpoint": "/snap/ardour-snap/4",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 95027200,
+          "used": 95027200,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop4",
+        "mountpoint": "/snap/audacity/1196",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 641728512,
+          "used": 641728512,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop5",
+        "mountpoint": "/snap/audacity/1208",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 641728512,
+          "used": 641728512,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop6",
+        "mountpoint": "/snap/bare/5",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 131072,
+          "used": 131072,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop7",
+        "mountpoint": "/snap/brackets/138",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 109707264,
+          "used": 109707264,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop8",
+        "mountpoint": "/snap/cameractrls/35",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 11010048,
+          "used": 11010048,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop10",
+        "mountpoint": "/snap/cheese/76",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 83755008,
+          "used": 83755008,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop9",
+        "mountpoint": "/snap/cheese/78",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 83755008,
+          "used": 83755008,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop11",
+        "mountpoint": "/snap/chromium/3235",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 193855488,
+          "used": 193855488,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop12",
+        "mountpoint": "/snap/chromium/3248",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 195035136,
+          "used": 195035136,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop13",
+        "mountpoint": "/snap/code/204",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 345505792,
+          "used": 345505792,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop14",
+        "mountpoint": "/snap/code/205",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 345505792,
+          "used": 345505792,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop15",
+        "mountpoint": "/snap/cloudcompare/208",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 214564864,
+          "used": 214564864,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop16",
+        "mountpoint": "/snap/core/17212",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 109314048,
+          "used": 109314048,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop17",
+        "mountpoint": "/snap/core/17247",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 109314048,
+          "used": 109314048,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop18",
+        "mountpoint": "/snap/core18/2947",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 58195968,
+          "used": 58195968,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop19",
+        "mountpoint": "/snap/core18/2940",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 58195968,
+          "used": 58195968,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop20",
+        "mountpoint": "/snap/core20/2582",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 66977792,
+          "used": 66977792,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop21",
+        "mountpoint": "/snap/core20/2599",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 66977792,
+          "used": 66977792,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop22",
+        "mountpoint": "/snap/core22/2111",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 77594624,
+          "used": 77594624,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop23",
+        "mountpoint": "/snap/core22/2133",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 77594624,
+          "used": 77594624,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop24",
+        "mountpoint": "/snap/core24/1055",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 70123520,
+          "used": 70123520,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop25",
+        "mountpoint": "/snap/core24/1151",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 70123520,
+          "used": 70123520,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop26",
+        "mountpoint": "/snap/cups/1085",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 71827456,
+          "used": 71827456,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop27",
+        "mountpoint": "/snap/cups/1100",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 70516736,
+          "used": 70516736,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop28",
+        "mountpoint": "/snap/ffmpeg-2404/103",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 86114304,
+          "used": 86114304,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop29",
+        "mountpoint": "/snap/ffmpeg-2404/108",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 101187584,
+          "used": 101187584,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop30",
+        "mountpoint": "/snap/firefox/6782",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 259129344,
+          "used": 259129344,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop31",
+        "mountpoint": "/snap/firefox/6836",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 259129344,
+          "used": 259129344,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop32",
+        "mountpoint": "/snap/firmware-updater/147",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 11665408,
+          "used": 11665408,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop33",
+        "mountpoint": "/snap/firmware-updater/167",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 11796480,
+          "used": 11796480,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop34",
+        "mountpoint": "/snap/freecad/1248",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 825491456,
+          "used": 825491456,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop35",
+        "mountpoint": "/snap/freecad/1634",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 776601600,
+          "used": 776601600,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop36",
+        "mountpoint": "/snap/gimp/531",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 206569472,
+          "used": 206569472,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop37",
+        "mountpoint": "/snap/gimp/530",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 206569472,
+          "used": 206569472,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop38",
+        "mountpoint": "/snap/gnome-3-28-1804/198",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 172883968,
+          "used": 172883968,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop39",
+        "mountpoint": "/snap/gnome-3-38-2004/143",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 366739456,
+          "used": 366739456,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop41",
+        "mountpoint": "/snap/gnome-42-2204/202",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 541196288,
+          "used": 541196288,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop40",
+        "mountpoint": "/snap/gnome-42-2204/176",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 529661952,
+          "used": 529661952,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop42",
+        "mountpoint": "/snap/gnome-46-2404/121",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 633470976,
+          "used": 633470976,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop43",
+        "mountpoint": "/snap/gnome-46-2404/125",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 648413184,
+          "used": 648413184,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop44",
+        "mountpoint": "/snap/gtk2-common-themes/13",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 262144,
+          "used": 262144,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop45",
+        "mountpoint": "/snap/gtk-common-themes/1535",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 96206848,
+          "used": 96206848,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop46",
+        "mountpoint": "/snap/inkscape/10758",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 353501184,
+          "used": 353501184,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop47",
+        "mountpoint": "/snap/inkscape/10823",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 355336192,
+          "used": 355336192,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop48",
+        "mountpoint": "/snap/kde-frameworks-5-99-qt-5-15-7-core20/7",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 458620928,
+          "used": 458620928,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop50",
+        "mountpoint": "/snap/kf5-5-108-qt-5-15-10-core22/5",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 472121344,
+          "used": 472121344,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop49",
+        "mountpoint": "/snap/kf5-core22/3",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 1571553280,
+          "used": 1571553280,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop51",
+        "mountpoint": "/snap/libreoffice/356",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 1243480064,
+          "used": 1243480064,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop52",
+        "mountpoint": "/snap/libreoffice/355",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 1239154688,
+          "used": 1239154688,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop53",
+        "mountpoint": "/snap/mesa-2404/887",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 305004544,
+          "used": 305004544,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop54",
+        "mountpoint": "/snap/mesa-2404/912",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 305004544,
+          "used": 305004544,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop55",
+        "mountpoint": "/snap/mesa-core22/368",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 213254144,
+          "used": 213254144,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop56",
+        "mountpoint": "/snap/mesa-core22/478",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 213254144,
+          "used": 213254144,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop57",
+        "mountpoint": "/snap/meshlab-mardy/5",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 92274688,
+          "used": 92274688,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop58",
+        "mountpoint": "/snap/netbeans/132",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 530055168,
+          "used": 530055168,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop59",
+        "mountpoint": "/snap/netbeans/134",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 530055168,
+          "used": 530055168,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop60",
+        "mountpoint": "/snap/obs-studio/1302",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 603586560,
+          "used": 603586560,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop61",
+        "mountpoint": "/snap/obs-studio/1313",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 418119680,
+          "used": 418119680,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop62",
+        "mountpoint": "/snap/ollama/71",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 1027997696,
+          "used": 1027997696,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop63",
+        "mountpoint": "/snap/ollama/79",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 1028128768,
+          "used": 1028128768,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop64",
+        "mountpoint": "/snap/openjdk/2323",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 277086208,
+          "used": 277086208,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop65",
+        "mountpoint": "/snap/openjdk/2369",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 277086208,
+          "used": 277086208,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop66",
+        "mountpoint": "/snap/openshot-community/4",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 415760384,
+          "used": 415760384,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop67",
+        "mountpoint": "/snap/openvino-ai-plugins-gimp/31",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 859832320,
+          "used": 859832320,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop68",
+        "mountpoint": "/snap/openvino-ai-plugins-gimp/39",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 1019084800,
+          "used": 1019084800,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop69",
+        "mountpoint": "/snap/openvino-toolkit-2404/15",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 50462720,
+          "used": 50462720,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop70",
+        "mountpoint": "/snap/openvino-toolkit-2404/34",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 85458944,
+          "used": 85458944,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop71",
+        "mountpoint": "/snap/overleaf/4",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 73007104,
+          "used": 73007104,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop72",
+        "mountpoint": "/snap/remmina/6419",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 104464384,
+          "used": 104464384,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop73",
+        "mountpoint": "/snap/remmina/6811",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 104595456,
+          "used": 104595456,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop74",
+        "mountpoint": "/snap/snap-store/1248",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 11403264,
+          "used": 11403264,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop75",
+        "mountpoint": "/snap/snap-store/1270",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 11403264,
+          "used": 11403264,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop76",
+        "mountpoint": "/snap/snapd/24792",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 51773440,
+          "used": 51773440,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop77",
+        "mountpoint": "/snap/snapd/25202",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 53346304,
+          "used": 53346304,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop79",
+        "mountpoint": "/snap/snapd-desktop-integration/315",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 655360,
+          "used": 655360,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop78",
+        "mountpoint": "/snap/snapd-desktop-integration/253",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 655360,
+          "used": 655360,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop80",
+        "mountpoint": "/snap/thunderbird/791",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 238288896,
+          "used": 238288896,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop81",
+        "mountpoint": "/snap/thunderbird/796",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 237109248,
+          "used": 237109248,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/loop82",
+        "mountpoint": "/snap/vlc/3777",
+        "fstype": "squashfs",
+        "opts": "ro,nodev,relatime,errors=continue,threads=single",
+        "usage": {
+          "total": 336723968,
+          "used": 336723968,
+          "free": 0,
+          "percent": 100.0
+        }
+      },
+      {
+        "device": "/dev/nvme0n1p1",
+        "mountpoint": "/boot/efi",
+        "fstype": "vfat",
+        "opts": "rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro",
+        "usage": {
+          "total": 1124999168,
+          "used": 6438912,
+          "free": 1118560256,
+          "percent": 0.6
+        }
+      }
+    ]
+  },
+  "network": {
+    "ip_addresses": [
+      "127.0.1.1"
+    ],
+    "interfaces": {
+      "lo": [
+        {
+          "family": "2",
+          "address": "127.0.0.1",
+          "netmask": "255.0.0.0",
+          "broadcast": null
+        },
+        {
+          "family": "10",
+          "address": "::1",
+          "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+          "broadcast": null
+        },
+        {
+          "family": "17",
+          "address": "00:00:00:00:00:00",
+          "netmask": null,
+          "broadcast": null
+        }
+      ],
+      "wlo1": [
+        {
+          "family": "2",
+          "address": "192.168.1.235",
+          "netmask": "255.255.255.0",
+          "broadcast": "192.168.1.255"
+        },
+        {
+          "family": "10",
+          "address": "fe80::7b37:658e:b290:3a45%wlo1",
+          "netmask": "ffff:ffff:ffff:ffff::",
+          "broadcast": null
+        },
+        {
+          "family": "17",
+          "address": "04:ec:d8:f1:84:a7",
+          "netmask": null,
+          "broadcast": "ff:ff:ff:ff:ff:ff"
+        }
+      ],
+      "enp55s0": [
+        {
+          "family": "17",
+          "address": "cc:28:aa:49:b6:37",
+          "netmask": null,
+          "broadcast": "ff:ff:ff:ff:ff:ff"
+        }
+      ]
+    },
+    "net_io_counters": {
+      "bytes_sent": 1246682098,
+      "bytes_recv": 1080676625,
+      "packets_sent": 1372834,
+      "packets_recv": 1528615,
+      "errin": 0,
+      "errout": 0,
+      "dropin": 1271,
+      "dropout": 11
+    },
+    "example_com_resolves_to": "23.220.75.245"
+  },
+  "users_processes": {
+    "logged_users": [
+      {
+        "name": "josevicente",
+        "terminal": "seat0",
+        "host": "localhost",
+        "started": 1758526164.0,
+        "pid": 5523
+      },
+      {
+        "name": "josevicente",
+        "terminal": ":1",
+        "host": "localhost",
+        "started": 1758526165.0,
+        "pid": 5523
+      }
+    ],
+    "top_processes_by_cpu": [
+      {
+        "pid": 1,
+        "cpu_percent": 0.0,
+        "name": "systemd",
+        "username": "root",
+        "memory_percent": 0.09823856206370044
+      },
+      {
+        "pid": 2,
+        "cpu_percent": 0.0,
+        "name": "kthreadd",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 3,
+        "cpu_percent": 0.0,
+        "name": "pool_workqueue_release",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 4,
+        "cpu_percent": 0.0,
+        "name": "kworker/R-rcu_gp",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 5,
+        "cpu_percent": 0.0,
+        "name": "kworker/R-sync_wq",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 6,
+        "cpu_percent": 0.0,
+        "name": "kworker/R-kvfree_rcu_reclaim",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 7,
+        "cpu_percent": 0.0,
+        "name": "kworker/R-slub_flushwq",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 8,
+        "cpu_percent": 0.0,
+        "name": "kworker/R-netns",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 10,
+        "cpu_percent": 0.0,
+        "name": "kworker/0:0H-events_highpri",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 13,
+        "cpu_percent": 0.0,
+        "name": "kworker/R-mm_percpu_wq",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 14,
+        "cpu_percent": 0.0,
+        "name": "rcu_tasks_kthread",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 15,
+        "cpu_percent": 0.0,
+        "name": "rcu_tasks_rude_kthread",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 16,
+        "cpu_percent": 0.0,
+        "name": "rcu_tasks_trace_kthread",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 17,
+        "cpu_percent": 0.0,
+        "name": "ksoftirqd/0",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 18,
+        "cpu_percent": 0.0,
+        "name": "rcu_preempt",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 19,
+        "cpu_percent": 0.0,
+        "name": "rcu_exp_par_gp_kthread_worker/0",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 20,
+        "cpu_percent": 0.0,
+        "name": "rcu_exp_gp_kthread_worker",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 21,
+        "cpu_percent": 0.0,
+        "name": "migration/0",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 22,
+        "cpu_percent": 0.0,
+        "name": "idle_inject/0",
+        "username": "root",
+        "memory_percent": 0.0
+      },
+      {
+        "pid": 23,
+        "cpu_percent": 0.0,
+        "name": "cpuhp/0",
+        "username": "root",
+        "memory_percent": 0.0
+      }
+    ]
+  },
+  "python_env": {
+    "executable": "/usr/bin/python3",
+    "version": "3.12.3 (main, Aug 14 2025, 17:47:21) [GCC 13.3.0]",
+    "path": [
+      "/var/www/html/dam2526/Primero/Sistemas informáticos/002-Instalación de sistemas operativos/001-Evolución histórica y clasificación/101-Ejercicios",
+      "/usr/lib/python312.zip",
+      "/usr/lib/python3.12",
+      "/usr/lib/python3.12/lib-dynload",
+      "/home/josevicente/.local/lib/python3.12/site-packages",
+      "/usr/local/lib/python3.12/dist-packages",
+      "/usr/lib/python3/dist-packages"
+    ],
+    "installed_modules_sample": [
+      "002-informacion de mi ordenador",
+      "CommandNotFound",
+      "Crypto",
+      "Cryptodome",
+      "DistUpgrade",
+      "HweSupportStatus",
+      "Imath",
+      "LanguageSelector",
+      "Levenshtein",
+      "NvidiaDetector",
+      "OpenEXR",
+      "OpenSSL",
+      "PIL",
+      "PyPDF2",
+      "Quirks",
+      "SSSDConfig",
+      "UbuntuDrivers",
+      "UpdateManager",
+      "WoeUSB",
+      "Xlib",
+      "__future__",
+      "__hello__",
+      "__phello__",
+      "_aix_support",
+      "_asyncio",
+      "_brotli",
+      "_bz2",
+      "_cbor2",
+      "_cffi_backend",
+      "_codecs_cn",
+      "_codecs_hk",
+      "_codecs_iso2022",
+      "_codecs_jp",
+      "_codecs_kr",
+      "_codecs_tw",
+      "_collections_abc",
+      "_compat_pickle",
+      "_compression",
+      "_contextvars",
+      "_crypt",
+      "_ctypes",
+      "_ctypes_test",
+      "_curses",
+      "_curses_panel",
+      "_dbm",
+      "_dbus_bindings",
+      "_dbus_glib_bindings",
+      "_decimal",
+      "_distutils_hack",
+      "_distutils_system_mod",
+      "_gdbm",
+      "_hashlib",
+      "_hsi",
+      "_json",
+      "_ldap",
+      "_ldb_text",
+      "_lsprof",
+      "_lzma",
+      "_markupbase",
+      "_multibytecodec"
+    ]
+  },
+  "gpu": {
+    "nvidia": [
+      "NVIDIA GeForce RTX 4060 Laptop GPU, 8188 MiB, 575.64.03"
+    ],
+    "CUDA_VISIBLE_DEVICES": null
+  }
+}

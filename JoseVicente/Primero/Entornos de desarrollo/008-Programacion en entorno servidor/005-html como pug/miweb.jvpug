@@ -1,0 +1,51 @@
+doctype
+html lang="es"
+  head
+    meta charset="utf-8"
+    link rel="stylesheet" href="JVestilo/JVestilo.php"
+  body class="flex fd-column fj-center fa-center b-lightgrey ff-sans-serif p-20"
+    header class="w-800 b-white p-20 ta-center flex fd-column g-20"
+      h1 class="p-0 m-0 fs-36" Jose Vicente Carratala
+      h2 class="p-0 m-0 fs-16" Desarrollador, profesor y diseñador
+      nav class="flex g-1 fa-center fj-center"
+        a href="?" class="b-lightgray p-10 c-black td-none fs-10 w-70" Inicio
+        @foreach $paginas as $f
+          a href="?p=#{urlencode($f['titulo'])}" class="b-lightgray p-10 c-black td-none fs-10 w-70" #{ $f['titulo'] }
+        a href="?p=blog" class="b-lightgray p-10 c-black td-none fs-10 w-70" Blog
+
+    main class="w-800 b-white p-20 flex fd-column g-20"
+      @if !$p
+        section id="heroe" class="w-800 h-400 b-lightgray p-20" style="box-sizing:border-box;"
+          | Heroe
+
+        section class="grid gc-2 g-20"
+          article class="ta-center h-200 flex fd-column fa-center fj-center b-lightgray"
+            h3 Titulo
+            p texto
+          article class="ta-center h-200 flex fd-column fa-center fj-center b-lightgray"
+            h3 Titulo
+            p texto
+
+        section class="grid gc-3 g-20"
+          @for i in range(1, 8)
+            article class="ta-center b-lightgray"
+              h3 Titulo
+              p texto
+      @else
+        @if $p === "blog"
+          section class="grid gc-3 g-20"
+            @foreach $entradas as $e
+              article
+                h3 #{ $e['titulo'] }
+                time #{ $e['fecha'] }
+                p #{ $e['contenido'] }
+        @else
+          section class="flex fd-column g-20"
+            @foreach $pagina as $pg
+              article
+                h3 #{ $pg['titulo'] }
+                p #{ $pg['contenido'] }
+
+    footer class="w-800 b-white p-20 ta-center"
+      | Piedepagina
+

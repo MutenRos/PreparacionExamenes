@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Curriculum Jose Vicente Carratala</title>
+    <meta charset="utf-8">
+    <style>
+      *{margin:0px;padding:0px;}
+      body,html{background:black;font-size:11px;}
+      main{width:600px;background:white;margin:auto;display:flex;font-family:sans-serif;}
+      #izquierda img{border-radius:400px;}
+      #izquierda{background:indigo;flex:1;padding:40px;color:white;}
+      #derecha{flex:3;padding:40px;}
+      #derecha article{border-bottom:1px solid indigo;}
+      #izquierda article{border-bottom:1px solid white;}
+      #izquierda,#derecha,#historiallaboral,#formacion{display:flex;flex-direction:column;gap:20px;}
+    </style>
+  </head>
+  <body>
+    <main>
+      <section id="izquierda">
+        <img src="josevicente.jpg" alt="Fotografia">
+        <article>
+          <h3>Titulo</h3>
+          <ul>
+            <li>Elemento</li>
+            <li>Elemento</li>
+            <li>Elemento</li>
+            <li>Elemento</li>
+          </ul>
+        </article>
+        <article>
+          <h3>Titulo</h3>
+          <ul>
+            <li>Elemento</li>
+            <li>Elemento</li>
+            <li>Elemento</li>
+            <li>Elemento</li>
+          </ul>
+        </article>
+        <article>
+          <h3>Redes sociales</h3>
+          <ul id="redes_sociales">
+            
+          </ul>
+        </article>
+      </section>
+      <section id="derecha">
+        <h1>Jose Vicente Carratalá Sanchis</h1>
+        <h2>Desarrollador, profesor y diseñador</h2>
+        <section id="datospersonales">
+          <ul>
+            <li>Email: <span id="email"></span></li>
+            <li>Teléfono: <span id="telefono"></span></li>
+            <li>Dato de contacto</li>
+          </ul>
+        </section>
+        <section id="resumenprofesional">
+          <h2>Resumen profesional</h2>
+          <p>Lorem ipsum</p>
+        </section>
+        <section id="historiallaboral">
+          <article>
+            <p>Inicio - final</p>
+            <h4>Empresa</h4>
+            <p>Localidad</p>
+            <p>Cargo</p>
+            <ul>
+              <li>Responsabilidad 1</li>
+              <li>Responsabilidad 2</li>
+              <li>Responsabilidad 3</li>
+              <li>Responsabilidad 4</li>
+            </ul>
+          </article>
+          <article>
+            <p>Inicio - final</p>
+            <h4>Empresa</h4>
+            <p>Localidad</p>
+            <p>Cargo</p>
+            <ul>
+              <li>Responsabilidad 1</li>
+              <li>Responsabilidad 2</li>
+              <li>Responsabilidad 3</li>
+              <li>Responsabilidad 4</li>
+            </ul>
+          </article>
+          <article>
+            <p>Inicio - final</p>
+            <h4>Empresa</h4>
+            <p>Localidad</p>
+            <p>Cargo</p>
+            <ul>
+              <li>Responsabilidad 1</li>
+              <li>Responsabilidad 2</li>
+              <li>Responsabilidad 3</li>
+              <li>Responsabilidad 4</li>
+            </ul>
+          </article>
+        </section>
+        <section id="formacion">
+          <article>
+            <p>Inicio - final</p>
+            <h4>Titulo</h4>
+            <p>Entidad</p>
+          </article>
+          <article>
+            <p>Inicio - final</p>
+            <h4>Titulo</h4>
+            <p>Entidad</p>
+          </article>
+          <article>
+            <p>Inicio - final</p>
+            <h4>Titulo</h4>
+            <p>Entidad</p>
+          </article>
+        </section>
+      </section>
+      
+    </main>
+    <script>
+      fetch("curriculum.json")
+      .then(function(respuesta){return respuesta.json()})
+      .then(function(datos){
+        console.log(datos)
+        ////////////////////////////////// BLOQUE DE ELEMENTOS UNICOS
+        // Bloque de hTML = bloque de JSON
+        document.querySelector("h1").textContent = datos.datospersonales.nombre+" "+datos.datospersonales.apellidos;
+        document.querySelector("h2").textContent = datos.datospersonales.resumen;
+        document.querySelector("#email").textContent = datos.datospersonales.email;
+        document.querySelector("#telefono").textContent = datos.datospersonales.telefono;
+        ////////////////////////////////// BLOQUE DE ELEMENTOS MULTIPLES
+        let contenedor = document.querySelector("#redes_sociales")
+        let redes = datos.datospersonales.redessociales
+        redes.forEach(function(red){
+          let elemento = document.createElement("li")
+          elemento.textContent = red.nombre+": "+red.url
+          contenedor.appendChild(elemento)
+        })
+        
+      })
+    </script>
+  </body>
+</html>

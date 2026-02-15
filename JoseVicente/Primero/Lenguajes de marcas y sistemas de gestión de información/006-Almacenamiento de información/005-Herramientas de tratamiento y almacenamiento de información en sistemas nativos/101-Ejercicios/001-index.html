@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Calendario</title>
+  </head>
+  <body>
+    <div id="jvcalendario"></div>
+    <script>
+      let contenedor = document.querySelector("#jvcalendario");
+      let anio = 2026;
+      let meses = 12;
+      for(let i = 1;i<=meses;i++){
+        let mes = document.createElement("div");
+        mes.classList.add("mes");
+        contenedor.appendChild(mes)
+      }
+    </script>
+  </body>
+</html>

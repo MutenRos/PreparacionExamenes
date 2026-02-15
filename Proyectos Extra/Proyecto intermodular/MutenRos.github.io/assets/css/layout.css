@@ -1,0 +1,215 @@
+/**
+ * ==========================================================================
+ * MUTENROS Portfolio - Layout Components
+ * ==========================================================================
+ * 
+ * Structural layout components:
+ * - Header & Navigation
+ * - Main content wrapper
+ * - Footer
+ * - Section layouts
+ * 
+ * Author: Dario (MutenRos)
+ * Version: 2.0.0
+ * ==========================================================================
+ */
+
+/* =========================================================================
+ * HEADER
+ * =========================================================================
+ */
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--spacing-md) var(--section-padding-x);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: var(--z-fixed);
+    background: linear-gradient(
+        to bottom,
+        rgba(13, 2, 33, 0.9),
+        transparent
+    );
+}
+
+/* Logo */
+.header__logo {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: var(--font-weight-black);
+    background: linear-gradient(90deg, var(--color-neon-cyan), var(--color-neon-pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(5, 217, 232, 0.5);
+    letter-spacing: var(--letter-spacing-normal);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Navigation */
+.header__nav {
+    display: flex;
+}
+
+.header__nav-list {
+    display: flex;
+    gap: var(--spacing-lg);
+}
+
+.header__nav-link {
+    font-family: var(--font-display);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-size: var(--font-size-small);
+    letter-spacing: var(--letter-spacing-tight);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid transparent;
+    transition: all var(--transition-normal);
+    position: relative;
+}
+
+.header__nav-link:hover,
+.header__nav-link:focus {
+    color: var(--color-neon-cyan);
+    border-color: var(--color-neon-cyan);
+    box-shadow: 
+        0 0 20px rgba(5, 217, 232, 0.5),
+        inset 0 0 20px rgba(5, 217, 232, 0.1);
+    text-shadow: var(--text-glow-cyan);
+}
+
+/* Mobile menu button (hidden by default) */
+.header__menu-btn {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.header__menu-btn span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: var(--color-neon-cyan);
+    transition: all var(--transition-normal);
+}
+
+/* =========================================================================
+ * MAIN CONTENT
+ * =========================================================================
+ */
+
+.main {
+    position: relative;
+    z-index: var(--z-default);
+    padding-top: 100px; /* Account for fixed header */
+}
+
+/* =========================================================================
+ * SECTIONS
+ * =========================================================================
+ */
+
+.section {
+    padding: var(--section-padding-y) var(--section-padding-x);
+    position: relative;
+}
+
+/* Compensar header fijo en navegacion por anclas */
+section[id] {
+    scroll-margin-top: 120px;
+}
+
+.section__title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-h1);
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    color: var(--color-text-primary);
+    text-shadow: var(--text-glow-purple);
+}
+
+.section__title-highlight {
+    color: var(--color-neon-cyan);
+}
+
+/* =========================================================================
+ * FOOTER
+ * =========================================================================
+ */
+
+.footer {
+    text-align: center;
+    padding: var(--spacing-lg);
+    background: var(--color-bg-primary);
+    border-top: 1px solid rgba(5, 217, 232, 0.2);
+}
+
+.footer__text {
+    font-family: var(--font-display);
+    color: var(--color-text-subtle);
+    font-size: var(--font-size-tiny);
+    letter-spacing: var(--letter-spacing-tight);
+}
+
+.footer__heart {
+    color: var(--color-neon-pink);
+}
+
+/* Hidden easter egg hint */
+.footer__secret {
+    font-size: 4px;
+    opacity: 0.03;
+    margin-top: var(--spacing-xs);
+    user-select: none;
+}
+
+/* =========================================================================
+ * RESPONSIVE ADJUSTMENTS
+ * =========================================================================
+ */
+
+@media (max-width: 768px) {
+    .header {
+        padding: 15px 20px;
+    }
+    
+    .header__nav-list {
+        gap: 15px;
+    }
+    
+    .header__nav-link {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+    
+    /* Mobile navigation (optional - can be expanded) */
+    .header__menu-btn {
+        /* Uncomment to enable mobile menu */
+        /* display: flex; */
+    }
+}
+
+@media (max-width: 480px) {
+    .header__logo {
+        font-size: 20px;
+    }
+    
+    .header__nav-list {
+        gap: 8px;
+    }
+    
+    .header__nav-link {
+        font-size: 10px;
+        padding: 6px 8px;
+        letter-spacing: 1px;
+    }
+}

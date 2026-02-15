@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel — recortabl.es</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <!-- Dashboard -->
+    <div class="dashboard">
+        <div class="sidebar">
+            <h2>Admin Panel</h2>
+            <a href="admin.html">Categorías</a>
+            <a href="admin.html">Productos</a>
+            <a href="../index.html">Volver al sitio</a>
+        </div>
+        <div class="main-content">
+            <h2>Categorías</h2>
+            <form>
+                <input type="text" name="titulo" placeholder="Título" required>
+                <input type="text" name="imagen" placeholder="Imagen">
+                <button type="button">Añadir</button>
+            </form>
+            <table>
+                <tr><th>ID</th><th>Título</th><th>Imagen</th><th>Acciones</th></tr>
+                <tr><td>1</td><td>Vehículos</td><td>img/imgcategoria.png</td><td><a href="#">Editar</a> | <a href="#" onclick="return confirm('¿Borrar esta categoría?')">Borrar</a></td></tr>
+                <tr><td>2</td><td>Edificios</td><td>img/imgcategoria.png</td><td><a href="#">Editar</a> | <a href="#" onclick="return confirm('¿Borrar esta categoría?')">Borrar</a></td></tr>
+                <tr><td>3</td><td>Robots</td><td>img/imgcategoria.png</td><td><a href="#">Editar</a> | <a href="#" onclick="return confirm('¿Borrar esta categoría?')">Borrar</a></td></tr>
+                <tr><td>4</td><td>Animales</td><td>img/imgcategoria.png</td><td><a href="#">Editar</a> | <a href="#" onclick="return confirm('¿Borrar esta categoría?')">Borrar</a></td></tr>
+                <tr><td>5</td><td>Navidad</td><td>img/imgcategoria.png</td><td><a href="#">Editar</a> | <a href="#" onclick="return confirm('¿Borrar esta categoría?')">Borrar</a></td></tr>
+                <tr><td>6</td><td>Educativos</td><td>img/imgcategoria.png</td><td><a href="#">Editar</a> | <a href="#" onclick="return confirm('¿Borrar esta categoría?')">Borrar</a></td></tr>
+                <tr><td>7</td><td>Muñecos</td><td>img/imgcategoria.png</td><td><a href="#">Editar</a> | <a href="#" onclick="return confirm('¿Borrar esta categoría?')">Borrar</a></td></tr>
+            </table>
+
+            <h2 style="margin-top:32px">Productos</h2>
+            <form>
+                <input type="text" name="titulo" placeholder="Título" required>
+                <textarea name="descripcion" placeholder="Descripción"></textarea>
+                <input type="text" name="precio" placeholder="Precio">
+                <input type="text" name="archivo" placeholder="Archivo">
+                <input type="text" name="categoria" placeholder="Categoría ID">
+                <input type="text" name="imagen" placeholder="Imagen">
+                <button type="button">Añadir</button>
+            </form>
+            <table>
+                <tr><th>ID</th><th>Título</th><th>Descripción</th><th>Precio</th><th>Archivo</th><th>Categoría</th><th>Imagen</th><th>Acciones</th></tr>
+                <tr><td>1</td><td>Castillo Medieval</td><td>Impresionante castillo medieval con torres y puente levadizo...</td><td>0</td><td>castillo.pdf</td><td>2</td><td>img/imgcategoria.png</td><td><a href="#">Editar</a> | <a href="#" onclick="return confirm('¿Borrar este producto?')">Borrar</a></td></tr>
+                <tr><td>2</td><td>Coche de Fórmula 1</td><td>Recortable de coche de carreras con alerones y ruedas detall...</td><td>0</td><td>coche_f1.pdf</td><td>1</td><td>img/imgcategoria.png</td><td><a href="#">Editar</a> | <a href="#" onclick="return confirm('¿Borrar este producto?')">Borrar</a></td></tr>
+                <tr><td>3</td><td>Dinosaurio T-Rex</td><td>Impresionante modelo de Dinosaurio T-Rex a escala reducida...</td><td>0</td><td>dino_trex.pdf</td><td>4</td><td>img/imgcategoria.png</td><td><a href="#">Editar</a> | <a href="#" onclick="return confirm('¿Borrar este producto?')">Borrar</a></td></tr>
+                <tr><td>4</td><td>Robot XL</td><td>Robot articulado con piezas móviles en brazos y piernas...</td><td>0</td><td>robot_xl.pdf</td><td>3</td><td>img/imgcategoria.png</td><td><a href="#">Editar</a> | <a href="#" onclick="return confirm('¿Borrar este producto?')">Borrar</a></td></tr>
+                <tr><td>5</td><td>Tren de Navidad</td><td>Tren navideño con vagones decorados y chimenea con humo...</td><td>0</td><td>tren_navidad.pdf</td><td>5</td><td>img/imgcategoria.png</td><td><a href="#">Editar</a> | <a href="#" onclick="return confirm('¿Borrar este producto?')">Borrar</a></td></tr>
+                <tr><td>6</td><td>Avión Biplano</td><td>Avión biplano clásico con hélice giratoria y alas dobles...</td><td>0</td><td>avion_biplano.pdf</td><td>1</td><td>img/imgcategoria.png</td><td><a href="#">Editar</a> | <a href="#" onclick="return confirm('¿Borrar este producto?')">Borrar</a></td></tr>
+                <tr><td>7</td><td>Casa de Muñecas</td><td>Casa de muñecas de dos pisos con muebles recortables...</td><td>0</td><td>casa_munecas.pdf</td><td>7</td><td>img/imgcategoria.png</td><td><a href="#">Editar</a> | <a href="#" onclick="return confirm('¿Borrar este producto?')">Borrar</a></td></tr>
+                <tr><td>8</td><td>Esqueleto Educativo</td><td>Esqueleto humano articulado para aprender anatomía...</td><td>0</td><td>esqueleto.pdf</td><td>6</td><td>img/imgcategoria.png</td><td><a href="#">Editar</a> | <a href="#" onclick="return confirm('¿Borrar este producto?')">Borrar</a></td></tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

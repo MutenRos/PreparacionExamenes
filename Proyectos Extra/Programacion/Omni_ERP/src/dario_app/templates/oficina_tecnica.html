@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oficina Técnica - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/aaaaa-animations.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; background: #f5f7fa; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        
+        .header {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border-left: 4px solid #667eea;
+        }
+        .header h1 { color: #333; margin: 0; font-size: 28px; font-weight: 700; }
+        .header-actions { display: flex; gap: 10px; }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5568d3; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); }
+        .btn-secondary { background: #e0e0e0; color: #333; }
+        .btn-secondary:hover { background: #d0d0d0; }
+        
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid #e0e0e0;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #999;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s;
+        }
+        .tab:hover { color: #667eea; }
+        .tab.active { color: #667eea; border-bottom-color: #667eea; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: slideDown 0.3s ease; }
+        
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid #f0f0f0;
+        }
+        
+        .card h3 { margin: 0 0 16px 0; color: #333; font-size: 18px; }
+        .card p { margin: 0 0 16px 0; color: #999; font-size: 13px; }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border-left: 4px solid #667eea;
+        }
+        .stat-card h4 { margin: 0 0 8px 0; color: #999; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        .stat-card .value { font-size: 32px; font-weight: 700; color: #667eea; margin: 0; }
+        
+        .search-group {
+            margin-bottom: 24px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        .tech-card {
+            background: white;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tech-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+        .tech-card-title { font-weight: 600; color: #333; margin: 0 0 8px 0; }
+        .tech-card-desc { font-size: 12px; color: #999; margin: 0 0 12px 0; }
+        .tech-card-specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .spec-badge {
+            background: #f0f0f0;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        .empty-state-icon { font-size: 48px; margin-bottom: 12px; }
+        
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        .specs-table th {
+            background: #f5f5f5;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #666;
+            font-size: 12px;
+            border-bottom: 2px solid #ddd;
+            text-transform: uppercase;
+        }
+        .specs-table td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .specs-table tr:hover { background: #fafafa; }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-active { background: #d4edda; color: #28a745; }
+        .badge-inactive { background: #f8d7da; color: #dc3545; }
+        
+        .loading { text-align: center; color: #999; padding: 40px; }
+    </style>
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    {% include '_assistant_panel.html' %}
+    
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div>
+                <h1>🔧 Oficina Técnica</h1>
+            </div>
+            <div class="header-actions">
+                <a href="/app/dashboard" class="btn btn-secondary">← Dashboard</a>
+            </div>
+        </div>
+
+        <!-- NAVEGACIÓN CON TABS -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('especificaciones')">📋 Especificaciones</button>
+            <button class="tab" onclick="switchTab('componentes')">⚙️ Componentes</button>
+            <button class="tab" onclick="switchTab('boms')">📦 BOMs</button>
+            <button class="tab" onclick="switchTab('documentacion')">📄 Documentación</button>
+            <button class="tab" onclick="switchTab('compatibilidad')">🔗 Compatibilidad</button>
+            <button class="tab" onclick="switchTab('plantillas')">📝 Plantillas</button>
+        </div>
+
+        <!-- TAB 1: ESPECIFICACIONES TÉCNICAS -->
+        <div id="tab-especificaciones" class="tab-content active">
+            <div class="stats">
+                <div class="stat-card">
+                    <h4>Especificaciones</h4>
+                    <p class="value" id="statEspecificaciones">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Productos Documentados</h4>
+                    <p class="value" id="statProductos">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Componentes</h4>
+                    <p class="value" id="statComponentes">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Documentos Adjuntos</h4>
+                    <p class="value" id="statDocumentos">0</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>📋 Fichas Técnicas de Productos</h3>
+                <p>Gestiona las especificaciones técnicas de tus productos.</p>
+                
+                <div class="search-group">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchEspec" 
+                        placeholder="Buscar por código o nombre..."
+                        onkeyup="buscarEspecificaciones()">
+                    <button class="btn btn-primary" onclick="mostrarFormNuevaEspec()">➕ Nueva Especificación</button>
+                </div>
+
+                <div id="especificacionesGrid" class="tech-grid">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <div>Sin especificaciones registradas</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORMULARIO DE ESPECIFICACIÓN -->
+            <div id="formEspecPanel" class="card" style="display: none;">
+                <h3>Ficha Técnica</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Código del Producto *</label>
+                        <input type="text" id="formCodigo" placeholder="Ej: BOMBA-001">
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre del Producto *</label>
+                        <input type="text" id="formNombre" placeholder="Ej: Bomba Centrífuga 50mm">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción Técnica</label>
+                    <textarea id="formDescripcion" placeholder="Detalles técnicos, características especiales..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Presión Máxima (bar)</label>
+                        <input type="number" id="formPresion" placeholder="Ej: 10">
+                    </div>
+                    <div class="form-group">
+                        <label>Caudal (L/min)</label>
+                        <input type="number" id="formCaudal" placeholder="Ej: 150">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Potencia (kW)</label>
+                        <input type="number" id="formPotencia" step="0.1" placeholder="Ej: 5.5">
+                    </div>
+                    <div class="form-group">
+                        <label>Temperatura Máxima (°C)</label>
+                        <input type="number" id="formTemperatura" placeholder="Ej: 60">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Material Principal</label>
+                    <input type="text" id="formMaterial" placeholder="Ej: Acero Inoxidable AISI 316">
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="guardarEspecificacion()">💾 Guardar</button>
+                    <button class="btn btn-secondary" onclick="cerrarFormEspec()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: COMPONENTES -->
+        <div id="tab-componentes" class="tab-content">
+            <div class="card">
+                <h3>⚙️ Gestión de Componentes</h3>
+                <p>Organiza componentes reutilizables en tus especificaciones.</p>
+
+                <div class="search-group">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchComp" 
+                        placeholder="Buscar componente..."
+                        onkeyup="buscarComponentes()">
+                    <button class="btn btn-primary" onclick="mostrarFormNuevoComponente()">➕ Nuevo Componente</button>
+                </div>
+
+                <div id="componentesGrid" class="tech-grid">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">⚙️</div>
+                        <div>Sin componentes registrados</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORMULARIO DE COMPONENTE -->
+            <div id="formCompPanel" class="card" style="display: none;">
+                <h3>Nuevo Componente</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Código Componente *</label>
+                        <input type="text" id="formCompCodigo" placeholder="Ej: COMP-VALVE-001">
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre *</label>
+                        <input type="text" id="formCompNombre" placeholder="Ej: Válvula de Control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Tipo</label>
+                    <select id="formCompTipo">
+                        <option value="">Selecciona tipo</option>
+                        <option value="motor">Motor</option>
+                        <option value="valvula">Válvula</option>
+                        <option value="sello">Sello/Empaque</option>
+                        <option value="sensor">Sensor</option>
+                        <option value="conector">Conector</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Especificaciones</label>
+                    <textarea id="formCompEspec" placeholder="Voltaje, tamaño, material..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="guardarComponente()">💾 Guardar</button>
+                    <button class="btn btn-secondary" onclick="cerrarFormComp()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: BOMs (LISTAS DE MATERIALES) -->
+        <div id="tab-boms" class="tab-content">
+            <div class="card">
+                <h3>📦 Lista de Materiales (BOM)</h3>
+                <p>Define los componentes y materiales que componen cada producto.</p>
+
+                <div class="search-group">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchBom" 
+                        placeholder="Buscar BOM..."
+                        onkeyup="buscarBoms()">
+                    <button class="btn btn-primary" onclick="mostrarFormNuevoBOM()">➕ Nueva Lista de Materiales</button>
+                </div>
+
+                <div id="bomsGrid" class="tech-grid">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📦</div>
+                        <div>Sin BOMs registrados</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORMULARIO BOM -->
+            <div id="formBomPanel" class="card" style="display: none;">
+                <h3>Nueva Lista de Materiales</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Código BOM *</label>
+                        <input type="text" id="formBomCodigo" placeholder="Ej: BOM-BOMBA-001">
+                    </div>
+                    <div class="form-group">
+                        <label>Producto Relacionado *</label>
+                        <select id="formBomProducto">
+                            <option value="">Selecciona producto...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="formBomDescripcion" placeholder="Descripción de la lista de materiales..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Selecciona Componentes *</label>
+                    <select id="formBomComponentesSelect" multiple style="min-height: 150px; padding: 8px;">
+                        <option value="">-- Cargando componentes --</option>
+                    </select>
+                    <small style="color: #999; margin-top: 6px; display: block;">Mantén Ctrl/Cmd presionado para seleccionar múltiples componentes</small>
+                </div>
+
+                <div style="background: #f5f7fa; padding: 16px; border-radius: 8px; margin-bottom: 16px; border: 1px solid #e0e0e0;">
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Componentes Seleccionados:</label>
+                    <div id="bomComponentesList" style="display: flex; flex-wrap: wrap; gap: 8px; min-height: 30px;">
+                        <span style="color: #999; font-style: italic;">Ninguno seleccionado</span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Versión BOM</label>
+                        <input type="text" id="formBomVersion" placeholder="Ej: 1.0" value="1.0">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="guardarBom()">💾 Guardar</button>
+                    <button class="btn btn-secondary" onclick="cerrarFormBom()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: DOCUMENTACIÓN -->
+        <div id="tab-documentacion" class="tab-content">
+            <div class="card">
+                <h3>📄 Documentación Técnica</h3>
+                <p>Almacena manuales, planos y especificaciones en PDF.</p>
+
+                <div class="search-group">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchDoc" 
+                        placeholder="Buscar documento..."
+                        onkeyup="buscarDocumentos()">
+                    <button class="btn btn-primary" onclick="mostrarFormSubirDoc()">📤 Subir Documento</button>
+                </div>
+
+                <table class="specs-table" style="width: 100%; margin-top: 16px;">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Tipo</th>
+                            <th>Producto</th>
+                            <th>Fecha</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="docTable">
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: #999;">Sin documentos</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- FORMULARIO SUBIR DOCUMENTO -->
+            <div id="formDocPanel" class="card" style="display: none;">
+                <h3>Subir Documento Técnico</h3>
+                <div class="form-group">
+                    <label>Título del Documento *</label>
+                    <input type="text" id="formDocTitulo" placeholder="Ej: Manual de Instalación Bomba X">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <select id="formDocTipo">
+                            <option value="">Selecciona tipo</option>
+                            <option value="manual">Manual</option>
+                            <option value="plano">Plano</option>
+                            <option value="catalogo">Catálogo</option>
+                            <option value="certificado">Certificado</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Producto Relacionado</label>
+                        <input type="text" id="formDocProducto" placeholder="Ej: BOMBA-001">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Archivo PDF</label>
+                    <input type="file" id="formDocArchivo" accept=".pdf">
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="guardarDocumento()">💾 Guardar</button>
+                    <button class="btn btn-secondary" onclick="cerrarFormDoc()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: COMPATIBILIDAD -->
+        <div id="tab-compatibilidad" class="tab-content">
+            <div class="card">
+                <h3>🔗 Matriz de Compatibilidad</h3>
+                <p>Define qué componentes son compatibles entre sí.</p>
+
+                <div class="search-group">
+                    <select class="search-input" id="selectProductoCompat" onchange="cargarCompatibilidad()" style="flex: 0.5;">
+                        <option value="">Selecciona producto...</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="mostrarFormAgregarCompatible()">➕ Agregar Compatible</button>
+                </div>
+
+                <table class="specs-table" style="width: 100%; margin-top: 16px;">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Componente Compatible</th>
+                            <th>Tipo</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="compatTable">
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: #999;">Selecciona un producto</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB 6: PLANTILLAS -->
+        <div id="tab-plantillas" class="tab-content">
+            <div class="card">
+                <h3>📝 Plantillas de Especificación</h3>
+                <p>Crea plantillas reutilizables para especificar productos similares.</p>
+
+                <div class="search-group">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchPlant" 
+                        placeholder="Buscar plantilla..."
+                        onkeyup="buscarPlantillas()">
+                    <button class="btn btn-primary" onclick="mostrarFormNuevaPlantilla()">➕ Nueva Plantilla</button>
+                </div>
+
+                <div id="plantillasGrid" class="tech-grid">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <div>Sin plantillas creadas</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORMULARIO PLANTILLA -->
+            <div id="formPlantPanel" class="card" style="display: none;">
+                <h3>Nueva Plantilla</h3>
+                <div class="form-group">
+                    <label>Nombre Plantilla *</label>
+                    <input type="text" id="formPlantNombre" placeholder="Ej: Bombas Centrífugas Estándar">
+                </div>
+
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <input type="text" id="formPlantCategoria" placeholder="Ej: Bombas Hidráulicas">
+                </div>
+
+                <div class="form-group">
+                    <label>Campos Personalizados (JSON)</label>
+                    <textarea id="formPlantCampos" placeholder='[{"nombre":"presion","label":"Presión"},{"nombre":"caudal","label":"Caudal"}]'></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="guardarPlantilla()">💾 Guardar</button>
+                    <button class="btn btn-secondary" onclick="cerrarFormPlant()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let especificaciones = [];
+        let componentes = [];
+        let documentos = [];
+        let plantillas = [];
+
+        // ===== GESTIÓN DE TABS =====
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            event.target.classList.add('active');
+            
+            if (tabName === 'compatibilidad') cargarProductosCompat();
+        }
+
+        // ===== ESPECIFICACIONES =====
+        function mostrarFormNuevaEspec() {
+            document.getElementById('formEspecPanel').style.display = 'block';
+            document.getElementById('formCodigo').focus();
+        }
+
+        function cerrarFormEspec() {
+            document.getElementById('formEspecPanel').style.display = 'none';
+            limpiarFormEspec();
+        }
+
+        function limpiarFormEspec() {
+            document.getElementById('formCodigo').value = '';
+            document.getElementById('formNombre').value = '';
+            document.getElementById('formDescripcion').value = '';
+            document.getElementById('formPresion').value = '';
+            document.getElementById('formCaudal').value = '';
+            document.getElementById('formPotencia').value = '';
+            document.getElementById('formTemperatura').value = '';
+            document.getElementById('formMaterial').value = '';
+        }
+
+        function guardarEspecificacion() {
+            const codigo = document.getElementById('formCodigo').value.trim();
+            const nombre = document.getElementById('formNombre').value.trim();
+
+            if (!codigo || !nombre) {
+                alert('Código y Nombre son obligatorios');
+                return;
+            }
+
+            const espec = {
+                id: Date.now(),
+                codigo,
+                nombre,
+                descripcion: document.getElementById('formDescripcion').value,
+                presion: document.getElementById('formPresion').value,
+                caudal: document.getElementById('formCaudal').value,
+                potencia: document.getElementById('formPotencia').value,
+                temperatura: document.getElementById('formTemperatura').value,
+                material: document.getElementById('formMaterial').value,
+                fecha: new Date().toLocaleDateString('es-ES')
+            };
+
+            especificaciones.push(espec);
+            localStorage.setItem('especificacionesTecnicas', JSON.stringify(especificaciones));
+            renderEspecificaciones();
+            cerrarFormEspec();
+            actualizarEstadisticas();
+            alert('✓ Especificación guardada');
+        }
+
+        function renderEspecificaciones() {
+            const grid = document.getElementById('especificacionesGrid');
+            const term = document.getElementById('searchEspec').value.toUpperCase();
+            const filtradas = especificaciones.filter(e => 
+                e.codigo.includes(term) || e.nombre.toUpperCase().includes(term)
+            );
+
+            if (filtradas.length === 0) {
+                grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><div class="empty-state-icon">📋</div><div>Sin especificaciones</div></div>';
+                return;
+            }
+
+            grid.innerHTML = filtradas.map(e => `
+                <div class="tech-card">
+                    <div class="tech-card-title">${e.codigo}</div>
+                    <div class="tech-card-desc">${e.nombre}</div>
+                    <div class="tech-card-specs">
+                        ${e.presion ? `<span class="spec-badge">${e.presion} bar</span>` : ''}
+                        ${e.caudal ? `<span class="spec-badge">${e.caudal} L/min</span>` : ''}
+                        ${e.potencia ? `<span class="spec-badge">${e.potencia} kW</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function buscarEspecificaciones() {
+            renderEspecificaciones();
+        }
+
+        // ===== COMPONENTES =====
+        function mostrarFormNuevoComponente() {
+            document.getElementById('formCompPanel').style.display = 'block';
+            document.getElementById('formCompCodigo').focus();
+        }
+
+        function cerrarFormComp() {
+            document.getElementById('formCompPanel').style.display = 'none';
+            limpiarFormComp();
+        }
+
+        function limpiarFormComp() {
+            document.getElementById('formCompCodigo').value = '';
+            document.getElementById('formCompNombre').value = '';
+            document.getElementById('formCompTipo').value = '';
+            document.getElementById('formCompEspec').value = '';
+        }
+
+        function guardarComponente() {
+            const codigo = document.getElementById('formCompCodigo').value.trim();
+            const nombre = document.getElementById('formCompNombre').value.trim();
+
+            if (!codigo || !nombre) {
+                alert('Código y Nombre son obligatorios');
+                return;
+            }
+
+            const comp = {
+                id: Date.now(),
+                codigo,
+                nombre,
+                tipo: document.getElementById('formCompTipo').value,
+                especificaciones: document.getElementById('formCompEspec').value,
+                fecha: new Date().toLocaleDateString('es-ES')
+            };
+
+            componentes.push(comp);
+            localStorage.setItem('componentesTecnicos', JSON.stringify(componentes));
+            renderComponentes();
+            cerrarFormComp();
+            actualizarEstadisticas();
+            alert('✓ Componente guardado');
+        }
+
+        function renderComponentes() {
+            const grid = document.getElementById('componentesGrid');
+            const term = document.getElementById('searchComp').value.toUpperCase();
+            const filtrados = componentes.filter(c => 
+                c.codigo.includes(term) || c.nombre.toUpperCase().includes(term)
+            );
+
+            if (filtrados.length === 0) {
+                grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><div class="empty-state-icon">⚙️</div><div>Sin componentes</div></div>';
+                return;
+            }
+
+            grid.innerHTML = filtrados.map(c => `
+                <div class="tech-card">
+                    <div class="tech-card-title">${c.codigo}</div>
+                    <div class="tech-card-desc">${c.nombre}</div>
+                    <div class="tech-card-specs">
+                        ${c.tipo ? `<span class="spec-badge">${c.tipo}</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function buscarComponentes() {
+            renderComponentes();
+        }
+
+        // ===== BOMs (LISTAS DE MATERIALES) =====
+        let boms = [];
+
+        function mostrarFormNuevoBOM() {
+            document.getElementById('formBomPanel').style.display = 'block';
+            cargarProductosEnSelectBom();
+            document.getElementById('formBomCodigo').focus();
+        }
+
+        function cerrarFormBom() {
+            document.getElementById('formBomPanel').style.display = 'none';
+            limpiarFormBom();
+        }
+
+        function limpiarFormBom() {
+            document.getElementById('formBomCodigo').value = '';
+            document.getElementById('formBomProducto').value = '';
+            document.getElementById('formBomDescripcion').value = '';
+            document.getElementById('formBomComponentesSelect').value = [];
+            document.getElementById('formBomVersion').value = '1.0';
+            document.getElementById('bomComponentesList').innerHTML = '<span style="color: #999; font-style: italic;">Ninguno seleccionado</span>';
+        }
+
+        function cargarProductosEnSelectBom() {
+            const selectProducto = document.getElementById('formBomProducto');
+            selectProducto.innerHTML = '<option value="">Selecciona producto...</option>';
+            especificaciones.forEach(e => {
+                const opt = document.createElement('option');
+                opt.value = e.codigo;
+                opt.textContent = e.codigo + ' - ' + e.nombre;
+                selectProducto.appendChild(opt);
+            });
+
+            // Cargar componentes en el multiselect
+            const selectComponentes = document.getElementById('formBomComponentesSelect');
+            selectComponentes.innerHTML = '';
+            
+            if (componentes.length === 0) {
+                selectComponentes.innerHTML = '<option disabled style="color: #999;">Sin componentes disponibles. Crea algunos primero.</option>';
+                return;
+            }
+
+            componentes.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c.codigo;
+                opt.textContent = c.codigo + ' - ' + c.nombre + (c.tipo ? ` (${c.tipo})` : '');
+                selectComponentes.appendChild(opt);
+            });
+
+            // Agregar listener para mostrar componentes seleccionados
+            selectComponentes.addEventListener('change', actualizarListaComponentesBom);
+        }
+
+        function actualizarListaComponentesBom() {
+            const select = document.getElementById('formBomComponentesSelect');
+            const listDiv = document.getElementById('bomComponentesList');
+            const selectedOptions = Array.from(select.selectedOptions);
+
+            if (selectedOptions.length === 0) {
+                listDiv.innerHTML = '<span style="color: #999; font-style: italic;">Ninguno seleccionado</span>';
+                return;
+            }
+
+            listDiv.innerHTML = selectedOptions.map(opt => `
+                <span style="background: #667eea; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                    ${opt.value}
+                </span>
+            `).join('');
+        }
+
+        function guardarBom() {
+            const codigo = document.getElementById('formBomCodigo').value.trim();
+            const producto = document.getElementById('formBomProducto').value.trim();
+            const selectComponentes = document.getElementById('formBomComponentesSelect');
+            const selectedCodes = Array.from(selectComponentes.selectedOptions).map(opt => opt.value);
+
+            if (!codigo || !producto) {
+                alert('Código del BOM y Producto son obligatorios');
+                return;
+            }
+
+            if (selectedCodes.length === 0) {
+                alert('Debes seleccionar al menos un componente');
+                return;
+            }
+
+            const bom = {
+                id: Date.now(),
+                codigo,
+                producto,
+                descripcion: document.getElementById('formBomDescripcion').value,
+                componentes: selectedCodes,
+                version: document.getElementById('formBomVersion').value || '1.0',
+                fecha: new Date().toLocaleDateString('es-ES')
+            };
+
+            boms.push(bom);
+            localStorage.setItem('bomsOficinaTecnica', JSON.stringify(boms));
+            renderBoms();
+            cerrarFormBom();
+            actualizarEstadisticas();
+            alert('✓ BOM guardado');
+        }
+
+        function renderBoms() {
+            const grid = document.getElementById('bomsGrid');
+            const term = document.getElementById('searchBom').value.toUpperCase();
+            const filtrados = boms.filter(b => 
+                b.codigo.includes(term) || b.producto.includes(term)
+            );
+
+            if (filtrados.length === 0) {
+                grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><div class="empty-state-icon">📦</div><div>Sin BOMs</div></div>';
+                return;
+            }
+
+            grid.innerHTML = filtrados.map(b => `
+                <div class="tech-card">
+                    <div class="tech-card-title">${b.codigo}</div>
+                    <div class="tech-card-desc">Producto: ${b.producto}</div>
+                    <div class="tech-card-specs">
+                        <span class="spec-badge">v${b.version}</span>
+                        <span class="spec-badge">${b.componentes.length} componentes</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function buscarBoms() {
+            renderBoms();
+        }
+
+        // ===== DOCUMENTACIÓN =====
+        function mostrarFormSubirDoc() {
+            document.getElementById('formDocPanel').style.display = 'block';
+            document.getElementById('formDocTitulo').focus();
+        }
+
+        function cerrarFormDoc() {
+            document.getElementById('formDocPanel').style.display = 'none';
+            limpiarFormDoc();
+        }
+
+        function limpiarFormDoc() {
+            document.getElementById('formDocTitulo').value = '';
+            document.getElementById('formDocTipo').value = '';
+            document.getElementById('formDocProducto').value = '';
+            document.getElementById('formDocArchivo').value = '';
+        }
+
+        function guardarDocumento() {
+            const titulo = document.getElementById('formDocTitulo').value.trim();
+            if (!titulo) {
+                alert('Título es obligatorio');
+                return;
+            }
+
+            const doc = {
+                id: Date.now(),
+                titulo,
+                tipo: document.getElementById('formDocTipo').value,
+                producto: document.getElementById('formDocProducto').value,
+                archivo: 'documento_' + Date.now() + '.pdf',
+                fecha: new Date().toLocaleDateString('es-ES')
+            };
+
+            documentos.push(doc);
+            localStorage.setItem('documentosTecnicos', JSON.stringify(documentos));
+            renderDocumentos();
+            cerrarFormDoc();
+            actualizarEstadisticas();
+            alert('✓ Documento registrado');
+        }
+
+        function renderDocumentos() {
+            const tbody = document.getElementById('docTable');
+            const term = document.getElementById('searchDoc').value.toUpperCase();
+            const filtrados = documentos.filter(d => 
+                d.titulo.toUpperCase().includes(term) || d.producto.toUpperCase().includes(term)
+            );
+
+            if (filtrados.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #999;">Sin documentos</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filtrados.map(d => `
+                <tr>
+                    <td><strong>${d.titulo}</strong></td>
+                    <td>${d.tipo || '—'}</td>
+                    <td>${d.producto || '—'}</td>
+                    <td>${d.fecha}</td>
+                    <td><button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px;">📥 Descargar</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function buscarDocumentos() {
+            renderDocumentos();
+        }
+
+        // ===== COMPATIBILIDAD =====
+        function cargarProductosCompat() {
+            const select = document.getElementById('selectProductoCompat');
+            select.innerHTML = '<option value="">Selecciona producto...</option>';
+            especificaciones.forEach(e => {
+                const opt = document.createElement('option');
+                opt.value = e.id;
+                opt.textContent = e.codigo + ' - ' + e.nombre;
+                select.appendChild(opt);
+            });
+        }
+
+        function cargarCompatibilidad() {
+            const tbody = document.getElementById('compatTable');
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #999;">Sin compatibilidades definidas</td></tr>';
+        }
+
+        function mostrarFormAgregarCompatible() {
+            alert('Selecciona un producto primero');
+        }
+
+        // ===== PLANTILLAS =====
+        function mostrarFormNuevaPlantilla() {
+            document.getElementById('formPlantPanel').style.display = 'block';
+            document.getElementById('formPlantNombre').focus();
+        }
+
+        function cerrarFormPlant() {
+            document.getElementById('formPlantPanel').style.display = 'none';
+            limpiarFormPlant();
+        }
+
+        function limpiarFormPlant() {
+            document.getElementById('formPlantNombre').value = '';
+            document.getElementById('formPlantCategoria').value = '';
+            document.getElementById('formPlantCampos').value = '';
+        }
+
+        function guardarPlantilla() {
+            const nombre = document.getElementById('formPlantNombre').value.trim();
+            if (!nombre) {
+                alert('Nombre es obligatorio');
+                return;
+            }
+
+            const plant = {
+                id: Date.now(),
+                nombre,
+                categoria: document.getElementById('formPlantCategoria').value,
+                campos: document.getElementById('formPlantCampos').value,
+                fecha: new Date().toLocaleDateString('es-ES')
+            };
+
+            plantillas.push(plant);
+            localStorage.setItem('plantillasTecnicas', JSON.stringify(plantillas));
+            renderPlantillas();
+            cerrarFormPlant();
+            actualizarEstadisticas();
+            alert('✓ Plantilla guardada');
+        }
+
+        function renderPlantillas() {
+            const grid = document.getElementById('plantillasGrid');
+            const term = document.getElementById('searchPlant').value.toUpperCase();
+            const filtradas = plantillas.filter(p => 
+                p.nombre.toUpperCase().includes(term) || p.categoria.toUpperCase().includes(term)
+            );
+
+            if (filtradas.length === 0) {
+                grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><div class="empty-state-icon">📝</div><div>Sin plantillas</div></div>';
+                return;
+            }
+
+            grid.innerHTML = filtradas.map(p => `
+                <div class="tech-card">
+                    <div class="tech-card-title">${p.nombre}</div>
+                    <div class="tech-card-desc">${p.categoria}</div>
+                    <div class="tech-card-specs">
+                        <span class="spec-badge">Creada ${p.fecha}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function buscarPlantillas() {
+            renderPlantillas();
+        }
+
+        // ===== ESTADÍSTICAS =====
+        function actualizarEstadisticas() {
+            document.getElementById('statEspecificaciones').textContent = especificaciones.length;
+            document.getElementById('statProductos').textContent = especificaciones.length;
+            document.getElementById('statComponentes').textContent = componentes.length;
+            document.getElementById('statDocumentos').textContent = documentos.length;
+        }
+
+        // ===== INICIALIZACIÓN =====
+        document.addEventListener('DOMContentLoaded', () => {
+            especificaciones = JSON.parse(localStorage.getItem('especificacionesTecnicas') || '[]');
+            componentes = JSON.parse(localStorage.getItem('componentesTecnicos') || '[]');
+            boms = JSON.parse(localStorage.getItem('bomsOficinaTecnica') || '[]');
+            documentos = JSON.parse(localStorage.getItem('documentosTecnicos') || '[]');
+            plantillas = JSON.parse(localStorage.getItem('plantillasTecnicas') || '[]');
+
+            renderEspecificaciones();
+            renderComponentes();
+            renderBoms();
+            renderDocumentos();
+            renderPlantillas();
+            actualizarEstadisticas();
+        });
+    </script>
+    
+    <script defer src="/static/assistant.js"></script>
+    <script defer src="/static/assistant-basic-panel.js"></script>
+    <script defer src="/static/voice-widget.js"></script>
+</body>
+</html>

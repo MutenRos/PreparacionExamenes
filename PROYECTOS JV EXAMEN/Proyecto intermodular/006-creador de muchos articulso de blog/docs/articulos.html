@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Artículos de ejemplo — Blog Generator</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="w-900 card flex fd-col g-16">
+    <div class="flex fd-col g-6">
+      <h1 style="font-size:28px">🤖 Blog Generator</h1>
+      <h2 class="fs-14 c-muted" style="font-weight:normal">Generación masiva de artículos con Ollama + Python + SQLite</h2>
+    </div>
+    <nav class="flex g-10 fa-center fw-wrap">
+      <a href="index.html" class="btn btn-ghost">Inicio</a>
+      <a href="pipeline.html" class="btn btn-ghost">Pipeline</a>
+      <a href="articulos.html" class="btn btn-ghost" style="border-color:var(--brand);color:var(--brand)">Artículos</a>
+      <a href="tecnologias.html" class="btn btn-ghost">Tecnologías</a>
+      <a href="blog.html" class="btn btn-brand">Blog de ejemplo</a>
+    </nav>
+  </header>
+
+  <main class="w-900 flex fd-col g-16" style="margin-top:16px">
+
+    <div class="card flex fd-col g-8">
+      <h2 class="fs-22">Muestra de artículos generados</h2>
+      <p class="fs-14 c-muted">Cada artículo se genera automáticamente a partir de un heading H3 del corpus, usando el documento completo como contexto.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card-item flex fd-col g-8">
+        <span class="badge">NLP</span>
+        <h3 class="fs-18">Qué mide realmente el sentimiento</h3>
+        <p class="fs-13 c-muted">Análisis de sentimiento · Unidad 1 · Definición y alcance</p>
+        <p class="fs-14 lh-24">Artículo de ~1200 palabras que explica la diferencia entre polaridad y emoción, con ejemplos en Python usando VADER y TextBlob.</p>
+      </div>
+      <div class="card-item flex fd-col g-8">
+        <span class="badge">Deep Learning</span>
+        <h3 class="fs-18">Backpropagation paso a paso</h3>
+        <p class="fs-13 c-muted">Backpropagation · El problema · Ajustar parámetros</p>
+        <p class="fs-14 lh-24">Explicación visual del algoritmo con derivadas parciales, grafo computacional y código NumPy mínimo.</p>
+      </div>
+      <div class="card-item flex fd-col g-8">
+        <span class="badge">Prompt Engineering</span>
+        <h3 class="fs-18">Prompts de cadena de pensamiento</h3>
+        <p class="fs-13 c-muted">Prompt engineering avanzado · Técnicas · CoT</p>
+        <p class="fs-14 lh-24">Cómo aplicar Chain-of-Thought para mejorar razonamiento en modelos de lenguaje con ejemplos prácticos.</p>
+      </div>
+      <div class="card-item flex fd-col g-8">
+        <span class="badge">Visión</span>
+        <h3 class="fs-18">Redes convolucionales desde cero</h3>
+        <p class="fs-13 c-muted">CNN · Arquitectura · Capas convolucionales</p>
+        <p class="fs-14 lh-24">Construcción de una CNN básica en PyTorch para clasificación de imágenes MNIST con explicación de filtros y pooling.</p>
+      </div>
+      <div class="card-item flex fd-col g-8">
+        <span class="badge">ML Clásico</span>
+        <h3 class="fs-18">Overfitting y underfitting</h3>
+        <p class="fs-13 c-muted">Evaluación de modelos · Sesgo-Varianza</p>
+        <p class="fs-14 lh-24">Diagnóstico de sobreajuste con learning curves, regularización L1/L2 y validación cruzada en scikit-learn.</p>
+      </div>
+      <div class="card-item flex fd-col g-8">
+        <span class="badge">Generativa</span>
+        <h3 class="fs-18">Diffusion models explicados</h3>
+        <p class="fs-13 c-muted">IA generativa · Modelos de difusión · DDPM</p>
+        <p class="fs-14 lh-24">Proceso de ruido/denoising, U-Net como backbone y comparación con GANs para generación de imágenes.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="w-900">© 2026 — Proyecto intermodular · Generador de blog con IA</footer>
+
+</body>
+</html>

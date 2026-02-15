@@ -1,0 +1,352 @@
+/* ============================================
+   estilos.css — LogoGallery
+   Hoja de estilos principal del proyecto
+   ============================================ */
+
+/* === Reset y base === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* === Cabecera === */
+header {
+    background: #1a1a2e;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 25px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+header h1 {
+    font-size: 22px;
+    letter-spacing: 1px;
+}
+
+header h1 span {
+    color: #e94560;
+}
+
+header nav {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+}
+
+header nav a {
+    font-size: 14px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+header nav a:hover {
+    opacity: 1;
+    color: #e94560;
+}
+
+/* === Selector de idioma === */
+.selector-idioma {
+    display: flex;
+    gap: 6px;
+}
+
+.selector-idioma button {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.selector-idioma button:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.6);
+}
+
+.selector-idioma button.activo {
+    background: #e94560;
+    border-color: #e94560;
+}
+
+/* === Seccion hero === */
+#heroe {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+#heroe h2 {
+    font-size: 32px;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+#heroe p {
+    font-size: 18px;
+    opacity: 0.85;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* === Secciones generales === */
+section {
+    padding: 40px 25px;
+}
+
+section h3 {
+    font-size: 24px;
+    color: #1a1a2e;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* === Galeria de logos === */
+#galeria {
+    background: #f5f5f5;
+}
+
+.contenedor-logos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.tarjeta-logo {
+    background: white;
+    border-radius: 10px;
+    width: calc(33.33% - 20px);
+    min-width: 280px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.tarjeta-logo:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.tarjeta-logo img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+}
+
+.tarjeta-logo h4 {
+    font-size: 18px;
+    color: #1a1a2e;
+    margin-bottom: 5px;
+}
+
+.tarjeta-logo .categoria {
+    font-size: 13px;
+    color: #e94560;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.tarjeta-logo .anio {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.tarjeta-logo .descripcion {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* === Seccion informacion === */
+#informacion {
+    background: #1a1a2e;
+    color: white;
+}
+
+#informacion h3 {
+    color: white;
+}
+
+.info-contenedor {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.info-bloque {
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+    padding: 20px;
+}
+
+.info-bloque .icono {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.info-bloque h4 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #e94560;
+}
+
+.info-bloque p {
+    font-size: 14px;
+    opacity: 0.8;
+    line-height: 1.5;
+}
+
+/* === Seccion contacto === */
+#contacto {
+    background: #f5f5f5;
+}
+
+#contacto form {
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#contacto label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #1a1a2e;
+}
+
+#contacto input,
+#contacto textarea {
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+#contacto input:focus,
+#contacto textarea:focus {
+    outline: none;
+    border-color: #e94560;
+}
+
+#contacto textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+#contacto input[type="submit"] {
+    background: #e94560;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#contacto input[type="submit"]:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* === Pie de pagina === */
+footer {
+    background: #1a1a2e;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+footer nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+footer nav a {
+    font-size: 13px;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+footer nav a:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+footer .copyright {
+    font-size: 12px;
+    opacity: 0.5;
+    margin-top: 8px;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    #heroe h2 {
+        font-size: 24px;
+    }
+
+    #heroe p {
+        font-size: 15px;
+    }
+
+    .tarjeta-logo {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .info-bloque {
+        min-width: 100%;
+    }
+}

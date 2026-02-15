@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <title>Puerta de Entrada - Recepción de Material</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #27ae60;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --info-color: #3498db;
+            --light-bg: #ecf0f1;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #229954 100%);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: white !important;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #229954 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .stats-row {
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .stat-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+
+        .stat-card .label {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+
+        .stat-card.primary { color: var(--info-color); }
+        .stat-card.success { color: var(--success-color); }
+        .stat-card.warning { color: var(--warning-color); }
+        .stat-card.danger { color: var(--danger-color); }
+
+        .card {
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 2px solid var(--light-bg);
+            padding: 1.25rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .search-bar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-input-group input {
+            flex: 1;
+        }
+
+        .form-control, .form-select {
+            border-radius: 6px;
+            border: 1px solid var(--gray-300);
+            padding: 0.75rem 1rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(39, 174, 96, 0.25);
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .table {
+            margin: 0;
+        }
+
+        .table thead th {
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            border: none;
+            font-weight: 600;
+            padding: 1.25rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .table tbody td {
+            padding: 1.25rem 1rem;
+            vertical-align: middle;
+            border-color: #e0e0e0;
+        }
+
+        .table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: var(--gray-100);
+            cursor: pointer;
+        }
+
+        .badge {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 6px;
+        }
+
+        .badge-orden-compra {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .badge-orden-produccion {
+            background-color: #9b59b6;
+            color: white;
+        }
+
+        .badge-devolucion {
+            background-color: #e67e22;
+            color: white;
+        }
+
+        .estado-pendiente {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .estado-aprobada {
+            background-color: #28a745;
+            color: white;
+            font-weight: 500;
+        }
+
+        .estado-confirmada {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .estado-en-transito {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+
+        /* Nuevos estados de recepción */
+        .estado-no_recibida {
+            background-color: #ffc107;
+            color: #000;
+            font-weight: 500;
+        }
+
+        .estado-parcial {
+            background-color: #ff9800;
+            color: white;
+            font-weight: 500;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .estado-completa {
+            background-color: #28a745;
+            color: white;
+            font-weight: 500;
+        }
+
+        /* Resaltado de pendientes en parciales */
+        .pendiente-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            background: #fff3cd;
+            color: #8a6d3b;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: 1px solid #f7e2a3;
+        }
+        .pendiente-chip i {
+            color: #f39c12;
+        }
+
+        /* Resaltado de pendientes en parciales */
+        .pendiente-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            background: #fff3cd;
+            color: #8a6d3b;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: 1px solid #f7e2a3;
+        }
+        .pendiente-chip i {
+            color: #f39c12;
+        }
+
+        /* Resaltado de items pendientes en modal de recepción */
+        .item-recepcion.tiene-pendientes {
+            background: linear-gradient(135deg, #fff3cd 0%, #fffaeb 100%);
+            border-left: 4px solid #f0ad4e;
+            box-shadow: 0 2px 8px rgba(240, 173, 78, 0.2);
+        }
+
+        .item-recepcion.tiene-pendientes .item-recepcion-header {
+            background: rgba(240, 173, 78, 0.1);
+            border-radius: 8px 8px 0 0;
+        }
+
+        .item-recepcion.tiene-pendientes .pendiente-highlight {
+            color: #8a6d3b;
+            font-weight: 700;
+            font-size: 1.05em;
+            background: #ffc107;
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+            color: #000;
+            font-weight: 500;
+        }
+
+        .estado-parcial {
+            background-color: #ff9800;
+            color: white;
+            font-weight: 500;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .estado-completa {
+            background-color: #28a745;
+            color: white;
+            font-weight: 500;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .btn-recepcionar {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #229954 100%);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-recepcionar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+            color: white;
+        }
+
+        .btn-detalles {
+            background-color: var(--info-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+        }
+
+        .btn-detalles:hover {
+            background-color: #2980b9;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #7f8c8d;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #bdc3c7;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .empty-state h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #229954 100%);
+            color: white;
+        }
+
+        .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+        }
+
+        .item-recepcion {
+            background: var(--gray-100);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .item-recepcion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-recepcion-title {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .cantidad-input {
+            max-width: 100px;
+        }
+
+        .alert {
+            border: none;
+            border-radius: 8px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner-border {
+            color: var(--secondary-color);
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tab-filters {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .tab-filters label {
+            font-weight: 600;
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .documento-detail {
+            background: var(--gray-100);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+
+        .progress-bar-custom {
+            height: 25px;
+            border-radius: 6px;
+            background-color: #e9ecef;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary-color) 0%, #229954 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            transition: width 0.3s ease;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/app/puertas">
+                <i class="fas fa-door-open"></i> Puerta de Entrada
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/app/puertas">
+                            <i class="fas fa-th-large"></i> Todas las Puertas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/app/almacen">
+                            <i class="fas fa-warehouse"></i> Almacén
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/app/erp">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1 class="page-title">
+                <i class="fas fa-arrow-right"></i> Recepción de Material
+            </h1>
+            <p class="page-subtitle">
+                Gestiona la entrada de material: Órdenes de compra, Devoluciones y Producción externa
+            </p>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div id="moduleDisabledMsg" class="alert alert-warning" style="display:none;">
+            ⚠️ Este módulo (Recepción) no está habilitado para su organización. Actívelo en Configuración → Módulos.
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid">
+        <!-- Alert Area -->
+        <div id="alertArea"></div>
+
+        <!-- Stats Row -->
+        <div class="row stats-row">
+            <div class="col-md-3">
+                <div class="stat-card primary">
+                    <div class="icon"><i class="fas fa-boxes"></i></div>
+                    <div class="number" id="totalPendientes">0</div>
+                    <div class="label">Documentos Pendientes</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card success">
+                    <div class="icon"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="number" id="ordenesCompra">0</div>
+                    <div class="label">Órdenes de Compra</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card warning">
+                    <div class="icon"><i class="fas fa-industry"></i></div>
+                    <div class="number" id="produccionExterna">0</div>
+                    <div class="label">Producción Externa</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card danger">
+                    <div class="icon"><i class="fas fa-undo"></i></div>
+                    <div class="number" id="devoluciones">0</div>
+                    <div class="label">Devoluciones</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <div class="search-input-group">
+                <input type="text" id="searchInput" class="form-control" placeholder="Buscar por número de documento o proveedor...">
+                <select id="filterTipo" class="form-select" style="max-width: 300px;">
+                    <option value="">Todos los documentos</option>
+                    <option value="orden_compra">Órdenes de Compra</option>
+                    <option value="orden_produccion_externa">Producción Externa</option>
+                    <option value="devolucion">Devoluciones</option>
+                </select>
+                <button class="btn btn-recepcionar" onclick="cargarPendientes()">
+                    <i class="fas fa-sync-alt"></i> Actualizar
+                </button>
+                <span class="badge estado-confirmada" style="margin-left: 1rem; align-self: center;" id="puertaSeleccionada"></span>
+            </div>
+        </div>
+
+        <!-- Pendientes Table -->
+        <div class="table-container">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">#</th>
+                        <th style="width: 12%;">Tipo</th>
+                        <th style="width: 15%;">Número</th>
+                        <th style="width: 12%;">Fecha</th>
+                        <th style="width: 20%;">Proveedor/Origen</th>
+                        <th style="width: 10%;">Items</th>
+                        <th style="width: 10%;">Estado</th>
+                        <th style="width: 16%;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="pendientesTable">
+                    <tr>
+                        <td colspan="8">
+                            <div class="loading active">
+                                <div class="spinner-border" role="status"></div>
+                                <p class="mt-2">Cargando documentos pendientes...</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Recepcionar -->
+    <div class="modal fade" id="modalRecepcionar" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-check-circle"></i> Recepcionar Material
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="recepcionContent">
+                        <div class="loading active">
+                            <div class="spinner-border" role="status"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-recepcionar" onclick="confirmarRecepcion()">
+                        <i class="fas fa-check"></i> Confirmar Recepción
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ver Detalles -->
+    <div class="modal fade" id="modalDetalles" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-info-circle"></i> Detalles del Documento
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="detallesContent">
+                    <div class="loading active">
+                        <div class="spinner-border" role="status"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        async function verificarModuloRecepcion() {
+            try {
+                const resp = await fetch('/api/organization/modules-config', {
+                    headers: { 'Authorization': 'Bearer ' + (localStorage.getItem('token') || '') }
+                });
+                if (!resp.ok) return;
+                const data = await resp.json();
+                const enabled = data.enabled_modules || [];
+                const activo = enabled.includes('recepcion');
+                const msg = document.getElementById('moduleDisabledMsg');
+                if (!activo) {
+                    msg.style.display = 'block';
+                    const hideSelectors = [
+                        '.stats-row', '.search-bar', '.table-container', '.card'
+                    ];
+                    hideSelectors.forEach(sel => document.querySelectorAll(sel).forEach(el => el.style.display = 'none'));
+                }
+            } catch (e) {
+                console.warn('No se pudo verificar módulos');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', verificarModuloRecepcion);
+        console.log('=== PUERTAS ENTRADA INICIANDO ===');
+        const API_BASE = "/api/puertas";
+        let documentosPendientes = [];
+        let documentoSeleccionado = null;
+        let selectedPuertaId = null;
+        let selectedPuertaNombre = '';
+        
+        console.log('API_BASE:', API_BASE);
+
+        // Initialize or create an active entrada puerta
+        async function initPuertaEntrada() {
+                try {
+                    // Buscar puertas de entrada activas
+                    const resp = await fetch(`${API_BASE}?tipo=entrada&es_activa=true`);
+                    if (resp.ok) {
+                        const puertas = await resp.json();
+                        if (Array.isArray(puertas) && puertas.length > 0) {
+                            selectedPuertaId = puertas[0].id;
+                            selectedPuertaNombre = puertas[0].nombre || 'Entrada Principal';
+                            console.log('Puerta seleccionada:', selectedPuertaId, selectedPuertaNombre);
+                            return;
+                        }
+                    }
+
+                    // No puertas: crear una por defecto
+                    const createResp = await fetch(`${API_BASE}/`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            nombre: 'Entrada Principal',
+                            codigo: 'ENTR-PRINC-01',
+                            tipo: 'entrada',
+                            es_activa: true,
+                            requiere_autorizacion: false,
+                            ubicacion: 'Almacen Principal',
+                            descripcion: 'Puerta de entrada por defecto'
+                        })
+                    });
+                    if (createResp.ok) {
+                        const puerta = await createResp.json();
+                        selectedPuertaId = puerta.id;
+                        selectedPuertaNombre = puerta.nombre || 'Entrada Principal';
+                        console.log('Puerta creada:', selectedPuertaId, selectedPuertaNombre);
+                    } else {
+                        console.warn('No se pudo crear la puerta de entrada por defecto');
+                        selectedPuertaId = 1; // Use fallback ID
+                        selectedPuertaNombre = 'Entrada (fallback)';
+                    }
+                } catch (e) {
+                    console.error('Error inicializando puerta de entrada:', e);
+                    selectedPuertaId = 1; // Use fallback ID on error
+                    selectedPuertaNombre = 'Entrada (fallback)';
+                }
+            }
+
+        // Load pending documents
+        async function cargarPendientes() {
+            console.log('cargarPendientes() iniciada');
+            const filterTipoElement = document.getElementById('filterTipo');
+            const tipo = filterTipoElement ? filterTipoElement.value : '';
+            
+            let url = `${API_BASE}/entrada/pendientes`;
+            const params = new URLSearchParams();
+            if (tipo) params.append('tipo', tipo);
+            
+            if (params.toString()) {
+                url += '?' + params.toString();
+            }
+
+            try {
+                console.log('Cargando pendientes desde:', url);
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Error al cargar pendientes: ' + response.status);
+                documentosPendientes = await response.json();
+                console.log('Documentos cargados:', documentosPendientes.length);
+                renderPendientes();
+                actualizarEstadisticas();
+            } catch (error) {
+                showAlert('Error al cargar documentos pendientes: ' + error.message, 'danger');
+                console.error('Error completo:', error);
+            }
+        }
+
+        // Render pending documents
+        function renderPendientes() {
+            const tbody = document.getElementById('pendientesTable');
+            
+            console.log('renderPendientes llamado con', documentosPendientes.length, 'documentos');
+            
+            if (!tbody) {
+                console.error('tbody no encontrado con id pendientesTable');
+                return;
+            }
+            
+            if (documentosPendientes.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8">
+                            <div class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <h3>No hay documentos pendientes</h3>
+                                <p>¡Excelente! No hay material pendiente de recepción.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                console.log('Mostrando estado vacío');
+                return;
+            }
+
+            tbody.innerHTML = documentosPendientes.map((doc, index) => {
+                const tipoBadge = getTipoBadge(doc.tipo_documento);
+                const estadoTexto = getEstadoTexto(doc.estado);
+                const estadoBadge = `<span class="badge estado-${doc.estado}">${estadoTexto}</span>`;
+                const fecha = new Date(doc.fecha).toLocaleDateString('es-ES');
+                
+                const progreso = doc.total_items > 0 
+                    ? Math.round((doc.items_recibidos / doc.total_items) * 100)
+                    : 0;
+                const pendientes = Math.max(0, (doc.total_items || 0) - (doc.items_recibidos || 0));
+                // Mostrar chip si hay items pendientes (independiente del estado)
+                const pendienteChip = pendientes > 0
+                    ? `<div class="pendiente-chip"><i class="fas fa-exclamation-triangle"></i> ${pendientes} pendiente${pendientes > 1 ? 's' : ''}</div>`
+                    : '';
+
+                return `
+                    <tr onclick="verDetalles(${index})">
+                        <td>${index + 1}</td>
+                        <td>${tipoBadge}</td>
+                        <td><strong>${doc.numero_documento}</strong></td>
+                        <td>${fecha}</td>
+                        <td>${doc.proveedor_nombre || '-'}</td>
+                        <td>
+                            <div>${doc.items_recibidos}/${doc.total_items}</div>
+                            <div class="progress-bar-custom" style="margin-top: 0.25rem;">
+                                <div class="progress-fill" style="width: ${progreso}%;">
+                                    ${progreso}%
+                                </div>
+                            </div>
+                            ${pendienteChip}
+                        </td>
+                        <td>${estadoBadge}</td>
+                        <td onclick="event.stopPropagation();">
+                            <div class="quick-actions">
+                                <button class="btn btn-sm btn-recepcionar" onclick="abrirModalRecepcion(${index})">
+                                    <i class="fas fa-check"></i> Recepcionar
+                                </button>
+                                <button class="btn btn-sm btn-detalles" onclick="verDetalles(${index})">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Get type badge
+        function getTipoBadge(tipo) {
+            const badges = {
+                'orden_compra': '<span class="badge badge-orden-compra"><i class="fas fa-shopping-cart"></i> Orden de Compra</span>',
+                'orden_produccion_externa': '<span class="badge badge-orden-produccion"><i class="fas fa-industry"></i> Prod. Externa</span>',
+                'devolucion': '<span class="badge badge-devolucion"><i class="fas fa-undo"></i> Devolución</span>'
+            };
+            return badges[tipo] || tipo;
+        }
+
+        // Get estado texto (traducción amigable)
+        function getEstadoTexto(estado) {
+            const estados = {
+                'no_recibida': '🔶 Pendiente',
+                'parcial': '⚠️ Parcial',
+                'completa': '✅ Completa',
+                'aprobada': 'Aprobada',
+                'pendiente': 'Pendiente',
+                'confirmada': 'Confirmada',
+                'en_transito': 'En Tránsito'
+            };
+            return estados[estado] || estado;
+        }
+
+        // Get estado texto (traducción amigable)
+        function getEstadoTexto(estado) {
+            const estados = {
+                'no_recibida': '🔶 Pendiente',
+                'parcial': '⚠️ Parcial',
+                'completa': '✅ Completa',
+                'aprobada': 'Aprobada',
+                'pendiente': 'Pendiente',
+                'confirmada': 'Confirmada',
+                'en_transito': 'En Tránsito'
+            };
+            return estados[estado] || estado;
+        }
+
+        // Filter table
+        function filtrarTabla() {
+            const busqueda = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (!busqueda) {
+                renderPendientes();
+                return;
+            }
+
+            const filtrados = documentosPendientes.filter(doc => 
+                doc.numero_documento.toLowerCase().includes(busqueda) ||
+                (doc.proveedor_nombre && doc.proveedor_nombre.toLowerCase().includes(busqueda))
+            );
+
+            // Temporarily replace documentosPendientes for rendering
+            const original = documentosPendientes;
+            documentosPendientes = filtrados;
+            renderPendientes();
+            documentosPendientes = original;
+        }
+
+        // Open reception modal
+        function abrirModalRecepcion(index) {
+            documentoSeleccionado = documentosPendientes[index];
+            const content = document.getElementById('recepcionContent');
+            
+            content.innerHTML = `
+                <div class="documento-detail">
+                    <h5><i class="fas fa-file-alt"></i> ${documentoSeleccionado.numero_documento}</h5>
+                    <p><strong>Proveedor:</strong> ${documentoSeleccionado.proveedor_nombre || '-'}</p>
+                    <p><strong>Fecha:</strong> ${new Date(documentoSeleccionado.fecha).toLocaleDateString('es-ES')}</p>
+                </div>
+
+                <h6 class="mt-4 mb-3">Items a Recepcionar:</h6>
+                
+                <div id="itemsRecepcion">
+                    ${documentoSeleccionado.detalles ? documentoSeleccionado.detalles.map((item, idx) => {
+                        const pendiente = item.pendiente !== undefined ? item.pendiente : (item.cantidad - item.recibido);
+                        const recibido = item.recibido || 0;
+                        const tienePendientes = pendiente > 0 ? 'tiene-pendientes' : '';
+                        return `
+                        <div class="item-recepcion ${tienePendientes}" data-item-index="${idx}">
+                            <div class="item-recepcion-header">
+                                <span class="item-recepcion-title">
+                                    ${item.producto_codigo || 'Código N/A'} - ${item.producto_nombre || 'Producto ' + item.producto_id}
+                                </span>
+                                <span class="text-muted">
+                                    Total: ${item.cantidad} | Recibido: ${recibido} | ${pendiente > 0 ? `<span class="pendiente-highlight"><i class="fas fa-exclamation-triangle"></i> Pendiente: ${pendiente}</span>` : `<strong>Pendiente: ${pendiente}</strong>`}
+                                </span>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label class="form-label">Cantidad a Recibir Ahora:</label>
+                                     <input type="number" 
+                                         class="form-control cantidad-input" 
+                                         id="cantidad_${idx}" 
+                                         value="${pendiente}" 
+                                         min="0">
+                                     <small class="text-muted">Puedes recibir más de lo pendiente; el excedente se registrará.</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Estado:</label>
+                                    <select class="form-select" id="estado_${idx}">
+                                        <option value="recibido">Recibido OK</option>
+                                        <option value="danado">Dañado</option>
+                                        <option value="rechazado">Rechazado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                    }).join('') : '<p>No hay detalles disponibles</p>'}
+                </div>
+
+                <div class="mt-3">
+                    <label class="form-label">Notas de Recepción:</label>
+                    <textarea class="form-control" id="notasRecepcion" rows="3" placeholder="Observaciones sobre la recepción..."></textarea>
+                </div>
+
+                <div class="mt-3">
+                    <label class="form-label">Responsable de Recepción:</label>
+                    <input type="text" class="form-control" id="usuarioRecepcion" placeholder="Nombre del responsable">
+                </div>
+            `;
+
+            new bootstrap.Modal(document.getElementById('modalRecepcionar')).show();
+        }
+
+        // Confirm reception
+        async function confirmarRecepcion() {
+            if (!documentoSeleccionado) return;
+
+            const items = [];
+            const detalles = documentoSeleccionado.detalles || [];
+            
+            detalles.forEach((item, idx) => {
+                const cantidad = parseInt(document.getElementById(`cantidad_${idx}`).value) || 0;
+                const estado = document.getElementById(`estado_${idx}`).value;
+                
+                if (cantidad > 0) {
+                    items.push({
+                        producto_id: item.producto_id,
+                        cantidad_esperada: item.cantidad,
+                        cantidad_recibida: cantidad,
+                        estado: estado,
+                        notas: null
+                    });
+                }
+            });
+
+            if (items.length === 0) {
+                showAlert('Debe especificar al menos un item a recepcionar', 'warning');
+                return;
+            }
+
+            if (!selectedPuertaId) {
+                showAlert('No hay puerta de entrada configurada. Intenta recargar o contacta al administrador.', 'danger');
+                return;
+            }
+
+            const recepcionData = {
+                puerta_id: selectedPuertaId,
+                tipo_documento: documentoSeleccionado.tipo_documento,
+                documento_id: documentoSeleccionado.id,
+                usuario_nombre: document.getElementById('usuarioRecepcion').value || 'Sistema',
+                items_recibidos: items,
+                notas: document.getElementById('notasRecepcion').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/entrada/recepcionar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(recepcionData)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Error al registrar recepción');
+                }
+
+                const result = await response.json();
+                showAlert(result.message, 'success');
+                bootstrap.Modal.getInstance(document.getElementById('modalRecepcionar')).hide();
+                cargarPendientes();
+            } catch (error) {
+                showAlert('Error: ' + error.message, 'danger');
+            }
+        }
+
+        // View details
+        function verDetalles(index) {
+            const doc = documentosPendientes[index];
+            const content = document.getElementById('detallesContent');
+            
+            content.innerHTML = `
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Tipo:</strong> ${getTipoBadge(doc.tipo_documento)}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Número:</strong> ${doc.numero_documento}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Fecha:</strong> ${new Date(doc.fecha).toLocaleDateString('es-ES')}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Estado:</strong> <span class="badge estado-${doc.estado}">${doc.estado}</span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <strong>Proveedor/Origen:</strong> ${doc.proveedor_nombre || '-'}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Total Items:</strong> ${doc.total_items}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Items Recibidos:</strong> ${doc.items_recibidos}
+                    </div>
+                </div>
+
+                ${doc.detalles && doc.detalles.length > 0 ? `
+                    <h6 class="mt-4 mb-3">Detalle de Items:</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Recibido</th>
+                                    <th>Pendiente</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${doc.detalles.map(item => `
+                                    <tr>
+                                        <td><strong>${item.producto_codigo || 'N/A'}</strong></td>
+                                        <td>${item.producto_nombre || 'Producto ' + item.producto_id}</td>
+                                        <td>${item.cantidad}</td>
+                                        <td>${item.recibido}</td>
+                                        <td><strong>${item.cantidad - item.recibido}</strong></td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                ` : ''}
+            `;
+
+            new bootstrap.Modal(document.getElementById('modalDetalles')).show();
+        }
+
+        // Update statistics
+        function actualizarEstadisticas() {
+            const total = documentosPendientes.length;
+            const ordenesCompra = documentosPendientes.filter(d => d.tipo_documento === 'orden_compra').length;
+            const produccionExterna = documentosPendientes.filter(d => d.tipo_documento === 'orden_produccion_externa').length;
+            const devoluciones = documentosPendientes.filter(d => d.tipo_documento === 'devolucion').length;
+
+            document.getElementById('totalPendientes').textContent = total;
+            document.getElementById('ordenesCompra').textContent = ordenesCompra;
+            document.getElementById('produccionExterna').textContent = produccionExterna;
+            document.getElementById('devoluciones').textContent = devoluciones;
+        }
+
+        // Show alert
+        function showAlert(message, type = 'info') {
+            const alertArea = document.getElementById('alertArea');
+            const alertId = 'alert-' + Date.now();
+            
+            alertArea.innerHTML += `
+                <div id="${alertId}" class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+
+            setTimeout(() => {
+                const el = document.getElementById(alertId);
+                if (el) el.remove();
+            }, 5000);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('=== DOMContentLoaded event fired ===');
+            
+            // Search and filter listeners
+            const searchInput = document.getElementById('searchInput');
+            const filterTipo = document.getElementById('filterTipo');
+            
+            console.log('searchInput elemento:', searchInput ? 'encontrado' : 'NO ENCONTRADO');
+            console.log('filterTipo elemento:', filterTipo ? 'encontrado' : 'NO ENCONTRADO');
+            
+            if (searchInput) {
+                searchInput.addEventListener('input', filtrarTabla);
+            }
+            if (filterTipo) {
+                filterTipo.addEventListener('change', cargarPendientes);
+            }
+            
+            // Init puerta de entrada and load pendientes
+            console.log('Iniciando puerta entrada...');
+            initPuertaEntrada()
+                .then(() => {
+                    console.log('Puerta inicializada, selectedPuertaId=', selectedPuertaId);
+                    if (selectedPuertaNombre) {
+                        const puertaBadge = document.getElementById('puertaSeleccionada');
+                        if (puertaBadge) puertaBadge.textContent = selectedPuertaNombre;
+                    }
+                })
+                .catch(e => {
+                    console.error('Error en initPuertaEntrada:', e);
+                })
+                .finally(() => {
+                    console.log('Llamando a cargarPendientes()...');
+                    cargarPendientes();
+                });
+        });
+    </script>
+</body>
+</html>

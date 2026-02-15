@@ -1,0 +1,9 @@
+{
+  "nombre":"Jose Vicente",
+  "apellidos":"Carratala Sanchis",
+  "email":"info@jocarsa.com",
+  "telefonos":[
+    "12345678",
+    "87654321"
+  ]
+}

@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<title>quiz.jocarsa.com</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		/* ====== Base ====== */
+		:root{
+			--brand: indigo;
+			--bg: #f5f6ff;
+			--card: #ffffff;
+			--text: #0f172a;
+			--muted: rgba(15, 23, 42, .65);
+			--border: rgba(15, 23, 42, .10);
+			--shadow: 0 12px 30px rgba(15, 23, 42, .12);
+			--shadow-soft: 0 8px 22px rgba(15, 23, 42, .10);
+			--radius: 18px;
+		}
+
+		*{ box-sizing:border-box; }
+		html,body{width:100%;height:100%;padding:0;margin:0;}
+		body{
+			display:flex;
+			flex-direction:column;
+			justify-content:space-between;
+			font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+			font-size:1.2em;
+			color: var(--text);
+			background:
+				radial-gradient(1200px 600px at 10% -10%, rgba(75, 0, 130, .14), transparent 55%),
+				radial-gradient(900px 500px at 100% 10%, rgba(75, 0, 130, .10), transparent 50%),
+				var(--bg);
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
+
+		/* ====== Header / Footer ====== */
+		header,footer{
+			padding:10px 12px;
+			text-align:center;
+			background: var(--brand);
+			color:white;
+			letter-spacing:.2px;
+			box-shadow: 0 8px 20px rgba(0,0,0,.18);
+		}
+		header{
+			position: sticky;
+			top: 0;
+			z-index: 10;
+		}
+
+		/* ====== Main Layout ====== */
+		main{
+			flex:1;
+			display:flex;
+			align-items:center;
+			justify-content:center;
+			padding:16px;
+		}
+
+		/* Sections behave like cards */
+		#login, #escenario{
+			width: min(780px, 100%);
+			background: var(--card);
+			border: 1px solid var(--border);
+			border-radius: var(--radius);
+			box-shadow: var(--shadow);
+			backdrop-filter: blur(6px);
+		}
+
+		#login{
+			display:flex;
+			flex-direction:column;
+			padding:22px;
+			gap:16px;
+			text-align:center;
+		}
+
+		#escenario{
+			display:none;
+			flex-direction:column;
+			gap:12px;
+			padding:22px;
+		}
+
+		#escenario h3{
+			margin:0;
+			font-size:1.15em;
+			color: var(--muted);
+			font-weight:700;
+		}
+
+		#escenario p{
+			margin:0;
+			font-size:1.15em;
+			line-height:1.35;
+			padding:14px 14px;
+			border-radius: 14px;
+			background: rgba(75, 0, 130, .06);
+			border: 1px solid rgba(75, 0, 130, .14);
+		}
+
+		#login h3{
+			margin:0 0 4px 0;
+			font-size:1.2em;
+			font-weight:800;
+		}
+
+		/* ====== Inputs ====== */
+		#login input{
+			padding:12px 14px;
+			font-size:1.05em;
+			border-radius: 14px;
+			border: 1px solid var(--border);
+			outline: none;
+			box-shadow: 0 2px 10px rgba(15, 23, 42, .05);
+			transition: border-color .15s ease, box-shadow .15s ease, transform .06s ease;
+		}
+		#login input:focus{
+			border-color: rgba(75, 0, 130, .45);
+			box-shadow: 0 0 0 4px rgba(75, 0, 130, .14), 0 10px 22px rgba(15, 23, 42, .10);
+		}
+
+		/* ====== Buttons ====== */
+		button{
+			background: var(--brand);
+			color:white;
+			border:none;
+			border-radius: 999px;
+			font-size:1.05em;
+			font-weight:700;
+			padding:12px 16px;
+			border:4px solid var(--brand);
+			cursor:pointer;
+			box-shadow: 0 10px 22px rgba(0,0,0,.14);
+			transition: transform .08s ease, box-shadow .15s ease, filter .15s ease, opacity .15s ease;
+			user-select:none;
+			-webkit-tap-highlight-color: transparent;
+		}
+		button:hover{
+			filter: brightness(1.04);
+			box-shadow: 0 14px 28px rgba(0,0,0,.18);
+		}
+		button:active{
+			transform: translateY(1px) scale(.99);
+			box-shadow: 0 8px 16px rgba(0,0,0,.14);
+		}
+		button:focus-visible{
+			outline:none;
+			box-shadow: 0 0 0 4px rgba(75, 0, 130, .18), 0 14px 28px rgba(0,0,0,.18);
+		}
+
+		/* ====== Answers grid ====== */
+		#resultados{
+			display:grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap:12px;
+			padding-top:6px;
+			text-align:center;
+		}
+		#resultados button{
+			padding:14px 14px;
+			border-radius: 16px;
+			border-width:3px;
+			box-shadow: var(--shadow-soft);
+		}
+
+		/* Keep your current marked/disabled look, but nicer */
+		.marcado{
+			background:white;
+			color: var(--brand);
+			border:3px solid var(--brand);
+			box-shadow: 0 14px 30px rgba(75, 0, 130, .18);
+			transform: translateY(-1px);
+		}
+
+		.desactivado{
+			opacity:0.25;
+			filter: grayscale(.05);
+			pointer-events:none;
+		}
+
+		/* ====== Responsive ====== */
+		@media (max-width: 640px){
+			body{ font-size:1.05em; }
+			main{ padding:12px; }
+			#login, #escenario{ padding:16px; border-radius: 16px; }
+			#resultados{ grid-template-columns: 1fr; }
+			#escenario p{ font-size:1.08em; }
+		}
+
+		/* ====== Reduced motion ====== */
+		@media (prefers-reduced-motion: reduce){
+			*{ transition:none !important; }
+		}
+	</style>
+	</head>
+	<body>
+		<header>
+			quiz.jocarsa.com
+		</header>
+		<main>
+			<section id="login">
+				<h3>Indica tu nombre para entrar</h3>
+				<input type="text" id="nombre">
+				<button>Iniciar</button>
+			</section>
+			<section id="escenario">
+				<h3>Pregunta:</h3>
+				<p>Esta es la pregunta que se va a realizar</p>
+				<div id="resultados">
+				</div>
+			</section>
+		</main>
+		<footer>
+			quiz.jocarsa.com
+		</footer>
+		<script>
+			var preguntaactual = "";
+			let login = document.querySelector("#login")
+		 	let escenario = document.querySelector("#escenario")
+			let boton = document.querySelector("#login button")
+			let usuario = document.querySelector("#login input")
+			var respondido = false;
+			boton.onclick = function(){
+				login.style.display = "none" // Me escondes el login
+				escenario.style.display = "flex" // Me sacas el escenario
+			}
+			
+			
+			var temporizador = setTimeout("bucle()",1000)
+			
+			function bucle(){
+				 const url = "preguntas.json?ts=" + Date.now(); // evita caché por URL distinta
+
+				 fetch(url, { cache: "no-store" })              // fuerza a no usar caché
+					.then(function(respuesta){ return respuesta.json() })
+					.then(function(datos){
+					  if(datos.pregunta != preguntaactual){
+						 respondido = false;
+						 preguntaactual = datos.pregunta
+						 let pregunta = document.querySelector("#escenario p")
+						 pregunta.textContent = datos.pregunta
+						 let resultados = document.querySelector("#escenario #resultados")
+						 resultados.innerHTML = ""
+
+						 datos.respuestas.forEach(function(respuesta){
+						   let botonrespuesta = document.createElement("button")
+						   botonrespuesta.textContent = respuesta
+						   botonrespuesta.onclick = function(){
+						     if(respondido == false){
+
+						       const opciones = Array.from(
+						         document.querySelectorAll("#escenario #resultados button")
+						       ).map(b => b.textContent)
+
+						       const url =
+						         "guarda.php" +
+						         "?pregunta=" + encodeURIComponent(datos.pregunta) +
+						         "&respuesta=" + encodeURIComponent(this.textContent) +
+						         "&usuario=" + encodeURIComponent(usuario.value) +
+						         "&opciones=" + encodeURIComponent(JSON.stringify(opciones))
+
+						       fetch(url, { cache: "no-store" })
+
+						       this.classList.add("marcado")
+						       respondido = true;
+						       let botones = document.querySelectorAll("button")
+						       botones.forEach(function(unboton){
+						         unboton.classList.add("desactivado")
+						       })
+						       this.classList.remove("desactivado")
+						     }
+						   }
+						   resultados.appendChild(botonrespuesta)
+						 })
+					  }
+					})
+
+				 clearTimeout(temporizador)
+				 temporizador = setTimeout(bucle, 1000) // mejor que string
+			  }
+		</script>
+	</body>
+</html>
+

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orden de Producción - {{ orden.numero }}</title>
+  <link rel="stylesheet" href="/static/print.css" />
+  <style>
+    .meta-grid { display: grid; grid-template-columns: 220px 1fr; gap: 6px 14px; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:12px; background:#eef; font-size:12px; }
+    .kv { color:#555; }
+    .section-title { margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <header class="doc-header">
+    <div>
+      <h1>Orden de Producción</h1>
+      <div class="subtitle">{{ orden.numero }}</div>
+    </div>
+    <div>
+      <button onclick="window.print()" class="print-btn">Imprimir</button>
+    </div>
+  </header>
+
+  <section class="doc-section">
+    <div class="meta-grid">
+      <div class="kv">Organización</div><div>{{ org.razon_social or org.nombre if org else 'N/A' }}</div>
+      <div class="kv">Estado</div><div><span class="badge">{{ orden.estado }}</span></div>
+      <div class="kv">Fecha de creación</div><div>{{ orden.fecha_creacion }}</div>
+      <div class="kv">Sección</div><div>{{ seccion.codigo if seccion else '' }} {{ seccion.nombre if seccion else '' }}</div>
+      <div class="kv">Responsable</div><div>{{ orden.asignado_a or '—' }}</div>
+      <div class="kv">Notas</div><div>{{ orden.notas_produccion or '—' }}</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <h2 class="section-title">Producto</h2>
+    <div class="meta-grid">
+      <div class="kv">Código</div><div>{{ producto.codigo if producto else 'N/A' }}</div>
+      <div class="kv">Nombre</div><div>{{ producto.nombre if producto else 'N/A' }}</div>
+      <div class="kv">Cantidad ordenada</div><div>{{ orden.cantidad_ordenada }}</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <h2 class="section-title">Cliente / Pedido</h2>
+    <div class="meta-grid">
+      <div class="kv">Pedido</div><div>{{ venta.numero if venta else 'N/A' }}</div>
+      <div class="kv">Cliente</div><div>{{ venta.cliente_nombre if venta else 'N/A' }}</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <h2 class="section-title">Operaciones</h2>
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Centro de trabajo</th>
+          <th>Duración estimada (h)</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for op in operaciones %}
+        <tr>
+          <td>{{ op.secuencia }}</td>
+          <td>{{ op.bom_operacion.nombre if op.bom_operacion else '' }}</td>
+          <td>{{ op.centro_trabajo or op.bom_operacion.centro_trabajo if op.bom_operacion else op.centro_trabajo }}</td>
+          <td>{{ op.duracion_estimada or '—' }}</td>
+          <td>{{ op.estado }}</td>
+        </tr>
+        {% endfor %}
+        {% if operaciones|length == 0 %}
+        <tr><td colspan="5" class="empty">No hay operaciones definidas.</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="doc-section">
+    <h2 class="section-title">Movimientos de Almacén</h2>
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Tipo</th>
+          <th>Origen</th>
+          <th>Destino</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in movimientos %}
+        <tr>
+          <td>{{ m.producto.nombre if m.producto else m.producto_id }}</td>
+          <td>{{ m.cantidad }}</td>
+          <td>{{ m.tipo_movimiento }}</td>
+          <td>{{ m.ubicacion_origen }}</td>
+          <td>{{ m.ubicacion_destino }}</td>
+          <td>{{ m.estado }}</td>
+        </tr>
+        {% endfor %}
+        {% if movimientos|length == 0 %}
+        <tr><td colspan="6" class="empty">Sin movimientos generados.</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </section>
+</body>
+</html>

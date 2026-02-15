@@ -1,0 +1,15 @@
+# Robots.txt for Cuevas MotorSport
+# https://cuevasmotorsport.es
+
+User-agent: *
+Allow: /
+
+# Disallow admin pages
+Disallow: /admin
+Disallow: /login
+
+# Sitemap location
+Sitemap: https://cuevasmotorsport.es/sitemap.xml
+
+# Crawl-delay (optional, in seconds)
+Crawl-delay: 1

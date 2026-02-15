@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Producción - Operario</title>
+    <link rel="stylesheet" href="/static/assistant.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --border: #e5e7eb;
+            --bg-light: #f9fafb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: var(--dark);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .filters {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filters select, .filters input {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .orden-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .orden-header {
+            background: linear-gradient(135deg, var(--primary), #1d4ed8);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .orden-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .orden-header .meta {
+            text-align: right;
+            font-size: 14px;
+        }
+
+        .orden-body {
+            padding: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            font-size: 16px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .progress-section {
+            background: var(--bg-light);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            height: 24px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--success), #059669);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+            transition: width 0.3s ease;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #6b7280;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .operaciones-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .operacion-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .operacion-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .operacion-info {
+            flex: 1;
+        }
+
+        .operacion-nombre {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .operacion-meta {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .operacion-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-pendiente {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-en_proceso {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-completada {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-pausada {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .bom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .bom-table th,
+        .bom-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .bom-table th {
+            background: var(--bg-light);
+            font-weight: 600;
+            font-size: 13px;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+
+        .bom-table tr:hover {
+            background: var(--bg-light);
+        }
+
+        .planos-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .plano-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .plano-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .plano-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .plano-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .plano-meta {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+            background: white;
+            border-radius: 12px;
+            border: 2px dashed var(--border);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            max-width: 400px;
+            padding: 16px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 2000;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--danger); }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 28px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .notas-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-top: 10px;
+            font-family: inherit;
+            resize: vertical;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    {% include '_assistant_panel.html' %}
+    
+    <div class="container">
+        <header>
+            <div>
+                <h1>🛠️ Mi Producción</h1>
+                <p style="color: #6b7280; margin-top: 4px;">Gestión de órdenes de trabajo</p>
+            </div>
+            <div class="user-info">
+                <span id="userName">Operario</span>
+                <button onclick="location.href='/app/dashboard'" class="btn btn-secondary" style="margin-left: 10px;">
+                    ← Volver al Dashboard
+                </button>
+            </div>
+        </header>
+
+        <div class="filters">
+            <label style="font-weight: 600;">Filtrar por estado:</label>
+            <select id="estadoFilter" onchange="loadOrdenes()">
+                <option value="">Todos</option>
+                <option value="asignada">Asignadas</option>
+                <option value="aceptada">Aceptadas</option>
+                <option value="adquisicion_materiales" selected>En adquisición</option>
+                <option value="en_proceso">En proceso</option>
+                <option value="completada">Completadas</option>
+                <option value="pausada">Pausadas</option>
+            </select>
+
+            <label style="font-weight: 600;">Buscar:</label>
+            <input type="text" id="searchInput" placeholder="Número de orden o producto..." onkeyup="filterOrdenes()">
+
+            <button onclick="loadOrdenes()" class="btn btn-primary" style="margin-left: auto;">
+                🔄 Actualizar
+            </button>
+        </div>
+
+        <div id="ordenesContainer">
+            <div class="loading">Cargando órdenes...</div>
+        </div>
+    </div>
+
+    <!-- Modal for operation details -->
+    <div id="operacionModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeOperacionModal()">&times;</button>
+            <div id="operacionDetails"></div>
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <span id="toastIcon" style="font-size: 20px;">✅</span>
+            <div>
+                <div style="font-weight: 600;" id="toastTitle">Actualizado</div>
+                <div style="font-size: 13px; color: #6b7280;" id="toastMessage">Cambio aplicado</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allOrdenes = [];
+        let currentUser = null;
+
+        async function loadOrdenes() {
+            try {
+                const estadoFilter = document.getElementById('estadoFilter').value;
+                
+                // Load user info
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = '/';
+                    return;
+                }
+
+                // Get current user
+                try {
+                    const userRes = await fetch('/api/auth/me', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (userRes.ok) {
+                        currentUser = await userRes.json();
+                        document.getElementById('userName').textContent = currentUser.nombre || currentUser.username;
+                    }
+                } catch (e) {
+                    console.warn('No se pudo cargar info del usuario');
+                }
+
+                // Load production orders
+                let url = '/api/produccion-ordenes/';
+                if (estadoFilter) {
+                    url += `?estado=${estadoFilter}`;
+                }
+
+                const res = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!res.ok) {
+                    throw new Error('Error al cargar órdenes');
+                }
+
+                allOrdenes = await res.json();
+                
+                // Filter by current user if they have assignments
+                // For now, show all orders in filtered state
+                
+                renderOrdenes(allOrdenes);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('ordenesContainer').innerHTML = 
+                    '<div class="no-data">Error al cargar las órdenes de producción</div>';
+            }
+        }
+
+        function filterOrdenes() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allOrdenes.filter(orden => 
+                orden.numero.toLowerCase().includes(search) ||
+                (orden.producto_nombre && orden.producto_nombre.toLowerCase().includes(search))
+            );
+            renderOrdenes(filtered);
+        }
+
+        function renderOrdenes(ordenes) {
+            const container = document.getElementById('ordenesContainer');
+            
+            if (ordenes.length === 0) {
+                container.innerHTML = '<div class="no-data">No hay órdenes de producción para mostrar</div>';
+                return;
+            }
+
+            const html = ordenes.map(orden => renderOrdenCard(orden)).join('');
+            container.innerHTML = html;
+        }
+
+        function renderOrdenCard(orden) {
+            const progreso = Math.round((orden.cantidad_completada / orden.cantidad_ordenada) * 100) || 0;
+            
+            return `
+                <div class="orden-card">
+                    <div class="orden-header">
+                        <div>
+                            <h2>${orden.numero}</h2>
+                            <div class="meta">
+                                <div>${orden.producto_nombre || 'Producto'}</div>
+                                <div style="margin-top: 4px; opacity: 0.9;">
+                                    ${orden.venta_numero || 'Sin venta'} • ${orden.cliente_nombre || 'Cliente'}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meta">
+                            <span class="status-badge status-${orden.estado}">${orden.estado.replace(/_/g, ' ')}</span>
+                            <div style="margin-top: 8px;">Prioridad: <strong>${orden.prioridad || 'media'}</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="orden-body">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Cantidad</span>
+                                <span class="info-value">${orden.cantidad_completada} / ${orden.cantidad_ordenada}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Sección</span>
+                                <span class="info-value">${orden.seccion_nombre || 'Sin asignar'}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Asignado a</span>
+                                <span class="info-value">${orden.asignado_a || 'Sin asignar'}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Carretillero</span>
+                                <span class="info-value">${orden.carretillero_nombre || 'Sin asignar'}</span>
+                            </div>
+                        </div>
+
+                        <div class="progress-section">
+                            <strong>Progreso de producción:</strong>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progreso}%">${progreso}%</div>
+                            </div>
+                        </div>
+
+                        <div class="tabs">
+                            <button class="tab-btn active" onclick="switchTab(${orden.id}, 'operaciones')">
+                                ⚙️ Operaciones
+                            </button>
+                            <button class="tab-btn" onclick="switchTab(${orden.id}, 'bom')">
+                                📦 Desglose de Piezas
+                            </button>
+                            <button class="tab-btn" onclick="switchTab(${orden.id}, 'planos')">
+                                📐 Planos
+                            </button>
+                        </div>
+
+                        <div id="tab-operaciones-${orden.id}" class="tab-content active">
+                            <div id="operaciones-${orden.id}">
+                                <div class="loading">Cargando operaciones...</div>
+                            </div>
+                        </div>
+
+                        <div id="tab-bom-${orden.id}" class="tab-content">
+                            <div id="bom-${orden.id}">
+                                <div class="loading">Cargando desglose...</div>
+                            </div>
+                        </div>
+
+                        <div id="tab-planos-${orden.id}" class="tab-content">
+                            <div id="planos-${orden.id}">
+                                <div class="loading">Cargando planos...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function switchTab(ordenId, tabName) {
+            // Update tab buttons
+            const ordenCard = document.querySelector(`#tab-operaciones-${ordenId}`).closest('.orden-card');
+            ordenCard.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Show/hide content
+            ordenCard.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`tab-${tabName}-${ordenId}`).classList.add('active');
+
+            // Load content if not loaded
+            if (tabName === 'operaciones') {
+                await loadOperaciones(ordenId);
+            } else if (tabName === 'bom') {
+                await loadBOM(ordenId);
+            } else if (tabName === 'planos') {
+                await loadPlanos(ordenId);
+            }
+        }
+
+        async function loadOperaciones(ordenId) {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/produccion-ordenes/${ordenId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!res.ok) throw new Error('Error al cargar operaciones');
+
+                const orden = await res.json();
+                const operaciones = orden.operaciones || [];
+                const container = document.getElementById(`operaciones-${ordenId}`);
+
+                if (operaciones.length === 0) {
+                    container.innerHTML = '<div class="no-data">No hay operaciones definidas</div>';
+                    return;
+                }
+
+                const html = `
+                    <div class="operaciones-list">
+                        ${operaciones.map(op => `
+                            <div class="operacion-item">
+                                <div class="operacion-info">
+                                    <div class="operacion-nombre">
+                                        ${op.secuencia}. ${op.nombre || op.operacion_bom_nombre || 'Operación'}
+                                    </div>
+                                    <div class="operacion-meta">
+                                        ${op.descripcion || op.operacion_bom_descripcion || ''}
+                                        ${op.duracion_estimada ? ` • ⏱️ ${op.duracion_estimada} min` : ''}
+                                        • Estado: <span class="status-badge status-${op.estado}">${op.estado}</span>
+                                    </div>
+                                </div>
+                                <div class="operacion-actions">
+                                    ${op.estado === 'pendiente' ? `
+                                        <button onclick="actualizarOperacion(${ordenId}, ${op.id}, 'en_proceso')" class="btn btn-primary">
+                                            ▶️ Iniciar
+                                        </button>
+                                    ` : ''}
+                                    ${op.estado === 'en_proceso' ? `
+                                        <button onclick="actualizarOperacion(${ordenId}, ${op.id}, 'pausada')" class="btn btn-warning">
+                                            ⏸️ Pausar
+                                        </button>
+                                        <button onclick="completarOperacion(${ordenId}, ${op.id})" class="btn btn-success">
+                                            ✅ Completar
+                                        </button>
+                                    ` : ''}
+                                    ${op.estado === 'pausada' ? `
+                                        <button onclick="actualizarOperacion(${ordenId}, ${op.id}, 'en_proceso')" class="btn btn-primary">
+                                            ▶️ Reanudar
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById(`operaciones-${ordenId}`).innerHTML = 
+                    '<div class="no-data">Error al cargar operaciones</div>';
+            }
+        }
+
+        async function loadBOM(ordenId) {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/produccion-ordenes/${ordenId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!res.ok) throw new Error('Error al cargar BOM');
+
+                const orden = await res.json();
+                
+                // Get BOM details
+                if (!orden.bom_id) {
+                    document.getElementById(`bom-${ordenId}`).innerHTML = 
+                        '<div class="no-data">Esta orden no tiene BOM asociada</div>';
+                    return;
+                }
+
+                const bomRes = await fetch(`/api/boms/headers/${orden.bom_id}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!bomRes.ok) throw new Error('Error al cargar detalles del BOM');
+
+                const bom = await bomRes.json();
+                const container = document.getElementById(`bom-${ordenId}`);
+
+                const html = `
+                    <div style="margin-bottom: 15px;">
+                        <strong>BOM:</strong> ${bom.numero} - ${bom.producto_nombre}
+                        <div style="font-size: 13px; color: #6b7280; margin-top: 4px;">
+                            ${bom.descripcion || 'Sin descripción'}
+                        </div>
+                    </div>
+
+                    <table class="bom-table">
+                        <thead>
+                            <tr>
+                                <th>Componente</th>
+                                <th>Código</th>
+                                <th>Cantidad</th>
+                                <th>Unidad</th>
+                                <th>Ubicación</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${(bom.lineas || []).map(linea => `
+                                <tr>
+                                    <td><strong>${linea.componente_nombre || linea.componente_codigo}</strong></td>
+                                    <td>${linea.componente_codigo}</td>
+                                    <td>${linea.cantidad || 0}</td>
+                                    <td>${linea.unidad || 'ud'}</td>
+                                    <td>${linea.ubicacion_componente || 'N/A'}</td>
+                                    <td>
+                                        <span class="status-badge ${linea.disponible ? 'status-completada' : 'status-pendiente'}">
+                                            ${linea.disponible ? 'Disponible' : 'Pendiente'}
+                                        </span>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById(`bom-${ordenId}`).innerHTML = 
+                    '<div class="no-data">Error al cargar el desglose de piezas</div>';
+            }
+        }
+
+        async function loadPlanos(ordenId) {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/produccion-ordenes/${ordenId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!res.ok) throw new Error('Error al cargar orden');
+
+                const orden = await res.json();
+                
+                // Get planos from BOM if exists
+                if (!orden.bom_id) {
+                    document.getElementById(`planos-${ordenId}`).innerHTML = 
+                        '<div class="no-data">No hay planos disponibles para esta orden</div>';
+                    return;
+                }
+
+                const bomRes = await fetch(`/api/boms/headers/${orden.bom_id}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!bomRes.ok) throw new Error('Error al cargar BOM');
+
+                const bom = await bomRes.json();
+                const container = document.getElementById(`planos-${ordenId}`);
+
+                // Check for planos in BOM or related documents
+                const planos = [];
+                
+                // Add planos from BOM operations if they have attachments
+                if (bom.operaciones) {
+                    bom.operaciones.forEach(op => {
+                        if (op.plano_url || op.archivo_adjunto) {
+                            planos.push({
+                                nombre: `Plano ${op.nombre}`,
+                                url: op.plano_url || op.archivo_adjunto,
+                                tipo: 'Operación'
+                            });
+                        }
+                    });
+                }
+
+                if (planos.length === 0) {
+                    container.innerHTML = '<div class="no-data">📐 No hay planos disponibles para esta orden</div>';
+                    return;
+                }
+
+                const html = `
+                    <div class="planos-section">
+                        ${planos.map(plano => `
+                            <div class="plano-card" onclick="abrirPlano('${plano.url}')">
+                                <div class="plano-icon">📄</div>
+                                <div class="plano-name">${plano.nombre}</div>
+                                <div class="plano-meta">${plano.tipo}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById(`planos-${ordenId}`).innerHTML = 
+                    '<div class="no-data">Error al cargar planos</div>';
+            }
+        }
+
+        async function actualizarOperacion(ordenId, operacionId, nuevoEstado) {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/produccion-ordenes/operaciones/${operacionId}/estado`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ estado: nuevoEstado })
+                });
+
+                if (!res.ok) throw new Error('Error al actualizar operación');
+
+                showToast('Actualizado', `Operación ${nuevoEstado.replace('_', ' ')}`, 'success');
+                await loadOperaciones(ordenId);
+                await loadOrdenes(); // Refresh list
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error', 'No se pudo actualizar la operación', 'error');
+            }
+        }
+
+        async function completarOperacion(ordenId, operacionId) {
+            const notas = prompt('Notas de finalización (opcional):');
+            
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/produccion-ordenes/operaciones/${operacionId}/completar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ notas: notas || null })
+                });
+
+                if (!res.ok) throw new Error('Error al completar operación');
+
+                showToast('Completada', 'Operación completada exitosamente', 'success');
+                await loadOperaciones(ordenId);
+                await loadOrdenes();
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error', 'No se pudo completar la operación', 'error');
+            }
+        }
+
+        function abrirPlano(url) {
+            window.open(url, '_blank');
+        }
+
+        function closeOperacionModal() {
+            document.getElementById('operacionModal').classList.remove('active');
+        }
+
+        function showToast(title, message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const titleEl = document.getElementById('toastTitle');
+            const msgEl = document.getElementById('toastMessage');
+            
+            icon.textContent = type === 'success' ? '✅' : '❌';
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+            
+            toast.className = `toast ${type}`;
+            toast.style.display = 'flex';
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease forwards';
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                    toast.style.animation = '';
+                }, 300);
+            }, 3000);
+        }
+
+        // Load orders on page load
+        loadOrdenes();
+
+        // Auto-refresh every 30 seconds
+        setInterval(loadOrdenes, 30000);
+
+        // Close modal on outside click
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                closeOperacionModal();
+            }
+        });
+    </script>
+    
+    <script defer src="/static/assistant.js"></script>
+    <script defer src="/static/assistant-basic-panel.js"></script>
+    <script defer src="/static/voice-widget.js"></script>
+</body>
+</html>

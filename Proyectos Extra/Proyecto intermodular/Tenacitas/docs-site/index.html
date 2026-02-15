@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenClaw — Personal AI Assistant</title>
+  <meta name="description" content="OpenClaw: asistente IA personal open-source. 30+ canales, gateway WebSocket, panel web Lit, apps nativas y demonio de voz Swabble." />
+  <meta name="theme-color" content="#12141a" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦞</text></svg>" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #12141a; --bg-accent: #14161d; --bg-elevated: #1a1d25;
+      --card: #181b22; --text: #e4e4e7; --text-strong: #fafafa;
+      --muted: #71717a; --border: #27272a; --border-strong: #3f3f46;
+      --accent: #ff5c5c; --accent-hover: #ff7070;
+      --accent-glow: rgba(255,92,92,0.25); --accent-subtle: rgba(255,92,92,0.12);
+      --teal: #14b8a6; --teal-subtle: rgba(20,184,166,0.12);
+      --ok: #22c55e; --ok-subtle: rgba(34,197,94,0.12);
+      --warn: #eab308; --warn-subtle: rgba(234,179,8,0.12);
+      --purple: #a78bfa; --purple-subtle: rgba(167,139,250,0.12);
+      --r: 12px; --r-sm: 8px; --r-lg: 16px;
+      --font: 'Space Grotesk', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: var(--accent); text-decoration: none; transition: color .2s; }
+    a:hover { color: var(--accent-hover); }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-10px); } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+    /* Header */
+    .hdr { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(18,20,26,.92); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); }
+    .hdr__in { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; height:64px; padding:0 clamp(16px,4vw,48px); }
+    .hdr__logo { font-size:20px; font-weight:700; color:var(--text-strong); display:flex; align-items:center; gap:10px; }
+    .hdr__logo-i { width:32px; height:32px; background:linear-gradient(135deg,var(--accent),#ff8a65); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px; }
+    .hdr__nav { display:flex; gap:24px; }
+    .hdr__nav a { color:var(--muted); font-size:14px; font-weight:500; }
+    .hdr__nav a:hover, .hdr__nav a.active { color:var(--text-strong); }
+
+    /* Hero */
+    .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:120px clamp(16px,4vw,48px) 80px; position:relative; overflow:hidden; }
+    .hero__orb { position:absolute; width:500px; height:500px; border-radius:50%; filter:blur(100px); opacity:.12; pointer-events:none; }
+    .hero__orb--r { background:var(--accent); top:-180px; right:-80px; animation:float 8s ease-in-out infinite; }
+    .hero__orb--t { background:var(--teal); bottom:-180px; left:-80px; animation:float 10s ease-in-out infinite reverse; }
+    .hero__orb--p { background:var(--purple); top:40%; left:50%; animation:float 12s ease-in-out infinite; }
+    .hero__badge { display:inline-flex; align-items:center; gap:8px; padding:6px 16px; border-radius:99px; background:var(--accent-subtle); color:var(--accent); font-size:13px; font-weight:600; margin-bottom:20px; animation:fadeUp .6s ease backwards; }
+    .hero__title { font-size:clamp(32px,5.5vw,68px); font-weight:700; letter-spacing:-.04em; line-height:1.08; color:var(--text-strong); max-width:800px; animation:fadeUp .6s ease .1s backwards; }
+    .hero__title span { color:var(--accent); }
+    .hero__sub { font-size:clamp(15px,2vw,19px); color:var(--muted); max-width:580px; margin-top:18px; animation:fadeUp .6s ease .2s backwards; }
+    .hero__cta { display:flex; gap:14px; margin-top:32px; animation:fadeUp .6s ease .3s backwards; flex-wrap:wrap; justify-content:center; }
+
+    /* Buttons */
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:12px 26px; border-radius:var(--r); font-family:var(--font); font-size:15px; font-weight:600; cursor:pointer; border:none; transition:all .25s; }
+    .btn--p { background:var(--accent); color:#fff; box-shadow:0 4px 24px var(--accent-glow); }
+    .btn--p:hover { background:var(--accent-hover); box-shadow:0 8px 32px var(--accent-glow); transform:translateY(-2px); }
+    .btn--g { background:transparent; color:var(--text); border:1px solid var(--border-strong); }
+    .btn--g:hover { border-color:var(--accent); color:var(--accent); }
+
+    /* Section */
+    section { padding:90px clamp(16px,4vw,48px); }
+    .s-in { max-width:1200px; margin:0 auto; }
+    .s-lbl { display:inline-flex; gap:6px; color:var(--accent); font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px; }
+    .s-ttl { font-size:clamp(26px,4vw,42px); font-weight:700; letter-spacing:-.03em; color:var(--text-strong); margin-bottom:14px; }
+    .s-sub { color:var(--muted); font-size:16px; max-width:600px; margin-bottom:44px; }
+    section[id] { scroll-margin-top:80px; }
+
+    /* Features */
+    .feat { background:var(--bg-accent); }
+    .feat__g { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:18px; }
+    .fc { background:var(--card); border:1px solid var(--border); border-radius:var(--r-lg); padding:26px; transition:border-color .3s, box-shadow .3s, transform .3s; }
+    .fc:hover { border-color:var(--border-strong); box-shadow:0 8px 32px rgba(0,0,0,.3); transform:translateY(-3px); }
+    .fc__i { width:42px; height:42px; border-radius:var(--r-sm); display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:14px; }
+    .fc__i--r { background:var(--accent-subtle); } .fc__i--t { background:var(--teal-subtle); }
+    .fc__i--g { background:var(--ok-subtle); } .fc__i--y { background:var(--warn-subtle); }
+    .fc__i--p { background:var(--purple-subtle); }
+    .fc__t { font-size:16px; font-weight:600; color:var(--text-strong); margin-bottom:6px; }
+    .fc__d { color:var(--muted); font-size:13px; line-height:1.6; }
+
+    /* Channels */
+    .ch__list { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:36px; }
+    .ch-b { display:inline-flex; align-items:center; gap:7px; padding:9px 16px; border-radius:99px; background:var(--card); border:1px solid var(--border); font-size:13px; font-weight:500; color:var(--text); transition:all .2s; }
+    .ch-b:hover { border-color:var(--accent); transform:scale(1.05); }
+
+    /* Architecture */
+    .arch { background:var(--bg-accent); }
+    .arch__d { background:var(--card); border:1px solid var(--border); border-radius:var(--r-lg); padding:36px; font-family:var(--mono); font-size:12.5px; color:var(--muted); overflow-x:auto; line-height:1.85; }
+    .arch__d .h { color:var(--accent); font-weight:600; }
+    .arch__d .h2 { color:var(--teal); font-weight:600; }
+    .arch__d .ok { color:var(--ok); }
+    .arch__d .pp { color:var(--purple); font-weight:600; }
+
+    /* Stack */
+    .stk__g { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:12px; }
+    .stk { display:flex; align-items:center; gap:10px; padding:14px; border-radius:var(--r); background:var(--card); border:1px solid var(--border); transition:border-color .2s; }
+    .stk:hover { border-color:var(--accent); }
+    .stk__i { font-size:22px; }
+    .stk__n { font-size:13px; font-weight:600; color:var(--text-strong); }
+    .stk__s { font-size:11px; color:var(--muted); }
+
+    /* Stats */
+    .stats__g { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:18px; margin-top:36px; }
+    .st-c { text-align:center; padding:28px 16px; background:var(--card); border:1px solid var(--border); border-radius:var(--r-lg); transition:all .3s; }
+    .st-c:hover { border-color:var(--accent); transform:translateY(-3px); }
+    .st-c__v { font-size:36px; font-weight:700; letter-spacing:-.04em; color:var(--accent); }
+    .st-c__l { font-size:13px; color:var(--muted); margin-top:6px; }
+
+    /* Swabble */
+    .swab { background:var(--bg-accent); }
+    .swab__box { background:var(--card); border:1px solid var(--border); border-radius:var(--r-lg); padding:36px; display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:center; }
+    .swab__code { font-family:var(--mono); font-size:13px; background:var(--bg); border:1px solid var(--border); border-radius:var(--r); padding:20px; color:var(--text); overflow-x:auto; line-height:1.7; }
+    .swab__code .kw { color:var(--purple); } .swab__code .fn { color:var(--teal); } .swab__code .str { color:var(--ok); }
+
+    /* Footer */
+    .ftr { border-top:1px solid var(--border); padding:36px clamp(16px,4vw,48px); text-align:center; color:var(--muted); font-size:13px; }
+
+    @media (max-width:768px) {
+      .hdr__nav { display:none; }
+      .feat__g { grid-template-columns:1fr; }
+      .swab__box { grid-template-columns:1fr; }
+      .stats__g { grid-template-columns:repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hdr">
+    <div class="hdr__in">
+      <div class="hdr__logo"><div class="hdr__logo-i">🦞</div>OpenClaw</div>
+      <nav class="hdr__nav">
+        <a href="#features">Features</a>
+        <a href="#channels">Channels</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#swabble">Swabble</a>
+        <a href="#stack">Stack</a>
+        <a href="https://github.com/MutenRos/Tenacitas" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="hero__orb hero__orb--r"></div>
+    <div class="hero__orb hero__orb--t"></div>
+    <div class="hero__orb hero__orb--p"></div>
+    <div class="hero__badge">🦞 Open Source &middot; MIT License</div>
+    <h1 class="hero__title">Your Personal <span>AI Assistant</span>, Everywhere</h1>
+    <p class="hero__sub">One agent, 30+ messaging channels. WhatsApp, Telegram, Discord, Signal, Slack, iMessage — all connected to your private AI. Now with voice wake-word via Swabble.</p>
+    <div class="hero__cta">
+      <a href="#features" class="btn btn--p">Explore Features</a>
+      <a href="https://github.com/MutenRos/Tenacitas" class="btn btn--g" target="_blank" rel="noopener">⭐ View Source</a>
+    </div>
+  </section>
+
+  <section class="feat" id="features">
+    <div class="s-in">
+      <div class="s-lbl">⚡ Core Features</div>
+      <h2 class="s-ttl">Everything in one platform</h2>
+      <p class="s-sub">CLI, gateway, web panel, native apps, voice daemon — built with TypeScript, Lit, Swift, and Docker.</p>
+      <div class="feat__g">
+        <div class="fc"><div class="fc__i fc__i--r">💬</div><div class="fc__t">Multi-Channel Messaging</div><div class="fc__d">Connect 30+ platforms simultaneously via a unified plugin registry. Each channel is an independent workspace package.</div></div>
+        <div class="fc"><div class="fc__i fc__i--t">🌐</div><div class="fc__t">Web Control Panel</div><div class="fc__d">Real-time dashboard with Lit 3.3 Web Components. Chat, config, channels, cron, logs, sessions, skills — all in the browser.</div></div>
+        <div class="fc"><div class="fc__i fc__i--g">🔌</div><div class="fc__t">Plugin Architecture</div><div class="fc__d">29 extension plugins as pnpm workspace packages. Add channels without modifying the core codebase.</div></div>
+        <div class="fc"><div class="fc__i fc__i--y">⚙️</div><div class="fc__t">WebSocket Gateway</div><div class="fc__d">Central server with auth, sessions, model catalog, health monitoring, TLS, discovery, and auto-reconnect with backoff.</div></div>
+        <div class="fc"><div class="fc__i fc__i--p">🎙️</div><div class="fc__t">Swabble Voice Daemon</div><div class="fc__d">Swift 6.2 wake-word daemon using Speech.framework. Local-only recognition — zero network usage. macOS 26.</div></div>
+        <div class="fc"><div class="fc__i fc__i--r">📱</div><div class="fc__t">Native Apps</div><div class="fc__d">iOS (SwiftUI), Android (Kotlin), macOS menubar — all connected through the shared gateway protocol.</div></div>
+        <div class="fc"><div class="fc__i fc__i--t">🔒</div><div class="fc__t">Security Audit (987 LOC)</div><div class="fc__d">Automated multi-level audit: filesystem permissions, secrets, model hygiene, plugin trust, and deep gateway probing.</div></div>
+        <div class="fc"><div class="fc__i fc__i--g">🐳</div><div class="fc__t">Docker &amp; Sandbox</div><div class="fc__d">Production Dockerfile + sandbox images. Non-root user, HEALTHCHECK, resource limits, and isolated agent execution.</div></div>
+        <div class="fc"><div class="fc__i fc__i--y">🛡️</div><div class="fc__t">Zod Config Validation</div><div class="fc__d">Strongly-typed config with JSON5, Zod schemas, automatic migration, and 20+ specialized type modules.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="channels">
+    <div class="s-in" style="text-align:center">
+      <div class="s-lbl">🔗 Integrations</div>
+      <h2 class="s-ttl">30+ Messaging Channels</h2>
+      <p class="s-sub" style="margin:0 auto 36px">One agent, every platform. Each channel is a plugin.</p>
+      <div class="ch__list">
+        <div class="ch-b">💬 WhatsApp</div><div class="ch-b">✈️ Telegram</div>
+        <div class="ch-b">🎮 Discord</div><div class="ch-b">🔐 Signal</div>
+        <div class="ch-b">💼 Slack</div><div class="ch-b">🍎 iMessage</div>
+        <div class="ch-b">👥 MS Teams</div><div class="ch-b">🔲 Matrix</div>
+        <div class="ch-b">🟣 Nostr</div><div class="ch-b">🎬 Twitch</div>
+        <div class="ch-b">📞 Voice Call</div><div class="ch-b">💬 Google Chat</div>
+        <div class="ch-b">📱 Zalo</div><div class="ch-b">☁️ Nextcloud Talk</div>
+        <div class="ch-b">🔵 BlueBubbles</div><div class="ch-b">📡 LINE</div>
+        <div class="ch-b">🌊 Mattermost</div><div class="ch-b">🌐 Web UI</div>
+        <div class="ch-b">⌨️ CLI / Terminal</div>
+        <div class="ch-b" style="border-color:var(--accent);color:var(--accent)">+ 10 more</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="arch" id="architecture">
+    <div class="s-in">
+      <div class="s-lbl">🏗️ Architecture</div>
+      <h2 class="s-ttl">System Overview</h2>
+      <p class="s-sub">Every component communicates through the WebSocket Gateway.</p>
+      <div class="arch__d">
+<pre>
+  ┌────────────────────────────────────────────────────────────────────────┐
+  │                         <span class="h">OpenClaw Platform</span>                                │
+  │                                                                        │
+  │   <span class="h2">Clients</span>                   <span class="h">Gateway</span>               <span class="h2">Channels</span>          │
+  │  ┌───────────┐          ┌──────────────┐        ┌──────────────┐      │
+  │  │  Web UI   │───ws───▶│  WebSocket   │───────▶│  WhatsApp    │      │
+  │  │  (Lit)    │          │  Server      │        │  Telegram    │      │
+  │  └───────────┘          │              │        │  Discord     │      │
+  │  ┌───────────┐          │  ┌────────┐  │        │  Signal      │      │
+  │  │  CLI      │───ws───▶│  │ Agent  │  │        │  Slack       │      │
+  │  │ (Terminal)│          │  │  Core  │  │        │  iMessage    │      │
+  │  └───────────┘          │  └────────┘  │        │  + 23 more   │      │
+  │  ┌───────────┐          │  ┌────────┐  │        └──────────────┘      │
+  │  │  iOS      │───ws───▶│  │ Plugin │  │        ┌──────────────┐      │
+  │  │  macOS    │          │  │Registry│  │        │ <span class="ok">extensions/</span>   │      │
+  │  │  Android  │          │  └────────┘  │        │ 29 plugins   │      │
+  │  └───────────┘          └──────────────┘        └──────────────┘      │
+  │                               │                                        │
+  │  ┌───────────┐      ┌────────┴────────┐                               │
+  │  │ <span class="pp">Swabble</span>   │      │  <span class="h2">Config (Zod)</span>    │                               │
+  │  │  (Swift)  │      │  Security Audit  │                               │
+  │  │ wake-word │      │  Cron / Hooks    │                               │
+  │  └───────────┘      │  Session Manager │                               │
+  │                      └─────────────────┘                               │
+  └────────────────────────────────────────────────────────────────────────┘
+</pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="swab" id="swabble">
+    <div class="s-in">
+      <div class="s-lbl">🎙️ Swabble</div>
+      <h2 class="s-ttl">Voice Wake-Word Daemon</h2>
+      <p class="s-sub">Swift 6.2 daemon using Speech.framework for local-only voice activation on macOS 26.</p>
+      <div class="swab__box">
+        <div>
+          <h3 style="color:var(--text-strong);font-size:18px;margin-bottom:12px">Highlights</h3>
+          <ul style="list-style:none;display:grid;gap:10px">
+            <li style="display:flex;gap:8px;align-items:start"><span style="color:var(--purple)">●</span> <strong>Local-only</strong> — Speech.framework on-device models, zero network</li>
+            <li style="display:flex;gap:8px;align-items:start"><span style="color:var(--teal)">●</span> <strong>Wake word</strong> — Default "clawd", configurable aliases</li>
+            <li style="display:flex;gap:8px;align-items:start"><span style="color:var(--ok)">●</span> <strong>SwabbleKit</strong> — Shared library for iOS/macOS apps</li>
+            <li style="display:flex;gap:8px;align-items:start"><span style="color:var(--accent)">●</span> <strong>Hooks</strong> — Run any command with cooldown &amp; timeout</li>
+            <li style="display:flex;gap:8px;align-items:start"><span style="color:var(--warn)">●</span> <strong>Transcribe</strong> — TXT or SRT with time ranges</li>
+          </ul>
+        </div>
+        <div class="swab__code">
+<pre><span class="kw">@available</span>(macOS 26.0, *)
+<span class="kw">@MainActor</span>
+<span class="kw">private func</span> <span class="fn">runCLI</span>() <span class="kw">async</span> -> Int32 {
+    <span class="kw">let</span> descriptors = CLIRegistry.descriptors
+    <span class="kw">let</span> program = Program(descriptors: descriptors)
+    <span class="kw">let</span> invocation = <span class="kw">try</span> program.<span class="fn">resolve</span>(
+        argv: CommandLine.arguments
+    )
+    <span class="kw">try await</span> <span class="fn">dispatch</span>(invocation: invocation)
+    <span class="kw">return</span> <span class="str">0</span>
+}</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <div class="s-in">
+      <div class="s-lbl">🧰 Tech Stack</div>
+      <h2 class="s-ttl">Modern tools at every layer</h2>
+      <div class="stk__g">
+        <div class="stk"><div class="stk__i">🟦</div><div><div class="stk__n">TypeScript</div><div class="stk__s">ES2023 Strict</div></div></div>
+        <div class="stk"><div class="stk__i">🟢</div><div><div class="stk__n">Node.js 22+</div><div class="stk__s">ESM Runtime</div></div></div>
+        <div class="stk"><div class="stk__i">🔥</div><div><div class="stk__n">Lit 3.3</div><div class="stk__s">Web Components</div></div></div>
+        <div class="stk"><div class="stk__i">⚡</div><div><div class="stk__n">Vite 7</div><div class="stk__s">Build + HMR</div></div></div>
+        <div class="stk"><div class="stk__i">🧪</div><div><div class="stk__n">Vitest</div><div class="stk__s">V8 Coverage 70%</div></div></div>
+        <div class="stk"><div class="stk__i">📦</div><div><div class="stk__n">pnpm</div><div class="stk__s">Monorepo Workspaces</div></div></div>
+        <div class="stk"><div class="stk__i">🐳</div><div><div class="stk__n">Docker</div><div class="stk__s">Multi-container</div></div></div>
+        <div class="stk"><div class="stk__i">🛡️</div><div><div class="stk__n">Zod</div><div class="stk__s">Runtime Validation</div></div></div>
+        <div class="stk"><div class="stk__i">🎯</div><div><div class="stk__n">Commander.js</div><div class="stk__s">CLI Framework</div></div></div>
+        <div class="stk"><div class="stk__i">🍎</div><div><div class="stk__n">Swift 6.2</div><div class="stk__s">Swabble + macOS</div></div></div>
+        <div class="stk"><div class="stk__i">🤖</div><div><div class="stk__n">Kotlin</div><div class="stk__s">Android App</div></div></div>
+        <div class="stk"><div class="stk__i">🦎</div><div><div class="stk__n">Bun</div><div class="stk__s">Dev & Scripts</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="feat" id="stats">
+    <div class="s-in" style="text-align:center">
+      <div class="s-lbl">📊 By the Numbers</div>
+      <h2 class="s-ttl">Project Scale</h2>
+      <div class="stats__g">
+        <div class="st-c"><div class="st-c__v">30+</div><div class="st-c__l">Messaging Channels</div></div>
+        <div class="st-c"><div class="st-c__v">50+</div><div class="st-c__l">Source Modules</div></div>
+        <div class="st-c"><div class="st-c__v">29</div><div class="st-c__l">Extension Plugins</div></div>
+        <div class="st-c"><div class="st-c__v">3</div><div class="st-c__l">Native Platforms</div></div>
+        <div class="st-c"><div class="st-c__v">168 MB</div><div class="st-c__l">Repository Size</div></div>
+        <div class="st-c"><div class="st-c__v">70%</div><div class="st-c__l">V8 Coverage</div></div>
+        <div class="st-c"><div class="st-c__v">987</div><div class="st-c__l">Security Audit LOC</div></div>
+        <div class="st-c"><div class="st-c__v">6</div><div class="st-c__l">Vitest Configs</div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="ftr">
+    <p><strong style="color:var(--text-strong)">OpenClaw</strong> — Personal AI Assistant (upstream public)<br/>
+    Built by <a href="https://github.com/MutenRos" target="_blank" rel="noopener">MutenRos</a> &middot;
+    <a href="https://github.com/MutenRos/Tenacitas" target="_blank" rel="noopener">Source Code</a> &middot; MIT License</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navLinks = document.querySelectorAll('.hdr__nav a[href^="#"]');
+      const sections = [...navLinks].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            navLinks.forEach(l => l.classList.remove('active'));
+            const link = document.querySelector(`.hdr__nav a[href="#${entry.target.id}"]`);
+            if (link) link.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-30% 0px -60% 0px' });
+      sections.forEach(s => observer.observe(s));
+      navLinks.forEach(link => {
+        link.addEventListener('click', e => { e.preventDefault(); document.querySelector(link.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' }); });
+      });
+      const orbs = document.querySelectorAll('.hero__orb');
+      document.addEventListener('mousemove', e => {
+        const x = (e.clientX / window.innerWidth - .5) * 18;
+        const y = (e.clientY / window.innerHeight - .5) * 18;
+        orbs.forEach((o, i) => { const f = [1, -.7, .5][i] || 1; o.style.transform = `translate(${x*f}px,${y*f}px)`; });
+      });
+      const cards = document.querySelectorAll('.fc, .st-c, .stk, .ch-b');
+      const co = new IntersectionObserver(entries => {
+        entries.forEach(entry => { if (entry.isIntersecting) { entry.target.style.opacity='1'; entry.target.style.transform='translateY(0)'; co.unobserve(entry.target); } });
+      }, { threshold: 0.1 });
+      cards.forEach((c, i) => { c.style.opacity='0'; c.style.transform='translateY(16px)'; c.style.transition=`opacity .35s ease ${i%6*.04}s, transform .35s ease ${i%6*.04}s`; co.observe(c); });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Resultados (CSV)</title>
+
+  <style>
+    :root{
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted:#64748b;
+      --border:#e5e7eb;
+      --shadow: 0 10px 30px rgba(15, 23, 42, .08);
+      --radius: 14px;
+    }
+
+    *{ box-sizing:border-box; }
+
+    html,body{
+      padding:0;
+      margin:0;
+      width:100%;
+      height:100%;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    html{ padding:20px; }
+
+    header{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:16px;
+    }
+
+    header h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:.2px;
+    }
+
+    header .meta{
+      font-size:12px;
+      color:var(--muted);
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    section{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:20px;
+    }
+
+    @media (max-width: 1100px){
+      section{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 700px){
+      section{ grid-template-columns: 1fr; }
+      html{ padding:14px; }
+    }
+
+    article{
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 18px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    article h3{
+      margin:0 0 10px 0;
+      font-size:15px;
+      line-height:1.35;
+      font-weight: 700;
+    }
+
+    .rows{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:8px;
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:10px;
+      align-items:center;
+    }
+
+    .label{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:baseline;
+      font-size:13px;
+      color: var(--muted);
+      margin-bottom:6px;
+    }
+
+    .label strong{
+      color: var(--text);
+      font-weight:600;
+    }
+
+    progress{
+      width:100%;
+      height: 10px;
+      border-radius: 999px;
+      overflow:hidden;
+      border: 1px solid var(--border);
+      background: #f1f5f9;
+    }
+
+    progress::-webkit-progress-bar{ background: #f1f5f9; }
+    progress::-webkit-progress-value{ background: indigo; }
+    progress::-moz-progress-bar{ background: indigo; }
+
+    .count{
+      font-size:12px;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+
+    .empty{
+      border-style:dashed;
+      color: var(--muted);
+      box-shadow:none;
+    }
+
+    .empty p{
+      margin:0;
+      font-size:13px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div>
+      <h1>Resultados por pregunta (desde CSV)</h1>
+    </div>
+    <div class="meta">
+      <span id="metaTotal">Total respuestas: —</span>
+      <span id="metaPreguntas">Preguntas: —</span>
+      <span id="metaActualizado">Actualizado: —</span>
+    </div>
+  </header>
+
+  <section id="contenedor">
+    <article class="empty">
+      <h3>Cargando…</h3>
+      <p>Leyendo <code>respuestas.csv</code></p>
+    </article>
+  </section>
+
+  <script>
+    const CSV_PATH = "respuestas.csv";
+    const REFRESH_MS = 1000;
+
+    // Parser CSV compatible con fputcsv:
+    // - separador coma
+    // - campos con comillas dobles
+    // - comillas escapadas como ""
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let field = "";
+      let inQuotes = false;
+
+      text = text.replace(/\r/g, "");
+
+      for (let i = 0; i < text.length; i++) {
+        const c = text[i];
+
+        if (inQuotes) {
+          if (c === '"') {
+            if (text[i + 1] === '"') {
+              field += '"';
+              i++;
+            } else {
+              inQuotes = false;
+            }
+          } else {
+            field += c;
+          }
+        } else {
+          if (c === '"') {
+            inQuotes = true;
+          } else if (c === ",") {
+            row.push(field);
+            field = "";
+          } else if (c === "\n") {
+            row.push(field);
+            field = "";
+            if (row.some(v => String(v).trim().length > 0)) rows.push(row);
+            row = [];
+          } else {
+            field += c;
+          }
+        }
+      }
+
+      if (field.length > 0 || row.length > 0) {
+        row.push(field);
+        if (row.some(v => String(v).trim().length > 0)) rows.push(row);
+      }
+
+      return rows;
+    }
+
+    // [usuario, pregunta, respuesta, opciones_json]
+    function toObjects(csvRows) {
+      const out = [];
+      for (const parts of csvRows) {
+        if (parts.length < 3) continue;
+
+        const user = (parts[0] ?? "").trim();
+        const question = (parts[1] ?? "").trim();
+        const answer = (parts[2] ?? "").trim();
+        const optionsJson = (parts[3] ?? "[]").trim();
+
+        out.push({ user, question, answer, optionsJson });
+      }
+      return out;
+    }
+
+    function safeParseOptions(optionsJson) {
+      try {
+        const arr = JSON.parse(optionsJson || "[]");
+        return Array.isArray(arr) ? arr.map(String) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function aggregate(rows) {
+      // preguntas[question] = { total, answers(Map), options(Set) }
+      const preguntas = new Map();
+
+      for (const r of rows) {
+        if (!preguntas.has(r.question)) {
+          preguntas.set(r.question, { total: 0, answers: new Map(), options: new Set() });
+        }
+        const q = preguntas.get(r.question);
+
+        q.total += 1;
+        q.answers.set(r.answer, (q.answers.get(r.answer) || 0) + 1);
+
+        const opts = safeParseOptions(r.optionsJson);
+        for (const o of opts) q.options.add(o);
+
+        if (r.answer) q.options.add(r.answer);
+      }
+
+      // Asegura que todas las opciones aparezcan incluso si nadie las eligió
+      for (const [, q] of preguntas.entries()) {
+        for (const opt of q.options) {
+          if (!q.answers.has(opt)) q.answers.set(opt, 0);
+        }
+      }
+
+      return preguntas;
+    }
+
+    function el(tag, attrs = {}, children = []) {
+      const node = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k === "class") node.className = v;
+        else if (k === "html") node.innerHTML = v;
+        else node.setAttribute(k, v);
+      }
+      for (const c of children) {
+        if (typeof c === "string") node.appendChild(document.createTextNode(c));
+        else node.appendChild(c);
+      }
+      return node;
+    }
+
+    function render(preguntasMap, totalRespuestas) {
+      const cont = document.getElementById("contenedor");
+      cont.innerHTML = "";
+
+      document.getElementById("metaTotal").textContent = "Total respuestas: " + totalRespuestas;
+      document.getElementById("metaPreguntas").textContent = "Preguntas: " + preguntasMap.size;
+      document.getElementById("metaActualizado").textContent =
+        "Actualizado: " + new Date().toLocaleString("es-ES");
+
+      for (const [question, data] of preguntasMap.entries()) {
+        const article = el("article", {}, [
+          el("h3", {}, [question])
+        ]);
+
+        const sortedAnswers = [...data.answers.entries()].sort((a, b) => {
+          if (b[1] !== a[1]) return b[1] - a[1];
+          return String(a[0]).localeCompare(String(b[0]), "es");
+        });
+
+        const rowsWrap = el("div", { class: "rows" });
+
+        for (const [answer, count] of sortedAnswers) {
+          const pct = data.total ? (count / data.total) : 0;
+          const pctText = Math.round(pct * 100) + "%";
+
+          const label = el("div", { class: "label" }, [
+            el("strong", {}, [answer]),
+            el("span", {}, [count + " · " + pctText])
+          ]);
+
+          const progress = el("progress", { value: String(pct), max: "1" });
+
+          const row = el("div", { class: "row" }, [
+            el("div", {}, [label, progress]),
+            el("div", { class: "count" }, [data.total + " total"])
+          ]);
+
+          rowsWrap.appendChild(row);
+        }
+
+        article.appendChild(rowsWrap);
+        cont.appendChild(article);
+      }
+
+      if (preguntasMap.size === 0) {
+        cont.appendChild(el("article", { class: "empty" }, [
+          el("h3", {}, ["Sin datos"]),
+          el("p", {}, ["El CSV está vacío o no tiene filas válidas."])
+        ]));
+      }
+    }
+
+    let lastCSV = null;
+
+    function loadAndRender() {
+      fetch(CSV_PATH + "?_=" + Date.now(), { cache: "no-store" })
+        .then(r => {
+          if (!r.ok) throw new Error("No se pudo leer " + CSV_PATH + " (HTTP " + r.status + ")");
+          return r.text();
+        })
+        .then(text => {
+          if (text === lastCSV) return; // no cambios
+          lastCSV = text;
+
+          const csvRows = parseCSV(text);
+          const rows = toObjects(csvRows);
+          const preguntas = aggregate(rows);
+          render(preguntas, rows.length);
+        })
+        .catch(err => {
+          const cont = document.getElementById("contenedor");
+          cont.innerHTML = "";
+          cont.appendChild(el("article", { class: "empty" }, [
+            el("h3", {}, ["Error cargando CSV"]),
+            el("p", {}, [String(err.message || err)])
+          ]));
+        });
+    }
+
+    // Primera carga inmediata + refresco cada 1s
+    loadAndRender();
+    setInterval(loadAndRender, REFRESH_MS);
+  </script>
+</body>
+</html>
+

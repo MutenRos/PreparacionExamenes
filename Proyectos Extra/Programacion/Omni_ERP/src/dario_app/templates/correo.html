@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/static/assistant.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom Email Client Styles */
+        :root {
+            --sidebar-width: 260px;
+            --list-width: 350px;
+            --header-height: 60px;
+            --primary-color: #4f46e5; /* Indigo 600 */
+            --bg-color: #f3f4f6;
+            --border-color: #e5e7eb;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --hover-bg: #f9fafb;
+            --selected-bg: #eef2ff;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .app-header {
+            height: var(--header-height);
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+        }
+
+        .logo-area {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-bar input:focus {
+            background: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: white;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 10px;
+        }
+
+        .compose-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+            transition: transform 0.1s;
+        }
+
+        .compose-btn:active {
+            transform: scale(0.98);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: var(--hover-bg);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background-color: var(--selected-bg);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .nav-item i {
+            width: 24px;
+            margin-right: 10px;
+        }
+
+        .nav-item .badge {
+            margin-left: auto;
+            font-size: 0.8rem;
+            background: var(--bg-color);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* Email List */
+        .email-list {
+            width: var(--list-width);
+            background: white;
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .email-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .email-item:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .email-item.active {
+            background-color: var(--selected-bg);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .email-item.unread .subject {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .email-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+        }
+
+        .sender {
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+
+        .date {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .subject {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .snippet {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Reading Pane */
+        .reading-pane {
+            flex: 1;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .email-content-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .email-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .email-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .sender-info {
+            display: flex;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .sender-details div:first-child {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .sender-details div:last-child {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .email-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--bg-color);
+            color: var(--text-primary);
+        }
+
+        .email-body {
+            padding: 30px;
+            overflow-y: auto;
+            flex: 1;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--border-color);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .compose-modal {
+            background: white;
+            width: 600px;
+            height: 500px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .modal-header {
+            padding: 15px 20px;
+            background: #f9fafb;
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .modal-body {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            outline: none;
+        }
+
+        .modal-textarea {
+            flex: 1;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            resize: none;
+            outline: none;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-header">
+        <div class="logo-area">
+            <i class="fas fa-envelope-open-text"></i>
+            <span>OmniMail</span>
+        </div>
+        <div class="search-bar">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" placeholder="Buscar correos...">
+        </div>
+        <div class="user-actions">
+            <!-- User avatar or actions could go here -->
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <button class="compose-btn" onclick="openCompose()">
+                <i class="fas fa-pen"></i> Redactar
+            </button>
+
+            <div class="nav-item active" onclick="filterFolder('inbox')">
+                <i class="fas fa-inbox"></i> Recibidos
+                <span class="badge" id="inbox-count">0</span>
+            </div>
+            <div class="nav-item" onclick="filterFolder('sent')">
+                <i class="fas fa-paper-plane"></i> Enviados
+            </div>
+            <div class="nav-item" onclick="filterFolder('drafts')">
+                <i class="fas fa-file"></i> Borradores
+            </div>
+            <div class="nav-item" onclick="filterFolder('trash')">
+                <i class="fas fa-trash"></i> Papelera
+            </div>
+
+            <div style="margin-top: 20px; padding-left: 15px; font-size: 0.8rem; color: var(--text-secondary); font-weight: 600; margin-bottom: 10px;">
+                ETIQUETAS
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-circle" style="color: #ef4444; font-size: 0.6rem;"></i> Importante
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-circle" style="color: #f59e0b; font-size: 0.6rem;"></i> Trabajo
+            </div>
+        </div>
+
+        <!-- Email List -->
+        <div class="email-list" id="email-list">
+            <!-- Emails will be injected here -->
+        </div>
+
+        <!-- Reading Pane -->
+        <div class="reading-pane" id="reading-pane">
+            <div class="empty-state">
+                <i class="far fa-envelope"></i>
+                <h3>Selecciona un correo para leerlo</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compose Modal -->
+    <div class="modal-overlay" id="compose-modal">
+        <div class="compose-modal">
+            <div class="modal-header">
+                <span>Mensaje Nuevo</span>
+                <button class="close-modal" onclick="closeCompose()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="modal-input" placeholder="Para">
+                <input type="text" class="modal-input" placeholder="Asunto">
+                <textarea class="modal-textarea" placeholder="Escribe tu mensaje aquí..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeCompose()">Descartar</button>
+                <button class="btn-primary" onclick="sendEmail()">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentOrgId = null;
+        let threads = [];
+
+        // Mock Data for initial render (in case API is empty)
+        const mockThreads = [
+            {
+                id: 1,
+                sender: "Juan Pérez",
+                subject: "Reporte Mensual de Ventas",
+                date: "10:30 AM",
+                snippet: "Adjunto encontrarás el reporte de ventas correspondiente al mes de...",
+                body: "Hola equipo,\n\nAdjunto encontrarás el reporte de ventas correspondiente al mes de Octubre. Hemos superado las expectativas en un 15%.\n\nSaludos,\nJuan",
+                unread: true,
+                folder: 'inbox'
+            },
+            {
+                id: 2,
+                sender: "Soporte Técnico",
+                subject: "Mantenimiento Programado",
+                date: "Ayer",
+                snippet: "El sistema estará en mantenimiento este fin de semana para...",
+                body: "Estimados usuarios,\n\nEl sistema estará en mantenimiento este fin de semana para realizar actualizaciones de seguridad. Disculpen las molestias.\n\nSoporte IT",
+                unread: false,
+                folder: 'inbox'
+            },
+            {
+                id: 3,
+                sender: "Yo",
+                subject: "Propuesta Comercial",
+                date: "25 Oct",
+                snippet: "Aquí está la propuesta revisada para el cliente...",
+                body: "Hola María,\n\nAquí está la propuesta revisada para el cliente. Avísame si necesitas cambios.\n\nSaludos.",
+                unread: false,
+                folder: 'sent'
+            }
+        ];
+
+        async function init() {
+            try {
+                // Get User Context
+                const userResp = await fetch('/api/me');
+                if (userResp.ok) {
+                    const userData = await userResp.json();
+                    currentOrgId = userData.org_id;
+                    console.log("Org ID:", currentOrgId);
+                    
+                    // Try to fetch real threads
+                    await fetchThreads();
+                } else {
+                    console.warn("Not authenticated, using mock data");
+                    threads = mockThreads;
+                    renderList();
+                }
+            } catch (e) {
+                console.error("Error initializing:", e);
+                threads = mockThreads;
+                renderList();
+            }
+        }
+
+        async function fetchThreads() {
+            try {
+                const resp = await fetch(`/communication-hub/threads?organization_id=${currentOrgId}`);
+                if (resp.ok) {
+                    const data = await resp.json();
+                    if (data.length > 0) {
+                        // Transform API data to UI format
+                        threads = data.map(t => ({
+                            id: t.id,
+                            sender: t.contact_point || "Desconocido",
+                            subject: t.subject || "(Sin asunto)",
+                            date: new Date(t.updated_at).toLocaleDateString(),
+                            snippet: "Haz clic para ver el contenido...", // API doesn't return snippet in list
+                            body: "Cargando contenido...", // Will fetch on click
+                            unread: t.unread_count > 0,
+                            folder: 'inbox' // Default to inbox for now
+                        }));
+                    } else {
+                        threads = mockThreads; // Fallback to mock if empty
+                    }
+                } else {
+                    threads = mockThreads;
+                }
+                renderList();
+            } catch (e) {
+                console.error("Error fetching threads:", e);
+                threads = mockThreads;
+                renderList();
+            }
+        }
+
+        function renderList(folder = 'inbox') {
+            const listEl = document.getElementById('email-list');
+            listEl.innerHTML = '';
+            
+            const filtered = threads.filter(t => t.folder === folder || (folder === 'inbox' && !t.folder)); // Simple filter logic
+            
+            document.getElementById('inbox-count').textContent = threads.filter(t => t.folder === 'inbox' || !t.folder).length;
+
+            filtered.forEach(email => {
+                const el = document.createElement('div');
+                el.className = `email-item ${email.unread ? 'unread' : ''}`;
+                el.onclick = () => selectEmail(email);
+                el.innerHTML = `
+                    <div class="email-header">
+                        <span class="sender">${email.sender}</span>
+                        <span class="date">${email.date}</span>
+                    </div>
+                    <div class="subject">${email.subject}</div>
+                    <div class="snippet">${email.snippet}</div>
+                `;
+                listEl.appendChild(el);
+            });
+        }
+
+        async function selectEmail(email) {
+            // Highlight selected
+            document.querySelectorAll('.email-item').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // If it's a real thread (from API), fetch details
+            if (currentOrgId && email.id > 100) { // Assuming mock IDs are small
+                 // Fetch details logic here
+            }
+
+            const pane = document.getElementById('reading-pane');
+            pane.innerHTML = `
+                <div class="email-content-header">
+                    <div class="email-title">${email.subject}</div>
+                    <div class="email-meta">
+                        <div class="sender-info">
+                            <div class="avatar">${email.sender.charAt(0)}</div>
+                            <div class="sender-details">
+                                <div>${email.sender}</div>
+                                <div>Para: mí</div>
+                            </div>
+                        </div>
+                        <div class="email-actions">
+                            <button class="action-btn" title="Responder"><i class="fas fa-reply"></i></button>
+                            <button class="action-btn" title="Reenviar"><i class="fas fa-share"></i></button>
+                            <button class="action-btn" title="Eliminar"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="email-body">
+                    ${email.body.replace(/\n/g, '<br>')}
+                </div>
+            `;
+            
+            // Mark as read visually
+            email.unread = false;
+            renderList(); // Re-render to update unread status
+        }
+
+        function filterFolder(folder) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            renderList(folder);
+        }
+
+        function openCompose() {
+            document.getElementById('compose-modal').classList.add('active');
+        }
+
+        function closeCompose() {
+            document.getElementById('compose-modal').classList.remove('active');
+        }
+
+        function sendEmail() {
+            // Mock send
+            alert('Correo enviado (simulación)');
+            closeCompose();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>

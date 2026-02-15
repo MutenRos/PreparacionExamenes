@@ -1,0 +1,325 @@
+/* ============================================
+   AAAAA UNIVERSAL ANIMATIONS
+   Apply luxury animations to all templates
+   ============================================ */
+
+/* Container Animations */
+.container,
+.content,
+[class*="container"],
+[class*="panel"],
+[class*="card"],
+[class*="box"],
+[class*="section"] {
+    animation: scaleIn 500ms var(--spring-easing) !important;
+}
+
+/* Header/Navbar Animations */
+.header,
+.navbar,
+[class*="navbar"],
+[class*="header"] {
+    animation: slideDown var(--transition-base) !important;
+}
+
+/* Form Animations */
+.form-group,
+[class*="form-group"],
+.form-container,
+[class*="formulario"] {
+    animation: slideDown var(--transition-base) !important;
+}
+
+/* Form Control Focus Animations */
+input:focus,
+textarea:focus,
+select:focus,
+.form-control:focus {
+    box-shadow: 0 0 0 3px rgba(91, 111, 222, 0.15), inset 0 1px 2px rgba(91, 111, 222, 0.05) !important;
+    animation: pulse 1.5s ease-in-out !important;
+}
+
+/* Button Hover Effects */
+.btn:hover,
+.btn-primary:hover,
+.btn-secondary:hover,
+button:not(:disabled):hover {
+    transform: translateY(-2px) !important;
+    box-shadow: var(--shadow-lg), var(--shadow-glow-sm) !important;
+    transition: all var(--transition-base) !important;
+}
+
+.btn:active,
+button:active {
+    transform: translateY(0) !important;
+}
+
+/* Modal/Dialog Animations */
+.modal,
+[class*="modal"],
+.dialog,
+[class*="dialog"] {
+    backdrop-filter: blur(8px) !important;
+}
+
+.modal.active,
+[class*="modal"].active,
+.dialog.active {
+    animation: fadeIn var(--transition-base) !important;
+}
+
+/* Table Row Hover */
+.table tbody tr:hover,
+table tbody tr:hover {
+    background: var(--gray-50) !important;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05), inset 0 0 8px rgba(91, 111, 222, 0.05) !important;
+}
+
+/* Tab Animations */
+.tab,
+.tab-btn,
+[class*="tab"] {
+    transition: all var(--transition-base) !important;
+}
+
+.tab.active,
+.tab-btn.active,
+.tab-btn.activo,
+[class*="tab"].active {
+    animation: pulse 500ms ease-in-out !important;
+}
+
+/* Badge Animations */
+.badge,
+[class*="badge"] {
+    animation: scaleIn 300ms var(--spring-easing) !important;
+    transition: all var(--transition-base) !important;
+}
+
+/* Alert Animations */
+.alert,
+[class*="alert"],
+.alerta,
+[class*="alerta"] {
+    animation: slideDown var(--transition-base) !important;
+    box-shadow: var(--shadow-sm), inset 0 0 8px rgba(91, 111, 222, 0.05) !important;
+}
+
+/* List Items */
+.list-item,
+[class*="list-item"],
+li {
+    animation: slideDown var(--transition-base) !important;
+}
+
+/* Card Elements */
+.card,
+.stat-card,
+.module-card,
+.product-card,
+[class*="card"] {
+    animation: scaleIn 500ms var(--spring-easing) !important;
+    transition: all var(--transition-base) !important;
+}
+
+.card:hover,
+.stat-card:hover,
+.module-card:hover,
+.product-card:hover,
+[class*="card"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: var(--shadow-lg), var(--shadow-glow-sm) !important;
+}
+
+/* Search/Input Boxes */
+.search-box,
+[class*="search"],
+input[type="search"] {
+    transition: all var(--transition-base) !important;
+}
+
+.search-box:focus,
+[class*="search"]:focus,
+input[type="search"]:focus {
+    box-shadow: 0 0 0 3px rgba(91, 111, 222, 0.15) !important;
+    border-color: var(--primary) !important;
+}
+
+/* Grid Animations - Stagger Effect */
+.grid,
+.grid-container,
+[class*="grid"] {
+    display: grid;
+    animation: scaleIn 600ms var(--spring-easing) !important;
+}
+
+/* Icon Animations */
+.icon,
+[class*="icon"] {
+    transition: transform var(--transition-base), color var(--transition-base) !important;
+}
+
+/* Link Hover Effects */
+a:not([class*="btn"]):not([class*="badge"]) {
+    transition: color var(--transition-base), opacity var(--transition-base) !important;
+}
+
+a:hover:not([class*="btn"]):not([class*="badge"]) {
+    opacity: 0.8 !important;
+}
+
+/* Panel Animations */
+.panel,
+[class*="panel"] {
+    animation: scaleIn 500ms var(--spring-easing) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+/* Dropdown/Menu Animations */
+.dropdown,
+[class*="dropdown"],
+.menu,
+[class*="menu"] {
+    animation: slideDown var(--transition-base) !important;
+}
+
+/* Slide Transitions */
+.slide,
+[class*="slide"] {
+    animation: slideDown var(--transition-base) !important;
+}
+
+/* Fade Animations */
+.fade-in,
+[class*="fade-in"] {
+    animation: fadeIn var(--transition-base) !important;
+}
+
+/* Title/Header Text */
+h1, h2, h3, h4, h5, h6 {
+    animation: slideDown var(--transition-base) !important;
+}
+
+/* Smooth Transitions for All Interactive Elements */
+button,
+input,
+textarea,
+select,
+a,
+[role="button"],
+[role="link"],
+[onclick] {
+    transition: all var(--transition-base) !important;
+}
+
+/* Override specificity for important states */
+.disabled,
+:disabled,
+[disabled] {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+}
+
+/* Focus Visible for Accessibility */
+*:focus-visible {
+    outline: 2px solid var(--primary) !important;
+    outline-offset: 2px !important;
+}
+
+/* Loading/Skeleton Animations */
+.skeleton,
+[class*="skeleton"],
+.loading,
+[class*="loading"],
+.shimmer,
+[class*="shimmer"] {
+    animation: shimmer 2s infinite !important;
+}
+
+/* Success States */
+.success,
+[class*="success"],
+.alert-success {
+    animation: slideDown var(--transition-base) !important;
+    box-shadow: var(--shadow-sm), inset 0 0 8px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* Error States */
+.error,
+[class*="error"],
+.alert-error,
+.alert-danger {
+    animation: slideDown var(--transition-base) !important;
+    box-shadow: var(--shadow-sm), inset 0 0 8px rgba(220, 38, 38, 0.1) !important;
+}
+
+/* Warning States */
+.warning,
+[class*="warning"],
+.alert-warning {
+    animation: slideDown var(--transition-base) !important;
+    box-shadow: var(--shadow-sm), inset 0 0 8px rgba(251, 146, 60, 0.1) !important;
+}
+
+/* Info States */
+.info,
+[class*="info"],
+.alert-info {
+    animation: slideDown var(--transition-base) !important;
+    box-shadow: var(--shadow-sm), inset 0 0 8px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Tooltip Animations */
+.tooltip,
+[class*="tooltip"] {
+    animation: scaleIn 300ms var(--spring-easing) !important;
+}
+
+/* Popover Animations */
+.popover,
+[class*="popover"] {
+    animation: scaleIn 300ms var(--spring-easing) !important;
+}
+
+/* Stagger animations for list items */
+[class*="list"] > li:nth-child(1) { animation-delay: 0ms; }
+[class*="list"] > li:nth-child(2) { animation-delay: 50ms; }
+[class*="list"] > li:nth-child(3) { animation-delay: 100ms; }
+[class*="list"] > li:nth-child(4) { animation-delay: 150ms; }
+[class*="list"] > li:nth-child(5) { animation-delay: 200ms; }
+[class*="list"] > li:nth-child(n+6) { animation-delay: 250ms; }
+
+/* Stagger for grid items */
+[class*="grid"] > [class*="card"]:nth-child(1) { animation-delay: 0ms; }
+[class*="grid"] > [class*="card"]:nth-child(2) { animation-delay: 50ms; }
+[class*="grid"] > [class*="card"]:nth-child(3) { animation-delay: 100ms; }
+[class*="grid"] > [class*="card"]:nth-child(4) { animation-delay: 150ms; }
+[class*="grid"] > [class*="card"]:nth-child(5) { animation-delay: 200ms; }
+[class*="grid"] > [class*="card"]:nth-child(n+6) { animation-delay: 250ms; }
+
+/* Glow effects for important elements */
+.highlight,
+[class*="highlight"],
+.primary,
+[class*="primary"] {
+    box-shadow: var(--shadow-glow-sm) !important;
+}
+
+.highlight:hover,
+[class*="highlight"]:hover,
+.primary:hover,
+[class*="primary"]:hover {
+    box-shadow: var(--shadow-glow) !important;
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Preserve animations on page transitions */
+@media (prefers-reduced-motion: no-preference) {
+    * {
+        scroll-behavior: smooth !important;
+    }
+}

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Plataforma de videos</title>
+    <meta charset="utf-8">
+    <style>
+      html,body{
+        padding:0px;
+        margin:0px;
+        width:100%;
+        height:100%;
+      }
+      nav{
+        width:300px;
+        background:red;
+        position:fixed;
+        height:100%;
+        padding:20px;
+        color:white;
+        box-sizing:border-box;
+        left:-300px;
+        transition:all 1s;
+      }
+      .sacado{
+        left:0px;
+      }
+      header,main,footer{padding:20px;}
+      header{display:flex;align-items:center;justify-content: space-between;}
+    </style>
+  </head>
+  <body>
+    <nav>
+      Yo soy el menú de navegación
+    </nav>
+    <header>
+      <h1>Logo</h1>
+      <div id="hamburguesa">☰</div>
+    </header>
+    <main> 
+    </main>
+    <footer>
+    </footer>
+    <script>
+      var abierto = false;
+      let hamburguesa = document.querySelector("#hamburguesa")
+      let navegacion = document.querySelector("nav");
+      hamburguesa.onclick = function(){
+        if(abierto){
+          // Si esta abierto, ciérralo
+           hamburguesa.textContent = "☰"          // Te pongo la hamburguesa
+           navegacion.classList.remove("sacado"); // Te quito la clase sacado
+           abierto = false;
+        }else{
+          // Si está cerrado, ábrelo
+          hamburguesa.textContent = "🗙"           // Te pongo la hamburguesa
+          navegacion.classList.add("sacado");     // Te pongo la clase sacado
+          abierto = true;
+        }
+      }
+    </script>
+  </body>
+</html>

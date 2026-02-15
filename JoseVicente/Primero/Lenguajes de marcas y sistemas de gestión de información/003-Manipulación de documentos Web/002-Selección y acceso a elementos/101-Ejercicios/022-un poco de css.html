@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      #calculadora{
+        background:grey;
+        width:300px;
+        display:flex;
+        flex-direction:column;
+        color:white;
+        font-family:sans-serif;
+        padding:5px;
+        border-radius:5px;
+      }
+      #calculadora>*{
+        width:100%;
+      }
+      #calculadora table td{
+        width:20%;
+        background:LightGray;
+        padding:10px;
+        text-align:center;
+        border-radius:5px;
+      }
+      #pantalla{
+        height:50px;
+        background:dimgray;
+        border-radius:5px;
+      }
+      header{
+        background:gray;
+        height:30px;
+      }
+    </style>
+  </head>
+  <body> 
+    <div id="calculadora">
+      <header>
+      </header>
+      <div id="pantalla"></div>
+      <div id="teclas">
+        <table width=100%>
+          <tbody>
+            <tr>
+              <td>C</td>
+              <td>(</td>
+              <td>)</td>
+              <td>mod</td>
+              <td>PI</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>8</td>
+              <td>9</td>
+              <td>/</td>
+              <td>sqrt</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>5</td>
+              <td>6</td>
+              <td>*</td>
+              <td>x2</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>2</td>
+              <td>3</td>
+              <td>-</td>
+              <td>=</td>
+            </tr>
+            <tr>
+              <td>0</td>
+              <td>.</td>
+              <td>%</td>
+              <td>+</td>
+              <td>=</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

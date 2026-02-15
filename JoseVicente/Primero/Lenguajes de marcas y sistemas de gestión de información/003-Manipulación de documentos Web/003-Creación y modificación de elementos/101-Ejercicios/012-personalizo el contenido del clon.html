@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body> 
+    <header>
+      <h1>El blog de Jose Vicente</h1>
+      <h2>Mis últimas noticias</h2>
+    </header>
+    <main>
+      
+    </main>
+    <footer>
+      (c) 2025 Jose Vicente Carratala
+    </footer>
+    
+    <template id="articulo">
+      <article>
+        <h3>Titulo de prueba</h3>
+        <time>Fecha de prueba</time>
+        <p>Texto de prueba</p>
+        <img src="">
+      </article>
+    </template>
+    
+    <script>
+      fetch("blog.json")              // Ves y busca un archivo
+      .then(function(resultado){      // Y cuando lo encuentres
+        return resultado.json()       // Interpretalo como json
+      })
+      .then(function(datos){          // Y cuando esto se haya cumplido
+        console.log(datos)            // Vamos a ver los datos en la consola
+        var contenedor = document.querySelector("main")
+        var plantilla = document.querySelector("#articulo")
+        
+        datos.forEach(function(articulo){  // Para cada uno de los articulos del json:
+          let clon = plantilla.content.cloneNode(true) // Creo un clon de la plantilla
+          clon.querySelector("h3").textContent = articulo.titulo
+          contenedor.appendChild(clon)                  // Y añado el clon al contenedor
+        })
+        
+      })
+      
+    </script>
+  </body>
+</html>
+
+
+
+
+

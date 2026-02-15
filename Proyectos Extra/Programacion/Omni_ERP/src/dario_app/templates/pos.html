@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/aaaaa-animations.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <link rel="stylesheet" href="/static/css/tutorial.css">
+    <style>
+        .navbar {
+            background: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+        .navbar-links {
+            display: flex;
+            gap: 20px;
+        }
+        .navbar-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .navbar-links a:hover {
+            opacity: 0.8;
+        }
+        .navbar-links .btn-pro-badge {
+            background: linear-gradient(135deg, var(--color-success), var(--color-success-dark));
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            animation: glow 2s ease-in-out infinite;
+        }
+        .navbar-links .btn-pro-badge:hover {
+            opacity: 1;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5);
+        }
+        .pos-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: calc(100vh - 70px);
+        }
+        .products-panel {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: var(--shadow-sm);
+            animation: scaleIn 600ms var(--spring-easing);
+        }
+        .cart-panel {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-sm);
+            animation: scaleIn 600ms var(--spring-easing);
+        }
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--gray-300);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .cart-item-qty {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .qty-btn {
+            background: var(--gray-200);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+        .qty-btn:hover {
+            background: var(--gray-300);
+        }
+        .cart-totals {
+            border-top: 2px solid var(--gray-200);
+            padding-top: 15px;
+        }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .total-row.grand {
+            font-size: 1.25em;
+            font-weight: 600;
+            color: var(--primary);
+            border-top: 1px solid var(--gray-200);
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        .payment-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .payment-method {
+            padding: 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 13px;
+        }
+        .payment-method:hover {
+            border-color: var(--primary);
+            background: var(--gray-100);
+        }
+        .payment-method.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Punto de Venta</h1>
+        <div class="navbar-links">
+            <a href="/app/pos/widgets" class="btn-pro-badge" title="Feature PRO">🛒 Widgets</a>
+            <a href="/app/dashboard">Dashboard</a>
+            <a href="/app/logout">Cerrar sesión</a>
+        </div>
+    </nav>
+
+    {% include '_assistant_panel.html' %}
+
+    <div class="pos-container">
+        <div id="moduleDisabledMsg" class="alert alert-warning" style="display:none; margin: 10px;">
+            ⚠️ El módulo POS no está habilitado para su organización. Actívelo en Configuración → Módulos.
+        </div>
+        <script>
+        async function verificarModuloPOS() {
+            try {
+                const resp = await fetch('/api/organization/modules-config', {
+                    headers: { 'Authorization': 'Bearer ' + (localStorage.getItem('token') || '') }
+                });
+                if (!resp.ok) return;
+                const data = await resp.json();
+                const enabled = data.enabled_modules || [];
+                const activo = enabled.includes('pos');
+                const msg = document.getElementById('moduleDisabledMsg');
+                if (!activo) {
+                    msg.style.display = 'block';
+                    const gridLeft = document.querySelector('.products-panel');
+                    const gridRight = document.querySelector('.cart-panel');
+                    if (gridLeft) gridLeft.style.display = 'none';
+                    if (gridRight) gridRight.style.display = 'none';
+                }
+            } catch (e) {
+                console.warn('No se pudo verificar módulos');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', verificarModuloPOS);
+        </script>
+        <!-- Products Panel -->
+        <div class="products-panel">
+            <input type="text" class="search-box" placeholder="Buscar producto por nombre o código de barras..." id="searchInput">
+
+            <!-- Category Filters -->
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button class="category-filter active" data-filter="bombas" onclick="filterByCategory('bombas')" style="flex: 1; padding: 12px; border: 2px solid var(--primary); background: var(--primary-light); color: var(--primary); border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s;">
+                    💧 Bombas Completas
+                </button>
+                <button class="category-filter" data-filter="recambios" onclick="filterByCategory('recambios')" style="flex: 1; padding: 12px; border: 2px solid var(--gray-300); background: white; color: var(--gray-700); border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s;">
+                    🔧 Recambios / Piezas
+                </button>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <p class="text-center text-gray-600 py-40">Cargando productos...</p>
+            </div>
+        </div>
+
+        <!-- Cart Panel -->
+        <div class="cart-panel">
+            <h2 class="mb-20">Carrito</h2>
+
+            <div class="cart-items" id="cartItems">
+                <p class="text-center text-gray-600 py-40">Carrito vacío</p>
+            </div>
+
+            <div class="cart-totals">
+                <div class="total-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">$0.00</span>
+                </div>
+                <div class="total-row">
+                    <span>Descuento:</span>
+                    <span id="descuento">$0.00</span>
+                </div>
+                <div class="total-row">
+                    <span>Impuesto (18%):</span>
+                    <span id="impuesto">$0.00</span>
+                </div>
+                <div class="total-row grand">
+                    <span>TOTAL:</span>
+                    <span id="total">$0.00</span>
+                </div>
+            </div>
+
+            <div class="payment-methods mt-20">
+                <div class="payment-method active" onclick="selectPayment('efectivo')">Efectivo</div>
+                <div class="payment-method" onclick="selectPayment('tarjeta')">Tarjeta</div>
+            </div>
+
+            <div class="mt-10">
+                <label class="text-gray-700 mb-6">📝 Observaciones del comercial</label>
+                <textarea id="observaciones" rows="3" placeholder="Notas sobre modelo, entrega, condiciones..." style="width: 100%; padding: 10px; border: 1px solid var(--gray-300); border-radius: 6px;"></textarea>
+            </div>
+
+            <button class="btn btn-primary mt-20" onclick="processSale()">Procesar Venta</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        let paymentMethod = 'efectivo';
+        let productos = [];
+        let currentFilter = 'todos'; // Default: mostrar todos los productos del tenant
+
+        async function cargarProductos() {
+            try {
+                // Solo datos del tenant autenticado
+                let resp = await fetch('/api/inventario/?limit=600', { credentials: 'include' });
+                let data = [];
+                if (resp.ok) {
+                    data = await resp.json();
+                }
+                // Show all active products visible in POS
+                productos = data.filter(p => 
+                    p.activo !== false && 
+                    p.visible_en_pos !== false
+                );
+                filterByCategory(currentFilter);
+            } catch (err) {
+                console.error(err);
+                document.getElementById('productsGrid').innerHTML = '<p style="text-align: center; padding: 40px; color: var(--color-danger);">Error al cargar productos</p>';
+            }
+        }
+
+        function filterByCategory(category) {
+            currentFilter = category;
+            let filtered = [];
+            
+            if (category === 'todos') {
+                filtered = productos;
+            } else if (category === 'bombas') {
+                filtered = productos.filter(p => p.categoria && p.categoria.toLowerCase().includes('bomba'));
+            } else if (category === 'recambios') {
+                // Todo lo que NO sea bomba es recambio
+                filtered = productos.filter(p => !p.categoria || !p.categoria.toLowerCase().includes('bomba'));
+            }
+            
+            // Update button styles
+            document.querySelectorAll('.category-filter').forEach(btn => {
+                if (btn.dataset.filter === category) {
+                    btn.style.borderColor = 'var(--primary)';
+                    btn.style.background = 'var(--primary-light)';
+                    btn.style.color = 'var(--primary)';
+                    btn.classList.add('active');
+                } else {
+                    btn.style.borderColor = 'var(--gray-300)';
+                    btn.style.background = 'white';
+                    btn.style.color = 'var(--gray-700)';
+                    btn.classList.remove('active');
+                }
+            });
+            
+            renderProductos(filtered);
+        }
+
+        function renderProductos(lista) {
+            const grid = document.getElementById('productsGrid');
+            if (lista.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; padding: 40px; color: var(--text-secondary);">No hay productos visibles en POS</p>';
+                return;
+            }
+            grid.innerHTML = lista.map(p => `
+                <div class="product-card" onclick="addToCart(${p.id}, '${p.nombre.replace(/'/g, "\\'")}', ${p.precio_venta})">
+                    <div class="product-name">${p.nombre}</div>
+                    <div class="product-price">$${parseFloat(p.precio_venta).toFixed(2)}</div>
+                    <div class="product-stock">Stock: ${p.stock_actual}</div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(id, name, price) {
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ id, name, price, qty: 1 });
+            }
+            updateCart();
+        }
+
+        function updateQty(id, delta) {
+            const item = cart.find(item => item.id === id);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) {
+                    cart = cart.filter(i => i.id !== id);
+                }
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartEl = document.getElementById('cartItems');
+
+            if (cart.length === 0) {
+                cartEl.innerHTML = '<p class="text-center text-gray-600 py-40">Carrito vacío</p>';
+            } else {
+                cartEl.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div>
+                            <div class="font-weight-bold">${item.name}</div>
+                            <div class="text-gray-600 text-sm">$${item.price.toFixed(2)} c/u</div>
+                        </div>
+                        <div class="cart-item-qty">
+                            <button class="qty-btn" onclick="updateQty(${item.id}, -1)">−</button>
+                            <span>${item.qty}</span>
+                            <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
+                            <span class="font-weight-bold">$${(item.price * item.qty).toFixed(2)}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const descuento = 0;
+            const impuesto = (subtotal - descuento) * 0.18;
+            const total = subtotal - descuento + impuesto;
+
+            document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+            document.getElementById('descuento').textContent = '$' + descuento.toFixed(2);
+            document.getElementById('impuesto').textContent = '$' + impuesto.toFixed(2);
+            document.getElementById('total').textContent = '$' + total.toFixed(2);
+        }
+
+        function selectPayment(method) {
+            paymentMethod = method;
+            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        async function processSale() {
+            if (cart.length === 0) {
+                alert('El carrito está vacío');
+                return;
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const descuento = 0;
+            const impuesto = (subtotal - descuento) * 0.18;
+            const total = subtotal - descuento + impuesto;
+
+            const obs = document.getElementById('observaciones').value.trim();
+            const payload = {
+                cliente_id: null,
+                detalles: cart.map(item => ({ producto_id: item.id, cantidad: item.qty, precio_unitario: item.price, descuento: 0 })),
+                metodo_pago: paymentMethod,
+                monto_pagado: total,
+                descuento: 0,
+                observaciones: obs || ""
+            };
+
+            try {
+                const resp = await fetch('/api/pos/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const data = await resp.json();
+                if (resp.ok) {
+                    alert('Venta enviada para aprobación');
+                    cart = [];
+                    updateCart();
+                    document.getElementById('observaciones').value = '';
+                    // Optional: redirect to ventas approvals
+                    window.location.href = '/app/ventas';
+                } else {
+                    alert('Error al procesar venta: ' + (data.detail || 'desconocido'));
+                }
+            } catch (e) {
+                alert('Error al enviar venta: ' + e.message);
+            }
+        }
+
+        // Barcode scanner support
+        let barcode = '';
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                if (barcode) {
+                    console.log('Barcode scanned:', barcode);
+                    // Would search product by barcode
+                    barcode = '';
+                }
+            } else {
+                barcode += e.key;
+            }
+        });
+
+        // Search productos (respeta el filtro de categoría actual)
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            
+            // Primero filtrar por categoría actual
+            let filtered = [];
+            if (currentFilter === 'bombas') {
+                filtered = productos.filter(p => p.categoria && p.categoria.toLowerCase().includes('bomba'));
+            } else if (currentFilter === 'recambios') {
+                filtered = productos.filter(p => !p.categoria || !p.categoria.toLowerCase().includes('bomba'));
+            } else {
+                filtered = productos;
+            }
+            
+            // Luego filtrar por término de búsqueda si existe
+            if (term) {
+                filtered = filtered.filter(p =>
+                    p.nombre.toLowerCase().includes(term) ||
+                    p.codigo.toLowerCase().includes(term) ||
+                    (p.sku && p.sku.toLowerCase().includes(term))
+                );
+            }
+            
+            renderProductos(filtered);
+        });
+
+        // Load products on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarProductos();
+        });
+    </script>
+    <script defer src="/static/assistant.js?v=2"></script>
+    <script defer src="/static/assistant-basic-panel.js?v=2"></script>
+    <script defer src="/static/voice-assistant-widget.js?v=2"></script>
+    <script defer src="/static/voice-widget.js?v=2"></script>
+    <script src="/static/js/module-tutorial.js?v=2"></script>
+</body>
+</html>

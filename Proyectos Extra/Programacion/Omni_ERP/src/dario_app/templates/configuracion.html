@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <title>Configuración - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <style>
+        body {
+            background: #f8fafc;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--brand-primary); }
+        .user-menu a {
+            margin-left: 1.5rem;
+            text-decoration: none;
+            color: var(--gray-600);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+        .page-subtitle {
+            color: var(--gray-500);
+            margin-bottom: 2rem;
+        }
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            border-bottom: 2px solid var(--gray-200);
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .tab-button {
+            padding: 1rem 1.5rem;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+        .tab-button:hover {
+            color: var(--brand-primary);
+        }
+        .tab-button.active {
+            color: var(--brand-primary);
+            border-bottom-color: var(--brand-primary);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .config-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+        .config-section h3 {
+            color: var(--brand-primary);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--gray-100);
+            padding-bottom: 1rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(var(--brand-primary-rgb), 0.1);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        /* Node type styling */
+        .node {
+            transition: all 0.2s ease;
+        }
+        .node[data-type="state"] {
+            background: var(--color-info-light);
+            border-color: #0c4a6e;
+            color: #0c4a6e;
+        }
+        .node[data-type="action"] {
+            background: #fed7aa;
+            border-color: #7c2d12;
+            color: #7c2d12;
+        }
+        .node[data-type="condition"] {
+            background: #e9d5ff;
+            border-color: #5b21b6;
+            color: #5b21b6;
+        }
+        .node[data-type="timer"] {
+            background: #dcfce7;
+            border-color: #166534;
+            color: #166534;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        .btn-primary {
+            background: var(--brand-primary);
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background: var(--brand-primary-dark);
+        }
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--brand-primary);
+            padding: 0.75rem 2rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover {
+            background: var(--gray-200);
+        }
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .alert-info {
+            background: var(--color-info-light);
+            color: #0c4a6e;
+            border-left: 4px solid var(--color-info);
+        }
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+            border-left: 4px solid #22c55e;
+        }
+        .alert-warning {
+            background: var(--color-warning-light);
+            color: #78350f;
+            border-left: 4px solid var(--color-warning);
+        }
+        .help-text {
+            color: var(--gray-500);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">⚡ OmniERP</div>
+        <div class="user-menu">
+            <a href="/app/dashboard">📊 Dashboard</a>
+            <a href="/app/logout">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="page-title">⚙️ Configuración del Sistema</div>
+        <div class="page-subtitle">Personaliza tu ERP según tus necesidades</div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('general')">📱 General</button>
+            <button class="tab-button" onclick="switchTab('facturacion')">🧾 Facturación</button>
+            <button class="tab-button" onclick="switchTab('inventario')">📦 Inventario</button>
+            <button class="tab-button" onclick="switchTab('pos')">💳 POS</button>
+            <button class="tab-button" onclick="switchTab('modulos')">🧩 Módulos</button>
+            <button class="tab-button" onclick="switchTab('flujo')">🗺️ Flujo</button>
+            <button class="tab-button" onclick="switchTab('notificaciones')">🔔 Notificaciones</button>
+            <button class="tab-button" onclick="switchTab('seguridad')">🔒 Seguridad</button>
+            <button class="tab-button" onclick="switchTab('integraciones')">🔗 Integraciones</button>
+            <button class="tab-button" onclick="switchTab('automatizaciones')">🤖 Automatizaciones</button>
+        </div>
+
+        <!-- TAB: GENERAL -->
+        <div id="general" class="tab-content active">
+            <div class="config-section">
+                <h3>📱 Información de Empresa</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nombre Comercial</label>
+                        <input type="text" id="nombreComercial" placeholder="Tu nombre de negocio">
+                    </div>
+                    <div class="form-group">
+                        <label>Eslogan</label>
+                        <input type="text" id="eslogan" placeholder="Tu eslogan principal">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Teléfono Principal</label>
+                        <input type="tel" id="telefonoPrincipal" placeholder="+34 912 345 678">
+                    </div>
+                    <div class="form-group">
+                        <label>Email de Contacto</label>
+                        <input type="email" id="emailContacto" placeholder="contacto@empresa.com">
+                    </div>
+                </div>
+                <div class="alert alert-info">
+                    ℹ️ Estos datos aparecerán en tus facturas y comunicaciones con clientes.
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="guardarConfiguracion('general')">Guardar Cambios</button>
+                </div>
+            </div>
+
+            <div class="config-section">
+                <h3>🎨 Personalización Visual</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Color Primario</label>
+                        <input type="color" id="colorPrimario" value="var(--color-info-dark)">
+                    </div>
+                    <div class="form-group">
+                        <label>Color Secundario</label>
+                        <input type="color" id="colorSecundario" value="var(--gray-500)">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tema Predeterminado</label>
+                        <select id="temaPredeterminado">
+                            <option value="claro">Claro</option>
+                            <option value="oscuro">Oscuro</option>
+                            <option value="auto">Auto (según sistema)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Idioma Principal</label>
+                        <select id="idiomaPrincipal">
+                            <option value="es">Español</option>
+                            <option value="en">English</option>
+                            <option value="pt">Português</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="guardarConfiguracion('general')">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: FACTURACIÓN -->
+        <div id="facturacion" class="tab-content">
+            <div class="config-section">
+                <h3>🧾 Configuración de Facturación</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Prefijo de Factura</label>
+                        <input type="text" id="prefijoFactura" value="F-" placeholder="F-">
+                        <div class="help-text">Ej: F-001, F-002, etc.</div>
+                    </div>
+                    <div class="form-group">
+                        <label>IVA por Defecto (%)</label>
+                        <input type="number" id="ivaPorDefecto" value="21" min="0" max="100">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Días de Vencimiento por Defecto</label>
+                        <input type="number" id="diasVencimiento" value="30" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Formato de Impresión</label>
+                        <select id="formatoImpresion">
+                            <option value="A4">A4</option>
+                            <option value="A5">A5</option>
+                            <option value="80mm">80mm (Thermal)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="autorizacionDescuento" checked>
+                    <label for="autorizacionDescuento">Requiere autorización para descuentos superiores al 20%</label>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="guardarConfiguracion('facturacion')">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: INVENTARIO -->
+        <div id="inventario" class="tab-content">
+            <div class="config-section">
+                <h3>📦 Control de Inventario</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Stock Mínimo por Defecto</label>
+                        <input type="number" id="stockMinimoDefecto" value="10" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Máximo por Defecto</label>
+                        <input type="number" id="stockMaximoDefecto" value="1000" min="1">
+                    </div>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="alertaStockMinimo" checked>
+                    <label for="alertaStockMinimo">Alertar cuando stock está bajo</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="codigoBarrasAutomatico" checked>
+                    <label for="codigoBarrasAutomatico">Generar códigos de barras automáticamente</label>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="guardarConfiguracion('inventario')">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: POS -->
+        <div id="pos" class="tab-content">
+            <div class="config-section">
+                <h3>💳 Configuración de Punto de Venta</h3>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="modoTactil" checked>
+                    <label for="modoTactil">Modo táctil (optimizado para pantallas)</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="mostrarImagenesProductos" checked>
+                    <label for="mostrarImagenesProductos">Mostrar imágenes de productos</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="permitirDescuentoPOS" checked>
+                    <label for="permitirDescuentoPOS">Permitir descuentos en POS</label>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Productos por Página</label>
+                        <input type="number" id="productosPorPagina" value="12" min="6" max="50">
+                    </div>
+                    <div class="form-group">
+                        <label>Descuento Máximo (%)</label>
+                        <input type="number" id="descuentoMaximoPOS" value="10" min="0" max="100">
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="guardarConfiguracion('pos')">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: MÓDULOS -->
+        <div id="modulos" class="tab-content">
+            <div class="config-section">
+                <h3>🧩 Selección de Módulos</h3>
+                <div id="modulosLista" class="form-group">
+                    <!-- Lista dinámica de módulos -->
+                </div>
+                <div class="alert alert-info">
+                    💡 Desactiva módulos que no uses. Las secciones del dashboard se ocultarán y las APIs devolverán un mensaje informativo.
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="guardarModulos()">Guardar Módulos</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: FLUJO -->
+        <div id="flujo" class="tab-content">
+            <div class="config-section">
+                <h3>🗺️ Diseñador de Flujo (Mermaid)</h3>
+                <div class="form-group">
+                    <label>Diagrama Mermaid</label>
+                    <textarea id="workflowTexto" placeholder="flowchart TD\nA --> B\nB --> C"></textarea>
+                    <div class="help-text">Usa sintaxis Mermaid para definir el flujo. Ejemplo: <code>flowchart TD</code></div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-secondary" onclick="renderMermaid()">Previsualizar</button>
+                    <button class="btn-primary" onclick="guardarWorkflow()">Guardar Flujo</button>
+                </div>
+            </div>
+            <div class="config-section">
+                <h3>👀 Previsualización</h3>
+                <div id="mermaidPreview" class="alert alert-info">La previsualización aparecerá aquí.</div>
+            </div>
+
+            <div class="config-section">
+                <h3>🧩 Editor Drag & Drop</h3>
+                <div style="display:grid; grid-template-columns: 280px 1fr; gap: 16px;">
+                    <div>
+                        <div style="font-weight:600; margin-bottom:8px;">Paleta de estados</div>
+                        <div id="palette" style="display:flex; flex-direction:column; gap:8px;">
+                            <div style="font-size:0.85rem; font-weight:600; color:var(--gray-500); margin-top:4px;">Estados</div>
+                            <div class="dd-item" draggable="true" data-label="Venta/POS aprobada" data-type="state">🛒 Venta/POS aprobada</div>
+                            <div class="dd-item" draggable="true" data-label="Planificación" data-type="state">🗓️ Planificación</div>
+                            <div class="dd-item" draggable="true" data-label="Recepción de Materiales" data-type="state">📥 Recepción de Materiales</div>
+                            <div class="dd-item" draggable="true" data-label="Picking" data-type="state">🧺 Picking</div>
+                            <div class="dd-item" draggable="true" data-label="Montaje" data-type="state">🔧 Montaje</div>
+                            <div class="dd-item" draggable="true" data-label="En Proceso" data-type="state">⚙️ En Proceso</div>
+                            <div class="dd-item" draggable="true" data-label="Pruebas" data-type="state">🧰 Pruebas</div>
+                            <div class="dd-item" draggable="true" data-label="Calidad" data-type="state">🧪 Calidad</div>
+                            <div class="dd-item" draggable="true" data-label="Incidencias" data-type="state">❗ Incidencias</div>
+                            <div class="dd-item" draggable="true" data-label="Reproceso" data-type="state">♻️ Reproceso</div>
+                            <div class="dd-item" draggable="true" data-label="Embalaje" data-type="state">📦 Embalaje</div>
+                            <div class="dd-item" draggable="true" data-label="Expedición" data-type="state">🚚 Expedición</div>
+                            <div class="dd-item" draggable="true" data-label="Entrega" data-type="state">📬 Entrega</div>
+                            <div class="dd-item" draggable="true" data-label="Postventa" data-type="state">🛠️ Postventa</div>
+                            <div class="dd-item" draggable="true" data-label="Completada" data-type="state">🏁 Completada</div>
+                            <div style="font-size:0.85rem; font-weight:600; color:var(--gray-500); margin-top:8px;">Acciones</div>
+                            <div class="dd-item" draggable="true" data-label="Generar OP" data-type="action">🏷️ Generar OP</div>
+                            <div class="dd-item" draggable="true" data-label="Asignar Sección" data-type="action">🏭 Asignar Sección</div>
+                            <div class="dd-item" draggable="true" data-label="Adquisición de Materiales" data-type="action">📦 Adquisición de Materiales</div>
+                            <div style="font-size:0.85rem; font-weight:600; color:var(--gray-500); margin-top:8px;">Lógica</div>
+                            <div class="dd-item" draggable="true" data-label="Condición (if)" data-type="condition">❓ Condición (if)</div>
+                            <div class="dd-item" draggable="true" data-label="Temporizador" data-type="timer">⏱️ Temporizador</div>
+                        </div>
+                        <div style="margin-top:12px; display:flex; gap:8px;">
+                            <button class="btn-secondary" onclick="exportMermaidFromCanvas()">Generar Mermaid</button>
+                            <button class="btn-secondary" onclick="clearCanvas()">Limpiar</button>
+                            <button class="btn-secondary" onclick="showValidationIssues()" style="background: var(--primary-light);">📋 Validar</button>
+                        </div>
+                        <div id="validationStatus" style="margin-top:8px; padding:8px; border-radius:6px; font-size:0.85rem; display:none;">
+                            <div id="validationList"></div>
+                        </div>
+                        <div style="margin-top:12px; display:flex; gap:8px;">
+                            <input type="text" id="customStateLabel" placeholder="Nuevo estado..." style="flex:1; padding:0.5rem; border:1px solid var(--gray-300); border-radius:8px;">
+                            <button class="btn-secondary" onclick="addCustomState()">Añadir estado</button>
+                        </div>
+                        <div class="help-text" style="margin-top:8px;">Arrastra estados al lienzo. Usa modo conectar para crear flechas.</div>
+                        <div class="help-text" style="margin-top:8px; font-size:0.8rem; color: var(--brand-secondary); background: var(--primary-light); padding:8px; border-radius:6px;">
+                            <strong>⌨️ Atajos:</strong> Espacio+arrastrar=panear | Rueda=zoom | +/-=zoom in/out | C=centrar | F=ajustar
+                        </div>
+                        <div style="margin-top:12px;">
+                            <label style="font-weight:600;">Modo conectar</label>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="connectMode">
+                                <label for="connectMode">Habilitar conexiones entre nodos</label>
+                            </div>
+                            <label style="font-weight:600; margin-top:10px;">Modo borrar conexiones</label>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="deleteEdgeMode">
+                                <label for="deleteEdgeMode">Permitir eliminar flechas clicando sobre ellas</label>
+                            </div>
+                        </div>
+                        <div style="margin-top:12px;">
+                            <label style="font-weight:600;">Inspector de nodo seleccionado</label>
+                            <div class="form-group" style="margin-top:8px;">
+                                <label>Etiqueta</label>
+                                <input type="text" id="inspectorLabel" placeholder="Nombre del nodo" />
+                            </div>
+                            <div class="form-group" style="margin-top:8px;">
+                                <label>Tipo</label>
+                                <select id="inspectorType" style="width:100%; padding:0.5rem;" onchange="changeNodeType()">
+                                    <option value="state">Estado (azul)</option>
+                                    <option value="action">Acción (naranja)</option>
+                                    <option value="condition">Condición (morado)</option>
+                                    <option value="timer">Temporizador (verde)</option>
+                                </select>
+                            </div>
+                            <!-- Dynamic inspector content (shown/hidden based on type) -->
+                            <div id="inspectorContent" style="margin-top:12px; min-height:80px;">
+                                <!-- Condition form -->
+                                <div id="conditionForm" style="display:none;">
+                                    <div class="form-group">
+                                        <label>Variable</label>
+                                        <input type="text" id="condVar" placeholder="ej. stock, total, cliente_vip" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Operador</label>
+                                        <select id="condOp" style="width:100%; padding:0.5rem;">
+                                            <option value="==">==(igual)</option>
+                                            <option value="!=">!=(no igual)</option>
+                                            <option value="<"><(menor)</option>
+                                            <option value=">">>(mayor)</option>
+                                            <option value="<=")<=(menor o igual)</option>
+                                            <option value=">=">>=(mayor o igual)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Valor</label>
+                                        <input type="text" id="condVal" placeholder="ej. 100, true, VIP" />
+                                    </div>
+                                </div>
+                                <!-- Timer form -->
+                                <div id="timerForm" style="display:none;">
+                                    <div class="form-group">
+                                        <label>Duración</label>
+                                        <input type="number" id="timerDuration" placeholder="60" min="0" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Unidad</label>
+                                        <select id="timerUnit" style="width:100%; padding:0.5rem;">
+                                            <option value="seconds">Segundos</option>
+                                            <option value="minutes">Minutos</option>
+                                            <option value="hours">Horas</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Generic props (for state/action) -->
+                                <div id="genericProps" style="display:none;">
+                                    <div class="form-group">
+                                        <label>Propiedades (JSON)</label>
+                                        <textarea id="inspectorProps" style="height:100px;" placeholder="{\n  \"checklist\": true\n}"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="button-group">
+                                <button class="btn-secondary" onclick="renameSelectedNode()">Renombrar</button>
+                                <button class="btn-secondary" onclick="updateSelectedProps()">Guardar</button>
+                                <button class="btn-secondary" onclick="deleteSelectedNode()">Eliminar nodo</button>
+                            </div>
+                            <div class="help-text">Haz clic en un nodo para seleccionarlo (modo conectar desactivado).</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                            <button class="btn-secondary" onclick="zoomOut()">-</button>
+                            <button class="btn-secondary" onclick="zoomReset()">100%</button>
+                            <button class="btn-secondary" onclick="zoomIn()">+</button>
+                            <div style="width:1px; height:20px; background:var(--gray-200); margin:0 6px;"></div>
+                            <button class="btn-secondary" onclick="centerView()">Centrar</button>
+                            <button class="btn-secondary" onclick="fitToContent()">Ajustar contenido</button>
+                        </div>
+                        <div id="canvasWrapper" style="position:relative; height:70vh; min-height:640px; padding-bottom:140px; border:2px dashed var(--gray-300); border-radius:12px; overflow:auto; background: var(--bg-secondary);">
+                            <div id="canvas" style="position:relative; width:2000px; height:1400px; background-size:20px 20px; background-image: linear-gradient(to right, var(--border-color-light) 1px, transparent 1px), linear-gradient(to bottom, var(--border-color-light) 1px, transparent 1px); transform-origin: 0 0;">
+                                <div style="position:absolute; inset:0; pointer-events:none;" id="edgesLayer"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: NOTIFICACIONES -->
+        <div id="notificaciones" class="tab-content">
+            <div class="config-section">
+                <h3>📧 Configuración SMTP (Email)</h3>
+                <div class="alert alert-warning">
+                    ⚠️ Configura estos datos para enviar facturas y notificaciones por email.
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Host SMTP</label>
+                        <input type="text" id="smtpHost" placeholder="smtp.gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Puerto SMTP</label>
+                        <input type="number" id="smtpPort" value="587" min="1" max="65535">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email de Envío</label>
+                        <input type="email" id="smtpUser" placeholder="tu-email@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" id="smtpPassword" placeholder="••••••••">
+                    </div>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="smtpSSL">
+                    <label for="smtpSSL">Usar SSL/TLS</label>
+                </div>
+                <div class="button-group">
+                    <button class="btn-secondary" onclick="testEmail()">📧 Enviar Email de Prueba</button>
+                    <button class="btn-primary" onclick="guardarConfiguracion('notificaciones')">Guardar Cambios</button>
+                </div>
+            </div>
+
+            <div class="config-section">
+                <h3>🔔 Preferencias de Notificaciones</h3>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="notificarNuevaVenta" checked>
+                    <label for="notificarNuevaVenta">Notificar nuevas ventas</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="notificarBajoStock" checked>
+                    <label for="notificarBajoStock">Notificar stock bajo</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="notificarPagoRecibido" checked>
+                    <label for="notificarPagoRecibido">Notificar pagos recibidos</label>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="guardarConfiguracion('notificaciones')">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: SEGURIDAD -->
+        <div id="seguridad" class="tab-content">
+            <div class="config-section">
+                <h3>🔒 Configuración de Seguridad</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Longitud Mínima de Contraseña</label>
+                        <input type="number" id="longitudMinPassword" value="8" min="4" max="50">
+                    </div>
+                    <div class="form-group">
+                        <label>Días de Expiración de Contraseña</label>
+                        <input type="number" id="diasExpiracionPassword" value="90" min="0">
+                        <div class="help-text">0 = no expira</div>
+                    </div>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="requiereMayusculas" checked>
+                    <label for="requiereMayusculas">Requiere mayúsculas en contraseña</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="requiereNumeros" checked>
+                    <label for="requiereNumeros">Requiere números en contraseña</label>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="guardarConfiguracion('seguridad')">Guardar Cambios</button>
+                    <a href="/app/roles" class="btn-secondary" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">🔐 Gestionar Roles y Permisos</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: INTEGRACIONES -->
+        <div id="integraciones" class="tab-content">
+            <div class="config-section">
+                <h3>🔗 Integraciones de Pago</h3>
+                <div class="alert alert-info">
+                    💡 Activa métodos de pago adicionales para que tus clientes tengan más opciones.
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="mercadopagoActivo">
+                    <label for="mercadopagoActivo">Mercado Pago</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="paypalActivo">
+                    <label for="paypalActivo">PayPal</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="stripeActivo">
+                    <label for="stripeActivo">Stripe</label>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="guardarConfiguracion('integraciones')">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: AUTOMATIZACIONES -->
+        <div id="automatizaciones" class="tab-content">
+            <div class="config-section">
+                <h3>🤖 Reglas de Automatización</h3>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="autoEnviarFactura" checked>
+                    <label for="autoEnviarFactura">Enviar factura automáticamente al crear venta</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="autoRecordatorioPago" checked>
+                    <label for="autoRecordatorioPago">Enviar recordatorio de pago automáticamente</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="autoResumenDiario" checked>
+                    <label for="autoResumenDiario">Enviar resumen diario por email</label>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="guardarConfiguracion('automatizaciones')">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        function switchTab(tabName, ev) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            // Add active class to clicked button
+            const e = ev || window.event;
+            if (e && e.target) {
+                e.target.classList.add('active');
+            }
+        }
+
+        async function guardarConfiguracion(tipo) {
+            console.log('Guardando configuración de:', tipo);
+            // Implementar después con API
+            alert('Configuración guardada (aún en desarrollo)');
+        }
+
+        async function cargarModulos() {
+            try {
+                const resp = await fetch('/api/organization/modules-config', {
+                    headers: { 'Authorization': 'Bearer ' + (localStorage.getItem('token') || '') }
+                });
+                if (!resp.ok) throw new Error('Error al cargar módulos');
+                const data = await resp.json();
+                const cont = document.getElementById('modulosLista');
+                cont.innerHTML = '';
+                data.available_modules.forEach(m => {
+                    const enabled = data.enabled_modules.includes(m);
+                    const div = document.createElement('div');
+                    div.className = 'checkbox-group';
+                    div.innerHTML = `<input type="checkbox" id="mod_${m}" ${enabled ? 'checked' : ''}><label for="mod_${m}">${m.replace('_',' ')}</label>`;
+                    cont.appendChild(div);
+                });
+            } catch (e) {
+                console.error(e);
+                alert('No se pudieron cargar los módulos');
+            }
+        }
+
+        async function guardarModulos() {
+            const checks = Array.from(document.querySelectorAll('#modulosLista input[type="checkbox"]'));
+            const enabled = checks.filter(c => c.checked).map(c => c.id.replace('mod_',''));
+            try {
+                const resp = await fetch('/api/organization/modules-config', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + (localStorage.getItem('token') || '')
+                    },
+                    body: JSON.stringify({ enabled_modules: enabled })
+                });
+                if (!resp.ok) throw new Error('Error al guardar módulos');
+                alert('Módulos actualizados');
+            } catch (e) {
+                console.error(e);
+                alert('No se pudieron guardar los módulos');
+            }
+        }
+
+        // ===== Drag & Drop Workflow Builder =====
+        const nodes = []; // {id, label, x, y, el}
+        const edges = []; // {fromId, toId}
+        let selectedSourceId = null;
+        let selectedNodeId = null;
+        let isDraggingNode = false;
+        let nodeCounter = 1;
+            const SCROLL_ZONE = 40;
+            const SCROLL_SPEED = 12;
+            const GRID_SIZE = 10;
+            let zoom = 1;
+            const MIN_ZOOM = 0.5, MAX_ZOOM = 2, ZOOM_STEP = 0.1;
+            // Panning state
+            let panKey = false; // Space pressed
+            let isPanning = false;
+            let panStartX = 0, panStartY = 0;
+            let panScrollLeft = 0, panScrollTop = 0;
+
+        function createNode(label, x, y, customId, type = 'state', props = {}) {
+            const id = customId || ('N' + nodeCounter++);
+            const el = document.createElement('div');
+            el.className = 'node';
+            el.textContent = label;
+            el.style.position = 'absolute';
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            el.style.padding = '8px 12px';
+            el.style.borderRadius = '8px';
+            el.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
+            el.style.cursor = 'grab';
+            el.style.border = '2px solid';
+            el.setAttribute('data-id', id);
+            el.setAttribute('data-type', type);
+
+            // Drag within canvas using pointer capture and delta movement (respects zoom)
+            let dragging = false; let dragCandidate = false; let startMouseX=0; let startMouseY=0; let startLeft=0; let startTop=0;
+            const onMove = (e) => {
+                if (!dragging) return;
+                const wrapper = document.getElementById('canvasWrapper');
+                const canvasEl = document.getElementById('canvas');
+                if (!wrapper || !canvasEl) return;
+                const wrapperRect = wrapper.getBoundingClientRect();
+
+                // Auto-scroll near edges
+                if (e.clientX > wrapperRect.right - SCROLL_ZONE) {
+                    wrapper.scrollLeft += SCROLL_SPEED;
+                } else if (e.clientX < wrapperRect.left + SCROLL_ZONE) {
+                    wrapper.scrollLeft = Math.max(0, wrapper.scrollLeft - SCROLL_SPEED);
+                }
+                if (e.clientY > wrapperRect.bottom - SCROLL_ZONE) {
+                    wrapper.scrollTop += SCROLL_SPEED;
+                } else if (e.clientY < wrapperRect.top + SCROLL_ZONE) {
+                    wrapper.scrollTop = Math.max(0, wrapper.scrollTop - SCROLL_SPEED);
+                }
+
+                const dx = (e.clientX - startMouseX) / zoom;
+                const dy = (e.clientY - startMouseY) / zoom;
+                let nx = startLeft + dx;
+                let ny = startTop + dy;
+                nx = Math.round(nx / GRID_SIZE) * GRID_SIZE;
+                ny = Math.round(ny / GRID_SIZE) * GRID_SIZE;
+                const maxX = canvasEl.offsetWidth - 80;
+                const maxY = canvasEl.offsetHeight - 40;
+                el.style.left = Math.max(0, Math.min(maxX, nx)) + 'px';
+                el.style.top = Math.max(0, Math.min(maxY, ny)) + 'px';
+            };
+
+            const onUp = () => {
+                if (dragging) redrawEdges();
+                dragging = false; dragCandidate = false; isDraggingNode = false; el.style.cursor = 'grab';
+                document.removeEventListener('pointermove', onMove);
+                document.removeEventListener('pointerup', onUp);
+            };
+
+            el.addEventListener('pointerdown', (e) => {
+                if (e.button !== 0 || panKey) return; // only left click, not when panning
+                dragCandidate = true;
+                startMouseX = e.clientX; startMouseY = e.clientY;
+                startLeft = parseFloat(el.style.left) || 0;
+                startTop = parseFloat(el.style.top) || 0;
+                el.setPointerCapture(e.pointerId);
+            });
+
+            el.addEventListener('pointermove', (e) => {
+                if (!dragCandidate) return;
+                if (!dragging) {
+                    const dist = Math.hypot(e.clientX - startMouseX, e.clientY - startMouseY);
+                    if (dist > 4) {
+                        dragging = true; isDraggingNode = true; el.style.cursor = 'grabbing';
+                        document.addEventListener('pointermove', onMove);
+                        document.addEventListener('pointerup', onUp);
+                    } else {
+                        return;
+                    }
+                }
+            });
+
+            el.addEventListener('pointerup', (e) => {
+                if (dragging) {
+                    onUp();
+                } else {
+                    dragCandidate = false;
+                }
+            });
+
+            // Click behavior: connect mode or select for inspector
+            el.addEventListener('click', () => {
+                if (isDraggingNode) return; // avoid click actions right after drag
+                const connect = document.getElementById('connectMode').checked;
+                const nodeId = el.getAttribute('data-id');
+                if (connect) {
+                    if (!selectedSourceId) {
+                        selectedSourceId = nodeId;
+                        el.style.outline = '2px solid var(--brand-primary)';
+                        return;
+                    }
+                    if (selectedSourceId === nodeId) { selectedSourceId = null; el.style.outline='none'; return; }
+                    
+                    // Prompt for edge label if source is condition/timer
+                    const sourceNode = nodes.find(n => n.id === selectedSourceId);
+                    let edgeLabel = '';
+                    if (sourceNode && (sourceNode.type === 'condition' || sourceNode.type === 'timer')) {
+                        edgeLabel = prompt('Etiqueta de arista (true/false/timeout/etc):', 
+                            sourceNode.type === 'condition' ? 'true' : 'timeout') || '';
+                    }
+                    
+                    edges.push({ fromId: selectedSourceId, toId: nodeId, label: edgeLabel });
+                    document.querySelectorAll('#canvas .node').forEach(n => n.style.outline='none');
+                    selectedSourceId = null;
+                    redrawEdges();
+                } else {
+                    // select node for inspector
+                    selectedNodeId = nodeId;
+                    const nodeData = nodes.find(n => n.id === nodeId);
+                    document.getElementById('inspectorLabel').value = nodeData?.label || '';
+                    document.getElementById('inspectorType').value = nodeData?.type || '';
+                    showInspectorForType(nodeData?.type || 'state', nodeData?.props || {});
+                    document.querySelectorAll('#canvas .node').forEach(n => n.style.outline='none');
+                    el.style.outline = '2px solid var(--color-success)';
+                }
+            });
+
+            document.getElementById('canvas').appendChild(el);
+            nodes.push({ id, label, x, y, el, type, props });
+            redrawEdges();
+        }
+
+        function redrawEdges() {
+            const layer = document.getElementById('edgesLayer');
+            const canvasRect = document.getElementById('canvas').getBoundingClientRect();
+            const svgNS = 'http://www.w3.org/2000/svg';
+            const svg = document.createElementNS(svgNS, 'svg');
+            svg.setAttribute('width', canvasRect.width);
+            svg.setAttribute('height', canvasRect.height);
+            svg.style.width = '100%';
+            svg.style.height = '100%';
+            svg.style.position = 'absolute';
+            svg.style.inset = '0';
+            // build edges
+            edges.forEach((e, idx) => {
+                const from = nodes.find(n => n.id === e.fromId);
+                const to = nodes.find(n => n.id === e.toId);
+                if (!from || !to) return;
+                const x1 = parseInt(from.el.style.left) + from.el.offsetWidth/2;
+                const y1 = parseInt(from.el.style.top) + from.el.offsetHeight/2;
+                const x2 = parseInt(to.el.style.left) + to.el.offsetWidth/2;
+                const y2 = parseInt(to.el.style.top) + to.el.offsetHeight/2;
+                const path = document.createElementNS(svgNS, 'path');
+                const d = `M ${x1} ${y1} L ${x2} ${y2}`;
+                path.setAttribute('d', d);
+                path.setAttribute('stroke', 'var(--gray-500)');
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('fill', 'none');
+                path.style.pointerEvents = 'auto';
+                path.style.cursor = 'pointer';
+                path.dataset.index = idx;
+                // Edge deletion mode
+                path.addEventListener('click', () => {
+                    if (document.getElementById('deleteEdgeMode').checked) {
+                        const i = parseInt(path.dataset.index);
+                        if (!Number.isNaN(i)) {
+                            edges.splice(i, 1);
+                            redrawEdges();
+                        }
+                    }
+                });
+                svg.appendChild(path);
+                
+                // Add edge label if present
+                if (e.label) {
+                    const text = document.createElementNS(svgNS, 'text');
+                    text.setAttribute('x', (x1 + x2) / 2);
+                    text.setAttribute('y', (y1 + y2) / 2 - 5);
+                    text.setAttribute('fill', 'var(--gray-500)');
+                    text.setAttribute('font-size', '12');
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('font-weight', 'bold');
+                    text.style.pointerEvents = 'none';
+                    text.textContent = e.label;
+                    svg.appendChild(text);
+                }
+            });
+            layer.innerHTML=''; layer.appendChild(svg);
+        }
+
+        // Show appropriate inspector form based on node type
+        function showInspectorForType(type, props) {
+            // Hide all forms first
+            document.getElementById('conditionForm').style.display = 'none';
+            document.getElementById('timerForm').style.display = 'none';
+            document.getElementById('genericProps').style.display = 'none';
+            
+            if (type === 'condition') {
+                document.getElementById('conditionForm').style.display = 'block';
+                document.getElementById('condVar').value = props?.variable || '';
+                document.getElementById('condOp').value = props?.operator || '==';
+                document.getElementById('condVal').value = props?.value || '';
+            } else if (type === 'timer') {
+                document.getElementById('timerForm').style.display = 'block';
+                document.getElementById('timerDuration').value = props?.duration || '';
+                document.getElementById('timerUnit').value = props?.unit || 'seconds';
+            } else {
+                // state or action: show generic JSON
+                document.getElementById('genericProps').style.display = 'block';
+                document.getElementById('inspectorProps').value = JSON.stringify(props || {}, null, 2);
+            }
+        }
+
+        function exportGraph() {
+            return {
+                nodes: nodes.map(n => ({
+                    id: n.id,
+                    label: n.label,
+                    type: n.type || 'state',
+                    props: n.props || {},
+                    x: parseFloat(n.el.style.left) || 0,
+                    y: parseFloat(n.el.style.top) || 0,
+                })),
+                edges: edges.map(e => ({ 
+                    fromId: e.fromId, 
+                    toId: e.toId,
+                    label: e.label || ''
+                })),
+                meta: { version: 1 }
+            };
+        }
+
+        function importGraph(graph) {
+            if (!graph || !Array.isArray(graph.nodes)) return;
+            clearCanvas();
+            // create nodes
+            graph.nodes.forEach(n => {
+                createNode(n.label || n.id, n.x || 40, n.y || 40, n.id, n.type || 'state', n.props || {});
+            });
+            // set counter to avoid collisions
+            const maxNum = graph.nodes
+                .map(n => parseInt(String(n.id).replace(/\D+/g, ''), 10))
+                .filter(Number.isFinite)
+                .reduce((m, v) => Math.max(m, v), 0);
+            nodeCounter = Math.max(nodeCounter, maxNum + 1);
+            // edges
+            if (Array.isArray(graph.edges)) {
+                graph.edges.forEach(e => {
+                    if (e.fromId && e.toId) edges.push({ 
+                        fromId: e.fromId, 
+                        toId: e.toId,
+                        label: e.label || ''
+                    });
+                });
+            }
+            redrawEdges();
+        }
+
+        function validateGraph() {
+            const issues = [];
+            
+            // Check for cycles using DFS
+            const visited = new Set();
+            const recStack = new Set();
+            
+            function hasCycle(nodeId) {
+                visited.add(nodeId);
+                recStack.add(nodeId);
+                
+                const outgoing = edges.filter(e => e.fromId === nodeId);
+                for (const edge of outgoing) {
+                    if (!visited.has(edge.toId)) {
+                        if (hasCycle(edge.toId)) return true;
+                    } else if (recStack.has(edge.toId)) {
+                        return true;
+                    }
+                }
+                recStack.delete(nodeId);
+                return false;
+            }
+            
+            for (const node of nodes) {
+                if (!visited.has(node.id) && hasCycle(node.id)) {
+                    issues.push('⚠️ Ciclo detectado en el grafo');
+                    break;
+                }
+            }
+            
+            // Check for orphaned nodes (no incoming or outgoing edges)
+            nodes.forEach(n => {
+                const hasIncoming = edges.some(e => e.toId === n.id);
+                const hasOutgoing = edges.some(e => e.fromId === n.id);
+                if (!hasIncoming && !hasOutgoing && nodes.length > 1) {
+                    issues.push(`⚠️ Nodo "${n.label}" no conectado`);
+                }
+            });
+            
+            // Check for condition/timer blocks without labels
+            edges.forEach(e => {
+                const source = nodes.find(n => n.id === e.fromId);
+                if (source && (source.type === 'condition' || source.type === 'timer') && !e.label) {
+                    issues.push(`⚠️ Arista sin etiqueta desde "${source.label}"`);
+                }
+            });
+            
+            return issues;
+        }
+
+        function showValidationIssues() {
+            const issues = validateGraph();
+            const statusEl = document.getElementById('validationStatus');
+            const listEl = document.getElementById('validationList');
+            
+            if (issues.length === 0) {
+                statusEl.style.background = '#dcfce7';
+                statusEl.style.color = '#166534';
+                listEl.innerHTML = '✅ Grafo válido - sin problemas detectados';
+            } else {
+                statusEl.style.background = '#fef2f2';
+                statusEl.style.color = '#991b1b';
+                listEl.innerHTML = '<strong>Problemas encontrados:</strong><ul style="margin-top:4px;">' + 
+                    issues.map(issue => `<li>${issue}</li>`).join('') + 
+                    '</ul>';
+            }
+            statusEl.style.display = 'block';
+        }
+
+        function exportMermaidFromCanvas() {
+            // Check for issues before export
+            const issues = validateGraph();
+            if (issues.length > 0) {
+                const msg = 'El grafo tiene problemas:\n' + issues.join('\n') + '\n\n¿Continuar de todas formas?';
+                if (!confirm(msg)) return;
+            }
+            
+            // flowchart TD with order of nodes as added, and edges
+            const lines = ['flowchart TD'];
+            nodes.forEach(n => {
+                lines.push(`${n.id}[${n.label}]`);
+            });
+            edges.forEach(e => { 
+                const label = e.label ? `|${e.label}|` : '';
+                lines.push(`${e.fromId} --> ${label} ${e.toId}`);
+            });
+            const code = lines.join('\n');
+            document.getElementById('workflowTexto').value = code;
+            renderMermaid();
+        }
+
+        function clearCanvas() {
+            nodes.splice(0, nodes.length);
+            edges.splice(0, edges.length);
+            document.getElementById('canvas').innerHTML = '<div style="position:absolute; inset:0; pointer-events:none;" id="edgesLayer"></div>';
+            selectedNodeId = null;
+            selectedSourceId = null;
+            nodeCounter = 1;
+        }
+
+        function renameSelectedNode() {
+            if (!selectedNodeId) { alert('Selecciona un nodo primero'); return; }
+            const input = document.getElementById('inspectorLabel');
+            const newLabel = (input.value || '').trim();
+            if (!newLabel) { alert('Etiqueta no válida'); return; }
+            const node = nodes.find(n => n.id === selectedNodeId);
+            if (node) { node.label = newLabel; node.el.textContent = newLabel; }
+        }
+
+        function changeNodeType() {
+            if (!selectedNodeId) { alert('Selecciona un nodo primero'); return; }
+            const newType = document.getElementById('inspectorType').value;
+            const node = nodes.find(n => n.id === selectedNodeId);
+            if (node) { 
+                node.type = newType;
+                node.el.setAttribute('data-type', newType);
+                // Reset props when type changes and show appropriate form
+                node.props = {};
+                showInspectorForType(newType, {});
+            }
+        }
+
+        function updateSelectedProps() {
+            if (!selectedNodeId) { alert('Selecciona un nodo primero'); return; }
+            const node = nodes.find(n => n.id === selectedNodeId);
+            if (!node) return;
+            
+            // Read from form based on node type
+            if (node.type === 'condition') {
+                node.props = {
+                    variable: document.getElementById('condVar').value || '',
+                    operator: document.getElementById('condOp').value || '==',
+                    value: document.getElementById('condVal').value || ''
+                };
+            } else if (node.type === 'timer') {
+                node.props = {
+                    duration: document.getElementById('timerDuration').value || '',
+                    unit: document.getElementById('timerUnit').value || 'seconds'
+                };
+            } else {
+                // state or action: read from generic JSON
+                const input = document.getElementById('inspectorProps');
+                let parsed = {};
+                try {
+                    parsed = input.value ? JSON.parse(input.value) : {};
+                } catch (e) {
+                    alert('JSON inválido en propiedades');
+                    return;
+                }
+                node.props = parsed;
+            }
+        }
+
+        function deleteSelectedNode() {
+            if (!selectedNodeId) { alert('Selecciona un nodo primero'); return; }
+            const idx = nodes.findIndex(n => n.id === selectedNodeId);
+            if (idx >= 0) {
+                // remove DOM element
+                const el = nodes[idx].el; if (el && el.parentNode) el.parentNode.removeChild(el);
+                nodes.splice(idx, 1);
+                // remove edges touching this node
+                for (let i = edges.length - 1; i >= 0; i--) {
+                    if (edges[i].fromId === selectedNodeId || edges[i].toId === selectedNodeId) {
+                        edges.splice(i, 1);
+                    }
+                }
+                selectedNodeId = null;
+                document.getElementById('inspectorLabel').value = '';
+                redrawEdges();
+            }
+        }
+
+        // Palette and custom states
+        function bindPaletteDrag(item) {
+            item.addEventListener('dragstart', (e) => {
+                e.dataTransfer.effectAllowed = 'copy';
+                e.dataTransfer.dropEffect = 'copy';
+                e.dataTransfer.setData('text/plain', item.getAttribute('data-label'));
+                e.dataTransfer.setData('application/x-node-type', item.getAttribute('data-type') || 'state');
+            });
+            // Fallback: click to add if drag & drop is blocked by the browser
+            item.addEventListener('click', () => {
+                const canvas = document.getElementById('canvas');
+                const wrapper = document.getElementById('canvasWrapper');
+                if (!canvas || !wrapper) return;
+                const rect = canvas.getBoundingClientRect();
+                const x = (wrapper.scrollLeft + rect.width / 2) / zoom - 40;
+                const y = (wrapper.scrollTop + rect.height / 2) / zoom - 20;
+                createNode(item.getAttribute('data-label'), x, y, undefined, item.getAttribute('data-type') || 'state');
+            });
+        }
+        function addCustomState() {
+            const inp = document.getElementById('customStateLabel');
+            const label = (inp.value || '').trim();
+            if (!label) { alert('Escribe una etiqueta'); return; }
+            const div = document.createElement('div');
+            div.className = 'dd-item';
+            div.setAttribute('draggable', 'true');
+            div.setAttribute('data-label', label);
+            div.textContent = label;
+            document.getElementById('palette').appendChild(div);
+            bindPaletteDrag(div);
+            inp.value = '';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('canvas');
+            const wrapper = document.getElementById('canvasWrapper');
+            if (canvas && wrapper) {
+                canvas.addEventListener('dragover', (e) => { e.preventDefault(); });
+                canvas.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+                    const label = e.dataTransfer.getData('text/plain');
+                    const ntype = e.dataTransfer.getData('application/x-node-type') || 'state';
+                    const rect = canvas.getBoundingClientRect();
+                    let x = (e.clientX - rect.left + wrapper.scrollLeft) / zoom - 40;
+                    let y = (e.clientY - rect.top + wrapper.scrollTop) / zoom - 20;
+                    x = Math.round(x / GRID_SIZE) * GRID_SIZE;
+                    y = Math.round(y / GRID_SIZE) * GRID_SIZE;
+                    if (label) createNode(label, x, y, undefined, ntype);
+                });
+                // Panning with Space key or middle mouse button
+                wrapper.addEventListener('mousedown', (e) => {
+                    // Only start pan if: middle button, or Space pressed, and clicked on background (canvas)
+                    const middle = e.button === 1;
+                    const onBackground = e.target && (e.target.id === 'canvas' || e.target.id === 'edgesLayer');
+                    if ((panKey || middle) && onBackground) {
+                        isPanning = true;
+                        wrapper.style.cursor = 'grabbing';
+                        panStartX = e.clientX;
+                        panStartY = e.clientY;
+                        panScrollLeft = wrapper.scrollLeft;
+                        panScrollTop = wrapper.scrollTop;
+                        e.preventDefault();
+                    }
+                });
+                document.addEventListener('mousemove', (e) => {
+                    if (!isPanning) return;
+                    const dx = e.clientX - panStartX;
+                    const dy = e.clientY - panStartY;
+                    wrapper.scrollLeft = panScrollLeft - dx;
+                    wrapper.scrollTop = panScrollTop - dy;
+                });
+                document.addEventListener('mouseup', () => {
+                    if (isPanning) {
+                        isPanning = false;
+                        wrapper.style.cursor = '';
+                    }
+                });
+            }
+            document.querySelectorAll('#palette .dd-item').forEach(bindPaletteDrag);
+            window.addEventListener('resize', redrawEdges);
+            applyZoom();
+        });
+
+        // Spacebar to pan
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                panKey = true;
+                const wrapper = document.getElementById('canvasWrapper');
+                if (wrapper && !isPanning) wrapper.style.cursor = 'grab';
+                // prevent page scroll
+                e.preventDefault();
+            }
+        });
+        document.addEventListener('keyup', (e) => {
+            if (e.code === 'Space') {
+                panKey = false;
+                const wrapper = document.getElementById('canvasWrapper');
+                if (wrapper && !isPanning) wrapper.style.cursor = '';
+            }
+        });
+
+        function applyZoom() {
+            const canvasEl = document.getElementById('canvas');
+            if (!canvasEl) return;
+            canvasEl.style.transform = `scale(${zoom})`;
+            redrawEdges();
+        }
+
+        function zoomIn() { zoom = Math.min(MAX_ZOOM, +(zoom + ZOOM_STEP).toFixed(2)); applyZoom(); }
+        function zoomOut() { zoom = Math.max(MIN_ZOOM, +(zoom - ZOOM_STEP).toFixed(2)); applyZoom(); }
+        function zoomReset() { zoom = 1; applyZoom(); }
+
+        function centerView() {
+            const wrapper = document.getElementById('canvasWrapper');
+            if (!wrapper || nodes.length === 0) return;
+            // Center to first node for simplicity
+            const n = nodes[0];
+            const targetX = parseFloat(n.el.style.left) * zoom - (wrapper.clientWidth / 2) + 100;
+            const targetY = parseFloat(n.el.style.top) * zoom - (wrapper.clientHeight / 2) + 60;
+            wrapper.scrollLeft = Math.max(0, targetX);
+            wrapper.scrollTop = Math.max(0, targetY);
+        }
+
+        function fitToContent() {
+            const wrapper = document.getElementById('canvasWrapper');
+            if (!wrapper || nodes.length === 0) return;
+            let minX=Infinity, minY=Infinity, maxX=-Infinity, maxY=-Infinity;
+            nodes.forEach(n => {
+                const x = parseFloat(n.el.style.left) || 0;
+                const y = parseFloat(n.el.style.top) || 0;
+                const w = n.el.offsetWidth || 120;
+                const h = n.el.offsetHeight || 40;
+                minX = Math.min(minX, x); minY = Math.min(minY, y);
+                maxX = Math.max(maxX, x + w); maxY = Math.max(maxY, y + h);
+            });
+            const contentW = (maxX - minX) * zoom;
+            const contentH = (maxY - minY) * zoom;
+            const pad = 80;
+            const targetScrollLeft = Math.max(0, minX * zoom - pad);
+            const targetScrollTop = Math.max(0, minY * zoom - pad);
+            wrapper.scrollLeft = targetScrollLeft;
+            wrapper.scrollTop = targetScrollTop;
+            // Optionally auto-zoom to fit width/height
+            const scaleW = (wrapper.clientWidth - 2*pad) / Math.max(1, contentW);
+            const scaleH = (wrapper.clientHeight - 2*pad) / Math.max(1, contentH);
+            const newZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, Math.min(scaleW, scaleH)));
+            zoom = +newZoom.toFixed(2);
+            applyZoom();
+        }
+
+        async function cargarWorkflow() {
+            try {
+                const resp = await fetch('/api/organization/workflow-config', {
+                    headers: { 'Authorization': 'Bearer ' + (localStorage.getItem('token') || '') }
+                });
+                if (!resp.ok) throw new Error('Error al cargar flujo');
+                const data = await resp.json();
+                document.getElementById('workflowTexto').value = data.workflow || '';
+                if (data.workflow_graph) {
+                    importGraph(data.workflow_graph);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function renderMermaid() {
+            const txt = document.getElementById('workflowTexto').value;
+            const preview = document.getElementById('mermaidPreview');
+            preview.innerHTML = `<div class="mermaid">${txt}</div>`;
+            try {
+                if (window.mermaid) {
+                    mermaid.initialize({ startOnLoad: false });
+                    mermaid.run();
+                }
+            } catch (e) {
+                console.error(e);
+                alert('No se pudo renderizar Mermaid. Verifica la sintaxis.');
+            }
+        }
+
+        async function guardarWorkflow() {
+            const txt = document.getElementById('workflowTexto').value;
+            const graph = exportGraph();
+            try {
+                const resp = await fetch('/api/organization/workflow-config', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + (localStorage.getItem('token') || '')
+                    },
+                    body: JSON.stringify({ workflow: txt, workflow_graph: graph })
+                });
+                if (!resp.ok) throw new Error('Error al guardar flujo');
+                alert('Flujo guardado');
+                renderMermaid();
+            } catch (e) {
+                console.error(e);
+                alert('No se pudo guardar el flujo');
+            }
+        }
+
+        // Inicialización de pestañas nuevas
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarModulos();
+            cargarWorkflow();
+        });
+
+        async function testEmail() {
+            const smtpHost = document.getElementById('smtpHost').value;
+            const smtpPort = document.getElementById('smtpPort').value;
+            const smtpUser = document.getElementById('smtpUser').value;
+            
+            if (!smtpHost || !smtpUser) {
+                alert('Por favor completa Host SMTP y Email');
+                return;
+            }
+            
+            alert('Enviando email de prueba...\n(Funcionalidad en desarrollo)');
+        }
+    </script>
+    <script defer src="/static/assistant.js"></script>
+    <script defer src="/static/assistant-basic-panel.js"></script>
+    <script defer src="/static/voice-assistant-widget.js"></script>
+    <script defer src="/static/voice-widget.js"></script>
+</body>
+</html>

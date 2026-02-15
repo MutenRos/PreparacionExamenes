@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>recortabl.es</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Delius&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #eef5fb;
+      --ink: #0b2a45;
+      --muted: #527089;
+      --brand: #2a84d8;
+      --brand2:#1f6fbe;
+      --card:#ffffff;
+      --line:#d9e8f6;
+      --shadow: 0 10px 22px rgba(11,42,69,.10);
+      --shadow2: 0 6px 14px rgba(11,42,69,.10);
+      --radius: 14px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Delius,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);
+      background:linear-gradient(#f6fbff 0%, var(--bg) 30%, #f4f9ff 100%);
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    /* ===== Layout helpers ===== */
+    .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+    main{background:transparent}
+    section{padding:26px 0}
+    h3{margin:0 0 14px;font-size:22px;color:#1b5f92}
+    .subtle-rule{
+      border-top:2px dashed rgba(82,112,137,.25);
+      margin:22px 0 0;
+    }
+
+    /* ===== Header ===== */
+    header{
+      position:sticky; top:0; z-index:50;
+      background:#fff;
+      border-bottom:1px solid #e8f1fb;
+      box-shadow:0 6px 18px rgba(11,42,69,.08);
+    }
+    header .wrap{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:12px 18px;
+    }
+
+    .brand{
+      display:flex;align-items:center;gap:10px;
+      font-weight:700;
+      letter-spacing:.2px;
+    }
+    .brand .logo{
+      width:38px;height:38px;border-radius:10px;
+      background:linear-gradient(145deg,#e9f6ff,#ffffff);
+      border:1px solid #d8ecff;
+      box-shadow:0 6px 14px rgba(42,132,216,.15);
+      display:grid;place-items:center;
+      font-size:20px;
+    }
+    .brand span{
+      font-size:26px;
+    }
+    .brand span b{color:#ff4d3d}
+    .brand span i{font-style:normal;color:#2a84d8}
+
+    nav{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      color:#2b5a7a;
+      font-weight:600;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    nav a{
+      padding:8px 10px;
+      border-radius:10px;
+    }
+    nav a:hover{background:#f2f8ff}
+
+    .search{
+      display:flex;align-items:center;gap:10px;
+      background:#2a84d8;
+      padding:8px 10px;
+      border-radius:12px;
+      box-shadow:0 10px 18px rgba(42,132,216,.25);
+    }
+    .search input{
+      width:190px;
+      border:0;
+      outline:0;
+      background:transparent;
+      color:#fff;
+      font:inherit;
+    }
+    .search input::placeholder{color:rgba(255,255,255,.85)}
+    .search .icon{
+      width:26px;height:26px;border-radius:9px;
+      background:rgba(255,255,255,.18);
+      display:grid;place-items:center;
+      color:#fff;
+      font-size:14px;
+    }
+
+    /* ===== Hero ===== */
+    #heroe{
+      padding:0;
+      background:transparent;
+    }
+    .hero{
+      position:relative;
+      overflow:hidden;
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      background:
+        radial-gradient(1200px 380px at 50% 0%, rgba(255,255,255,.35) 0%, rgba(255,255,255,0) 55%),
+        linear-gradient(180deg,#2f93ea 0%, #2a84d8 45%, #1d6bb8 100%);
+      color:#fff;
+      min-height:300px;
+    }
+    .hero-inner{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+      padding:36px 28px 58px;
+      align-items:center;
+    }
+    .hero h3{
+      color:#fff;
+      font-size:40px;
+      line-height:1.05;
+      margin:0 0 10px;
+      text-shadow:0 4px 10px rgba(0,0,0,.18);
+      font-weight:800;
+    }
+    .hero h4{
+      margin:0 0 18px;
+      font-size:20px;
+      opacity:.95;
+      text-shadow:0 4px 10px rgba(0,0,0,.16);
+      font-weight:700;
+    }
+    .hero .actions{
+      display:flex;gap:12px;flex-wrap:wrap;
+    }
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:11px 16px;
+      border-radius:12px;
+      font-weight:800;
+      box-shadow:0 10px 18px rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.22);
+      background:rgba(255,255,255,.15);
+      backdrop-filter: blur(6px);
+    }
+    .btn.primary{
+      background:linear-gradient(180deg,#2e8fe8,#1f70be);
+      border-color:rgba(0,0,0,.08);
+      box-shadow:0 14px 22px rgba(0,0,0,.18);
+    }
+    .btn.secondary{
+      background:linear-gradient(180deg,#ffffff,#eaf4ff);
+      color:#1a5f92;
+      border-color:rgba(11,42,69,.12);
+      box-shadow:0 14px 22px rgba(0,0,0,.12);
+    }
+    .btn.secondary:after{
+      content:"›";
+      font-size:18px;
+      line-height:1;
+      opacity:.9;
+      margin-left:2px;
+    }
+
+    .hero-art{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      align-content:center;
+      justify-items:center;
+      opacity:.95;
+    }
+    .hero-art .toy{
+      width:100%;
+      max-width:180px;
+      aspect-ratio: 4 / 3;
+      border-radius:16px;
+      background:linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,.08));
+      border:1px solid rgba(255,255,255,.25);
+      box-shadow:0 10px 18px rgba(0,0,0,.12);
+      display:grid;place-items:center;
+      font-weight:900;
+      text-align:center;
+      padding:10px;
+    }
+
+    /* wave + floor */
+    .hero-wave{
+      position:absolute;left:0;right:0;bottom:0;height:84px;
+      background:
+        radial-gradient(260px 60px at 20% 0%, rgba(255,255,255,.45) 0%, rgba(255,255,255,0) 70%),
+        radial-gradient(240px 60px at 75% 0%, rgba(255,255,255,.40) 0%, rgba(255,255,255,0) 70%),
+        linear-gradient(180deg, rgba(255,255,255,.0) 0%, rgba(255,255,255,.75) 70%, rgba(255,255,255,.92) 100%);
+      clip-path: path("M0,60 C160,92 300,10 520,48 C760,90 900,30 1100,58 L1100,120 L0,120 Z");
+    }
+    .hero-floor{
+      position:absolute;left:0;right:0;bottom:-2px;height:48px;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.08) 50%, rgba(0,0,0,0) 100%),
+        linear-gradient(180deg, rgba(255,255,255,.95) 0%, #f6fbff 100%);
+      opacity:.9;
+      clip-path: polygon(0 55%, 100% 25%, 100% 100%, 0 100%);
+    }
+
+    /* ===== Section titles ===== */
+    .title{
+      text-align:center;
+      color:#1b5f92;
+      font-size:26px;
+      margin:0 0 16px;
+      font-weight:900;
+    }
+
+    /* ===== Cards grids ===== */
+    .contenedor{
+      display:grid;
+      gap:14px;
+    }
+
+    #categoriasprincipales .contenedor{
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+    }
+    #categoriasprincipales article{
+      background:var(--card);
+      border:1px solid #e4effa;
+      border-radius:14px;
+      box-shadow:var(--shadow2);
+      padding:14px 10px 12px;
+      text-align:center;
+    }
+    #categoriasprincipales article img{
+      width:54px;height:54px;object-fit:contain;
+      margin:0 auto 8px;
+      filter: drop-shadow(0 6px 8px rgba(0,0,0,.12));
+    }
+    #categoriasprincipales article p{
+      margin:0;
+      font-weight:900;
+      color:#235a7a;
+      font-size:14px;
+    }
+
+    #recortablesdestacados .contenedor{
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    #recortablesdestacados article{
+      background:var(--card);
+      border:1px solid #e4effa;
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      padding:12px;
+      text-align:left;
+    }
+    #recortablesdestacados article img{
+      border-radius:14px;
+      background:linear-gradient(180deg,#eaf4ff,#ffffff);
+      border:1px solid #dfeffc;
+      aspect-ratio: 4 / 3;
+      object-fit:cover;
+      box-shadow:0 10px 18px rgba(11,42,69,.10);
+    }
+    .card-body{
+      padding:10px 8px 6px;
+    }
+    .card-title{
+      margin:0 0 6px;
+      font-weight:900;
+      color:#1f5777;
+      font-size:16px;
+    }
+    .stars{
+      margin:0 0 10px;
+      color:#f1b400;
+      letter-spacing:1px;
+      font-size:14px;
+    }
+    .download{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      width:100%;
+      padding:10px 12px;
+      border-radius:12px;
+      background:linear-gradient(180deg,#2e8fe8,#1f70be);
+      color:#fff;
+      font-weight:900;
+      border:1px solid rgba(0,0,0,.08);
+      box-shadow:0 14px 22px rgba(42,132,216,.22);
+    }
+    .download:after{content:"›";font-size:18px;opacity:.95}
+
+    /* ===== Gallery strip ===== */
+    #galeria{
+      padding-top:10px;
+    }
+    #galeria .wrap{
+      padding-top:6px;
+    }
+    #galeria .strip{
+      display:grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap:14px;
+    }
+    #galeria a{
+      background:#fff;
+      border:1px solid #e4effa;
+      border-radius:14px;
+      box-shadow:var(--shadow2);
+      padding:10px;
+    }
+    #galeria a img{
+      border-radius:12px;
+      aspect-ratio: 16 / 9;
+      object-fit:cover;
+      background:linear-gradient(180deg,#eaf4ff,#ffffff);
+      border:1px solid #dfeffc;
+    }
+
+    /* ===== Info / Families ===== */
+    #informacion .contenedor{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:18px;
+      align-items:center;
+      padding:18px 18px;
+      border:2px dashed rgba(82,112,137,.35);
+      background:linear-gradient(180deg,#fbf6dc,#faf2cf);
+      border-radius:18px;
+      box-shadow:0 12px 24px rgba(11,42,69,.08);
+      overflow:hidden;
+    }
+    #informacion h3{
+      margin:0 0 10px;
+      font-size:24px;
+      color:#1b5f92;
+      font-weight:900;
+    }
+    #informacion p{
+      margin:10px 0 0;
+      font-weight:800;
+      color:#265a79;
+    }
+    .info-art{
+      justify-self:end;
+      width:min(360px,100%);
+      aspect-ratio: 16/9;
+      border-radius:18px;
+      background:
+        radial-gradient(240px 120px at 30% 30%, rgba(255,255,255,.75) 0%, rgba(255,255,255,0) 65%),
+        linear-gradient(180deg,#e9f5ff,#ffffff);
+      border:1px solid #dfeffc;
+      box-shadow:0 12px 20px rgba(11,42,69,.10);
+      display:grid;
+      place-items:center;
+      color:#2b5a7a;
+      font-weight:900;
+      text-align:center;
+      padding:14px;
+    }
+
+    /* ===== Footer ===== */
+    footer{
+      padding:18px 0 28px;
+      color:#2b5a7a;
+    }
+    footer .wrap{
+      border-top:2px dashed rgba(82,112,137,.25);
+      padding-top:16px;
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    footer a{
+      padding:8px 10px;
+      border-radius:10px;
+      font-weight:800;
+      color:#2b5a7a;
+    }
+    footer a:hover{background:#f2f8ff}
+
+    .social a{
+      width:36px;height:36px;
+      display:inline-grid;place-items:center;
+      border-radius:12px;
+      background:#ffffff;
+      border:1px solid #e4effa;
+      box-shadow:var(--shadow2);
+      padding:0;
+      font-weight:900;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 1100px){
+      #categoriasprincipales .contenedor{grid-template-columns: repeat(4, minmax(0, 1fr));}
+      #recortablesdestacados .contenedor{grid-template-columns: repeat(2, minmax(0, 1fr));}
+      #galeria .strip{grid-template-columns: repeat(3, minmax(0, 1fr));}
+      .hero-inner{grid-template-columns: 1fr; padding-bottom:70px;}
+      .hero-art{grid-template-columns:1fr 1fr; justify-items:stretch;}
+    }
+    @media (max-width: 640px){
+      nav{gap:8px}
+      .search input{width:120px}
+      #categoriasprincipales .contenedor{grid-template-columns: repeat(2, minmax(0, 1fr));}
+      #recortablesdestacados .contenedor{grid-template-columns: 1fr;}
+      #galeria .strip{grid-template-columns: repeat(2, minmax(0, 1fr));}
+      #informacion .contenedor{grid-template-columns: 1fr;}
+      .info-art{justify-self:stretch}
+      .hero h3{font-size:30px}
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="wrap">
+      <a class="brand" href="#">
+        <div class="logo">🤖</div>
+        <span><b>rec</b><i>ortabl.es</i></span>
+      </a>
+
+      <nav>
+        <a href="#">Categorías ▾</a>
+        <a href="#">Sobre nosotros</a>
+        <a href="#">Descargas</a>
+        <a href="#">Login</a>
+        <div class="search" role="search">
+          <div class="icon">🔎</div>
+          <input type="search" placeholder="Buscar..." aria-label="Buscar" />
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="heroe">
+      <div class="hero">
+        <div class="hero-inner">
+          <div>
+            <h3>Juguetes recortables para imprimir y jugar</h3>
+            <h4>Descarga · Imprime · Recorta · Pega · Juega</h4>
+            <div class="actions">
+              <a class="btn primary" href="#">Explorar recortables</a>
+              <a class="btn secondary" href="#">Cómo funciona</a>
+            </div>
+          </div>
+
+          <!-- Sustituye estos “bloques” por ilustraciones reales (coche / tren / etc.) si las tienes -->
+          <div class="hero-art" aria-hidden="true">
+            <div class="toy">🚗<br>Vehículos</div>
+            <div class="toy">🚂<br>Juguetes</div>
+          </div>
+        </div>
+        <div class="hero-wave"></div>
+        <div class="hero-floor"></div>
+      </div>
+    </section>
+
+    <section id="categoriasprincipales">
+      <div class="title">Categorías principales</div>
+      <div class="contenedor">
+        <article><img src="imgcategoria.png" alt=""><p>Vehículos</p></article>
+        <article><img src="imgcategoria.png" alt=""><p>Edificios</p></article>
+        <article><img src="imgcategoria.png" alt=""><p>Robots</p></article>
+        <article><img src="imgcategoria.png" alt=""><p>Animales</p></article>
+        <article><img src="imgcategoria.png" alt=""><p>Navidad</p></article>
+        <article><img src="imgcategoria.png" alt=""><p>Educativos</p></article>
+        <article><img src="imgcategoria.png" alt=""><p>Muñecos</p></article>
+      </div>
+      <div class="subtle-rule"></div>
+    </section>
+
+    <section id="recortablesdestacados">
+      <div class="title">Recortables destacados</div>
+
+      <div class="contenedor">
+        <article>
+          <img src="imgcategoria.png" alt="">
+          <div class="card-body">
+            <p class="card-title">Castillo Medieval</p>
+            <p class="stars">★★★★☆</p>
+            <a class="download" href="#">Descargar PDF</a>
+          </div>
+        </article>
+
+        <article>
+          <img src="imgcategoria.png" alt="">
+          <div class="card-body">
+            <p class="card-title">Coche de Fórmula 1</p>
+            <p class="stars">★★★★☆</p>
+            <a class="download" href="#">Descargar PDF</a>
+          </div>
+        </article>
+
+        <article>
+          <img src="imgcategoria.png" alt="">
+          <div class="card-body">
+            <p class="card-title">Dinosaurio T-Rex</p>
+            <p class="stars">★★★★☆</p>
+            <a class="download" href="#">Descargar PDF</a>
+          </div>
+        </article>
+
+        <article>
+          <img src="imgcategoria.png" alt="">
+          <div class="card-body">
+            <p class="card-title">Robot XL</p>
+            <p class="stars">★★★★☆</p>
+            <a class="download" href="#">Descargar PDF</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="subtle-rule"></div>
+    </section>
+
+    <section id="galeria">
+      <div class="strip">
+        <a href="#"><img src="imgcategoria.png" alt=""></a>
+        <a href="#"><img src="imgcategoria.png" alt=""></a>
+        <a href="#"><img src="imgcategoria.png" alt=""></a>
+        <a href="#"><img src="imgcategoria.png" alt=""></a>
+        <a href="#"><img src="imgcategoria.png" alt=""></a>
+      </div>
+    </section>
+
+    <section id="informacion">
+      <div class="contenedor">
+        <div>
+          <h3>Para familias y educación</h3>
+          <p>✅ Manualidades educativas</p>
+          <p>✅ Desarrollo de psicomotricidad</p>
+          <p>✅ Uso en aula y en casa</p>
+          <p>✅ PDFs listos para imprimir</p>
+        </div>
+
+        <!-- Sustituye por una ilustración real si la tienes -->
+        <div class="info-art" aria-hidden="true">
+          👩‍🏫👧🧒<br>
+          Zona ilustración (familias / aula)
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <a href="#">Acerca de</a>
+      <a href="#">Contacto</a>
+      <a href="#">Licencias</a>
+      <a href="#">Aviso Legal</a>
+
+      <span class="social" aria-label="Redes sociales">
+        <a href="#" title="Facebook" aria-label="Facebook">f</a>
+        <a href="#" title="X" aria-label="X">x</a>
+        <a href="#" title="YouTube" aria-label="YouTube">▶</a>
+        <a href="#" title="Instagram" aria-label="Instagram">⌁</a>
+      </span>
+    </div>
+  </footer>
+</body>
+</html>
+

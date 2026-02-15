@@ -1,0 +1,347 @@
+<!-- 004-soloplantilla.html -->
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="{{meta_description}}">
+  <meta name="robots" content="{{meta_robots}}">
+  <meta name="theme-color" content="{{theme_color}}">
+  <meta name="color-scheme" content="light">
+
+  <link rel="canonical" href="{{canonical}}">
+  <link rel="alternate" hreflang="es" href="{{canonical}}">
+  <link rel="icon" href="{{favicon}}" type="image/png">
+  <link rel="apple-touch-icon" href="{{apple_touch_icon}}">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="{{og_site_name}}">
+  <meta property="og:title" content="{{og_title}}">
+  <meta property="og:description" content="{{og_description}}">
+  <meta property="og:url" content="{{canonical}}">
+  <meta property="og:image" content="{{og_image}}">
+  <meta property="og:image:alt" content="{{og_image_alt}}">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{twitter_title}}">
+  <meta name="twitter:description" content="{{twitter_description}}">
+  <meta name="twitter:image" content="{{twitter_image}}">
+
+  <title>{{title_full}}</title>
+
+  <!-- Performance: preload / hints -->
+  <link rel="preload" as="image" href="{{hero_image}}">
+  <link rel="preload" as="style" href="estilochatgpt.css">
+  <link rel="stylesheet" href="estilochatgpt.css">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {{raw:jsonld}}
+  </script>
+</head>
+
+<body>
+  <!-- Accessibility/SEO: skip link -->
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header>
+    <div class="container">
+      <div class="topbar">
+        <div id="corporativo" aria-label="Marca">
+          <a href="{{canonical}}" aria-label="{{brand_name}}">
+            <img src="logo.png" alt="{{brand_logo_alt}}" width="42" height="42" loading="eager" decoding="async">
+          </a>
+          <div class="texto">
+            <span class="t1">{{titulo1}}</span>
+            <span class="t2">{{titulo2}}</span>
+          </div>
+        </div>
+
+        <nav aria-label="Navegación principal">
+          <a href="#heroe">{{enlace 1}}</a>
+          <a href="#destacado2">{{enlace 2}}</a>
+          <a href="#destacado4">{{enlace 3}}</a>
+          <a href="#destacado7">{{enlace 4}}</a>
+          <a href="#contacto" class="nav-cta">{{enlace 5}}</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+    <!-- HERO -->
+    <section id="heroe" aria-label="Héroe">
+      <div class="container hero-inner">
+        <!-- SEO: un solo H1 por página -->
+        <h1>{{heroetitulo}}</h1>
+        <p>{{heroetexto}}</p>
+
+        <!-- Primary CTA -->
+        <a class="btn btn-primary" href="#contacto" aria-label="{{heroeaccion}}">{{heroeaccion}}</a>
+
+        <!-- Trust microcopy -->
+        <p class="hero-micro">{{hero_micro}}</p>
+      </div>
+    </section>
+
+    <!-- DESTACADO 1 -->
+    <section id="destacado1" class="soft" aria-label="Destacado 1">
+      <div class="container">
+        <div class="pill-card">
+          <div class="left">
+            <img
+              src="img/destacado1.png"
+              alt="{{destacado1_img_alt}}"
+              width="420"
+              height="420"
+              loading="lazy"
+              decoding="async"
+            >
+          </div>
+          <div class="right">
+            <h2>{{destacado1titulo}}</h2>
+            <p>{{destacado1texto}}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTACADO 2 -->
+    <section id="destacado2" aria-label="Destacado 2">
+      <div class="container section-grid">
+        <div class="content">
+          <span class="kicker">Technology × Performance</span>
+          <h2>{{destacado2titulo}}</h2>
+          <p>{{destacado2texto}}</p>
+          <a class="btn btn-primary" href="#destacado4">{{destacado2accion}}</a>
+        </div>
+        <div class="media">
+          <img
+            src="img/destacado2.png"
+            alt="{{destacado2_img_alt}}"
+            width="1200"
+            height="680"
+            loading="lazy"
+            decoding="async"
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTACADO 3 -->
+    <section id="destacado3" class="soft" aria-label="Destacado 3">
+      <div class="container">
+        <div class="iconline">
+          <div class="iconbox">
+            <img
+              src="destacado3_icono.png"
+              alt="{{destacado3_icon_alt}}"
+              width="74"
+              height="74"
+              loading="lazy"
+              decoding="async"
+            >
+          </div>
+          <h2>{{destacado3titulo}}</h2>
+        </div>
+        <p>{{destacado3texto}}</p>
+      </div>
+    </section>
+
+    <!-- DESTACADO 4 -->
+    <section id="destacado4" aria-label="Destacado 4">
+      <div class="container section-grid reverse">
+        <div class="media">
+          <img
+            src="img/destacado4.png"
+            alt="{{destacado4_img_alt}}"
+            width="1200"
+            height="680"
+            loading="lazy"
+            decoding="async"
+          >
+        </div>
+        <div class="content">
+          <h2>{{destacado4titulo}}</h2>
+          <p>{{destacado4texto}}</p>
+          <a class="btn btn-primary" href="#destacado6">{{destacado4accion}}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTACADO 5 -->
+    <section id="destacado5" class="soft" aria-label="Destacado 5">
+      <div class="container section-grid">
+        <div class="content">
+          <h2>{{destacado5titulo1}}</h2>
+          <p>{{destacado5texto1}}</p>
+        </div>
+        <div class="content">
+          <h3 style="font-size:20px;font-weight:900;margin-top:4px;">{{destacado5titulo2}}</h3>
+          <p>{{destacado5texto2}}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTACADO 6 -->
+    <section id="destacado6" class="cta-photo" aria-label="Destacado 6">
+      <div class="container">
+        <div class="cta-inner">
+          <h2>{{destacado6titulo1}}</h2>
+          <p>{{destacado6texto1}}</p>
+          <a class="btn btn-primary" href="#contacto">{{destacado6accion}}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTACADO 7 -->
+    <section id="destacado7" class="soft" aria-label="Destacado 7">
+      <div class="container why">
+        <div class="why-card">
+          <h2 style="font-size:26px;font-weight:900;">{{destacado7titulo1}}</h2>
+          <p>{{destacado7texto1}}</p>
+          <p>{{destacado7texto2}}</p>
+        </div>
+        <div class="callout">
+          <p><strong>{{destacado7texto3}}</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTACADO 8 -->
+    <section id="destacado8" aria-label="Destacado 8">
+      <div class="container">
+        <div class="band">
+          <div class="band-left">
+            <h2>{{destacado8titulo}}</h2>
+            <p>{{destacado8texto}}</p>
+            <a class="btn btn-primary" href="#contacto">{{destacado8accion}}</a>
+          </div>
+          <div class="band-right">
+            <img
+              src="img/destacado8.png"
+              alt="{{destacado8_img_alt}}"
+              width="1200"
+              height="680"
+              loading="lazy"
+              decoding="async"
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTACADO 9 -->
+    <section id="destacado9" class="soft" aria-label="Destacado 9">
+      <div class="container section-grid reverse">
+        <div class="media">
+          <img
+            src="img/destacado9.png"
+            alt="{{destacado9_img_alt}}"
+            width="1200"
+            height="680"
+            loading="lazy"
+            decoding="async"
+          >
+        </div>
+        <div class="content">
+          <h2>{{destacado9titulo}}</h2>
+          <p>{{destacado9texto}}</p>
+          <a class="btn btn-primary" href="#contacto">{{destacado9accion}}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" aria-label="Contacto">
+      <div class="container contact-grid">
+
+        <div class="footer-mini" id="infocorporacion">
+          <h2 style="font-size:22px;font-weight:900;margin-bottom:10px;">{{contact_title}}</h2>
+          <p>{{contact_intro}}</p>
+
+          <div style="margin-top:14px;">
+            <p><strong>Dirección:</strong> {{direccion}}</p>
+            <p><strong>Teléfono:</strong> <a href="tel:{{telefono_raw}}">{{telefono}}</a></p>
+            <p><strong>Email:</strong> <a href="mailto:{{email}}">{{email}}</a></p>
+          </div>
+
+          <div class="social" style="margin-top:14px;">
+            <a href="{{social_linkedin}}" aria-label="LinkedIn" rel="noopener">in</a>
+            <a href="{{social_x}}" aria-label="X" rel="noopener">x</a>
+            <a href="{{social_youtube}}" aria-label="YouTube" rel="noopener">▶</a>
+          </div>
+        </div>
+
+        <form action="" method="post">
+          <h2 style="font-size:20px;font-weight:900;margin-bottom:6px;">{{form_title}}</h2>
+          <p>{{form_intro}}</p>
+
+          <div class="form-row">
+            <div>
+              <label for="nombre">Nombre</label>
+              <input id="nombre" type="text" name="nombre" placeholder="Tu nombre" required autocomplete="name">
+            </div>
+            <div>
+              <label for="email_form">Email</label>
+              <input id="email_form" type="email" name="email" placeholder="tu@email.com" required autocomplete="email">
+            </div>
+          </div>
+
+          <label for="mensaje">Mensaje</label>
+          <textarea id="mensaje" name="mensaje" placeholder="¿En qué puedo ayudarte?" required></textarea>
+
+          <div style="margin-top:14px;">
+            <button class="btn btn-primary" type="submit">{{form_cta}}</button>
+          </div>
+
+          <!-- SEO (optional): small privacy note -->
+          <p class="form-legal">{{form_legal}}</p>
+        </form>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container footer-wrap">
+      <div>(c) {{anio}} {{titulo1}} {{titulo2}} &mdash; Todos los derechos reservados</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="{{privacy_url}}" style="opacity:.85;">Privacy Policy</a>
+        <a href="{{terms_url}}" style="opacity:.85;">Terms of Use</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Validacion basica del formulario de contacto (JS) -->
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var form = document.querySelector('#contacto form');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        var nombre = form.querySelector('[name="nombre"]');
+        var email  = form.querySelector('[name="email"]');
+        var msg    = form.querySelector('[name="mensaje"]');
+        // Comprobar que los campos no estan vacios
+        if (!nombre.value.trim() || !email.value.trim() || !msg.value.trim()) {
+          e.preventDefault();
+          alert('Por favor, rellena todos los campos antes de enviar.');
+          return;
+        }
+        // Confirmacion antes de enviar
+        if (!confirm('¿Deseas enviar el formulario de contacto?')) {
+          e.preventDefault();
+        }
+      });
+    }
+  });
+  </script>
+
+</body>
+</html>
+

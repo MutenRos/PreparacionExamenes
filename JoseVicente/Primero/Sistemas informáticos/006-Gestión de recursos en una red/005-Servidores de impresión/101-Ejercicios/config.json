@@ -1,0 +1,16 @@
+{
+  "smtp": {
+    "host": "smtp.ionos.es",
+    "port": 587,
+    "user": "python@jocarsa.com",
+    "password": "TAME123$",
+    "use_tls": true
+  },
+  "email": {
+    "from": "info@jocarsa.com",
+    "to": ["jocarsa2@gmail.com"],
+    "subject": "Correo de prueba",
+    "body": "Hola, esta es una prueba de envío de correo desde Python."
+  }
+}
+

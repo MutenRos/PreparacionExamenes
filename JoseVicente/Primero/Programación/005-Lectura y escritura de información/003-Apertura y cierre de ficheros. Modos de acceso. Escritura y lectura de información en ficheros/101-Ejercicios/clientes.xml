@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<clientes>
+  <cliente>
+    <nombre>jose Vicente</nombre>
+    <apellidos>Carratala Sanchis</apellidos>
+    <email>info@jocarsa.com</email>
+  </cliente>
+  <cliente>
+    <nombre>Juan</nombre>
+    <apellidos>Garcia Lopez</apellidos>
+    <email>juan@jocarsa.com</email>
+  </cliente>
+</clientes>

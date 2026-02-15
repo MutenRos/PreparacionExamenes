@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Dashboard - OmniERP</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .badge {
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
+            color: var(--text-inverse);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .card:hover {
+            transform: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .card-icon {
+            font-size: 36px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+        }
+        
+        .card h3 {
+            font-size: 20px;
+            color: var(--text-primary);
+        }
+        
+        .card-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color-light);
+        }
+        
+        .metric:last-child { border-bottom: none; }
+        
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+            color: var(--text-inverse);
+            border: none;
+            padding: 0 var(--spacing-lg);
+            height: 40px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-active { background: var(--color-success); }
+        .status-inactive { background: var(--color-danger); }
+        .status-warning { background: var(--color-warning); }
+        
+        .command-palette {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 90%;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .command-palette.active { display: block; }
+        
+        .command-search {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--brand-primary);
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .command-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .command-item {
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .command-item:hover {
+            background: inherit;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        
+        .modal-overlay.active { display: flex; }
+        
+        .modal {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal h2 {
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+        
+        .chart-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+        }
+        
+        .back-link {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .back-link:hover {
+            background: rgba(255,255,255,0.2);
+        }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                🏢 Enterprise Dashboard
+                <span class="badge">v2.0.0 Enterprise</span>
+            </h1>
+            <a href="/app/dashboard" class="back-link">← Volver al Dashboard</a>
+        </div>
+
+        <!-- Metrics Overview -->
+        <div class="grid">
+            <div class="card" onclick="showHealthStatus()">
+                <div class="card-header">
+                    <div class="card-icon">🚀</div>
+                    <div>
+                        <h3>System Health</h3>
+                        <p style="color: var(--color-success); font-size:12px;">
+                            <span class="status-indicator status-active"></span>All Systems Operational
+                        </p>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="metric">
+                        <span class="metric-label">Uptime</span>
+                        <span class="metric-value">99.9%</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Active Features</span>
+                        <span class="metric-value" id="activeFeatures">7</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Version</span>
+                        <span class="metric-value" style="font-size:16px;">2.0.0</span>
+                    </div>
+                </div>
+                <button class="btn" onclick="event.stopPropagation(); checkHealth()">Ver Estado Completo</button>
+            </div>
+
+            <div class="card" onclick="showAnalytics()">
+                <div class="card-header">
+                    <div class="card-icon">📊</div>
+                    <h3>Advanced Analytics</h3>
+                </div>
+                <div class="card-content">
+                    <p>Análisis predictivo con Machine Learning</p>
+                    <div class="metric">
+                        <span class="metric-label">Revenue Forecast</span>
+                        <span class="metric-value" id="forecastValue">-</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Customer Segments</span>
+                        <span class="metric-value" id="segmentsCount">4</span>
+                    </div>
+                </div>
+                <button class="btn" onclick="event.stopPropagation(); loadAnalytics()">Ver Analytics</button>
+            </div>
+
+            <div class="card" onclick="show2FA()">
+                <div class="card-header">
+                    <div class="card-icon">🔒</div>
+                    <h3>Two-Factor Auth</h3>
+                </div>
+                <div class="card-content">
+                    <p>Seguridad de nivel enterprise con 2FA</p>
+                    <div class="metric">
+                        <span class="metric-label">Estado</span>
+                        <span class="metric-value" style="font-size:16px;" id="2faStatus">
+                            <span class="status-indicator status-inactive"></span>Desactivado
+                        </span>
+                    </div>
+                </div>
+                <button class="btn" onclick="event.stopPropagation(); setup2FA()">Configurar 2FA</button>
+            </div>
+
+            <div class="card" onclick="showWebhooks()">
+                <div class="card-header">
+                    <div class="card-icon">🔗</div>
+                    <h3>Webhooks</h3>
+                </div>
+                <div class="card-content">
+                    <p>Integración con servicios externos</p>
+                    <div class="metric">
+                        <span class="metric-label">Activos</span>
+                        <span class="metric-value" id="webhooksCount">0</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Entregas</span>
+                        <span class="metric-value" id="deliveriesCount">0</span>
+                    </div>
+                </div>
+                <button class="btn" onclick="event.stopPropagation(); createWebhook()">Crear Webhook</button>
+            </div>
+
+            <div class="card" onclick="showAuditLogs()">
+                <div class="card-header">
+                    <div class="card-icon">📝</div>
+                    <h3>Audit Logs</h3>
+                </div>
+                <div class="card-content">
+                    <p>Trazabilidad completa y compliance</p>
+                    <div class="metric">
+                        <span class="metric-label">Eventos Hoy</span>
+                        <span class="metric-value" id="eventsToday">0</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Compliance</span>
+                        <span class="metric-value" style="font-size:16px;">✅ GDPR</span>
+                    </div>
+                </div>
+                <button class="btn" onclick="event.stopPropagation(); viewAuditLogs()">Ver Logs</button>
+            </div>
+
+            <div class="card" onclick="showEvents()">
+                <div class="card-header">
+                    <div class="card-icon">⚡</div>
+                    <h3>Event Bus</h3>
+                </div>
+                <div class="card-content">
+                    <p>Arquitectura event-driven en tiempo real</p>
+                    <div class="metric">
+                        <span class="metric-label">Eventos</span>
+                        <span class="metric-value" id="eventsCount">0</span>
+                    </div>
+                </div>
+                <button class="btn" onclick="event.stopPropagation(); viewEvents()">Ver Eventos</button>
+            </div>
+
+            <div class="card" onclick="showGraphQL()">
+                <div class="card-header">
+                    <div class="card-icon">🔮</div>
+                    <h3>GraphQL API</h3>
+                </div>
+                <div class="card-content">
+                    <p>Consultas avanzadas y flexibles</p>
+                    <div class="metric">
+                        <span class="metric-label">Playground</span>
+                        <span class="metric-value" style="font-size:16px;">✅ Activo</span>
+                    </div>
+                </div>
+                <button class="btn" onclick="event.stopPropagation(); window.open('/graphql', '_blank')">Abrir Playground</button>
+            </div>
+
+            <div class="card" onclick="showCommandPalette()">
+                <div class="card-header">
+                    <div class="card-icon">⌨️</div>
+                    <h3>Command Palette</h3>
+                </div>
+                <div class="card-content">
+                    <p>Acceso rápido a todas las funciones</p>
+                    <div class="metric">
+                        <span class="metric-label">Comandos</span>
+                        <span class="metric-value">30+</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Shortcut</span>
+                        <span class="metric-value" style="font-size:16px;">Ctrl+K</span>
+                    </div>
+                </div>
+                <button class="btn" onclick="event.stopPropagation(); toggleCommandPalette()">Abrir (Ctrl+K)</button>
+            </div>
+        </div>
+
+        <!-- Feature Comparison -->
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2 style="margin-bottom:20px;">🏆 Comparativa con Microsoft Dynamics 365</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <span style="font-size:24px;">✅</span>
+                    <div>
+                        <strong>Multi-tenancy</strong>
+                        <div style="font-size:12px; color: var(--text-secondary);">Aislamiento perfecto</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span style="font-size:24px;">✅</span>
+                    <div>
+                        <strong>Event-driven</strong>
+                        <div style="font-size:12px; color: var(--text-secondary);">Pub/Sub completo</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span style="font-size:24px;">✅</span>
+                    <div>
+                        <strong>Webhooks</strong>
+                        <div style="font-size:12px; color: var(--text-secondary);">Retry automático</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span style="font-size:24px;">✅</span>
+                    <div>
+                        <strong>Audit/Compliance</strong>
+                        <div style="font-size:12px; color: var(--text-secondary);">GDPR ready</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span style="font-size:24px;">✅</span>
+                    <div>
+                        <strong>2FA/MFA</strong>
+                        <div style="font-size:12px; color: var(--text-secondary);">TOTP compatible</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span style="font-size:24px;">✅</span>
+                    <div>
+                        <strong>Analytics/BI</strong>
+                        <div style="font-size:12px; color: var(--text-secondary);">ML Forecasting</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span style="font-size:24px;">✅</span>
+                    <div>
+                        <strong>GraphQL API</strong>
+                        <div style="font-size:12px; color: var(--text-secondary);">Queries flexibles</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span style="font-size:24px;">✅</span>
+                    <div>
+                        <strong>Rate Limiting</strong>
+                        <div style="font-size:12px; color: var(--text-secondary);">DDoS protection</div>
+                    </div>
+                </div>
+                <div class="feature-item" style="background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%); color: var(--text-inverse);">
+                    <span style="font-size:24px;">🚀</span>
+                    <div>
+                        <strong>Command Palette</strong>
+                        <div style="font-size:12px;">MEJOR que Dynamics 365</div>
+                    </div>
+                </div>
+                <div class="feature-item" style="background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%); color: var(--text-inverse);">
+                    <span style="font-size:24px;">⭐</span>
+                    <div>
+                        <strong>Precio</strong>
+                        <div style="font-size:12px;">$0 vs $65/user/mes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Command Palette -->
+    <div class="command-palette" id="commandPalette">
+        <h2 style="margin-bottom:15px;">⚡ Command Palette</h2>
+        <input type="text" class="command-search" id="commandSearch" placeholder="Buscar comandos... (Ctrl+K)" onkeyup="searchCommands()">
+        <div class="command-list" id="commandList"></div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+        <div class="modal" id="modal" onclick="event.stopPropagation()">
+            <div id="modalContent"></div>
+            <button class="btn" onclick="closeModal()" style="margin-top:20px;">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        // Command Palette
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'k') {
+                e.preventDefault();
+                toggleCommandPalette();
+            }
+        });
+
+        function toggleCommandPalette() {
+            const palette = document.getElementById('commandPalette');
+            const overlay = document.getElementById('modalOverlay');
+            palette.classList.toggle('active');
+            overlay.classList.toggle('active');
+            if (palette.classList.contains('active')) {
+                document.getElementById('commandSearch').focus();
+                loadCommands();
+            }
+        }
+
+        async function loadCommands() {
+            .btn {
+                background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+                const data = await response.json();
+                displayCommands(data.commands);
+            } catch (error) {
+                console.error('Error loading commands:', error);
+            }
+        }
+
+        function displayCommands(commands) {
+            const list = document.getElementById('commandList');
+            list.innerHTML = commands.map(cmd => `
+                <div class="command-item" onclick="executeCommand('${cmd.action}')">
+                    <span style="font-size:20px;">${cmd.icon || '📌'}</span>
+                    <div style="flex:1;">
+                        <strong>${cmd.title}</strong>
+                        <div style="font-size:12px; color: var(--text-secondary);">${cmd.category}</div>
+                    </div>
+                    ${cmd.shortcut ? `<span style="font-size:12px; color: var(--text-tertiary);">${cmd.shortcut}</span>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function searchCommands() {
+            const query = document.getElementById('commandSearch').value;
+            if (query.length < 2) {
+                loadCommands();
+                return;
+            }
+            
+            fetch(`/api/enterprise/commands/search?query=${encodeURIComponent(query)}`)
+                .then(r => r.json())
+                .then(data => displayCommands(data.results))
+                .catch(console.error);
+        }
+
+        function executeCommand(action) {
+            if (action.startsWith('/')) {
+                window.location.href = action;
+            } else if (action.startsWith('modal:')) {
+                // Handle modal actions
+            } else if (action.startsWith('window.open')) {
+                eval(action);
+            }
+            toggleCommandPalette();
+        }
+
+        // Health Check
+        async function checkHealth() {
+            try {
+                const response = await fetch('/api/enterprise/health');
+                const data = await response.json();
+                
+                document.getElementById('modalContent').innerHTML = `
+                    <h2>🚀 System Health</h2>
+                    <div class="metric">
+                        <span class="metric-label">Status</span>
+                        <span class="metric-value" style="color:var(--color-success);">${data.status.toUpperCase()}</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Version</span>
+                        <span class="metric-value">${data.version}</span>
+                    </div>
+                    <h3 style="margin-top:20px;">Features Activos:</h3>
+                    <div class="feature-grid" style="margin-top:15px;">
+                        ${Object.entries(data.features).map(([key, value]) => `
+                            <div class="feature-item">
+                                <span>${value ? '✅' : '❌'}</span>
+                                <strong>${key}</strong>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                document.getElementById('activeFeatures').textContent = 
+                    Object.values(data.features).filter(v => v).length;
+                    
+                document.getElementById('modalOverlay').classList.add('active');
+            } catch (error) {
+                alert('Error al verificar el estado del sistema');
+            }
+        }
+
+        // Analytics
+        async function loadAnalytics() {
+            try {
+                const response = await fetch('/api/enterprise/analytics/revenue-forecast?days=30');
+                const data = await response.json();
+                
+                if (data.total_predicted_revenue) {
+                    document.getElementById('forecastValue').textContent = 
+                        '$' + data.total_predicted_revenue.toLocaleString();
+                }
+                
+                document.getElementById('modalContent').innerHTML = `
+                    <h2>📊 Revenue Forecast (30 días)</h2>
+                    <div class="metric">
+                        <span class="metric-label">Total Previsto</span>
+                        <span class="metric-value">$${data.total_predicted_revenue?.toLocaleString() || '0'}</span>
+                    </div>
+                    <div class="chart-container">
+                        <p><strong>Modelo:</strong> Regresión Lineal</p>
+                        <p><strong>Slope:</strong> ${data.model?.slope || 'N/A'}</p>
+                        <p><strong>Intercept:</strong> ${data.model?.intercept || 'N/A'}</p>
+                        <div style="margin-top:15px;">
+                            ${data.forecast?.slice(0,7).map(f => `
+                                <div style="padding:8px; background:var(--bg-secondary); margin:5px 0; border-radius:5px;">
+                                    <strong>${f.date}</strong>: $${f.predicted_revenue.toFixed(2)}
+                                </div>
+                            `).join('') || 'Sin datos suficientes'}
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('modalOverlay').classList.add('active');
+            } catch (error) {
+                alert('Error al cargar analytics. Asegúrate de tener datos de ventas.');
+            }
+        }
+
+        // 2FA Setup
+        async function setup2FA() {
+            try {
+                const response = await fetch('/api/enterprise/2fa/setup', { method: 'POST' });
+                const data = await response.json();
+                
+                document.getElementById('modalContent').innerHTML = `
+                    <h2>🔒 Configurar Two-Factor Authentication</h2>
+                    <p>Escanea este código QR con Google Authenticator:</p>
+                    <div style="text-align:center; margin:20px 0;">
+                        <img src="data:image/png;base64,${data.qr_code}" style="max-width:250px;">
+                    </div>
+                    <p><strong>Código de Verificación:</strong></p>
+                    <input type="text" id="2faToken" placeholder="Ingresa el código de 6 dígitos" style="width:100%; padding:10px; border:2px solid var(--brand-primary); border-radius:5px; margin:10px 0;">
+                    <p style="font-size:12px; color: var(--text-secondary); margin-top:15px;">
+                        <strong>Códigos de Backup (guárdalos en un lugar seguro):</strong><br>
+                        ${data.backup_codes.join(', ')}
+                    </p>
+                    <button class="btn" onclick="enable2FA()">Activar 2FA</button>
+                `;
+                
+                document.getElementById('modalOverlay').classList.add('active');
+            } catch (error) {
+                alert('Error al configurar 2FA: ' + error.message);
+            }
+        }
+
+        async function enable2FA() {
+            const token = document.getElementById('2faToken').value;
+            try {
+                const response = await fetch('/api/enterprise/2fa/enable', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({verification_token: token})
+                });
+                
+                if (response.ok) {
+                    alert('✅ 2FA activado correctamente!');
+                    document.getElementById('2faStatus').innerHTML = 
+                        '<span class="status-indicator status-active"></span>Activado';
+                    closeModal();
+                } else {
+                    alert('❌ Código inválido. Intenta nuevamente.');
+                }
+            } catch (error) {
+                alert('Error al activar 2FA: ' + error.message);
+            }
+        }
+
+        // Load initial data
+        async function loadInitialData() {
+            checkHealth();
+            
+            // Load webhooks count
+            try {
+                const response = await fetch('/api/enterprise/webhooks');
+                const data = await response.json();
+                document.getElementById('webhooksCount').textContent = data.count;
+            } catch (error) {}
+            
+            // Load events count
+            try {
+                const response = await fetch('/api/enterprise/events');
+                const data = await response.json();
+                document.getElementById('eventsCount').textContent = data.count;
+            } catch (error) {}
+        }
+
+        function showHealthStatus() { checkHealth(); }
+        function showAnalytics() { loadAnalytics(); }
+        function show2FA() { setup2FA(); }
+        function showWebhooks() { alert('Panel de webhooks en desarrollo'); }
+        function showAuditLogs() { alert('Logs de auditoría disponibles via API'); }
+        function showEvents() { alert('Event bus activo - ver consola del navegador'); }
+        function showGraphQL() { window.open('/graphql', '_blank'); }
+        function showCommandPalette() { toggleCommandPalette(); }
+
+        function createWebhook() { alert('Crear webhook via API: POST /api/enterprise/webhooks'); }
+        function viewAuditLogs() { alert('GET /api/enterprise/audit-logs'); }
+        function viewEvents() { alert('GET /api/enterprise/events'); }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.getElementById('commandPalette').classList.remove('active');
+        }
+
+        // Load on page ready
+        window.addEventListener('DOMContentLoaded', loadInitialData);
+    </script>
+</body>
+</html>

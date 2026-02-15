@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body> 
+    <article>
+    </article>
+    <script>
+      var articulo = document.querySelector("article");
+      
+      var titulo = document.createElement("h3");    // Creo un elemento
+      titulo.textContent = "Título del artículo"    // Le pongo contenido
+      articulo.appendChild(titulo)                  // Lo añado al contenedor
+      
+      var fecha = document.createElement("time");
+      fecha.textContent = "2025-10-13"
+      articulo.appendChild(fecha)
+      
+      var texto = document.createElement("p");
+      texto.textContent = "Este es un documento de prueba"
+      articulo.appendChild(texto)
+      
+      var imagen = document.createElement("img")
+      imagen.setAttribute("src","josevicente.jpg")
+      articulo.appendChild(imagen)
+    </script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- En este documento voy a describir a un ser humano -->
+<personas>
+
+  <persona xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="006-validar xml.xsd">
+    <nombre id="propio">Jose Vicente</nombre>
+    <nombre id="mote">JV</nombre>
+    <edad medida="años">47</edad>
+    <profesion>Programador</profesion>
+  </persona>
+  
+  <persona>
+    <nombre id="propio">Jose Vicente</nombre>
+    <nombre id="mote">JV</nombre>
+    <edad medida="años">47</edad>
+    <profesion>Programador</profesion>
+  </persona>
+  
+</personas>

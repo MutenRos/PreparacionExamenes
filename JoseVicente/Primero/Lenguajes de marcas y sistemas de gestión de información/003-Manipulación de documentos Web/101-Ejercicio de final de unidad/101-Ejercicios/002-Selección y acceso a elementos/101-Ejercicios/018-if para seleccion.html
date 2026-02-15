@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body> 
+    <input type="number" id="operando1">
+    <input type="number" id="operando2">
+    <select id="operacion">
+      <option>Selecciona una opción</option>
+      <option value="suma">Sumar</option>
+      <option value="resta">Restar</option>
+      <option value="multiplicacion">Multiplicar</option>
+      <option value="division">Dividir</option>
+    </select>
+    <button>Calcula</button>
+    <div id="resultado"></div>
+    <script>
+      // Cuando pulse el boton
+      var boton = document.querySelector("button")
+      boton.onclick = function(){
+        // Voy a coger el contenido del operando 1
+        let operando1 = document.querySelector("#operando1").value
+        operando1 *= 1 // Fuerzo el cambio de tipo a numerico
+        // Voy a coger el contenido del operando 2
+        let operando2 = document.querySelector("#operando2").value
+        operando2 *= 1 // Fuerzo el cambio de tipo a numérico
+        // Ahora atrapo la operacion
+        let operacion = document.querySelector("#operacion").value
+        let resultado;
+        switch(operacion){
+          case "suma":
+            resultado = operando1 + operando2
+            break;
+          case "resta":
+            resultado = operando1 - operando2
+            break;
+          case "multiplicacion":
+            resultado = operando1 * operando2
+            break;
+          case "division":
+            resultado = operando1 / operando2
+            break;
+        }
+        // Y voy a devolver el resultado en pantalla
+        let contieneresultado = document.querySelector("#resultado")
+        contieneresultado.textContent = resultado
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+from flask import Flask  
+
+aplicacion = Flask(__name__)
+
+@aplicacion.route("/")
+def raiz():
+  cadena = '''
+    <!doctype html>
+    <html>
+      <head>
+        <title>El blog de Jose Vicente</title>
+        <style>
+          body,html{background:grey;font-family:sans-serif;}
+          header,main,footer{background:white;padding:50px;width:600px;margin:auto;}
+        </style>  
+      </head>
+      <body>
+        <header>
+          <h1>El blog de Jose Vicente</h1>
+        </header>
+        <main>
+          <article>
+            <h3>Titulo</h3>
+            <time>Fecha</time>
+            <p>Autor</p>
+            <p>Contenido</p>
+          </article>
+        </main>
+        <footer>
+          (c) 2025 Jose Vicente Carratala
+        </footer>
+      </body>
+    </html>
+  '''
+  return cadena
+  
+if __name__ == "__main__":
+  aplicacion.run()

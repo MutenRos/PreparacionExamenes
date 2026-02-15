@@ -1,0 +1,372 @@
+/**
+ * ==========================================================================
+ * MUTENROS Portfolio - Component Styles
+ * ==========================================================================
+ * 
+ * Reusable UI components:
+ * - Buttons
+ * - Cards (skill cards, project cards)
+ * - Links
+ * - Loaders
+ * 
+ * Author: Dario (MutenRos)
+ * Version: 2.0.0
+ * ==========================================================================
+ */
+
+/* =========================================================================
+ * BUTTONS
+ * =========================================================================
+ */
+
+/**
+ * Base button styles
+ * Usage: <button class="btn">Text</button>
+ */
+.btn {
+    display: inline-block;
+    padding: 15px 50px;
+    font-family: var(--font-display);
+    font-size: 16px;
+    letter-spacing: 3px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    border: 2px solid var(--color-neon-pink);
+    background: transparent;
+    color: var(--color-neon-pink);
+}
+
+/* Button shine effect on hover */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 42, 109, 0.4),
+        transparent
+    );
+    transition: left var(--transition-slow);
+}
+
+.btn:hover {
+    background: var(--color-neon-pink);
+    color: var(--color-text-primary);
+    box-shadow: var(--glow-pink);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+/* Button variant: Cyan */
+.btn--cyan {
+    border-color: var(--color-neon-cyan);
+    color: var(--color-neon-cyan);
+}
+
+.btn--cyan::before {
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(5, 217, 232, 0.4),
+        transparent
+    );
+}
+
+.btn--cyan:hover {
+    background: var(--color-neon-cyan);
+    color: var(--color-bg-primary);
+    box-shadow: var(--glow-cyan);
+}
+
+/* Button variant: Small */
+.btn--small {
+    padding: 10px 25px;
+    font-size: 12px;
+}
+
+/* =========================================================================
+ * SKILL CARDS
+ * =========================================================================
+ */
+
+.skill-card {
+    background: linear-gradient(
+        135deg,
+        rgba(123, 97, 255, 0.1),
+        rgba(211, 0, 197, 0.1)
+    );
+    border: 1px solid rgba(5, 217, 232, 0.3);
+    padding: var(--spacing-lg) 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+}
+
+/* Top accent line */
+.skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        var(--color-neon-cyan),
+        var(--color-neon-pink)
+    );
+}
+
+.skill-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--color-neon-cyan);
+    box-shadow: var(--shadow-card);
+}
+
+.skill-card__icon {
+    font-size: 50px;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-neon-cyan);
+}
+
+.skill-card__title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--color-neon-cyan);
+    margin-bottom: 15px;
+}
+
+.skill-card__description {
+    color: var(--color-text-muted);
+    line-height: var(--line-height-normal);
+}
+
+/* =========================================================================
+ * PROJECT CARDS
+ * =========================================================================
+ */
+
+.project-card {
+    background: linear-gradient(
+        180deg,
+        rgba(26, 5, 51, 0.9),
+        rgba(13, 2, 33, 0.9)
+    );
+    border: 1px solid rgba(255, 42, 109, 0.3);
+    overflow: hidden;
+    position: relative;
+    transition: all var(--transition-normal);
+}
+
+.project-card:hover {
+    transform: scale(1.02);
+    border-color: var(--color-neon-pink);
+    box-shadow: var(--shadow-card-hover);
+}
+
+/* Project image/icon container */
+.project-card__image {
+    height: 200px;
+    background: linear-gradient(
+        135deg,
+        var(--color-neon-purple),
+        var(--color-neon-blue)
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.project-card__image--icon {
+    font-size: 40px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Project info section */
+.project-card__info {
+    padding: 30px;
+}
+
+.project-card__title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--color-text-primary);
+    margin-bottom: 15px;
+}
+
+.project-card__badge {
+    font-size: 12px;
+    color: var(--color-neon-purple);
+    margin-left: 8px;
+}
+
+.project-card__description {
+    color: var(--color-text-muted);
+    line-height: var(--line-height-normal);
+    margin-bottom: var(--spacing-md);
+}
+
+/* Project tags */
+.project-card__tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.project-card__tag {
+    padding: 5px 15px;
+    font-size: 12px;
+    border: 1px solid var(--color-neon-cyan);
+    color: var(--color-neon-cyan);
+    font-family: var(--font-display);
+}
+
+/* Project stats (stars, forks) */
+.project-card__stats {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: 15px;
+    font-size: var(--font-size-small);
+    color: var(--color-text-muted);
+}
+
+.project-card__stat {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Project links */
+.project-card__links {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.project-card__link {
+    display: inline-block;
+    padding: 10px 25px;
+    background: transparent;
+    border: 1px solid var(--color-neon-pink);
+    color: var(--color-neon-pink);
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-size: 12px;
+    transition: all var(--transition-normal);
+}
+
+.project-card__link:hover {
+    background: var(--color-neon-pink);
+    color: var(--color-text-primary);
+    box-shadow: 0 0 20px var(--color-neon-pink);
+}
+
+/* Accesibilidad - estilo visible en foco por teclado */
+.project-card__link:focus-visible {
+    outline: 2px solid var(--color-neon-cyan);
+    outline-offset: 3px;
+    box-shadow: 0 0 15px var(--color-neon-cyan);
+}
+
+.project-card__link--demo {
+    border-color: var(--color-neon-cyan);
+    color: var(--color-neon-cyan);
+}
+
+.project-card__link--demo:hover {
+    background: var(--color-neon-cyan);
+    color: var(--color-bg-primary);
+    box-shadow: 0 0 20px var(--color-neon-cyan);
+}
+
+/* =========================================================================
+ * CONTACT LINKS
+ * =========================================================================
+ */
+
+.contact-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 30px;
+    border: 2px solid var(--color-neon-cyan);
+    color: var(--color-neon-cyan);
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-size: var(--font-size-small);
+    transition: all var(--transition-normal);
+}
+
+.contact-link:hover {
+    background: var(--color-neon-cyan);
+    color: var(--color-bg-primary);
+    box-shadow: var(--glow-cyan);
+}
+
+.contact-link__icon {
+    font-size: 18px;
+}
+
+/* =========================================================================
+ * LOADER
+ * =========================================================================
+ */
+
+.loader {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(5, 217, 232, 0.3);
+    border-top-color: var(--color-neon-cyan);
+    border-radius: var(--radius-full);
+    margin: 0 auto var(--spacing-md);
+    animation: loader-spin 1s linear infinite;
+}
+
+@keyframes loader-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-message {
+    text-align: center;
+    padding: var(--spacing-xl);
+}
+
+.loading-message__text {
+    font-family: var(--font-display);
+    color: var(--color-neon-cyan);
+}
+
+/* No projects fallback */
+.no-projects {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--spacing-xl);
+    color: var(--color-text-muted);
+}
+
+/* Mensaje para navegadores sin JavaScript */
+.noscript-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--spacing-xl);
+    color: var(--color-neon-pink);
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    border: 1px dashed var(--color-neon-pink);
+}

@@ -1,0 +1,159 @@
+<!-- contacto.html -->
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carolina Vega · Contacto</title>
+  <meta name="description" content="Contacta con Carolina Vega para contratación, prensa, colaboraciones y otras consultas.">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <main>
+
+    <section id="heroe" class="pagina" aria-label="Cabecera Contacto">
+      <header>
+        <h1>Carolina<br>Vega</h1>
+
+        <nav aria-label="Navegación principal">
+          <a href="index.html#inicio">Inicio</a>
+          <a href="biografia.html">Biografía</a>
+          <a href="musica.html">Música</a>
+          <a href="tour.html">Tour</a>
+          <a href="galeria.html">Galería</a>
+          <a href="contacto.html" aria-current="page">Contacto</a>
+
+          <span></span>
+
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="X">x</a>
+          <a href="#" aria-label="YouTube">▶</a>
+        </nav>
+      </header>
+
+      <article id="destacado" class="destacado-pagina">
+        <p class="kicker">CONTACTO</p>
+        <h2>Hablemos<br>de música</h2>
+        <p class="lead">Contratación, prensa, colaboraciones o cualquier consulta.</p>
+        <p>
+          <a class="boton" href="#formulario">Escribir</a>
+          <a class="boton negro" href="tour.html">Ver tour</a>
+        </p>
+      </article>
+    </section>
+
+    <section id="contenido">
+      <section>
+
+        <section id="formulario" class="panel" aria-label="Formulario de contacto">
+          <h4>MENSAJE</h4>
+
+          <div class="contacto-grid">
+            <form class="form-contacto" action="#" method="post">
+              <label>
+                Nombre
+                <input type="text" name="nombre" required>
+              </label>
+
+              <label>
+                Email
+                <input type="email" name="email" required>
+              </label>
+
+              <label>
+                Asunto
+                <select name="asunto" required>
+                  <option value="">Selecciona…</option>
+                  <option>Contratación</option>
+                  <option>Prensa / Presskit</option>
+                  <option>Colaboración</option>
+                  <option>Licencias / Sincronización</option>
+                  <option>Otros</option>
+                </select>
+              </label>
+
+              <label class="ancho">
+                Mensaje
+                <textarea name="mensaje" rows="7" required></textarea>
+              </label>
+
+              <div class="acciones ancho">
+                <button type="submit">Enviar</button>
+                <span class="muted">Respuesta habitual en 24–72h (texto editable).</span>
+              </div>
+            </form>
+
+            <aside class="info-contacto" aria-label="Información de contacto">
+              <h5>Gestión</h5>
+              <p class="muted">Email:</p>
+              <p><a href="mailto:info@ejemplo.com">info@ejemplo.com</a></p>
+
+              <hr class="separador">
+
+              <h5>Redes</h5>
+              <p class="muted">Sigue y escribe por DM:</p>
+              <p class="social grande">
+                <a href="#" aria-label="Facebook">f</a>
+                <a href="#" aria-label="X">x</a>
+                <a href="#" aria-label="Instagram">⌁</a>
+                <a href="#" aria-label="YouTube">▶</a>
+                <a href="#" aria-label="Spotify">◌</a>
+              </p>
+
+              <hr class="separador">
+
+              <h5>Presskit</h5>
+              <p class="muted">Bio corta, fotos y material promocional.</p>
+              <a class="boton" href="#">Descargar</a>
+            </aside>
+          </div>
+        </section>
+
+        <section id="sigueme" aria-label="Sígueme">
+          <h4>SÍGUEME EN</h4>
+          <p>ÚNETE A MI NEWSLETTER</p>
+
+          <form action="#" method="post">
+            <input type="email" name="email" placeholder="Tu correo electrónico..." required>
+            <button type="submit">Suscribirse</button>
+          </form>
+
+          <p class="social">
+            <a href="#" aria-label="Facebook">f</a>
+            <a href="#" aria-label="X">x</a>
+            <a href="#" aria-label="Instagram">⌁</a>
+            <a href="#" aria-label="YouTube">▶</a>
+            <a href="#" aria-label="Spotify">◌</a>
+          </p>
+        </section>
+
+      </section>
+    </section>
+
+  </main>
+
+  <footer>
+    © 2024 CAROLINA VEGA · TODOS LOS DERECHOS RESERVADOS
+  </footer>
+
+  <!-- Validación JS del formulario de contacto -->
+  <script>
+    document.querySelector('.form-contacto').addEventListener('submit', function(e) {
+      var email = this.querySelector('[name="email"]');
+      var mensaje = this.querySelector('[name="mensaje"]');
+      if (mensaje.value.trim().length < 10) {
+        e.preventDefault();
+        alert('Por favor, escribe un mensaje de al menos 10 caracteres.');
+        mensaje.focus();
+        return;
+      }
+      if (!confirm('¿Enviar el mensaje a Carolina Vega?')) {
+        e.preventDefault();
+      }
+    });
+  </script>
+
+</body>
+</html>
+

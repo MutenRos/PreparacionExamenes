@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Me encanta PDF</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <h1>Me encanta PDF</h1>
+        <p class="subtitle">Herramientas sencillas para trabajar con tus documentos</p>
+      </header>
+
+      <main class="app-main">
+        <!-- Unir PDF -->
+        <article id="unirpdf" class="card">
+          <div class="card-header">
+            <h3>Unir PDF</h3>
+            <p>Selecciona varios archivos PDF y te devolveremos uno solo con todos unidos.</p>
+          </div>
+          <form
+            class="card-form"
+            action="{{ url_for('unir_pdf') }}"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <label class="field-label">
+              Selecciona uno o más PDF
+              <input type="file" name="pdfs" multiple required accept="application/pdf">
+            </label>
+            <button type="submit" class="btn primary">Unir PDF</button>
+          </form>
+        </article>
+
+        <!-- Separar PDF -->
+        <article id="separarpdf" class="card">
+          <div class="card-header">
+            <h3>Separar PDF</h3>
+            <p>Sube un PDF y te devolveremos un archivo ZIP con un PDF por cada página.</p>
+          </div>
+          <form
+            class="card-form"
+            action="{{ url_for('separar_pdf') }}"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <label class="field-label">
+              Selecciona un PDF
+              <input type="file" name="pdf" required accept="application/pdf">
+            </label>
+            <button type="submit" class="btn secondary">Separar PDF</button>
+          </form>
+        </article>
+      </main>
+
+      <footer class="app-footer">
+        <small>Ejercicio LM – Conversión y adaptación de documentos</small>
+      </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='comportamiento.js') }}"></script>
+  </body>
+</html>
+

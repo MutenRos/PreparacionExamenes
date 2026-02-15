@@ -1,0 +1,22 @@
+INSERT INTO autores (nombre, apellidos, email) VALUES
+('Carlos', 'Pérez Gómez', 'carlos.perez@example.com'),
+('María', 'López Sánchez', 'maria.lopez@example.com'),
+('Javier', 'Martínez Ruiz', 'javier.martinez@example.com'),
+('Lucía', 'García Torres', 'lucia.garcia@example.com'),
+('Andrés', 'Ramírez Fernández', 'andres.ramirez@example.com'),
+('Elena', 'Moreno Díaz', 'elena.moreno@example.com'),
+('Sergio', 'Hernández Navarro', 'sergio.hernandez@example.com'),
+('Patricia', 'Gómez León', 'patricia.gomez@example.com'),
+('Raúl', 'Castillo Ortega', 'raul.castillo@example.com'),
+('Laura', 'Santos Vega', 'laura.santos@example.com'),
+('Diego', 'Cano Romero', 'diego.cano@example.com'),
+('Marta', 'Jiménez Soto', 'marta.jimenez@example.com'),
+('Rubén', 'Pardo Iglesias', 'ruben.pardo@example.com'),
+('Nuria', 'Cruz Herrera', 'nuria.cruz@example.com'),
+('Héctor', 'Vázquez Molina', 'hector.vazquez@example.com'),
+('Adriana', 'Reyes Campos', 'adriana.reyes@example.com'),
+('Pablo', 'Suárez Gil', 'pablo.suarez@example.com'),
+('Sara', 'Nieto Rivas', 'sara.nieto@example.com'),
+('Álvaro', 'Ruiz Pastor', 'alvaro.ruiz@example.com'),
+('Clara', 'Ortega Lozano', 'clara.ortega@example.com');
+

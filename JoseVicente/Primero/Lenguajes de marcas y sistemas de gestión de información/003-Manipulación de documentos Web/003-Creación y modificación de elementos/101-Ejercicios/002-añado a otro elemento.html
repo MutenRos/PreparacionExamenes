@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body> 
+    <div id="contenedor"></div>
+    <script>
+      var titulo = document.createElement("h1");   // createElement crea un elemento en memoria
+      titulo.textContent = "Hola mundo";
+      var contenedor = document.querySelector("#contenedor");
+      contenedor.appendChild(titulo)               // appendChild añade un elemento dentro de otro
+    </script>
+  </body>
+</html>

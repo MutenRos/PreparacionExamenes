@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>Jose Vicente Carratalá Sanchis</title>
+    <link>https://www.tudominio.com/</link>
+    <description>Profesor, desarrollador, y diseñador</description>
+    <language>es-es</language>
+    <lastBuildDate>Mon, 29 Sep 2025 12:00:00 +0200</lastBuildDate>
+
+    <item>
+      <title>Sobre mí</title>
+      <link>https://www.tudominio.com/#sobremi</link>
+      <description>Soy Jose Vicente Carratala, un profesional apasionado por la tecnología, la formación y la creatividad digital.</description>
+      <pubDate>Mon, 29 Sep 2025 09:00:00 +0200</pubDate>
+      <guid>https://www.tudominio.com/#sobremi</guid>
+    </item>
+
+    <item>
+      <title>Programación</title>
+      <link>https://www.tudominio.com/#programacion</link>
+      <description>Proyectos y trabajos relacionados con desarrollo de software y programación.</description>
+      <pubDate>Mon, 29 Sep 2025 09:10:00 +0200</pubDate>
+      <guid>https://www.tudominio.com/#programacion</guid>
+    </item>
+
+    <item>
+      <title>Docencia</title>
+      <link>https://www.tudominio.com/#docencia</link>
+      <description>Experiencia y proyectos vinculados a la enseñanza de programación y la formación tecnológica.</description>
+      <pubDate>Mon, 29 Sep 2025 09:20:00 +0200</pubDate>
+      <guid>https://www.tudominio.com/#docencia</guid>
+    </item>
+
+    <item>
+      <title>Diseño</title>
+      <link>https://www.tudominio.com/#diseno</link>
+      <description>Trabajos y ejemplos en diseño digital y creatividad visual.</description>
+      <pubDate>Mon, 29 Sep 2025 09:30:00 +0200</pubDate>
+      <guid>https://www.tudominio.com/#diseno</guid>
+    </item>
+
+    <item>
+      <title>Portafolio - Título 1</title>
+      <link>https://yaveremoquedireccion.com</link>
+      <description>Descripción</description>
+      <pubDate>Mon, 29 Sep 2025 09:40:00 +0200</pubDate>
+      <guid>https://yaveremoquedireccion.com</guid>
+    </item>
+
+    <item>
+      <title>Portafolio - Título 2</title>
+      <link>https://yaveremoquedireccion.com</link>
+      <description>Descripción</description>
+      <pubDate>Mon, 29 Sep 2025 09:50:00 +0200</pubDate>
+      <guid>https://yaveremoquedireccion.com</guid>
+    </item>
+
+    <item>
+      <title>Portafolio - Título 3</title>
+      <link>https://yaveremoquedireccion.com</link>
+      <description>Descripción</description>
+      <pubDate>Mon, 29 Sep 2025 10:00:00 +0200</pubDate>
+      <guid>https://yaveremoquedireccion.com</guid>
+    </item>
+
+  </channel>
+</rss>
+

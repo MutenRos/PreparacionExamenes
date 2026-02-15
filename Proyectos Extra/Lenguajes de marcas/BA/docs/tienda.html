@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tienda online Bombas Asoin - Compra bombas de agua, sistemas de bombeo y accesorios.">
+    <title>Tienda Online | Bombas Asoin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/shop.css">
+    <style>
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .shop-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        .shop-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        .shop-card-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+        .shop-card-body {
+            padding: 1.5rem;
+        }
+        .shop-card-body h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        .shop-card-body p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .shop-card-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .shop-card-price small {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            font-weight: normal;
+        }
+        .shop-filters {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+        .shop-filters select {
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+        .shop-filters .search-box {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .shop-filters .search-box input {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+        .demo-banner-shop {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .demo-banner-shop i {
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-contact">
+                <a href="tel:+34961402144"><i class="fas fa-phone"></i> 96 834 68 52</a>
+                <a href="mailto:info@asoinbombas.es"><i class="fas fa-envelope"></i> info@asoinbombas.es</a>
+            </div>
+            <div class="top-social">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <a href="index.html" class="logo">
+                <span class="logo-text">Bombas Asoin</span>
+            </a>
+            <nav class="nav">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="conocenos.html">Conócenos</a></li>
+                    <li><a href="productos.html">Productos</a></li>
+                    <li><a href="tienda.html" class="active">Tienda</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                    <li><a href="bips.html" class="nav-bips">BIPS</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div id="auth-links" class="auth-links"></div>
+                <a href="carrito.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count" class="cart-count">0</span>
+                </a>
+            </div>
+            <button class="nav-toggle" aria-label="Menú">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);">
+        <div class="page-hero-content">
+            <h1>Tienda Online</h1>
+            <p>Compra bombas de agua y sistemas de bombeo directamente</p>
+        </div>
+    </section>
+
+    <!-- Shop Section -->
+    <section class="section">
+        <div class="container">
+            <div class="demo-banner-shop">
+                <i class="fas fa-flask"></i>
+                <div>
+                    <strong>Modo Demostración</strong> - Los pagos son simulados. Puedes probar todo el proceso de compra sin cargo real.
+                </div>
+            </div>
+
+            <div class="shop-filters">
+                <select id="filter-category">
+                    <option value="">Todas las categorías</option>
+                    <option value="horizontal">Bombas Horizontales</option>
+                    <option value="vertical">Bombas Verticales</option>
+                    <option value="sumergible">Bombas Sumergibles</option>
+                    <option value="presion">Equipos de Presión</option>
+                    <option value="incendios">Contra Incendios</option>
+                </select>
+                <select id="filter-price">
+                    <option value="">Todos los precios</option>
+                    <option value="0-500">Hasta 500 €</option>
+                    <option value="500-1000">500 € - 1.000 €</option>
+                    <option value="1000-2000">1.000 € - 2.000 €</option>
+                    <option value="2000+">Más de 2.000 €</option>
+                </select>
+                <div class="search-box">
+                    <input type="text" id="search-products" placeholder="Buscar productos...">
+                    <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+
+            <div class="shop-grid" id="products-container">
+                <!-- Products will be rendered by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Bombas Asoin</h4>
+                    <p>Fabricantes de sistemas de bombeo desde 1915.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Navegación</h4>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="productos.html">Productos</a></li>
+                        <li><a href="servicios.html">Servicios</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="aviso-legal.html">Aviso Legal</a></li>
+                        <li><a href="politica-privacidad.html">Privacidad</a></li>
+                        <li><a href="politica-cookies.html">Cookies</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contacto</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Ctra. de Sta. Catalina, 108, Murcia</p>
+                    <p><i class="fas fa-phone"></i> 96 834 68 52</p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:info@asoinbombas.es">info@asoinbombas.es</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Bombas Asoin. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/cart.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Product catalog with real images from asoinbombas.es
+        const products = [
+            {
+                id: 'bc-100',
+                name: 'Bomba Centrífuga BC-100',
+                description: 'Bomba horizontal monofásica para uso doméstico. Caudal máx. 80 l/min.',
+                price: 289.00,
+                category: 'horizontal',
+                image: 'https://asoinbombas.es/wp-content/uploads/2025/11/IMG_0447.jpeg'
+            },
+            {
+                id: 'bc-200',
+                name: 'Bomba Centrífuga BC-200',
+                description: 'Bomba horizontal trifásica industrial. Caudal máx. 200 l/min.',
+                price: 549.00,
+                category: 'horizontal',
+                image: 'https://asoinbombas.es/wp-content/uploads/2025/11/VIPH-Industrial-.jpg'
+            },
+            {
+                id: 'bc-300',
+                name: 'Bomba Centrífuga BC-300',
+                description: 'Bomba horizontal alta potencia. Caudal máx. 400 l/min.',
+                price: 895.00,
+                category: 'horizontal',
+                image: 'https://asoinbombas.es/wp-content/uploads/2024/12/HXN-ABASTECIMIENTO.png'
+            },
+            {
+                id: 'bv-150',
+                name: 'Bomba Vertical BV-150',
+                description: 'Bomba multicelular vertical 1.5CV. Ideal presión constante.',
+                price: 425.00,
+                category: 'vertical',
+                image: 'https://asoinbombas.es/wp-content/uploads/2025/11/IMG_0453.jpeg'
+            },
+            {
+                id: 'bv-300',
+                name: 'Bomba Vertical BV-300',
+                description: 'Bomba multicelular vertical 3CV. Para grandes instalaciones.',
+                price: 789.00,
+                category: 'vertical',
+                image: 'https://asoinbombas.es/wp-content/uploads/2025/11/IMG_0453.jpeg'
+            },
+            {
+                id: 'bs-4-100',
+                name: 'Bomba Sumergible BS-4-100',
+                description: 'Electrobomba sumergible 4" para pozos. 1CV.',
+                price: 385.00,
+                category: 'sumergible',
+                image: 'https://asoinbombas.es/wp-content/uploads/2024/12/1-1024x1024.png'
+            },
+            {
+                id: 'bs-4-200',
+                name: 'Bomba Sumergible BS-4-200',
+                description: 'Electrobomba sumergible 4" para pozos. 2CV.',
+                price: 595.00,
+                category: 'sumergible',
+                image: 'https://asoinbombas.es/wp-content/uploads/2024/12/1-1024x1024.png'
+            },
+            {
+                id: 'bs-6-500',
+                name: 'Bomba Sumergible BS-6-500',
+                description: 'Electrobomba sumergible 6" alta potencia. 5CV.',
+                price: 1250.00,
+                category: 'sumergible',
+                image: 'https://asoinbombas.es/wp-content/uploads/2024/12/1-1024x1024.png'
+            },
+            {
+                id: 'gp-24',
+                name: 'Grupo de Presión GP-24',
+                description: 'Equipo completo con calderín 24L y bomba 0.5CV.',
+                price: 349.00,
+                category: 'presion',
+                image: 'https://asoinbombas.es/wp-content/uploads/2025/11/GIP-150A.jpg'
+            },
+            {
+                id: 'gp-50',
+                name: 'Grupo de Presión GP-50',
+                description: 'Equipo completo con calderín 50L y bomba 1CV.',
+                price: 549.00,
+                category: 'presion',
+                image: 'https://asoinbombas.es/wp-content/uploads/2025/11/GIP-150A.jpg'
+            },
+            {
+                id: 'gp-100',
+                name: 'Grupo de Presión GP-100',
+                description: 'Equipo industrial con calderín 100L y bomba 2CV.',
+                price: 895.00,
+                category: 'presion',
+                image: 'https://asoinbombas.es/wp-content/uploads/2025/11/HHG-COMPACT-.jpg'
+            },
+            {
+                id: 'gci-basic',
+                name: 'Grupo Contra Incendios Basic',
+                description: 'Equipo homologado UNE 23500. Bomba jockey + principal.',
+                price: 2850.00,
+                category: 'incendios',
+                image: 'https://static.plenummedia.com/40912/images/20150903151759-ciu-ev-e+j-2-or.jpg'
+            },
+            {
+                id: 'gci-pro',
+                name: 'Grupo Contra Incendios PRO',
+                description: 'Equipo homologado con redundancia. Doble bomba principal.',
+                price: 4500.00,
+                category: 'incendios',
+                image: 'https://static.plenummedia.com/40912/images/20180720114653-contra-incendios-bloch.jpg-or.jpg'
+            },
+            {
+                id: 'ba-200',
+                name: 'Bomba Achique BA-200',
+                description: 'Bomba sumergible achique aguas limpias. 200W.',
+                price: 89.00,
+                category: 'sumergible',
+                image: 'https://asoinbombas.es/wp-content/uploads/2024/02/VORTEX-ACHIQUE-Y-RESIDUALES.jpg'
+            },
+            {
+                id: 'ba-400',
+                name: 'Bomba Achique BA-400',
+                description: 'Bomba sumergible achique aguas sucias. 400W.',
+                price: 129.00,
+                category: 'sumergible',
+                image: 'https://asoinbombas.es/wp-content/uploads/2024/02/VORTEX-ACHIQUE-Y-RESIDUALES.jpg'
+            },
+            {
+                id: 'cp-smart',
+                name: 'Controlador Presión Smart',
+                description: 'Control electrónico automático. Protección marcha en seco.',
+                price: 85.00,
+                category: 'presion',
+                image: 'https://asoinbombas.es/wp-content/uploads/2025/11/VARI-IP.jpg'
+            }
+        ];
+
+        function renderProducts(filter = {}) {
+            let filtered = products;
+            
+            if (filter.category) {
+                filtered = filtered.filter(p => p.category === filter.category);
+            }
+            
+            if (filter.search) {
+                const search = filter.search.toLowerCase();
+                filtered = filtered.filter(p => 
+                    p.name.toLowerCase().includes(search) || 
+                    p.description.toLowerCase().includes(search)
+                );
+            }
+            
+            if (filter.price) {
+                if (filter.price === '0-500') {
+                    filtered = filtered.filter(p => p.price <= 500);
+                } else if (filter.price === '500-1000') {
+                    filtered = filtered.filter(p => p.price > 500 && p.price <= 1000);
+                } else if (filter.price === '1000-2000') {
+                    filtered = filtered.filter(p => p.price > 1000 && p.price <= 2000);
+                } else if (filter.price === '2000+') {
+                    filtered = filtered.filter(p => p.price > 2000);
+                }
+            }
+
+            const container = document.getElementById('products-container');
+            container.innerHTML = filtered.map(product => `
+                <div class="shop-card">
+                    <div class="shop-card-image" style="background: url('${product.image}') center/cover;">
+                    </div>
+                    <div class="shop-card-body">
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <div class="shop-card-price">
+                            ${product.price.toFixed(2)} € <small>+ IVA</small>
+                        </div>
+                        <button class="add-to-cart btn btn-primary" 
+                            data-id="${product.id}"
+                            data-name="${product.name}"
+                            data-price="${product.price}"
+                            data-image="images/productos/${product.id}.jpg">
+                            <i class="fas fa-cart-plus"></i> Añadir al carrito
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filters
+        document.getElementById('filter-category').addEventListener('change', function() {
+            renderProducts({
+                category: this.value,
+                price: document.getElementById('filter-price').value,
+                search: document.getElementById('search-products').value
+            });
+        });
+
+        document.getElementById('filter-price').addEventListener('change', function() {
+            renderProducts({
+                category: document.getElementById('filter-category').value,
+                price: this.value,
+                search: document.getElementById('search-products').value
+            });
+        });
+
+        document.getElementById('search-products').addEventListener('input', function() {
+            renderProducts({
+                category: document.getElementById('filter-category').value,
+                price: document.getElementById('filter-price').value,
+                search: this.value
+            });
+        });
+
+        // Initial render
+        renderProducts();
+    </script>
+</body>
+</html>

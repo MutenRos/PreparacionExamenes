@@ -1,0 +1,15 @@
+﻿node_modules/
+.env
+*.db
+*.sqlite
+data/
+dist/
+build/
+.cache/
+.vscode/
+*.log
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+package-lock.json

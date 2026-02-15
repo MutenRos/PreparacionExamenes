@@ -1,0 +1,215 @@
+/**
+ * ==========================================================================
+ * MUTENROS Portfolio - CSS Variables
+ * ==========================================================================
+ * 
+ * Design System: Synthwave/Retrowave Theme
+ * Author: Dario (MutenRos)
+ * Version: 2.0.0
+ * Last Updated: 2026-02-05
+ * 
+ * This file contains all CSS custom properties (variables) used throughout
+ * the portfolio. Centralizing variables ensures consistency and makes
+ * theme modifications straightforward.
+ * 
+ * Table of Contents:
+ * 1. Color Palette
+ * 2. Typography
+ * 3. Spacing
+ * 4. Shadows & Effects
+ * 5. Transitions
+ * 6. Z-Index Scale
+ * 7. Breakpoints (as reference)
+ * ==========================================================================
+ */
+
+:root {
+    /* ======================================================================
+     * 1. COLOR PALETTE
+     * ======================================================================
+     * Primary neon colors following synthwave aesthetic
+     */
+    
+    /* Primary Neon Colors */
+    --color-neon-pink: #ff2a6d;
+    --color-neon-cyan: #05d9e8;
+    --color-neon-purple: #d300c5;
+    --color-neon-blue: #7b61ff;
+    
+    /* Background Colors */
+    --color-bg-primary: #0d0221;
+    --color-bg-secondary: #1a0533;
+    --color-bg-tertiary: #2d1b4e;
+    
+    /* Text Colors */
+    --color-text-primary: #ffffff;
+    --color-text-secondary: rgba(255, 255, 255, 0.8);
+    --color-text-muted: rgba(255, 255, 255, 0.6);
+    --color-text-subtle: rgba(255, 255, 255, 0.5);
+    
+    /* Gradient Colors (for sky/background) */
+    --color-sky-top: #0d0221;
+    --color-sky-mid-1: #1a0533;
+    --color-sky-mid-2: #2d1b4e;
+    --color-sky-mid-3: #4a1942;
+    --color-sky-bottom: #7b2d5b;
+    
+    /* Sun Gradient */
+    --color-sun-top: #ff6b35;
+    --color-sun-mid: #ff2a6d;
+    --color-sun-bottom: #d300c5;
+    
+    /* Grid */
+    --color-grid: rgba(5, 217, 232, 0.3);
+    
+    /* Mountain silhouettes */
+    --color-mountain-primary: #1a0533;
+    --color-mountain-highlight: rgba(123, 45, 91, 0.3);
+    
+    /* ======================================================================
+     * 2. TYPOGRAPHY
+     * ======================================================================
+     */
+    
+    /* Font Families */
+    --font-display: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
+    --font-mono: 'Press Start 2P', monospace;
+    
+    /* Font Sizes - Desktop */
+    --font-size-hero: 80px;
+    --font-size-h1: 48px;
+    --font-size-h2: 32px;
+    --font-size-h3: 28px;
+    --font-size-h4: 22px;
+    --font-size-body: 18px;
+    --font-size-small: 14px;
+    --font-size-tiny: 12px;
+    
+    /* Font Weights */
+    --font-weight-light: 300;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+    --font-weight-black: 900;
+    
+    /* Line Heights */
+    --line-height-tight: 1.2;
+    --line-height-normal: 1.6;
+    --line-height-relaxed: 1.8;
+    
+    /* Letter Spacing */
+    --letter-spacing-tight: 2px;
+    --letter-spacing-normal: 4px;
+    --letter-spacing-wide: 8px;
+    
+    /* ======================================================================
+     * 3. SPACING
+     * ======================================================================
+     */
+    
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 20px;
+    --spacing-lg: 40px;
+    --spacing-xl: 60px;
+    --spacing-2xl: 100px;
+    
+    /* Section Padding */
+    --section-padding-y: 100px;
+    --section-padding-x: 50px;
+    
+    /* Container */
+    --container-max-width: 1200px;
+    --container-narrow: 600px;
+    --container-wide: 1000px;
+    
+    /* ======================================================================
+     * 4. SHADOWS & EFFECTS
+     * ======================================================================
+     */
+    
+    /* Neon Glow Effects */
+    --glow-pink: 0 0 30px var(--color-neon-pink), 0 0 60px var(--color-neon-pink);
+    --glow-cyan: 0 0 30px var(--color-neon-cyan);
+    --glow-purple: 0 0 30px var(--color-neon-purple);
+    
+    /* Text Shadows */
+    --text-glow-cyan: 0 0 20px var(--color-neon-cyan);
+    --text-glow-pink: 0 0 20px var(--color-neon-pink);
+    --text-glow-purple: 0 0 30px var(--color-neon-purple);
+    
+    /* Box Shadows */
+    --shadow-card: 0 20px 40px rgba(5, 217, 232, 0.2);
+    --shadow-card-hover: 0 0 40px rgba(255, 42, 109, 0.3);
+    
+    /* Sun Glow */
+    --sun-glow: 0 0 60px #ff2a6d, 0 0 100px #ff2a6d, 0 0 200px #d300c5;
+    
+    /* ======================================================================
+     * 5. TRANSITIONS
+     * ======================================================================
+     */
+    
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    --transition-bounce: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    /* ======================================================================
+     * 6. Z-INDEX SCALE
+     * ======================================================================
+     * Organized layering system to prevent z-index conflicts
+     */
+    
+    --z-background: -1;
+    --z-default: 1;
+    --z-dropdown: 10;
+    --z-sticky: 50;
+    --z-fixed: 100;
+    --z-modal-backdrop: 500;
+    --z-modal: 1000;
+    --z-overlay: 99999;
+    
+    /* ======================================================================
+     * 7. BORDER RADIUS
+     * ======================================================================
+     */
+    
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --radius-full: 50%;
+    
+    /* ======================================================================
+     * 8. BREAKPOINTS (Reference Only - Use in media queries)
+     * ======================================================================
+     * --breakpoint-sm: 576px;
+     * --breakpoint-md: 768px;
+     * --breakpoint-lg: 992px;
+     * --breakpoint-xl: 1200px;
+     */
+}
+
+/**
+ * ==========================================================================
+ * RESPONSIVE VARIABLE OVERRIDES
+ * ==========================================================================
+ */
+
+@media (max-width: 768px) {
+    :root {
+        /* Reduce font sizes on mobile */
+        --font-size-hero: 40px;
+        --font-size-h1: 32px;
+        --font-size-h2: 24px;
+        --font-size-h3: 20px;
+        
+        /* Reduce spacing on mobile */
+        --section-padding-y: 60px;
+        --section-padding-x: 20px;
+        
+        /* Reduce letter spacing on mobile */
+        --letter-spacing-wide: 4px;
+    }
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "titulo":"Pieza de portafolio 1",
+    "descripcion":"Descripción de la pieza 1",
+    "imagen":"josevicente.jpg"
+  },
+  {
+    "titulo":"Pieza de portafolio 2",
+    "descripcion":"Descripción de la pieza 2",
+    "imagen":"josevicente.jpg"
+  },
+  {
+    "titulo":"Pieza de portafolio 3",
+    "descripcion":"Descripción de la pieza 3",
+    "imagen":"josevicente.jpg"
+  },
+  {
+    "titulo":"Pieza de portafolio 4",
+    "descripcion":"Descripción de la pieza 4",
+    "imagen":"josevicente.jpg"
+  },
+  {
+    "titulo":"Pieza de portafolio 5",
+    "descripcion":"Descripción de la pieza 5",
+    "imagen":"josevicente.jpg"
+  },
+  {
+    "titulo":"Pieza de portafolio 6",
+    "descripcion":"Descripción de la pieza 6",
+    "imagen":"josevicente.jpg"
+  },
+  {
+    "titulo":"Pieza de portafolio 7",
+    "descripcion":"Descripción de la pieza 7",
+    "imagen":"josevicente.jpg"
+  }
+]

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Formulario</title>
+    <meta charset="utf-8">
+    <style>
+      body,html{background:lightgray;display:flex;
+        width:100%;justify-content:center;font-family:sans-serif;}
+      form{background:white;padding:20px;width:600px;}
+      form fieldset{display:flex;flex-direction:column;gap:20px;border:none;}
+      form fieldset input{padding:10px;border:1px solid lightgray;}
+      .control_formulario{display:flex;}
+      .control_formulario label,.control_formulario input{flex:1;}
+    </style>
+  </head>
+  <body>
+    <form>
+      <fieldset>
+        <legend>Formulario de recogida de datos</legend>
+        <?php for($i = 0;$i<20;$i++){ ?>
+          <div class="control_formulario">
+            <label for="nombre">Introduce tu nombre</label>
+            <input type="text" name="nombre" id="nombre">
+          </div>
+        <?php } ?>
+        <input type="submit">
+      </fieldset>
+    </form>
+  </body>
+</html>

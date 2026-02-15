@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- En este documento voy a describir a un ser humano -->
+<persona>
+  <nombre id="propio">Jose Vicente</nombre>
+  <nombre id="mote">JV</nombre>
+  <edad medida="años">47</edad>
+  <profesion>Programador</profesion>
+</persona>

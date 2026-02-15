@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+	<head>
+		<style>
+			body,html{padding:0px;margin:0px;}
+		</style>
+	</head>
+	<body>
+		<canvas></canvas>
+		<script>
+			class Estrella{
+				constructor(){
+					this.x = Math.random()*window.innerWidth;
+					this.y = Math.random()*window.innerHeight
+					this.z = Math.random()*100;
+				}
+			}
+			let lienzo = document.querySelector("canvas");
+			let contexto = lienzo.getContext("2d");
+			
+			lienzo.width = window.innerWidth
+			lienzo.height = window.innerHeight
+			
+			
+			
+			let numeroestrellas = 200;
+			estrellas = [];
+			for(let i = 0;i<numeroestrellas;i++){
+				estrellas.push(new Estrella());
+			}
+			let temporizador = setTimeout("bucle()",1000)
+			function bucle(){
+				contexto.fillStyle = "black"
+				contexto.fillRect(0,0,window.innerWidth,window.innerHeight);
+				estrellas.forEach(function(estrella){
+					contexto.fillStyle = "white";
+					contexto.beginPath();
+					contexto.arc(estrella.x,estrella.y,2,0,Math.PI*2)
+					contexto.fill()
+				})
+				clearTimeout(temporizador)
+				temporizador = setTimeout("bucle()",1000)
+			}
+			
+			
+			
+		</script>
+	</body>
+</html>

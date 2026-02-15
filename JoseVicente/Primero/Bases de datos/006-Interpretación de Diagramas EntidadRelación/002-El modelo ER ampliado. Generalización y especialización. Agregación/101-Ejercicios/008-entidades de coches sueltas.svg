@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="821.7500610351562" height="188.7125142415364" viewBox="0 0 821.7500610351562 188.7125142415364">
+
+  <defs>
+    <style>
+      text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 12px; fill: #111827; }
+      .shape-rect { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-entity { fill: #ffffff; stroke: #111827; stroke-width: 2; }
+      .shape-circle { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-pill { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-db { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .conn { stroke: #111827; stroke-width: 2; fill: none; }
+    </style>
+    <marker id="arrow-end" markerWidth="10" markerHeight="7" refX="10" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#111827"/>
+    </marker>
+    <marker id="arrow-start" markerWidth="10" markerHeight="7" refX="0" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="10 0, 0 3.5, 10 7" fill="#111827"/>
+    </marker>
+  </defs>
+        
+<rect class="shape-entity" x="40" y="46.31251017252603" width="219.99999999999994" height="102.4000040690104" />
+<line x1="40" y1="72.71250661214192" x2="259.99999999999994" y2="72.71250661214192" stroke="#e5e7eb" stroke-width="1"/>
+<text x="149.99999999999997" y="64.31250635782877" text-anchor="middle">Rueda</text>
+<text x="123.68749999999997" y="92.71249389648435">id</text>
+<text x="123.68749999999997" y="116.71249389648435">diametro</text>
+<rect class="shape-entity" x="309.0875040690104" y="40" width="219.99997965494785" height="102.4000040690104" />
+<line x1="309.0875040690104" y1="66.40000661214192" x2="529.0874837239583" y2="66.40000661214192" stroke="#e5e7eb" stroke-width="1"/>
+<text x="419.0874938964843" y="58.000006357828774" text-anchor="middle">Carroceria</text>
+<text x="387.812520345052" y="86.39999389648435">id</text>
+<text x="387.812520345052" y="110.39999389648435">tipo_metal</text>
+<rect class="shape-entity" x="561.7500610351562" y="46.01250203450519" width="219.99999999999994" height="79.99999999999997" />
+<line x1="561.7500610351562" y1="72.41249847412108" x2="781.7500610351562" y2="72.41249847412108" stroke="#e5e7eb" stroke-width="1"/>
+<text x="671.7500610351562" y="64.01249821980792" text-anchor="middle">Chapa</text>
+<text x="666.4375610351561" y="92.4125061035156">id</text>
+</svg>

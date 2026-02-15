@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Currículum Vitae</title>
+        <style>
+            main{
+                width:210mm;
+                height:297mm;
+                margin:auto;
+            }
+            /* Quiero maquetar con flexbox */
+            main{
+                display:flex;
+                flex-direction:row;
+                align-items:top;
+                justify-content:center;
+                background: url(fondocv.jpg) no-repeat center center;
+                background-size: 100% 100%;
+                font-family:sans-serif;
+                gap:100px;
+            }  
+            #izquierda{
+                flex:1;
+                text-align:center;
+            }
+            #derecha{
+                flex:2;
+                padding-left:20px;
+            }
+            #izquierda img{
+                border-radius:50%;
+                border:5px solid white;
+                transform: translate(55px, 95px);
+                width: 189px;
+            }
+            h1,h2{
+                text-align:center;
+                text-transform:uppercase;
+                color:#5c105a;
+            }
+            h2{
+                font-size:12px;
+                margin-bottom:120px;
+            }
+            h1{
+                margin-top:50px;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <div id="izquierda">
+                <img src="josevicente.jpg" alt="Foto de perfil" width="150">
+                <ul>
+                    <li>Fecha de nacimiento: 14/04/1978</li>
+                    <li>Edad: 47</li>
+                    <li>Nacionalidad: Española</li>
+                </ul>
+                <article>
+                    <h2>Contacto</h2>
+                    <p>Dirección: Calle Falsa 123, Ciudad, País</p>
+                    <p>Teléfono: +34 123 456 789</p>
+                    <p>Email:
+                </article>
+                <article>
+                    <h2>Habilidades</h2>
+                    <ul>
+                        <li>HTML5, CSS3, JavaScript</li>
+                        <li>Diseño responsivo</li>
+                        <li>Gestión de proyectos</li>
+                    </ul>
+                </article>
+                <article>
+                    <h2>Idiomas</h2>
+                    <ul>
+                        <li>Español: Nativo</li>
+                        <li>Inglés: Avanzado</li>
+                        <li>Francés: Intermedio</li>
+                    </ul>
+                </article>
+            </div>
+            <div id="derecha">
+                <h1>Jose Vicente <br>Carratalá Sanchis</h1>
+                <h2>Profesor, desarrollador y diseñador</h2>
+                <h3>Sobre mi</h3>
+                <p>Soy un profesional con más de 20 años de experiencia en el desarrollo web y la enseñanza. Me apasiona crear soluciones innovadoras y compartir mis conocimientos con otros.</p>
+                <h3>Formación Académica</h3>
+                <ul>
+                    <li>Grado en Ingeniería Informática - Universidad de Valencia (2000-2004)</li>
+                    <li>Máster en Desarrollo Web - Universidad Politécnica de Madrid (2005-2006)</li>
+                </ul>
+                <h3>Experiencia Profesional</h3>
+                <ul>
+                    <li>Profesor de Desarrollo Web - Instituto Tecnológico de Valencia (2010-presente)</li>
+                    <li>Desarrollador Web Freelance (2006-2010)</li>
+                </ul>
+                <h3>Proyectos Destacados</h3>
+                <ul>
+                    <li>Desarrollo de una plataforma de e-learning para una universidad local.</li>
+                    <li>Diseño y desarrollo de sitios web para pequeñas y medianas empresas.</li>
+                </ul>
+                <h3>Referencias</h3>
+                <p>Disponibles a solicitud.</p> 
+            </div>
+        </main>
+    </body>
+    
+</html>

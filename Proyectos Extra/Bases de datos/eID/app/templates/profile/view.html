@@ -1,0 +1,823 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.username }} - eID{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h1>@{{ user.username }}</h1>
+            {% if is_own_profile %}
+                <a href="{{ url_for('profile.edit') }}" class="btn btn-secondary">✏️ Editar perfil</a>
+            {% endif %}
+        </div>
+        
+        {% if user.full_name %}
+            <h2 style="color: var(--gray); font-size: 1.3rem; margin-bottom: 1rem;">{{ user.full_name }}</h2>
+        {% endif %}
+        
+        {% if user.bio %}
+            <p style="margin: 1.5rem 0; color: var(--dark);">{{ user.bio }}</p>
+        {% else %}
+            {% if is_own_profile %}
+                <p style="color: var(--gray); font-style: italic; margin: 1rem 0;">
+                    📝 No has añadido una biografía aún. 
+                    <a href="{{ url_for('profile.edit') }}">Añade una aquí</a>
+                </p>
+            {% endif %}
+        {% endif %}
+        
+        {% if user.website %}
+            <p style="margin: 1rem 0;">🌐 <a href="{{ user.website }}" target="_blank" style="color: var(--primary);">{{ user.website }}</a></p>
+        {% endif %}
+        
+        {% if is_own_profile %}
+            <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid var(--light);">
+                <h3 style="color: var(--dark); margin-bottom: 1rem;">🔐 Tu Código de Amigo</h3>
+                <div style="background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 1.5rem; border-radius: 10px; color: white;">
+                    <div style="font-size: 1.8rem; font-weight: bold; letter-spacing: 0.3rem; text-align: center; font-family: 'Courier New', monospace; margin-bottom: 1rem;">
+                        {{ user.friend_code }}
+                    </div>
+                    <button onclick="copyCode()" class="btn" style="background: white; color: var(--primary); width: 100%;">
+                        📋 Copiar código
+                    </button>
+                </div>
+                <p style="color: var(--gray); font-size: 0.9rem; margin-top: 1rem; text-align: center;">
+                    Comparte este código con tus amigos para que puedan agregarte
+                </p>
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="card">
+        <h2 style="margin-bottom: 1.5rem;">📱 Redes Sociales</h2>
+        
+        {% if is_own_profile %}
+            <div class="social-tabs-container">
+                <div class="contact-tabs">
+                    <button class="tab-btn active" data-platform="whatsapp" onclick="switchTab('whatsapp')">📱 WhatsApp</button>
+                    <button class="tab-btn" data-platform="facebook" onclick="switchTab('facebook')">📘 Facebook</button>
+                    <button class="tab-btn" data-platform="instagram" onclick="switchTab('instagram')">📷 Instagram</button>
+                    <button class="tab-btn" data-platform="linkedin" onclick="switchTab('linkedin')">💼 LinkedIn</button>
+                    <button class="tab-btn" data-platform="x" onclick="switchTab('x')">✖️ X</button>
+                    <button class="tab-btn" data-platform="tiktok" onclick="switchTab('tiktok')">🎵 TikTok</button>
+                    <button class="tab-btn" data-platform="youtube" onclick="switchTab('youtube')">📺 YouTube</button>
+                </div>
+                
+                <div class="tab-contents">
+                    <!-- WhatsApp -->
+                    <div class="tab-content active" id="tab-whatsapp">
+                        <h3>📱 WhatsApp</h3>
+                        
+                        {% if links_dict.get('WhatsApp') %}
+                            {% set wa_link = links_dict.get('WhatsApp') %}
+                            {% set wa_data = wa_link.get('profile_data_parsed') %}
+                            
+                            <div class="social-preview" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: white;">
+                                <div class="preview-header">
+                                    <div class="preview-avatar-placeholder" style="background: white; color: #25D366;">📱</div>
+                                    <div class="preview-info">
+                                        <h4 style="color: white;">{{ wa_data.get('profile_name') if wa_data else 'WhatsApp' }}</h4>
+                                        <p class="preview-username" style="color: rgba(255,255,255,0.9);">{{ wa_link.get('username', '') }}</p>
+                                    </div>
+                                </div>
+                                <a href="{{ wa_link.get('url') }}" target="_blank" class="preview-link" style="color: white; text-decoration: underline;">Abrir chat →</a>
+                            </div>
+                            
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('whatsapp-form').style.display='block'; this.style.display='none';" style="margin-top: 1rem;">
+                                ✏️ Editar WhatsApp
+                            </button>
+                            
+                            <form id="whatsapp-form" method="POST" action="{{ url_for('profile.save_social_link') }}" style="display: none; margin-top: 1rem;">
+                                <input type="hidden" name="platform" value="WhatsApp">
+                                <div class="form-group">
+                                    <label for="whatsapp-url">URL de WhatsApp *</label>
+                                    <input type="url" id="whatsapp-url" name="url" class="form-control" 
+                                           placeholder="https://wa.me/34600000000" value="{{ wa_link.get('url', '') }}" required>
+                                    <small style="color: var(--gray);">Pega tu enlace de WhatsApp (ej: https://wa.me/34600000000)</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="is_visible" value="1" {{ 'checked' if wa_link.get('is_visible', True) else '' }}>
+                                        Mostrar en mi perfil
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">💾 Actualizar WhatsApp</button>
+                                <button type="button" class="btn btn-secondary" onclick="this.closest('form').style.display='none'; document.querySelector('#tab-whatsapp button').style.display='block';">Cancelar</button>
+                            </form>
+                            
+                        {% else %}
+                            <form method="POST" action="{{ url_for('profile.save_social_link') }}">
+                                <input type="hidden" name="platform" value="WhatsApp">
+                                <div class="form-group">
+                                    <label for="whatsapp-url">URL de WhatsApp *</label>
+                                    <input type="url" id="whatsapp-url" name="url" class="form-control" 
+                                           placeholder="https://wa.me/34600000000" required>
+                                    <small style="color: var(--gray);">Pega tu enlace de WhatsApp (ej: https://wa.me/34600000000)</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="is_visible" value="1" checked>
+                                        Mostrar en mi perfil
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">💾 Guardar WhatsApp</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Facebook -->
+                    <div class="tab-content" id="tab-facebook">
+                        <h3>📘 Facebook</h3>
+                        
+                        {% if links_dict.get('Facebook') %}
+                            <!-- Ya existe - Mostrar preview -->
+                            {% set fb_link = links_dict.get('Facebook') %}
+                            {% set fb_data = fb_link.get('profile_data_parsed') %}
+                            
+                            {% if fb_data and fb_data is mapping %}
+                            <div class="social-preview">
+                                <div class="preview-header">
+                                    {% if fb_data.get('avatar') %}
+                                        <img src="{{ fb_data.avatar }}" alt="Avatar" class="preview-avatar">
+                                    {% else %}
+                                        <div class="preview-avatar-placeholder">📘</div>
+                                    {% endif %}
+                                    <div class="preview-info">
+                                        <h4>{{ fb_data.get('profile_name') or fb_link.get('username') or 'Tu perfil de Facebook' }}</h4>
+                                        <p class="preview-username">@{{ fb_link.get('username', '') }}</p>
+                                    </div>
+                                </div>
+                                {% if fb_data.get('bio') %}
+                                    <p class="preview-bio">{{ fb_data.bio[:150] }}{% if fb_data.bio|length > 150 %}...{% endif %}</p>
+                                {% endif %}
+                                <a href="{{ fb_link.get('url') }}" target="_blank" class="preview-link">Ver perfil completo →</a>
+                            </div>
+                            {% else %}
+                            <div class="social-preview" style="background: #f5f5f5;">
+                                <p><strong>{{ fb_link.get('username') }}</strong></p>
+                                <a href="{{ fb_link.get('url') }}" target="_blank">{{ fb_link.get('url') }}</a>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Botón para editar -->
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('facebook-form').style.display='block'; this.style.display='none';" style="margin-top: 1rem;">
+                                ✏️ Editar Facebook
+                            </button>
+                            
+                            <!-- Formulario oculto por defecto -->
+                            <form id="facebook-form" method="POST" action="{{ url_for('profile.save_social_link') }}" style="display: none; margin-top: 1rem;">
+                                <input type="hidden" name="platform" value="Facebook">
+                                <div class="form-group">
+                                    <label for="facebook-url">URL de tu perfil *</label>
+                                    <input type="url" id="facebook-url" name="url" class="form-control" 
+                                           placeholder="https://facebook.com/tunombre" value="{{ fb_link.get('url', '') }}" required>
+                                    <small style="color: var(--gray);">Pega el enlace a tu perfil de Facebook</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="is_visible" value="1" {{ 'checked' if fb_link.get('is_visible', True) else '' }}>
+                                        Mostrar en mi perfil
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">💾 Actualizar Facebook</button>
+                                <button type="button" class="btn btn-secondary" onclick="this.closest('form').style.display='none'; document.querySelector('#tab-facebook button').style.display='block';">Cancelar</button>
+                            </form>
+                            
+                        {% else %}
+                            <!-- No existe - Mostrar formulario directamente -->
+                            <form method="POST" action="{{ url_for('profile.save_social_link') }}">
+                                <input type="hidden" name="platform" value="Facebook">
+                                <div class="form-group">
+                                    <label for="facebook-url">URL de tu perfil *</label>
+                                    <input type="url" id="facebook-url" name="url" class="form-control" 
+                                           placeholder="https://facebook.com/tunombre" required>
+                                    <small style="color: var(--gray);">Pega el enlace a tu perfil de Facebook</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="is_visible" value="1" checked>
+                                        Mostrar en mi perfil
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">💾 Guardar Facebook</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Instagram -->
+                    <div class="tab-content" id="tab-instagram">
+                        <h3>📷 Instagram</h3>
+                        
+                        {% if links_dict.get('Instagram') %}
+                            {% set ig_link = links_dict.get('Instagram') %}
+                            {% set ig_data = ig_link.get('profile_data_parsed') %}
+                            
+                            {% if ig_data and ig_data is mapping %}
+                            <div class="social-preview">
+                                <div class="preview-header">
+                                    {% if ig_data.get('avatar') %}
+                                        <img src="{{ ig_data.avatar }}" alt="Avatar" class="preview-avatar">
+                                    {% else %}
+                                        <div class="preview-avatar-placeholder">📷</div>
+                                    {% endif %}
+                                    <div class="preview-info">
+                                        <h4>{{ ig_data.get('profile_name') or ig_link.get('username') or 'Tu perfil de Instagram' }}</h4>
+                                        <p class="preview-username">@{{ ig_link.get('username', '') }}</p>
+                                    </div>
+                                </div>
+                                {% if ig_data.get('bio') %}
+                                    <p class="preview-bio">{{ ig_data.bio[:150] }}{% if ig_data.bio|length > 150 %}...{% endif %}</p>
+                                {% endif %}
+                                <a href="{{ ig_link.get('url') }}" target="_blank" class="preview-link">Ver perfil completo →</a>
+                            </div>
+                            {% else %}
+                            <div class="social-preview" style="background: #f5f5f5;">
+                                <p><strong>{{ ig_link.get('username') }}</strong></p>
+                                <a href="{{ ig_link.get('url') }}" target="_blank">{{ ig_link.get('url') }}</a>
+                            </div>
+                            {% endif %}
+                            
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('instagram-form').style.display='block'; this.style.display='none';" style="margin-top: 1rem;">
+                                ✏️ Editar Instagram
+                            </button>
+                            
+                            <form id="instagram-form" method="POST" action="{{ url_for('profile.save_social_link') }}" style="display: none; margin-top: 1rem;">
+                                <input type="hidden" name="platform" value="Instagram">
+                                <div class="form-group">
+                                    <label for="instagram-url">URL de tu perfil *</label>
+                                    <input type="url" id="instagram-url" name="url" class="form-control" 
+                                           placeholder="https://instagram.com/tunombre" value="{{ ig_link.get('url', '') }}" required>
+                                    <small style="color: var(--gray);">Pega el enlace a tu perfil de Instagram</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="is_visible" value="1" {{ 'checked' if ig_link.get('is_visible', True) else '' }}>
+                                        Mostrar en mi perfil
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">💾 Actualizar Instagram</button>
+                                <button type="button" class="btn btn-secondary" onclick="this.closest('form').style.display='none'; document.querySelector('#tab-instagram button').style.display='block';">Cancelar</button>
+                            </form>
+                            
+                        {% else %}
+                            <form method="POST" action="{{ url_for('profile.save_social_link') }}">
+                                <input type="hidden" name="platform" value="Instagram">
+                                <div class="form-group">
+                                    <label for="instagram-url">URL de tu perfil *</label>
+                                    <input type="url" id="instagram-url" name="url" class="form-control" 
+                                           placeholder="https://instagram.com/tunombre" required>
+                                    <small style="color: var(--gray);">Pega el enlace a tu perfil de Instagram</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="is_visible" value="1" checked>
+                                        Mostrar en mi perfil
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">💾 Guardar Instagram</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- LinkedIn -->
+                    <div class="tab-content" id="tab-linkedin">
+                        <h3>💼 LinkedIn</h3>
+                        
+                        {% if links_dict.get('LinkedIn') %}
+                            {% set li_link = links_dict.get('LinkedIn') %}
+                            {% set li_data = li_link.get('profile_data_parsed') %}
+                            
+                            {% if li_data and li_data is mapping %}
+                            <div class="social-preview">
+                                <div class="preview-header">
+                                    {% if li_data.get('avatar') %}
+                                        <img src="{{ li_data.avatar }}" alt="Avatar" class="preview-avatar">
+                                    {% else %}
+                                        <div class="preview-avatar-placeholder">💼</div>
+                                    {% endif %}
+                                    <div class="preview-info">
+                                        <h4>{{ li_data.get('profile_name') or li_link.get('username') or 'Tu perfil de LinkedIn' }}</h4>
+                                        <p class="preview-username">{{ li_link.get('username', '') }}</p>
+                                    </div>
+                                </div>
+                                {% if li_data.get('bio') %}
+                                    <p class="preview-bio">{{ li_data.bio[:150] }}{% if li_data.bio|length > 150 %}...{% endif %}</p>
+                                {% endif %}
+                                <a href="{{ li_link.get('url') }}" target="_blank" class="preview-link">Ver perfil completo →</a>
+                            </div>
+                            {% else %}
+                            <div class="social-preview" style="background: #f5f5f5;">
+                                <p><strong>{{ li_link.get('username') }}</strong></p>
+                                <a href="{{ li_link.get('url') }}" target="_blank">{{ li_link.get('url') }}</a>
+                            </div>
+                            {% endif %}
+                            
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('linkedin-form').style.display='block'; this.style.display='none';" style="margin-top: 1rem;">
+                                ✏️ Editar LinkedIn
+                            </button>
+                            
+                            <form id="linkedin-form" method="POST" action="{{ url_for('profile.save_social_link') }}" style="display: none; margin-top: 1rem;">
+                                <input type="hidden" name="platform" value="LinkedIn">
+                                <div class="form-group">
+                                    <label for="linkedin-url">URL de tu perfil *</label>
+                                    <input type="url" id="linkedin-url" name="url" class="form-control" 
+                                           placeholder="https://linkedin.com/in/tunombre" value="{{ li_link.get('url', '') }}" required>
+                                    <small style="color: var(--gray);">Pega el enlace a tu perfil de LinkedIn</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="is_visible" value="1" {{ 'checked' if li_link.get('is_visible', True) else '' }}>
+                                        Mostrar en mi perfil
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">💾 Actualizar LinkedIn</button>
+                                <button type="button" class="btn btn-secondary" onclick="this.closest('form').style.display='none'; document.querySelector('#tab-linkedin button').style.display='block';">Cancelar</button>
+                            </form>
+                            
+                        {% else %}
+                            <form method="POST" action="{{ url_for('profile.save_social_link') }}">
+                                <input type="hidden" name="platform" value="LinkedIn">
+                                <div class="form-group">
+                                    <label for="linkedin-url">URL de tu perfil *</label>
+                                    <input type="url" id="linkedin-url" name="url" class="form-control" 
+                                           placeholder="https://linkedin.com/in/tunombre" required>
+                                    <small style="color: var(--gray);">Pega el enlace a tu perfil de LinkedIn</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="is_visible" value="1" checked>
+                                        Mostrar en mi perfil
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">💾 Guardar LinkedIn</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- X (Twitter) -->
+                    <div class="tab-content" id="tab-x">
+                        <h3>✖️ X (Twitter)</h3>
+                        
+                        {% if links_dict.get('X') %}
+                            {% set x_link = links_dict.get('X') %}
+                            {% set x_data = x_link.get('profile_data_parsed') %}
+                            
+                            {% if x_data and x_data is mapping %}
+                            <div class="social-preview">
+                                <div class="preview-header">
+                                    {% if x_data.get('avatar') %}
+                                        <img src="{{ x_data.avatar }}" alt="Avatar" class="preview-avatar">
+                                    {% else %}
+                                        <div class="preview-avatar-placeholder">✖️</div>
+                                    {% endif %}
+                                    <div class="preview-info">
+                                        <h4>{{ x_data.get('profile_name') or x_link.get('username') or 'Tu perfil de X' }}</h4>
+                                        <p class="preview-username">@{{ x_link.get('username', '') }}</p>
+                                    </div>
+                                </div>
+                                {% if x_data.get('bio') %}
+                                    <p class="preview-bio">{{ x_data.bio[:150] }}{% if x_data.bio|length > 150 %}...{% endif %}</p>
+                                {% endif %}
+                                <a href="{{ x_link.get('url') }}" target="_blank" class="preview-link">Ver perfil completo →</a>
+                            </div>
+                            {% else %}
+                            <div class="social-preview" style="background: #f5f5f5;">
+                                <p><strong>{{ x_link.get('username') }}</strong></p>
+                                <a href="{{ x_link.get('url') }}" target="_blank">{{ x_link.get('url') }}</a>
+                            </div>
+                            {% endif %}
+                            
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('x-form').style.display='block'; this.style.display='none';" style="margin-top: 1rem;">
+                                ✏️ Editar X
+                            </button>
+                            
+                            <form id="x-form" method="POST" action="{{ url_for('profile.save_social_link') }}" style="display: none; margin-top: 1rem;">
+                                <input type="hidden" name="platform" value="X">
+                                <div class="form-group">
+                                    <label for="x-url">URL de tu perfil *</label>
+                                    <input type="url" id="x-url" name="url" class="form-control" 
+                                           placeholder="https://x.com/tunombre" value="{{ x_link.get('url', '') }}" required>
+                                    <small style="color: var(--gray);">Pega el enlace a tu perfil de X (Twitter)</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="is_visible" value="1" {{ 'checked' if x_link.get('is_visible', True) else '' }}>
+                                        Mostrar en mi perfil
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">💾 Actualizar X</button>
+                                <button type="button" class="btn btn-secondary" onclick="this.closest('form').style.display='none'; document.querySelector('#tab-x button').style.display='block';">Cancelar</button>
+                            </form>
+                            
+                        {% else %}
+                            <form method="POST" action="{{ url_for('profile.save_social_link') }}">
+                                <input type="hidden" name="platform" value="X">
+                                <div class="form-group">
+                                    <label for="x-url">URL de tu perfil *</label>
+                                    <input type="url" id="x-url" name="url" class="form-control" 
+                                           placeholder="https://x.com/tunombre" required>
+                                    <small style="color: var(--gray);">Pega el enlace a tu perfil de X (Twitter)</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="is_visible" value="1" checked>
+                                        Mostrar en mi perfil
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">💾 Guardar X</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- TikTok -->
+                    <div class="tab-content" id="tab-tiktok">
+                        <h3>🎵 TikTok</h3>
+                        
+                        {% if links_dict.get('TikTok') %}
+                            {% set tt_link = links_dict.get('TikTok') %}
+                            {% set tt_data = tt_link.get('profile_data_parsed') %}
+                            
+                            {% if tt_data and tt_data is mapping %}
+                            <div class="social-preview">
+                                <div class="preview-header">
+                                    {% if tt_data.get('avatar') %}
+                                        <img src="{{ tt_data.avatar }}" alt="Avatar" class="preview-avatar">
+                                    {% else %}
+                                        <div class="preview-avatar-placeholder">🎵</div>
+                                    {% endif %}
+                                    <div class="preview-info">
+                                        <h4>{{ tt_data.get('profile_name') or tt_link.get('username') or 'Tu perfil de TikTok' }}</h4>
+                                        <p class="preview-username">@{{ tt_link.get('username', '') }}</p>
+                                    </div>
+                                </div>
+                                {% if tt_data.get('bio') %}
+                                    <p class="preview-bio">{{ tt_data.bio[:150] }}{% if tt_data.bio|length > 150 %}...{% endif %}</p>
+                                {% endif %}
+                                <a href="{{ tt_link.get('url') }}" target="_blank" class="preview-link">Ver perfil completo →</a>
+                            </div>
+                            {% else %}
+                            <div class="social-preview" style="background: #f5f5f5;">
+                                <p><strong>{{ tt_link.get('username') }}</strong></p>
+                                <a href="{{ tt_link.get('url') }}" target="_blank">{{ tt_link.get('url') }}</a>
+                            </div>
+                            {% endif %}
+                            
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('tiktok-form').style.display='block'; this.style.display='none';" style="margin-top: 1rem;">
+                                ✏️ Editar TikTok
+                            </button>
+                            
+                            <form id="tiktok-form" method="POST" action="{{ url_for('profile.save_social_link') }}" style="display: none; margin-top: 1rem;">
+                                <input type="hidden" name="platform" value="TikTok">
+                                <div class="form-group">
+                                    <label for="tiktok-url">URL de tu perfil *</label>
+                                    <input type="url" id="tiktok-url" name="url" class="form-control" 
+                                           placeholder="https://tiktok.com/@tunombre" value="{{ tt_link.get('url', '') }}" required>
+                                    <small style="color: var(--gray);">Pega el enlace a tu perfil de TikTok</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="is_visible" value="1" {{ 'checked' if tt_link.get('is_visible', True) else '' }}>
+                                        Mostrar en mi perfil
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">💾 Actualizar TikTok</button>
+                                <button type="button" class="btn btn-secondary" onclick="this.closest('form').style.display='none'; document.querySelector('#tab-tiktok button').style.display='block';">Cancelar</button>
+                            </form>
+                            
+                        {% else %}
+                            <form method="POST" action="{{ url_for('profile.save_social_link') }}">
+                                <input type="hidden" name="platform" value="TikTok">
+                                <div class="form-group">
+                                    <label for="tiktok-url">URL de tu perfil *</label>
+                                    <input type="url" id="tiktok-url" name="url" class="form-control" 
+                                           placeholder="https://tiktok.com/@tunombre" required>
+                                    <small style="color: var(--gray);">Pega el enlace a tu perfil de TikTok</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="is_visible" value="1" checked>
+                                        Mostrar en mi perfil
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">💾 Guardar TikTok</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- YouTube -->
+                    <div class="tab-content" id="tab-youtube">
+                        <h3>📺 YouTube</h3>
+                        
+                        {% if links_dict.get('YouTube') %}
+                            {% set yt_link = links_dict.get('YouTube') %}
+                            {% set yt_data = yt_link.get('profile_data_parsed') %}
+                            
+                            {% if yt_data and yt_data is mapping %}
+                            <div class="social-preview">
+                                <div class="preview-header">
+                                    {% if yt_data.get('avatar') %}
+                                        <img src="{{ yt_data.avatar }}" alt="Avatar" class="preview-avatar">
+                                    {% else %}
+                                        <div class="preview-avatar-placeholder">📺</div>
+                                    {% endif %}
+                                    <div class="preview-info">
+                                        <h4>{{ yt_data.get('profile_name') or yt_link.get('username') or 'Tu canal de YouTube' }}</h4>
+                                        <p class="preview-username">{{ yt_link.get('username', '') }}</p>
+                                    </div>
+                                </div>
+                                {% if yt_data.get('bio') %}
+                                    <p class="preview-bio">{{ yt_data.bio[:150] }}{% if yt_data.bio|length > 150 %}...{% endif %}</p>
+                                {% endif %}
+                                <a href="{{ yt_link.get('url') }}" target="_blank" class="preview-link">Ver canal completo →</a>
+                            </div>
+                            {% else %}
+                            <div class="social-preview" style="background: #f5f5f5;">
+                                <p><strong>{{ yt_link.get('username') }}</strong></p>
+                                <a href="{{ yt_link.get('url') }}" target="_blank">{{ yt_link.get('url') }}</a>
+                            </div>
+                            {% endif %}
+                            
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('youtube-form').style.display='block'; this.style.display='none';" style="margin-top: 1rem;">
+                                ✏️ Editar YouTube
+                            </button>
+                            
+                            <form id="youtube-form" method="POST" action="{{ url_for('profile.save_social_link') }}" style="display: none; margin-top: 1rem;">
+                                <input type="hidden" name="platform" value="YouTube">
+                                <div class="form-group">
+                                    <label for="youtube-url">URL de tu canal *</label>
+                                    <input type="url" id="youtube-url" name="url" class="form-control" 
+                                           placeholder="https://youtube.com/@tucanal" value="{{ yt_link.get('url', '') }}" required>
+                                    <small style="color: var(--gray);">Pega el enlace a tu canal de YouTube</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="is_visible" value="1" {{ 'checked' if yt_link.get('is_visible', True) else '' }}>
+                                        Mostrar en mi perfil
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">💾 Actualizar YouTube</button>
+                                <button type="button" class="btn btn-secondary" onclick="this.closest('form').style.display='none'; document.querySelector('#tab-youtube button').style.display='block';">Cancelar</button>
+                            </form>
+                            
+                        {% else %}
+                            <form method="POST" action="{{ url_for('profile.save_social_link') }}">
+                                <input type="hidden" name="platform" value="YouTube">
+                                <div class="form-group">
+                                    <label for="youtube-url">URL de tu canal *</label>
+                                    <input type="url" id="youtube-url" name="url" class="form-control" 
+                                           placeholder="https://youtube.com/@tucanal" required>
+                                    <small style="color: var(--gray);">Pega el enlace a tu canal de YouTube</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" name="is_visible" value="1" checked>
+                                        Mostrar en mi perfil
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">💾 Guardar YouTube</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <!-- Vista para contactos -->
+            {% if social_links %}
+                <div class="grid grid-3">
+                    {% for link in social_links %}
+                    <a href="{{ link.url }}" target="_blank" class="social-link-card">
+                        <strong>{{ link.platform }}</strong>
+                        <br>@{{ link.username }}
+                    </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="color: var(--gray); text-align: center; padding: 2rem;">
+                    Este usuario no ha compartido sus redes sociales
+                </p>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.social-link-card {
+    display: block;
+    padding: 1.5rem;
+    background: var(--light);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--dark);
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.social-link-card:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-3px);
+}
+
+.contact-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--light);
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    color: var(--gray);
+    font-weight: 500;
+}
+
+.tab-btn:hover {
+    background: var(--light);
+    color: var(--dark);
+}
+
+.tab-btn.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    font-weight: 600;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tab-content h3 {
+    margin-bottom: 1.5rem;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tab-content form {
+    max-width: 600px;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+    font-weight: 500;
+}
+
+.form-group input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid var(--light);
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+/* Social Preview Styles */
+.social-preview {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.preview-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.preview-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.preview-avatar-placeholder {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    border: 3px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.preview-info h4 {
+    margin: 0;
+    color: var(--dark);
+    font-size: 1.2rem;
+}
+
+.preview-username {
+    margin: 0.25rem 0 0 0;
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.preview-bio {
+    color: var(--dark);
+    line-height: 1.5;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+}
+
+.preview-followers {
+    color: var(--gray);
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
+.preview-link {
+    display: inline-block;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 0.5rem;
+    transition: all 0.3s;
+}
+
+.preview-link:hover {
+    color: var(--primary-dark);
+    transform: translateX(3px);
+}
+
+.form-group small {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+}
+</style>
+
+<script>
+function copyCode() {
+    const code = "{{ user.friend_code }}";
+    navigator.clipboard.writeText(code).then(() => {
+        alert('✅ Código copiado: ' + code);
+    }).catch(() => {
+        const textArea = document.createElement('textarea');
+        textArea.value = code;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('✅ Código copiado: ' + code);
+    });
+}
+
+function switchTab(platform) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    
+    document.querySelector(`[data-platform="${platform}"]`).classList.add('active');
+    document.getElementById(`tab-${platform}`).classList.add('active');
+}
+</script>
+{% endblock %}

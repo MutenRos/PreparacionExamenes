@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>recortabl.es · Catálogo</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Delius&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #eef5fb;
+      --ink: #0b2a45;
+      --muted: #527089;
+      --brand: #2a84d8;
+      --brand2:#1f6fbe;
+      --card:#ffffff;
+      --line:#d9e8f6;
+      --shadow: 0 10px 22px rgba(11,42,69,.10);
+      --shadow2: 0 6px 14px rgba(11,42,69,.10);
+      --radius: 14px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Delius,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);
+      background:linear-gradient(#f6fbff 0%, var(--bg) 30%, #f4f9ff 100%);
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+    main{padding:18px 0 10px}
+    section{padding:18px 0}
+    h1,h2,h3{margin:0}
+    .title{
+      text-align:left;
+      color:#1b5f92;
+      font-size:26px;
+      margin:0 0 14px;
+      font-weight:900;
+    }
+    .sub{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    /* ===== Header (same style) ===== */
+    header{
+      position:sticky; top:0; z-index:50;
+      background:#fff;
+      border-bottom:1px solid #e8f1fb;
+      box-shadow:0 6px 18px rgba(11,42,69,.08);
+    }
+    header .wrap{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:14px;padding:12px 18px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;
+      font-weight:700;letter-spacing:.2px;
+    }
+    .brand .logo{
+      width:38px;height:38px;border-radius:10px;
+      background:linear-gradient(145deg,#e9f6ff,#ffffff);
+      border:1px solid #d8ecff;
+      box-shadow:0 6px 14px rgba(42,132,216,.15);
+      display:grid;place-items:center;
+      font-size:20px;
+    }
+    .brand span{font-size:26px}
+    .brand span b{color:#ff4d3d}
+    .brand span i{font-style:normal;color:#2a84d8}
+
+    nav{
+      display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+      justify-content:flex-end;color:#2b5a7a;font-weight:600;
+    }
+    nav a{padding:8px 10px;border-radius:10px}
+    nav a:hover{background:#f2f8ff}
+
+    .search{
+      display:flex;align-items:center;gap:10px;
+      background:#2a84d8;padding:8px 10px;border-radius:12px;
+      box-shadow:0 10px 18px rgba(42,132,216,.25);
+    }
+    .search input{
+      width:190px;border:0;outline:0;background:transparent;color:#fff;font:inherit;
+    }
+    .search input::placeholder{color:rgba(255,255,255,.85)}
+    .search .icon{
+      width:26px;height:26px;border-radius:9px;
+      background:rgba(255,255,255,.18);
+      display:grid;place-items:center;color:#fff;font-size:14px;
+    }
+
+    /* ===== Catalog layout ===== */
+    .catalog{
+      display:grid;
+      grid-template-columns: 280px 1fr;
+      gap:16px;
+      align-items:start;
+    }
+
+    aside{
+      position:sticky;
+      top:86px; /* below header */
+      background:var(--card);
+      border:1px solid #e4effa;
+      border-radius:16px;
+      box-shadow:var(--shadow2);
+      padding:14px;
+    }
+    aside h3{
+      color:#1b5f92;
+      font-size:18px;
+      font-weight:900;
+      margin:2px 0 10px;
+    }
+
+    .panel{
+      display:grid;
+      gap:10px;
+      padding:10px 0;
+      border-top:1px dashed rgba(82,112,137,.25);
+    }
+    .panel:first-of-type{border-top:0;padding-top:0}
+
+    label{font-weight:800;color:#2b5a7a}
+    input[type="search"], select{
+      width:100%;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid #dfeffc;
+      outline:0;
+      background:linear-gradient(180deg,#ffffff,#f6fbff);
+      box-shadow:0 6px 14px rgba(11,42,69,.06);
+      font:inherit;
+      color:#204b66;
+    }
+    input[type="checkbox"]{transform:translateY(1px)}
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      color:#2b5a7a;
+      font-weight:800;
+    }
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .chip{
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid #dfeffc;
+      background:linear-gradient(180deg,#ffffff,#f6fbff);
+      box-shadow:0 6px 14px rgba(11,42,69,.06);
+      font-weight:900;
+      color:#2b5a7a;
+      cursor:pointer;
+      user-select:none;
+    }
+    .chip[aria-current="true"]{
+      background:linear-gradient(180deg,#2e8fe8,#1f70be);
+      color:#fff;
+      border-color:rgba(0,0,0,.08);
+      box-shadow:0 14px 22px rgba(42,132,216,.22);
+    }
+
+    .toolbar{
+      background:var(--card);
+      border:1px solid #e4effa;
+      border-radius:16px;
+      box-shadow:var(--shadow2);
+      padding:12px;
+      display:grid;
+      gap:12px;
+      margin-bottom:14px;
+    }
+    .toolbar-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .counts{
+      font-weight:900;
+      color:#1f5777;
+    }
+    .sort{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      color:#2b5a7a;
+    }
+    .sort select{width:auto; min-width:210px}
+
+    /* ===== Grid cards ===== */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap:14px;
+    }
+
+    article{
+      background:var(--card);
+      border:1px solid #e4effa;
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    article img{
+      border-radius:14px;
+      background:linear-gradient(180deg,#eaf4ff,#ffffff);
+      border:1px solid #dfeffc;
+      aspect-ratio: 4 / 3;
+      object-fit:cover;
+      box-shadow:0 10px 18px rgba(11,42,69,.10);
+    }
+
+    .card-body{padding:2px 6px 6px}
+    .card-title{
+      margin:0 0 6px;
+      font-weight:900;
+      color:#1f5777;
+      font-size:16px;
+      line-height:1.15;
+    }
+    .meta{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      color:var(--muted);
+      font-weight:800;
+      font-size:13px;
+      margin:0 0 10px;
+    }
+    .stars{color:#f1b400; letter-spacing:1px}
+    .tag{
+      padding:5px 8px;
+      border-radius:999px;
+      border:1px solid #dfeffc;
+      background:linear-gradient(180deg,#ffffff,#f6fbff);
+      box-shadow:0 6px 14px rgba(11,42,69,.06);
+      color:#2b5a7a;
+      font-weight:900;
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .download{
+      margin-top:auto;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      width:100%;
+      padding:10px 12px;
+      border-radius:12px;
+      background:linear-gradient(180deg,#2e8fe8,#1f70be);
+      color:#fff;
+      font-weight:900;
+      border:1px solid rgba(0,0,0,.08);
+      box-shadow:0 14px 22px rgba(42,132,216,.22);
+    }
+    .download:after{content:"›";font-size:18px;opacity:.95}
+
+    /* Pagination */
+    .pager{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      padding:18px 0 6px;
+      flex-wrap:wrap;
+    }
+    .pager a{
+      min-width:40px;
+      height:40px;
+      display:grid;
+      place-items:center;
+      border-radius:12px;
+      background:#fff;
+      border:1px solid #e4effa;
+      box-shadow:var(--shadow2);
+      font-weight:900;
+      color:#2b5a7a;
+    }
+    .pager a[aria-current="true"]{
+      background:linear-gradient(180deg,#2e8fe8,#1f70be);
+      color:#fff;
+      border-color:rgba(0,0,0,.08);
+      box-shadow:0 14px 22px rgba(42,132,216,.22);
+    }
+
+    /* Footer */
+    footer{padding:18px 0 28px;color:#2b5a7a}
+    footer .wrap{
+      border-top:2px dashed rgba(82,112,137,.25);
+      padding-top:16px;
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    footer a{padding:8px 10px;border-radius:10px;font-weight:800}
+    footer a:hover{background:#f2f8ff}
+    .social a{
+      width:36px;height:36px;display:inline-grid;place-items:center;
+      border-radius:12px;background:#fff;border:1px solid #e4effa;
+      box-shadow:var(--shadow2);padding:0;font-weight:900;
+    }
+
+    /* Responsive */
+    @media (max-width:1100px){
+      .catalog{grid-template-columns: 1fr;}
+      aside{position:relative; top:auto;}
+      .grid{grid-template-columns: repeat(3, minmax(0, 1fr));}
+      .sort select{min-width:200px}
+    }
+    @media (max-width:820px){
+      .grid{grid-template-columns: repeat(2, minmax(0, 1fr));}
+    }
+    @media (max-width:520px){
+      .grid{grid-template-columns: 1fr;}
+      .search input{width:120px}
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="wrap">
+      <a class="brand" href="#">
+        <div class="logo">🤖</div>
+        <span><b>rec</b><i>ortabl.es</i></span>
+      </a>
+
+      <nav>
+        <a href="#">Categorías ▾</a>
+        <a href="#">Sobre nosotros</a>
+        <a href="#">Descargas</a>
+        <a href="#">Login</a>
+        <div class="search" role="search">
+          <div class="icon">🔎</div>
+          <input type="search" placeholder="Buscar..." aria-label="Buscar" />
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h1 class="title">Catálogo de recortables</h1>
+      <p class="sub">Explora todos los modelos. Filtra por categoría, nivel y valoración.</p>
+
+      <div class="catalog">
+        <aside>
+          <h3>Filtros</h3>
+
+          <div class="panel">
+            <label for="q">Buscar</label>
+            <input id="q" type="search" placeholder="Ej: dinosaurio, coche, castillo..." />
+          </div>
+
+          <div class="panel">
+            <label for="cat">Categoría</label>
+            <select id="cat">
+              <option>Todas</option>
+              <option>Vehículos</option>
+              <option>Edificios</option>
+              <option>Robots</option>
+              <option>Animales</option>
+              <option>Navidad</option>
+              <option>Educativos</option>
+              <option>Muñecos</option>
+            </select>
+          </div>
+
+          <div class="panel">
+            <label for="lvl">Dificultad</label>
+            <select id="lvl">
+              <option>Todas</option>
+              <option>Fácil</option>
+              <option>Media</option>
+              <option>Difícil</option>
+            </select>
+          </div>
+
+          <div class="panel">
+            <div class="row">
+              <label>Valoración</label>
+              <span style="color:var(--muted);font-weight:800">mínimo</span>
+            </div>
+            <div class="chips" role="listbox" aria-label="Valoración mínima">
+              <span class="chip" aria-current="true">Todas</span>
+              <span class="chip">3★+</span>
+              <span class="chip">4★+</span>
+              <span class="chip">5★</span>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="row">
+              <label for="free">Solo gratis</label>
+              <input id="free" type="checkbox" checked />
+            </div>
+            <div class="row">
+              <label for="new">Novedades</label>
+              <input id="new" type="checkbox" />
+            </div>
+          </div>
+        </aside>
+
+        <div>
+          <div class="toolbar">
+            <div class="toolbar-top">
+              <div class="counts">Mostrando 1–16 de 128</div>
+              <div class="sort">
+                <span>Ordenar</span>
+                <select>
+                  <option>Relevancia</option>
+                  <option>Más descargados</option>
+                  <option>Mejor valorados</option>
+                  <option>Novedades</option>
+                  <option>A–Z</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <!-- Repite/inyecta desde backend. Por ahora, ejemplo con placeholders -->
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Castillo Medieval</p>
+                <p class="meta"><span class="stars">★★★★☆</span><span class="tag">Edificios</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Coche de Fórmula 1</p>
+                <p class="meta"><span class="stars">★★★★☆</span><span class="tag">Vehículos</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Dinosaurio T-Rex</p>
+                <p class="meta"><span class="stars">★★★★★</span><span class="tag">Animales</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Robot XL</p>
+                <p class="meta"><span class="stars">★★★★☆</span><span class="tag">Robots</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Casa de Campo</p>
+                <p class="meta"><span class="stars">★★★☆☆</span><span class="tag">Edificios</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Camión de Bomberos</p>
+                <p class="meta"><span class="stars">★★★★☆</span><span class="tag">Vehículos</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Pingüino</p>
+                <p class="meta"><span class="stars">★★★★☆</span><span class="tag">Animales</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Robot Mini</p>
+                <p class="meta"><span class="stars">★★★☆☆</span><span class="tag">Robots</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Árbol de Navidad</p>
+                <p class="meta"><span class="stars">★★★★☆</span><span class="tag">Navidad</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Tren Clásico</p>
+                <p class="meta"><span class="stars">★★★★★</span><span class="tag">Vehículos</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Osito</p>
+                <p class="meta"><span class="stars">★★★★☆</span><span class="tag">Muñecos</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Cohete Educativo</p>
+                <p class="meta"><span class="stars">★★★☆☆</span><span class="tag">Educativos</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Aula Escolar</p>
+                <p class="meta"><span class="stars">★★★★☆</span><span class="tag">Educativos</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Gato</p>
+                <p class="meta"><span class="stars">★★★★☆</span><span class="tag">Animales</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Torre</p>
+                <p class="meta"><span class="stars">★★★☆☆</span><span class="tag">Edificios</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+
+            <article>
+              <img src="imgcategoria.png" alt="">
+              <div class="card-body">
+                <p class="card-title">Muñeca clásica</p>
+                <p class="meta"><span class="stars">★★★★☆</span><span class="tag">Muñecos</span></p>
+                <a class="download" href="#">Descargar PDF</a>
+              </div>
+            </article>
+          </div>
+
+          <div class="pager" aria-label="Paginación">
+            <a href="#" aria-label="Anterior">‹</a>
+            <a href="#" aria-current="true">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#" aria-label="Siguiente">›</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <a href="#">Acerca de</a>
+      <a href="#">Contacto</a>
+      <a href="#">Licencias</a>
+      <a href="#">Aviso Legal</a>
+
+      <span class="social" aria-label="Redes sociales">
+        <a href="#" title="Facebook" aria-label="Facebook">f</a>
+        <a href="#" title="X" aria-label="X">x</a>
+        <a href="#" title="YouTube" aria-label="YouTube">▶</a>
+        <a href="#" title="Instagram" aria-label="Instagram">⌁</a>
+      </span>
+    </div>
+  </footer>
+</body>
+</html>
+

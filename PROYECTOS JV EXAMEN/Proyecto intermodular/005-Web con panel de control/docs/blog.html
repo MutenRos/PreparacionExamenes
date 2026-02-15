@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Blog — Jose Vicente Carratalá</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="w-900 card flex fd-col g-16">
+    <div class="flex fd-col g-6">
+      <h1 style="font-size:32px">Jose Vicente Carratalá</h1>
+      <h2 class="fs-14 c-muted" style="font-weight:normal">Desarrollador, profesor y diseñador</h2>
+    </div>
+    <nav class="flex g-10 fa-center fw-wrap">
+      <a href="index.html" class="btn btn-ghost">Inicio</a>
+      <a href="about.html" class="btn btn-ghost">Sobre mí</a>
+      <a href="proyectos.html" class="btn btn-ghost">Proyectos</a>
+      <a href="contacto.html" class="btn btn-ghost">Contacto</a>
+      <a href="blog.html" class="btn btn-brand">Blog</a>
+    </nav>
+  </header>
+
+  <main class="w-900 card flex fd-col g-20" style="margin-top:16px">
+    <h2 class="fs-20">Blog</h2>
+
+    <section class="grid gc-3 g-20">
+
+      <article class="b-surface p-16 bradius-16 flex fd-col g-10">
+        <h3 class="fs-16">Introducción a Ollama</h3>
+        <time class="fs-10 c-muted">2026-02-10</time>
+        <div class="markdown ta-justify lh-24">
+          <p>Ollama permite ejecutar modelos de lenguaje en local. Con un simple <code>ollama run qwen2.5</code> podemos tener un LLM funcionando sin depender de la nube.</p>
+          <p>Es especialmente útil para proyectos donde la <strong>privacidad</strong> de los datos es importante.</p>
+        </div>
+      </article>
+
+      <article class="b-surface p-16 bradius-16 flex fd-col g-10">
+        <h3 class="fs-16">CSS Utility-First con PHP</h3>
+        <time class="fs-10 c-muted">2026-02-05</time>
+        <div class="markdown ta-justify lh-24">
+          <p>JVestilo genera clases de utilidad desde PHP: colores, paddings, margins, flex y grid. Similar a <strong>Tailwind</strong> pero generado dinámicamente.</p>
+          <p>Las clases se generan con bucles <code>for</code> y arrays de configuración.</p>
+        </div>
+      </article>
+
+      <article class="b-surface p-16 bradius-16 flex fd-col g-10">
+        <h3 class="fs-16">Markdown en PHP</h3>
+        <time class="fs-10 c-muted">2026-01-28</time>
+        <div class="markdown ta-justify lh-24">
+          <p>Implementar un parser de Markdown propio permite controlar exactamente qué HTML se genera. Usamos <code>strip_tags()</code> como sanitizado final.</p>
+          <ul>
+            <li>Headings con regex</li>
+            <li>Listas ordenadas y no ordenadas</li>
+            <li>Bloques de código</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="b-surface p-16 bradius-16 flex fd-col g-10">
+        <h3 class="fs-16">Prepared Statements</h3>
+        <time class="fs-10 c-muted">2026-01-20</time>
+        <div class="markdown ta-justify lh-24">
+          <p>Para evitar <strong>SQL injection</strong>, usamos prepared statements con <code>bind_param()</code> en todas las operaciones CRUD del panel de administración.</p>
+        </div>
+      </article>
+
+      <article class="b-surface p-16 bradius-16 flex fd-col g-10">
+        <h3 class="fs-16">Sesiones en PHP</h3>
+        <time class="fs-10 c-muted">2026-01-15</time>
+        <div class="markdown ta-justify lh-24">
+          <p>Las sesiones PHP permiten mantener al usuario autenticado entre peticiones. Con <code>session_start()</code> y <code>$_SESSION</code> controlamos el acceso al panel.</p>
+        </div>
+      </article>
+
+      <article class="b-surface p-16 bradius-16 flex fd-col g-10">
+        <h3 class="fs-16">Primeros pasos con PHP</h3>
+        <time class="fs-10 c-muted">2026-01-10</time>
+        <div class="markdown ta-justify lh-24">
+          <p>PHP es un lenguaje de servidor que genera HTML dinámicamente. Con <code>echo</code> y bucles podemos crear páginas que cambian según los datos almacenados.</p>
+        </div>
+      </article>
+
+    </section>
+  </main>
+
+  <footer class="w-900">© 2026 — Jocarsa</footer>
+
+</body>
+</html>

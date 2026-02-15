@@ -1,0 +1,44 @@
+[
+  {
+    "titulo":"Articulo 1",
+    "fecha":"2025-10-13",
+    "texto":"Este es un texto 1",
+    "imagen":"josevicente.jpg"
+  },
+  {
+    "titulo":"Articulo 2",
+    "fecha":"2025-10-14",
+    "texto":"Este es un texto 2",
+    "imagen":"josevicente.jpg"
+  },
+  {
+    "titulo":"Articulo 3",
+    "fecha":"2025-10-15",
+    "texto":"Este es un texto 3",
+    "imagen":"josevicente.jpg"
+  },
+  {
+    "titulo":"Articulo 4",
+    "fecha":"2025-10-16",
+    "texto":"Este es un texto 4",
+    "imagen":"josevicente.jpg"
+  },
+  {
+    "titulo":"Articulo 2",
+    "fecha":"2025-10-14",
+    "texto":"Este es un texto 2",
+    "imagen":"josevicente.jpg"
+  },
+  {
+    "titulo":"Articulo 3",
+    "fecha":"2025-10-15",
+    "texto":"Este es un texto 3",
+    "imagen":"josevicente.jpg"
+  },
+  {
+    "titulo":"Articulo 4",
+    "fecha":"2025-10-16",
+    "texto":"Este es un texto 4",
+    "imagen":"josevicente.jpg"
+  }
+]

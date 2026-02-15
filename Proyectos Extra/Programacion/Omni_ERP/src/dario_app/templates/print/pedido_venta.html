@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pedido de Venta - Documento Imprimible</title>
+  <link rel="stylesheet" href="/static/print.css">
+</head>
+<body>
+  <div class="doc">
+    <div class="header">
+      <div>
+        <div class="title">Pedido de Venta</div>
+        <div class="meta">Número: {{ venta.numero }} · Cliente: {{ venta.cliente_nombre }} · Estado: {{ venta.estado }} · Org: {{ org.nombre if org else '' }}</div>
+      </div>
+      <div>
+        <a class="btn-print" href="#" onclick="window.print(); return false;">Imprimir</a>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Datos del Cliente</h3>
+      <div class="kv">
+        <div>Nombre</div><div>{{ venta.cliente_nombre }}</div>
+        <div>Documento</div><div>{{ venta.cliente_nif_nie or 'N/D' }}</div>
+        <div>Email</div><div>{{ venta.cliente_email or 'N/D' }}</div>
+        <div>Domicilio</div><div>{{ venta.cliente_domicilio or '' }}</div>
+        <div>Municipio</div><div>{{ venta.cliente_municipio or '' }}</div>
+        <div>Provincia</div><div>{{ venta.cliente_provincia or '' }}</div>
+        <div>Código Postal</div><div>{{ venta.cliente_codigo_postal or '' }}</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Artículos</h3>
+      <table class="table">
+        <thead>
+          <tr><th>Producto</th><th>Cantidad</th><th>Precio Unit.</th><th>Subtotal</th></tr>
+        </thead>
+        <tbody>
+          {% for i in items %}
+          <tr>
+            <td>{{ i.producto_id }}</td>
+            <td>{{ i.cantidad }}</td>
+            <td>€{{ '%.2f'|format(i.precio_unitario) }}</td>
+            <td>€{{ '%.2f'|format(i.subtotal) }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h3>Totales</h3>
+      <div class="kv">
+        <div>Base imponible</div><div>€{{ '%.2f'|format(venta.base_imponible or 0) }}</div>
+        <div>IVA ({{ venta.porcentaje_iva or 0 }}%)</div><div>€{{ '%.2f'|format(venta.iva or 0) }}</div>
+        <div>Subtotal</div><div>€{{ '%.2f'|format(venta.subtotal or 0) }}</div>
+        <div>Total</div><div>€{{ '%.2f'|format(venta.total or 0) }}</div>
+      </div>
+    </div>
+
+    <div class="footer">Generado por OmniERP · {{ venta.fecha.strftime('%d/%m/%Y') if venta.fecha else '' }}</div>
+  </div>
+</body>
+</html>

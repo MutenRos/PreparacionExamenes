@@ -1,0 +1,160 @@
+/**
+ * =============================================================================
+ * BOMBAS IDEAL - Main Stylesheet
+ * =============================================================================
+ * 
+ * @description  Archivo principal de estilos que importa todos los módulos
+ *               CSS en el orden correcto. Este archivo debe ser el único
+ *               enlazado en los documentos HTML.
+ * 
+ * @author       Bombas Ideal Development Team
+ * @version      2.0.0
+ * @license      Proprietary - Bombas Ideal S.A.
+ * 
+ * ORDEN DE CARGA (importante):
+ * 1. Variables (Design tokens)
+ * 2. Base (Reset y defaults)
+ * 3. Utilities (Clases de utilidad)
+ * 4. Components (Componentes individuales)
+ * 5. Overrides (Sobrescrituras específicas)
+ * =============================================================================
+ */
+
+/* =========================================================================
+ * FOUNDATION (Cimientos del sistema de diseño)
+ * ========================================================================= */
+
+/**
+ * Variables / Design Tokens
+ * Contiene todas las custom properties (colores, tipografía, espaciado, etc.)
+ */
+@import './variables.css';
+
+/**
+ * Base / Reset
+ * Normalización cross-browser y estilos base de elementos HTML
+ */
+@import './base.css';
+
+/**
+ * Utilities
+ * Clases de utilidad para composición rápida (similar a Tailwind)
+ */
+@import './utilities.css';
+
+
+/* =========================================================================
+ * COMPONENTS (Componentes reutilizables)
+ * ========================================================================= */
+
+/**
+ * Buttons
+ * Sistema completo de botones con variantes y estados
+ */
+@import './components/buttons.css';
+
+/**
+ * Navigation
+ * Top bar, navbar, menú móvil y dropdowns
+ */
+@import './components/navbar.css';
+
+/**
+ * Hero / Slider
+ * Sección hero con slider a pantalla completa
+ */
+@import './components/hero.css';
+
+/**
+ * Cards
+ * Tarjetas de producto, servicio, noticia, etc.
+ */
+@import './components/cards.css';
+
+/**
+ * Forms
+ * Inputs, selects, checkboxes, radios, validación
+ */
+@import './components/forms.css';
+
+/**
+ * Sections
+ * Layouts de secciones (features, about, stats, CTA)
+ */
+@import './components/sections.css';
+
+/**
+ * Modals
+ * Ventanas modales y diálogos
+ */
+@import './components/modals.css';
+
+/**
+ * Footer
+ * Footer del sitio y scroll-to-top
+ */
+@import './components/footer.css';
+
+/**
+ * BIPS (Bombas Ideal Product Selector)
+ * Estilos específicos del selector de productos
+ */
+@import './components/bips.css';
+
+
+/* =========================================================================
+ * PAGE-SPECIFIC OVERRIDES
+ * =========================================================================
+ * Estilos específicos para páginas individuales que no encajan
+ * en componentes reutilizables.
+ * ========================================================================= */
+
+/**
+ * Páginas de producto
+ * Sobrescrituras para las páginas individuales de productos en /productos
+ */
+/* @import './pages/product.css'; */
+
+/**
+ * Página de noticias
+ */
+/* @import './pages/news.css'; */
+
+
+/* =========================================================================
+ * PRINT STYLES
+ * ========================================================================= */
+
+@media print {
+    .top-bar,
+    .navbar,
+    .footer,
+    .scroll-top,
+    .modal {
+        display: none !important;
+    }
+    
+    body {
+        font-size: 12pt;
+        line-height: 1.5;
+        color: #000;
+        background: #fff;
+    }
+    
+    a {
+        text-decoration: underline;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid;
+    }
+    
+    img {
+        max-width: 100% !important;
+    }
+    
+    .container {
+        max-width: none;
+        padding: 0;
+    }
+}

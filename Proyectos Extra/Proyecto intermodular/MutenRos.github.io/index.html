@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<!--
+ * ==========================================================================
+ * MUTENROS Portfolio
+ * ==========================================================================
+ * 
+ * Personal portfolio website with synthwave/retrowave aesthetic.
+ * 
+ * Author: Dario (MutenRos)
+ * Version: 2.0.0
+ * Created: 2024
+ * Updated: 2026-02-05
+ * 
+ * Features:
+ * - Responsive synthwave design
+ * - GitHub API integration for dynamic projects
+ * - Animated background effects
+ * - Matrix easter egg (Konami Code: ↑↑↓↓←→←→BA)
+ * 
+ * Tech Stack:
+ * - HTML5 (Semantic markup)
+ * - CSS3 (Custom properties, Grid, Flexbox, Animations)
+ * - JavaScript (ES6 Modules)
+ * - Font Awesome 6.5 (Icons)
+ * - Google Fonts (Orbitron, Rajdhani)
+ * 
+ * 1988 // Konami // Gradius
+ * ==========================================================================
+-->
+<html lang="es">
+<head>
+    <!-- =====================================================================
+         META TAGS
+         ===================================================================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio de Dario (MutenRos) - Desarrollador Web Full Stack especializado en crear experiencias digitales unicas con estetica synthwave.">
+    <meta name="author" content="Dario (MutenRos)">
+    <meta name="keywords" content="portfolio, desarrollador web, frontend, backend, synthwave, MutenRos">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="MUTENROS // Portfolio">
+    <meta property="og:description" content="Desarrollador Web Full Stack - Experiencias digitales unicas">
+    <meta property="og:url" content="https://mutenros.github.io">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0d0221">
+    
+    <title>MUTENROS // Portfolio</title>
+    
+    <!-- =====================================================================
+         PRECONNECT - Performance optimization for external resources
+         ===================================================================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- =====================================================================
+         STYLESHEETS
+         ===================================================================== -->
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌅</text></svg>">
+</head>
+
+<body>
+    <!-- =====================================================================
+         SCANLINES OVERLAY
+         CRT monitor effect overlay
+         ===================================================================== -->
+    <div class="scanlines" aria-hidden="true"></div>
+    
+    <!-- =====================================================================
+         ANIMATED BACKGROUND
+         Synthwave landscape with sun, grid, mountains and stars
+         ===================================================================== -->
+    <div class="bg-container" aria-hidden="true">
+        <!-- Gradient sky -->
+        <div class="bg-sky"></div>
+        
+        <!-- Dynamic stars (generated via JavaScript) -->
+        <div class="bg-stars" id="stars"></div>
+        
+        <!-- Mountain silhouettes -->
+        <div class="bg-mountains">
+            <div class="bg-mountain"></div>
+            <div class="bg-mountain"></div>
+            <div class="bg-mountain"></div>
+            <div class="bg-mountain"></div>
+        </div>
+        
+        <!-- Neon sun with data attribute for easter egg -->
+        <div class="bg-sun" data-secret="konami"></div>
+        
+        <!-- Perspective grid -->
+        <div class="bg-grid-container">
+            <div class="bg-grid"></div>
+        </div>
+    </div>
+    
+    <!-- =====================================================================
+         HEADER
+         Fixed navigation header
+         ===================================================================== -->
+    <header class="header" role="banner">
+        <!-- Logo -->
+        <a href="#" class="header__logo" title="Contra, 1988">MUTENROS</a>
+        
+        <!-- Main Navigation -->
+        <nav class="header__nav" role="navigation" aria-label="Navegacion principal">
+            <ul class="header__nav-list">
+                <li>
+                    <a href="#about" class="header__nav-link">ABOUT</a>
+                </li>
+                <li>
+                    <a href="#skills" class="header__nav-link">SKILLS</a>
+                </li>
+                <li>
+                    <a href="#projects" class="header__nav-link">PROJECTS</a>
+                </li>
+                <li>
+                    <a href="#contact" class="header__nav-link">CONTACT</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- =====================================================================
+         MAIN CONTENT
+         ===================================================================== -->
+    <main class="main" role="main">
+        
+        <!-- =================================================================
+             HERO SECTION
+             Main landing area with title and CTA
+             ================================================================= -->
+        <section class="hero section" aria-labelledby="hero-title">
+            <h1 id="hero-title" class="hero__title">MUTENROS</h1>
+            <p class="hero__subtitle">DEVELOPER // CREATOR</p>
+            <p class="hero__tagline">
+                Construyendo el futuro digital, una l&iacute;nea de c&oacute;digo a la vez. 
+                Especializado en crear experiencias web &uacute;nicas y memorables.
+            </p>
+            <div class="hero__cta">
+                <button class="btn" data-scroll-to="#projects" title="Ir a la seccion de proyectos">
+                    VER PROYECTOS
+                </button>
+            </div>
+        </section>
+        
+        <!-- =================================================================
+             ABOUT SECTION
+             Personal introduction and background
+             ================================================================= -->
+        <section id="about" class="about section" aria-labelledby="about-title">
+            <h2 id="about-title" class="section__title">
+                SOBRE <span class="section__title-highlight">M&Iacute;</span>
+            </h2>
+            
+            <div class="about__content">
+                <!-- Profile Avatar -->
+                <div class="about__image">
+                    <span class="about__avatar" aria-hidden="true">-D-</span>
+                </div>
+                
+                <!-- About Text -->
+                <div class="about__text">
+                    <h3 class="about__greeting">&iexcl;Hola, soy Dar&iacute;o!</h3>
+                    <p class="about__alias">(a.k.a. MutenRos)</p>
+                    
+                    <p class="about__description">
+                        Desarrollador apasionado por crear experiencias digitales &uacute;nicas. 
+                        Me especializo en desarrollo web, con un amor especial por el 
+                        dise&ntilde;o retro y la est&eacute;tica synthwave.
+                    </p>
+                    
+                    <p class="about__description">
+                        Cuando no estoy programando, me puedes encontrar explorando nuevas 
+                        tecnolog&iacute;as, jugando videojuegos cl&aacute;sicos o escuchando 
+                        m&uacute;sica de los 80s.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- =================================================================
+             SKILLS SECTION
+             Technical skills and technologies
+             ================================================================= -->
+        <section id="skills" class="skills section" aria-labelledby="skills-title">
+            <h2 id="skills-title" class="section__title">
+                SKILLS <span class="section__title-highlight">&amp;</span> TECH
+            </h2>
+            
+            <div class="skills__grid">
+                <!-- Frontend Skills -->
+                <article class="skill-card">
+                    <div class="skill-card__icon" aria-hidden="true">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3 class="skill-card__title">FRONTEND</h3>
+                    <p class="skill-card__description">
+                        HTML5, CSS3, JavaScript, React, Vue.js. 
+                        Creando interfaces modernas y responsivas.
+                    </p>
+                </article>
+                
+                <!-- Backend Skills -->
+                <article class="skill-card">
+                    <div class="skill-card__icon" aria-hidden="true">
+                        <i class="fa-solid fa-server"></i>
+                    </div>
+                    <h3 class="skill-card__title">BACKEND</h3>
+                    <p class="skill-card__description">
+                        Node.js, Python, APIs RESTful. 
+                        Arquitecturas escalables y eficientes.
+                    </p>
+                </article>
+                
+                <!-- Database Skills -->
+                <article class="skill-card" data-hint="kazuhisa-hashimoto">
+                    <div class="skill-card__icon" aria-hidden="true">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <h3 class="skill-card__title">DATABASES</h3>
+                    <p class="skill-card__description">
+                        MongoDB, PostgreSQL, MySQL. 
+                        Gesti&oacute;n eficiente de datos.
+                    </p>
+                </article>
+            </div>
+        </section>
+        
+        <!-- =================================================================
+             PROJECTS SECTION
+             Portfolio projects from GitHub API
+             ================================================================= -->
+        <section id="projects" class="projects section" aria-labelledby="projects-title">
+            <h2 id="projects-title" class="section__title">
+                MIS <span class="section__title-highlight">PROYECTOS</span>
+            </h2>
+            
+            <!-- Projects Grid - Populated via JavaScript -->
+            <div class="projects__grid" id="projects-grid" aria-live="polite">
+                <!-- Loading State -->
+                <div class="projects__loading">
+                    <div class="loader" aria-hidden="true"></div>
+                    <p class="loading-message__text">Cargando proyectos...</p>
+                </div>
+                <!-- Fallback para navegadores sin JavaScript -->
+                <noscript>
+                    <p class="noscript-message">Activa JavaScript para ver los proyectos desde GitHub.</p>
+                </noscript>
+            </div>
+        </section>
+        
+        <!-- =================================================================
+             CONTACT SECTION
+             Contact information and social links
+             ================================================================= -->
+        <section id="contact" class="contact section" aria-labelledby="contact-title">
+            <h2 id="contact-title" class="section__title">CONTACTO</h2>
+            
+            <div class="contact__content">
+                <p class="contact__description">
+                    &iquest;Tienes un proyecto en mente o simplemente quieres saludar? 
+                    &iexcl;No dudes en contactarme!
+                </p>
+                
+                <!-- Contact Links -->
+                <div class="contact__links">
+                    <!-- GitHub -->
+                    <a href="https://github.com/MutenRos" 
+                       class="contact-link" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       aria-label="Visitar perfil de GitHub">
+                        <i class="fa-brands fa-github contact-link__icon" aria-hidden="true"></i>
+                        <span>GITHUB</span>
+                    </a>
+                    
+                    <!-- Email -->
+                    <a href="mailto:tu@email.com" 
+                       class="contact-link"
+                       aria-label="Enviar email">
+                        <i class="fa-solid fa-envelope contact-link__icon" aria-hidden="true"></i>
+                        <span>EMAIL</span>
+                    </a>
+                    
+                    <!-- LinkedIn -->
+                    <a href="https://linkedin.com" 
+                       class="contact-link" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       aria-label="Visitar perfil de LinkedIn">
+                        <i class="fa-brands fa-linkedin contact-link__icon" aria-hidden="true"></i>
+                        <span>LINKEDIN</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <!-- =====================================================================
+         FOOTER
+         ===================================================================== -->
+    <footer class="footer" role="contentinfo">
+        <p class="footer__text">
+            &copy; 2026 MUTENROS // CRAFTED WITH 
+            <i class="fa-solid fa-heart footer__heart" aria-hidden="true"></i>
+            <span class="sr-only">amor</span>
+            &amp; NEON LIGHTS
+        </p>
+        
+        <!-- Easter egg hint (barely visible) -->
+        <p class="footer__secret" aria-hidden="true">uuddlrlrba</p>
+    </footer>
+    
+    <!-- =====================================================================
+         JAVASCRIPT
+         ES6 Modules - Main entry point
+         ===================================================================== -->
+    <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>

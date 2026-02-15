@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Diagrama exportado</title>
+<style>
+body {
+  margin: 0;
+  padding: 20px;
+  background: #f3f3f7;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.page {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  width: 386.9843606387867px;
+  height: 453.9843929515164px;
+  overflow: visible;
+}
+
+/* formas básicas */
+.shape {
+  position: absolute;
+  min-width: 120px;
+  min-height: 40px;
+  padding: 6px 10px;
+  background: #ffffff;
+  border-radius: 4px;
+  border: 1px solid #9ca3af;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+
+.shape.rectangle {
+  border-radius: 4px;
+}
+
+.shape.pill {
+  border-radius: 999px;
+}
+
+.shape.circle {
+  border-radius: 999px;
+  width: 80px;
+  height: 80px;
+  padding: 0;
+  justify-content: center;
+}
+
+/* texto libre */
+.shape.text {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  min-width: 20px;
+  min-height: 20px;
+}
+
+/* base de datos */
+.shape.db {
+  min-width: 120px;
+  min-height: 60px;
+  padding-top: 20px;
+  border-radius: 60px / 16px;
+  background: linear-gradient(180deg, #e5e7eb 0%, #ffffff 40%, #e5e7eb 100%);
+  position: absolute;
+  overflow: hidden;
+  text-align: center;
+}
+.shape.db::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 8px;
+  right: 8px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid #9ca3af;
+  background: radial-gradient(circle at 50% 30%, #ffffff 0%, #e5e7eb 70%);
+}
+.shape.db::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 8px;
+  right: 8px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(156, 163, 175, 0.6);
+  border-top: none;
+  background: radial-gradient(circle at 50% 70%, #e5e7eb 0%, #d1d5db 70%);
+}
+
+/* entidades ER */
+.shape.entity {
+  width: 220px;
+  min-height: 80px;
+  background: #ffffff;
+  border: 2px solid #111827;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.15);
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  overflow: hidden;
+  padding: 0;
+}
+.entity-header {
+  background: #f3f4f6;
+  padding: 4px 8px;
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 1px solid #e5e7eb;
+}
+.entity-properties {
+  flex: 1;
+  padding: 4px 4px 0 4px;
+}
+.entity-property {
+  display: grid;
+  grid-template-columns: 14px 1fr 14px;
+  align-items: center;
+  column-gap: 4px;
+  padding: 2px 0;
+}
+.entity-property .property-name {
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* puertos */
+.port {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid #111827;
+  background: #ffffff;
+}
+.port-left { justify-self: start; }
+.port-right { justify-self: end; }
+
+/* flechas rectas */
+.arrow {
+  position: absolute;
+  height: 2px;
+  background: #111827;
+  transform-origin: 0 50%;
+}
+.arrow::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid #111827;
+}
+.arrow-double::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) rotate(180deg);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid #111827;
+}
+
+/* flechas ortogonales */
+.ortho-arrow {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.ortho-arrow .ortho-seg {
+  position: absolute;
+  background: #111827;
+}
+.ortho-seg.seg-horizontal { height: 2px; }
+.ortho-seg.seg-vertical { width: 2px; }
+.ortho-arrowhead {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.ortho-arrowhead.dir-right {
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid #111827;
+}
+.ortho-arrowhead.dir-left {
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 8px solid #111827;
+}
+.ortho-arrowhead.dir-down {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 8px solid #111827;
+}
+.ortho-arrowhead.dir-up {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 8px solid #111827;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="shape rectangle" style="left:45px;top:40px;width:119.99999999999996px;height:39.999999999999986px;">Inicio</div>
+<div class="shape rectangle" style="left:42.562471277573536px;top:105.39062499999997px;width:120.00003590303304px;height:39.999999999999986px;">Catálogo</div>
+<div class="shape rectangle" style="left:42.890625px;top:173.04687499999997px;width:119.99999999999996px;height:39.99998204848344px;">Producto</div>
+<div class="shape rectangle" style="left:41.82811063878677px;top:238.98435704848336px;width:119.99999999999996px;height:40.00003590303307px;">Carrito</div>
+<div class="shape rectangle" style="left:41.343742819393384px;top:302.15624640969656px;width:121.9843965418198px;height:39.999999999999986px;">Datos personales</div>
+<div class="shape rectangle" style="left:40px;top:373.9843929515164px;width:119.99999999999996px;height:39.999999999999986px;">Finalización</div>
+<div class="shape text" style="left:247.12499281939333px;top:50.20312140969668px;width:56.49999281939336px;height:19.999999999999993px;">index.php</div>
+<div class="shape text" style="left:239.29687499999991px;top:113.6250035903033px;width:75.39062499999997px;height:19.999999999999993px;">catalogo.php</div>
+<div class="shape text" style="left:235.89061063878668px;top:183.07812859030324px;width:78.04687499999997px;height:19.999999999999993px;">producto.php</div>
+<div class="shape text" style="left:234.3437284581801px;top:246.2187464096966px;width:63.343757180606595px;height:19.999999999999993px;">carrito.php</div>
+<div class="shape text" style="left:226.1406034581801px;top:311.1718929515165px;width:120.84375718060657px;height:19.999999999999993px;">datospersonales.php</div>
+<div class="shape text" style="left:221.31250718060656px;top:383.8281429515164px;width:90.70308909696688px;height:19.999999999999993px;">finalizacion.php</div>
+<div class="arrow" style="left:104.25447699240985px;top:80px;width:25.408259157692445px;transform:rotate(1.608055226342451rad);"></div>
+<div class="arrow" style="left:102.6594901165004px;top:145.39062499999997px;width:27.65657527610903px;transform:rotate(1.5659463204529298rad);"></div>
+<div class="arrow" style="left:102.56834595098093px;top:213.04685704848336px;width:25.94086724312086px;transform:rotate(1.586908891979556rad);"></div>
+<div class="arrow" style="left:101.98888817980318px;top:278.9843929515165px;width:23.172602168388657px;transform:rotate(1.5627576301192991rad);"></div>
+<div class="arrow" style="left:101.68551609598904px;top:342.15624640969656px;width:31.844973321959674px;transform:rotate(1.6033061186126485rad);"></div>
+<div class="arrow" style="left:164.99999999999997px;top:60.07153212239041px;width:82.12505118337548px;transform:rotate(0.0011922014749970792rad);"></div>
+<div class="arrow" style="left:162.56250718060662px;top:124.78328968194623px;width:76.73829882002393px;transform:rotate(-0.010121906585025129rad);"></div>
+<div class="arrow" style="left:162.89062499999997px;top:193.05777008561583px;width:72.9999868442857px;transform:rotate(0.00018173435423447847rad);"></div>
+<div class="arrow" style="left:161.82811063878668px;top:257.9737151200044px;width:72.52590457221464px;transform:rotate(-0.016842738515290143rad);"></div>
+<div class="arrow" style="left:163.3281393612132px;top:321.8303548146109px;width:62.81336072122098px;transform:rotate(-0.005343117694322238rad);"></div>
+<div class="arrow" style="left:159.99999999999997px;top:393.92814206896105px;width:61.31253412541905px;transform:rotate(-0.0009375144345826489rad);"></div>
+</div>
+</body>
+</html>

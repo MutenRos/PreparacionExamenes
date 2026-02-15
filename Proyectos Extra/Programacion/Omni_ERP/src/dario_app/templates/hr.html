@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RRHH & Nómina - OmniERP</title>
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <link rel="stylesheet" href="/static/css/tutorial.css">
+    <style>
+        :root { --hr-accent: var(--brand-primary); }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: var(--font-sans); background: radial-gradient(circle at 20% 20%, rgba(93, 184, 255, 0.08), transparent 25%), radial-gradient(circle at 80% 0%, rgba(255, 130, 92, 0.08), transparent 22%), var(--bg-primary); color: var(--text-primary); }
+        header { display:flex; justify-content:space-between; align-items:center; padding:18px 28px; border-bottom:1px solid var(--border-color); background: rgba(15,18,30,0.8); backdrop-filter: blur(12px); position:sticky; top:0; z-index:10; }
+        .logo { font-weight:700; color:var(--hr-accent); letter-spacing:.5px; display:flex; align-items:center; gap:10px; }
+        .logo span { color:var(--text-secondary); font-weight:500; font-size:13px; }
+        .nav { display:flex; gap:12px; }
+        .nav a { color:var(--text-secondary); text-decoration:none; padding:8px 12px; border-radius:10px; border:1px solid var(--border-color); background: rgba(255,255,255,0.02); }
+        .nav a:hover { color:var(--text-primary); border-color:var(--hr-accent); box-shadow:0 0 0 1px var(--hr-accent) inset; }
+        main { max-width:1350px; margin:0 auto; padding:22px 22px 60px; }
+        h1 { margin:0; font-size:28px; }
+        p.lead { margin:6px 0 18px; color:var(--text-secondary); max-width:900px; }
+        .summary { display:grid; gap:12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin:16px 0 20px; }
+        .summary-card { padding:14px 16px; border-radius:14px; border:1px solid var(--border-color); background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); box-shadow:0 12px 30px rgba(0,0,0,0.22); }
+        .summary-title { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-weight:700; color:var(--text-secondary); font-size:13px; text-transform:uppercase; letter-spacing:.3px; }
+        .summary-value { font-size:28px; font-weight:800; color:var(--text-primary); }
+        .summary-trend { color:var(--color-success); font-size:12px; }
+        .layout { display:grid; grid-template-columns: 2fr 1.25fr; gap:16px; align-items:start; }
+        .panel { background: linear-gradient(160deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border:1px solid var(--border-color); border-radius:16px; padding:18px 18px 16px; box-shadow:0 14px 30px rgba(0,0,0,0.22); }
+        .panel h2 { margin:0 0 6px; font-size:18px; display:flex; align-items:center; gap:8px; }
+        .panel p.desc { margin:0 0 14px; color:var(--text-secondary); font-size:14px; }
+        label { display:block; margin-bottom:6px; color:var(--text-secondary); font-weight:600; font-size:13px; }
+        input, select, textarea { width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-secondary); color:var(--text-primary); font-size:14px; }
+        textarea { min-height:80px; resize:vertical; }
+        .row { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap:10px; }
+        .actions { display:flex; gap:10px; flex-wrap:wrap; }
+        button { border:none; background: linear-gradient(135deg, var(--hr-accent) 0%, var(--brand-primary-dark) 100%); color:var(--text-inverse); padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer; }
+        button.secondary { background:transparent; color:var(--text-primary); border:1px solid var(--border-color); }
+        button.ghost { background:transparent; color:var(--text-secondary); border:1px dashed var(--border-color); }
+        .list { border:1px solid var(--border-color); border-radius:12px; padding:6px; max-height:260px; overflow-y:auto; background:var(--bg-tertiary); }
+        .list-item { padding:10px 10px; border-bottom:1px solid var(--border-color); font-size:13px; display:flex; justify-content:space-between; gap:8px; }
+        .list-item:last-child { border-bottom:none; }
+        .meta { display:flex; gap:10px; flex-wrap:wrap; color:var(--text-secondary); font-size:12px; }
+        .pill { padding:4px 8px; border-radius:8px; background:var(--color-warning-light); color:var(--color-warning); font-size:12px; margin-right:6px; text-transform:capitalize; }
+        .pill.green { background:var(--color-success-light); color:var(--color-success); }
+        .pill.blue { background:var(--color-info-light); color:var(--color-info); }
+        .pill.gray { background:var(--bg-secondary); color:var(--text-secondary); border:1px solid var(--border-color); }
+        .table { width:100%; border-collapse:collapse; }
+        .table th, .table td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--border-color); font-size:13px; }
+        .table th { color:var(--text-secondary); font-weight:700; text-transform:uppercase; letter-spacing:.3px; font-size:12px; }
+        .table tbody tr:hover { background:rgba(255,255,255,0.03); }
+        .badge { padding:4px 8px; border-radius:8px; background:var(--bg-secondary); border:1px solid var(--border-color); font-size:12px; }
+        .stack { display:grid; gap:12px; }
+        .section-title { display:flex; justify-content:space-between; align-items:center; margin-top:4px; }
+        .filters { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+        @media (max-width:1024px){ .layout { grid-template-columns:1fr; } }
+    </style>
+</head>
+<body>
+{% include '_assistant_panel.html' %}
+
+<header>
+    <div class="logo">🧑‍💼 RRHH & Nómina <span>Personas · Vacaciones · Partes · Nómina</span></div>
+    <div class="nav">
+        <a href="/app/dashboard">← Dashboard</a>
+        <a href="/app/roles">🔐 Roles</a>
+        <a href="/api/enterprise/docs">API</a>
+    </div>
+</header>
+
+<main>
+    <h1>Personas, vacaciones y nómina</h1>
+    <p class="lead">Todo el ciclo de RRHH en una sola vista: altas, posiciones, vacaciones, partes de tiempo y nómina.</p>
+
+    <div class="summary">
+        <div class="summary-card" id="s-employees">
+            <div class="summary-title"><span>Empleados activos</span><span class="summary-trend" id="s-employees-trend"></span></div>
+            <div class="summary-value" id="s-employees-value">—</div>
+            <div class="meta" id="s-employees-meta"></div>
+        </div>
+        <div class="summary-card" id="s-leave">
+            <div class="summary-title"><span>Vacaciones</span><span class="summary-trend" id="s-leave-trend"></span></div>
+            <div class="summary-value" id="s-leave-value">—</div>
+            <div class="meta" id="s-leave-meta"></div>
+        </div>
+        <div class="summary-card" id="s-ts">
+            <div class="summary-title"><span>Partes</span><span class="summary-trend" id="s-ts-trend"></span></div>
+            <div class="summary-value" id="s-ts-value">—</div>
+            <div class="meta" id="s-ts-meta"></div>
+        </div>
+        <div class="summary-card" id="s-pay">
+            <div class="summary-title"><span>Nómina</span><span class="summary-trend" id="s-pay-trend"></span></div>
+            <div class="summary-value" id="s-pay-value">—</div>
+            <div class="meta" id="s-pay-meta"></div>
+        </div>
+    </div>
+
+    <div class="layout">
+        <div class="stack">
+            <div class="panel">
+                <div class="section-title">
+                    <div>
+                        <h2>👤 Empleados</h2>
+                        <p class="desc">Alta rápida y vista de estado por posición.</p>
+                    </div>
+                    <div class="filters">
+                        <select id="empStatusFilter" onchange="renderEmployees()">
+                            <option value="">Estado: todos</option>
+                            <option value="active">Activos</option>
+                            <option value="inactive">Inactivos</option>
+                        </select>
+                        <input id="empSearch" placeholder="Buscar nombre o código" oninput="renderEmployees()" style="max-width:200px;">
+                    </div>
+                </div>
+                <div class="row" style="margin-top:10px;">
+                    <div><label>Código</label><input id="empCode" placeholder="EMP-001"></div>
+                    <div><label>Nombre</label><input id="empFirst" placeholder="Ana"></div>
+                    <div><label>Apellidos</label><input id="empLast" placeholder="Pérez"></div>
+                    <div><label>Email</label><input id="empEmail" type="email"></div>
+                    <div><label>Posición</label><select id="empPos"></select></div>
+                    <div><label>Tipo empleo</label>
+                        <select id="empType">
+                            <option value="">Selecciona</option>
+                            <option value="full_time">Tiempo completo</option>
+                            <option value="part_time">Tiempo parcial</option>
+                            <option value="contractor">Contratista</option>
+                            <option value="temporary">Temporal</option>
+                        </select>
+                    </div>
+                    <div><label>Tipo contrato</label>
+                        <select id="empContract">
+                            <option value="">Selecciona</option>
+                            <option value="indefinido">Indefinido</option>
+                            <option value="temporal">Temporal</option>
+                            <option value="obra_servicio">Obra/Servicio</option>
+                            <option value="formativo">Formativo</option>
+                            <option value="practicas">Prácticas</option>
+                        </select>
+                    </div>
+                    <div><label>Salario</label><input id="empSalary" type="number" step="0.01"></div>
+                    <div><label>Tarifa hora</label><input id="empRate" type="number" step="0.01"></div>
+                    <div><label>Nº SS</label><input id="empSS" placeholder="28/12345678/90"></div>
+                    <div><label>Estado SS</label>
+                        <select id="empSSStatus">
+                            <option value="">Selecciona</option>
+                            <option value="alta">Alta</option>
+                            <option value="baja">Baja</option>
+                            <option value="suspension">Suspensión</option>
+                        </select>
+                    </div>
+                    <div><label>Fecha alta SS</label><input id="empSSAlta" type="date"></div>
+                </div>
+                <div class="actions" style="margin-top:10px;">
+                    <button onclick="createEmployee()">Crear empleado</button>
+                    <button class="ghost" onclick="loadEmployees()">Refrescar</button>
+                </div>
+                <div class="list" id="empList" style="margin-top:12px;">
+                    <div class="list-item"><span>Cargando...</span></div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="section-title">
+                    <div>
+                        <h2>🌴 Vacaciones</h2>
+                        <p class="desc">Solicita, revisa y aprueba.</p>
+                    </div>
+                    <div class="filters">
+                        <select id="leaveStatusFilter" onchange="renderLeave()">
+                            <option value="">Estado: todos</option>
+                            <option value="pending">Pendiente</option>
+                            <option value="approved">Aprobado</option>
+                            <option value="rejected">Rechazado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:10px;">
+                    <div><label>Empleado</label><select id="leaveEmp"></select></div>
+                    <div><label>Tipo</label><input id="leaveTipo" placeholder="vacation"></div>
+                    <div><label>Inicio</label><input id="leaveStart" type="date"></div>
+                    <div><label>Fin</label><input id="leaveEnd" type="date"></div>
+                </div>
+                <div class="actions" style="margin-top:10px;">
+                    <button onclick="requestLeave()">Solicitar</button>
+                    <input id="leaveId" type="number" placeholder="ID solicitud" style="max-width:140px;">
+                    <select id="leaveStatus" style="max-width:140px;">
+                        <option value="approved">approved</option>
+                        <option value="rejected">rejected</option>
+                        <option value="pending">pending</option>
+                    </select>
+                    <button class="secondary" onclick="approveLeave()">Actualizar estado</button>
+                </div>
+                <div class="list" id="leaveList" style="margin-top:12px; max-height:220px;"></div>
+            </div>
+        </div>
+
+        <div class="stack">
+            <div class="panel">
+                <h2>⏱️ Partes (timesheets)</h2>
+                <p class="desc">Crea, añade líneas y aprueba.</p>
+                <div class="row">
+                    <div><label>Empleado</label><select id="tsEmp"></select></div>
+                    <div><label>Periodo inicio</label><input id="tsStart" type="date"></div>
+                    <div><label>Periodo fin</label><input id="tsEnd" type="date"></div>
+                </div>
+                <div class="actions" style="margin-top:8px;">
+                    <button onclick="createTimesheet()">Crear parte</button>
+                    <input id="tsId" type="number" placeholder="TS ID" style="max-width:120px;">
+                    <button class="secondary" onclick="submitTs()">Enviar</button>
+                    <button class="secondary" onclick="approveTs()">Aprobar</button>
+                </div>
+                <div class="row" style="margin-top:10px;">
+                    <div><label>Fecha línea</label><input id="tsLineDate" type="date"></div>
+                    <div><label>Horas</label><input id="tsLineHours" type="number" step="0.25"></div>
+                    <div><label>Tarea</label><input id="tsLineTask" placeholder="Mantenimiento"></div>
+                </div>
+                <div class="actions" style="margin-top:8px;">
+                    <button class="secondary" onclick="addTsLine()">Añadir línea</button>
+                    <button class="ghost" onclick="loadLines()">Ver líneas</button>
+                </div>
+                <div class="row" style="margin-top:10px; align-items:start;">
+                    <div style="min-width:280px;">
+                        <div class="list" id="tsList" style="max-height:180px;"></div>
+                    </div>
+                    <div style="min-width:260px;">
+                        <div class="list" id="tsLines" style="max-height:180px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>💰 Nómina</h2>
+                <p class="desc">Genera, calcula y contabiliza periodos.</p>
+                <div class="row">
+                    <div><label>Inicio</label><input id="payStart" type="date"></div>
+                    <div><label>Fin</label><input id="payEnd" type="date"></div>
+                </div>
+                <div class="actions" style="margin-top:10px;">
+                    <button onclick="createRun()">Crear periodo</button>
+                    <input id="payRunId" type="number" placeholder="Run ID" style="max-width:120px;">
+                    <button class="secondary" onclick="calcRun()">Calcular</button>
+                    <button class="secondary" onclick="postRun()">Contabilizar</button>
+                </div>
+                <div class="row" style="margin-top:10px; align-items:start;">
+                    <div>
+                        <table class="table" id="payListTable"></table>
+                    </div>
+                    <div>
+                        <div class="list" id="payLines" style="max-height:200px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+const state = { employees: [], positions: [], leave: [], timesheets: [], tsLines: [], runs: [], runLines: [] };
+
+const api = async (url, options={}) => {
+    const opts = Object.assign({credentials:'include', headers:{'Content-Type':'application/json'}}, options);
+    const resp = await fetch(url, opts);
+    if(!resp.ok){ const t = await resp.text(); throw new Error(t || resp.statusText); }
+    const ct = resp.headers.get('content-type')||''; return ct.includes('application/json') ? resp.json() : resp.text();
+};
+
+function badgeStatus(status){
+    if(status==='approved' || status==='active') return 'pill green';
+    if(status==='submitted' || status==='pending') return 'pill blue';
+    return 'pill';
+}
+
+function renderEmployees(){
+    const filter = document.getElementById('empStatusFilter').value;
+    const search = (document.getElementById('empSearch').value || '').toLowerCase();
+    const list = document.getElementById('empList');
+    const filtered = state.employees.filter(emp => {
+        const matchesStatus = filter ? emp.status === filter : true;
+        const matchesSearch = `${emp.employee_code} ${emp.first_name} ${emp.last_name}`.toLowerCase().includes(search);
+        return matchesStatus && matchesSearch;
+    });
+    list.innerHTML = filtered.map(emp => `
+        <div class="list-item">
+            <div onclick="document.getElementById('leaveEmp').value=${emp.id}; document.getElementById('tsEmp').value=${emp.id};" style="cursor:pointer; flex:1;">
+                <strong>${emp.employee_code}</strong> · ${emp.first_name} ${emp.last_name}<br>
+                <div class="meta">
+                    <span class="pill gray">${emp.contract_type || emp.employment_type || 'Sin contrato'}</span>
+                    <span class="pill ${emp.ss_status === 'alta' ? 'green' : (emp.ss_status === 'baja' ? '' : 'blue')}">SS: ${emp.ss_status || 'N/A'}</span>
+                    ${emp.ss_number ? `<span>SS: ${emp.ss_number}</span>` : ''}
+                    <span>${emp.email || 'Sin email'}</span>
+                </div>
+            </div>
+            <div style="display:flex; gap:6px; align-items:center;">
+                <span class="${badgeStatus(emp.status)}">${emp.status || 'active'}</span>
+                ${emp.ss_status !== 'alta' ? `<button class="secondary" style="padding:6px 10px; margin:0; width:auto; font-size:12px;" onclick="altaSS(${emp.id})">Alta SS</button>` : ''}
+                ${emp.ss_status === 'alta' ? `<button class="ghost" style="padding:6px 10px; margin:0; width:auto; font-size:12px;" onclick="bajaSS(${emp.id})">Baja SS</button>` : ''}
+            </div>
+        </div>
+    `).join('') || '<div class="list-item" style="color:var(--muted)">Sin empleados</div>';
+}
+
+function renderLeave(){
+    const filter = document.getElementById('leaveStatusFilter').value;
+    const list = document.getElementById('leaveList');
+    const filtered = state.leave.filter(l => filter ? l.status === filter : true);
+    list.innerHTML = filtered.map(l => `
+        <div class="list-item">
+            <div>
+                <span class="${badgeStatus(l.status)}">${l.status}</span>
+                Emp ${l.employee_id} · ${l.leave_type}<br>
+                <span class="meta">${l.start_date} → ${l.end_date}</span>
+            </div>
+            <span class="badge">ID ${l.id}</span>
+        </div>
+    `).join('') || '<div class="list-item" style="color:var(--muted)">Sin solicitudes</div>';
+}
+
+function renderTimesheets(){
+    const list = document.getElementById('tsList');
+    list.innerHTML = state.timesheets.map(t => `
+        <div class="list-item" style="cursor:pointer" onclick="document.getElementById('tsId').value=${t.id}; loadLines();">
+            <div>
+                <span class="${badgeStatus(t.status)}">${t.status}</span>
+                Emp ${t.employee_id}<br>
+                <span class="meta">${t.period_start} - ${t.period_end}</span>
+            </div>
+            <span class="badge">TS ${t.id}</span>
+        </div>
+    `).join('') || '<div class="list-item" style="color:var(--muted)">Sin partes</div>';
+}
+
+function renderLines(){
+    const list = document.getElementById('tsLines');
+    list.innerHTML = state.tsLines.map(l => `<div class="list-item">${l.work_date} · ${l.hours}h · ${l.task || ''}</div>`).join('') || '<div class="list-item" style="color:var(--muted)">Sin líneas</div>';
+}
+
+function renderRuns(){
+    const table = document.getElementById('payListTable');
+    table.innerHTML = `
+        <thead><tr><th>ID</th><th>Periodo</th><th>Estado</th><th>Total bruto</th></tr></thead>
+        <tbody>
+            ${state.runs.map(r => `
+                <tr style="cursor:pointer" onclick="document.getElementById('payRunId').value=${r.id}; loadRunLines();">
+                    <td>${r.id}</td>
+                    <td>${r.period_start} → ${r.period_end}</td>
+                    <td><span class="${badgeStatus(r.status)}">${r.status}</span></td>
+                    <td>${r.total_gross || 0}</td>
+                </tr>
+            `).join('')}
+        </tbody>
+    `;
+    if(!state.runs.length){ table.innerHTML = '<tbody><tr><td colspan="4" style="color:var(--muted); padding:10px;">Sin nóminas</td></tr></tbody>'; }
+}
+
+function renderRunLines(){
+    const list = document.getElementById('payLines');
+    list.innerHTML = state.runLines.map(l => `<div class="list-item">Emp ${l.employee_id} · Bruto ${l.gross_amount} · Neto ${l.net_amount}</div>`).join('') || '<div class="list-item" style="color:var(--muted)">Sin líneas</div>';
+}
+
+function renderSummary(){
+    const actives = state.employees.filter(e => e.status === 'active' || !e.status).length;
+    const ssAlta = state.employees.filter(e => e.ss_status === 'alta').length;
+    const costes = state.employees.filter(e => (e.status === 'active' || !e.status) && e.salary).reduce((sum, e) => sum + (parseFloat(e.salary) || 0), 0);
+    document.getElementById('s-employees-value').textContent = actives;
+    document.getElementById('s-employees-meta').innerHTML = `${state.employees.length} total · ${ssAlta} en SS alta · ${state.positions.length} posiciones`;
+    document.getElementById('s-employees-trend').textContent = costes > 0 ? `€${costes.toLocaleString('es-ES', {maximumFractionDigits: 0})}/mes` : '';
+
+    const leavePending = state.leave.filter(l => l.status === 'pending').length;
+    const leaveActive = state.leave.filter(l => l.status === 'approved' && new Date(l.end_date) >= new Date()).length;
+    document.getElementById('s-leave-value').textContent = `${leavePending} pendientes`;
+    document.getElementById('s-leave-meta').textContent = `${state.leave.length} solicitudes · ${leaveActive} ausencias activas`;
+
+    const tsPending = state.timesheets.filter(t => t.status === 'submitted' || t.status === 'pending').length;
+    document.getElementById('s-ts-value').textContent = `${tsPending} por revisar`;
+    document.getElementById('s-ts-meta').textContent = `${state.timesheets.length} partes`;
+
+    const openRuns = state.runs.filter(r => r.status !== 'posted').length;
+    const totalBruto = state.runs.reduce((sum, r) => sum + (parseFloat(r.total_gross) || 0), 0);
+    document.getElementById('s-pay-value').textContent = `${openRuns} abiertas`;
+    document.getElementById('s-pay-meta').innerHTML = `${state.runs.length} runs · Total bruto: €${totalBruto.toLocaleString('es-ES', {maximumFractionDigits: 0})}`;
+}
+
+async function loadEmployees(){
+    try{
+        state.employees = await api('/api/hr/employees');
+        renderEmployees();
+        renderSummary();
+    }catch(e){ document.getElementById('empList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+}
+
+async function loadPositions(){
+    try{
+        state.positions = await api('/api/hr/positions');
+        const sel = document.getElementById('empPos');
+        sel.innerHTML = `<option value="">Sin posición</option>` + state.positions.map(p => `<option value="${p.id}">${p.position_code} · ${p.title}</option>`).join('');
+    }catch(e){ console.error(e); }
+}
+
+async function loadEmployeesOptions(){
+    const options = state.employees.map(e => `<option value="${e.id}">${e.employee_code} · ${e.first_name} ${e.last_name}</option>`).join('');
+    document.getElementById('leaveEmp').innerHTML = `<option value="">Selecciona</option>${options}`;
+    document.getElementById('tsEmp').innerHTML = `<option value="">Selecciona</option>${options}`;
+}
+
+async function requestLeave(){
+    try{
+        await api('/api/hr/leave',{method:'POST',body:JSON.stringify({
+            employee_id:Number(document.getElementById('leaveEmp').value),
+            leave_type:document.getElementById('leaveTipo').value,
+            start_date:document.getElementById('leaveStart').value,
+            end_date:document.getElementById('leaveEnd').value
+        })});
+        await loadLeave();
+    }catch(e){ alert(e.message); }
+}
+
+async function approveLeave(){
+    const id = document.getElementById('leaveId').value; if(!id) return alert('Indica ID');
+    try{
+        await api(`/api/hr/leave/${id}/approve`,{method:'POST',body:JSON.stringify({status:document.getElementById('leaveStatus').value || 'approved'})});
+        await loadLeave();
+    }catch(e){ alert(e.message); }
+}
+
+async function loadLeave(){
+    try{
+        state.leave = await api('/api/hr/leave');
+        renderLeave();
+        renderSummary();
+    }catch(e){ document.getElementById('leaveList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+}
+
+async function createEmployee(){
+    try{
+        await api('/api/hr/employees',{method:'POST',body:JSON.stringify({
+            employee_code: document.getElementById('empCode').value,
+            first_name: document.getElementById('empFirst').value,
+            last_name: document.getElementById('empLast').value,
+            email: document.getElementById('empEmail').value || null,
+            position_id: document.getElementById('empPos').value ? Number(document.getElementById('empPos').value) : null,
+            salary: document.getElementById('empSalary').value ? Number(document.getElementById('empSalary').value) : null,
+            hourly_rate: document.getElementById('empRate').value ? Number(document.getElementById('empRate').value) : null,
+            employment_type: document.getElementById('empType').value || null,
+            contract_type: document.getElementById('empContract').value || null,
+            ss_number: document.getElementById('empSS').value || null,
+            ss_status: document.getElementById('empSSStatus').value || null,
+            ss_alta_date: document.getElementById('empSSAlta').value || null
+        })});
+        await loadEmployees();
+        await loadEmployeesOptions();
+    }catch(e){ alert(e.message); }
+}
+
+async function createTimesheet(){
+    try{
+        const data = await api('/api/hr/timesheets',{method:'POST',body:JSON.stringify({
+            employee_id:Number(document.getElementById('tsEmp').value),
+            period_start:document.getElementById('tsStart').value,
+            period_end:document.getElementById('tsEnd').value
+        })});
+        document.getElementById('tsId').value = data.id;
+        await loadTimesheets();
+    }catch(e){ alert(e.message); }
+}
+
+async function addTsLine(){
+    const id = document.getElementById('tsId').value; if(!id) return alert('Indica TS ID');
+    try{
+        await api(`/api/hr/timesheets/${id}/lines`,{method:'POST',body:JSON.stringify({
+            work_date:document.getElementById('tsLineDate').value,
+            hours:Number(document.getElementById('tsLineHours').value||0),
+            task:document.getElementById('tsLineTask').value || null
+        })});
+        await loadLines();
+    }catch(e){ alert(e.message); }
+}
+
+async function submitTs(){
+    const id = document.getElementById('tsId').value; if(!id) return alert('Indica TS ID');
+    try{ await api(`/api/hr/timesheets/${id}/submit`,{method:'POST'}); await loadTimesheets(); }catch(e){ alert(e.message); }
+}
+
+async function approveTs(){
+    const id = document.getElementById('tsId').value; if(!id) return alert('Indica TS ID');
+    try{ await api(`/api/hr/timesheets/${id}/approve`,{method:'POST'}); await loadTimesheets(); }catch(e){ alert(e.message); }
+}
+
+async function loadTimesheets(){
+    try{
+        state.timesheets = await api('/api/hr/timesheets');
+        renderTimesheets();
+        renderSummary();
+    }catch(e){ document.getElementById('tsList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+}
+
+async function loadLines(){
+    const id = document.getElementById('tsId').value; if(!id) { state.tsLines = []; renderLines(); return; }
+    try{
+        state.tsLines = await api(`/api/hr/timesheets/${id}/lines`);
+        renderLines();
+    }catch(e){ document.getElementById('tsLines').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+}
+
+async function createRun(){
+    try{
+        const data = await api('/api/hr/payroll/runs',{method:'POST',body:JSON.stringify({
+            period_start:document.getElementById('payStart').value,
+            period_end:document.getElementById('payEnd').value
+        })});
+        document.getElementById('payRunId').value = data.id;
+        await loadRuns();
+    }catch(e){ alert(e.message); }
+}
+
+async function calcRun(){
+    const id = document.getElementById('payRunId').value; if(!id) return alert('Run ID');
+    try{ await api(`/api/hr/payroll/runs/${id}/calculate`,{method:'POST'}); await loadRuns(); await loadRunLines(); }catch(e){ alert(e.message); }
+}
+
+async function postRun(){
+    const id = document.getElementById('payRunId').value; if(!id) return alert('Run ID');
+    try{ await api(`/api/hr/payroll/runs/${id}/post`,{method:'POST'}); await loadRuns(); }catch(e){ alert(e.message); }
+}
+
+async function loadRuns(){
+    try{
+        state.runs = await api('/api/hr/payroll/runs');
+        renderRuns();
+        renderSummary();
+    }catch(e){ document.getElementById('payListTable').innerHTML = `<tbody><tr><td style='color:var(--color-danger); padding:10px;'>${e.message}</td></tr></tbody>`; }
+}
+
+async function loadRunLines(){
+    const id = document.getElementById('payRunId').value; if(!id){ state.runLines = []; renderRunLines(); return; }
+    try{
+        state.runLines = await api(`/api/hr/payroll/runs/${id}/lines`);
+        renderRunLines();
+    }catch(e){ document.getElementById('payLines').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+}
+
+async function altaSS(empId){
+    const ssNum = prompt('¿Número de Seguridad Social?');
+    const fecha = prompt('Fecha de alta (YYYY-MM-DD):', new Date().toISOString().split('T')[0]);
+    if(!ssNum) return;
+    try{
+        await api(`/api/hr/employees/${empId}/ss`, {method:'POST', body:JSON.stringify({
+            ss_status: 'alta',
+            ss_number: ssNum,
+            ss_date: fecha
+        })});
+        await loadEmployees();
+    }catch(e){ alert(e.message); }
+}
+
+async function bajaSS(empId){
+    const fecha = prompt('Fecha de baja (YYYY-MM-DD):', new Date().toISOString().split('T')[0]);
+    if(!confirm('¿Confirmar baja en Seguridad Social?')) return;
+    try{
+        await api(`/api/hr/employees/${empId}/ss`, {method:'POST', body:JSON.stringify({
+            ss_status: 'baja',
+            ss_date: fecha
+        })});
+        await loadEmployees();
+    }catch(e){ alert(e.message); }
+}
+
+async function init(){
+    await Promise.all([loadPositions(), loadEmployees()]);
+    await loadEmployeesOptions();
+    await Promise.all([loadLeave(), loadTimesheets(), loadRuns()]);
+}
+
+init();
+</script>
+<script src="/static/js/module-tutorial.js?v=2"></script>
+<script defer src="/static/assistant.js?v=2"></script>
+<script defer src="/static/assistant-basic-panel.js?v=2"></script>
+<script defer src="/static/voice-widget.js?v=2"></script>
+</body>
+</html>

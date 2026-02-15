@@ -1,0 +1,115 @@
+{
+  "clientes": [
+    {
+      "id": 1,
+      "nombre": "Vicente Carratala",
+      "historial_compras": [
+        {
+          "id_compra": "CMP-2025-001",
+          "fecha": "2025-01-15",
+          "total": 1399.97,
+          "productos": [
+            {
+              "id_producto": 101,
+              "nombre": "Portátil Gamer",
+              "cantidad": 1,
+              "precio_unitario": 1299.99
+            },
+            {
+              "id_producto": 205,
+              "nombre": "Ratón Inalámbrico",
+              "cantidad": 2,
+              "precio_unitario": 49.99
+            }
+          ]
+        },
+        {
+          "id_compra": "CMP-2025-002",
+          "fecha": "2025-05-20",
+          "total": 299.99,
+          "productos": {
+            "id_producto": 307,
+            "nombre": "Monitor 27\"",
+            "cantidad": 1,
+            "precio_unitario": 299.99
+          }
+        }
+      ],
+      "informacion_contacto": {
+        "email": "vicente.carratala@example.com",
+        "direccion": {
+          "calle": "Calle Mayor",
+          "numero": 45,
+          "piso": "3º B",
+          "ciudad": "Alicante",
+          "codigo_postal": "03001",
+          "pais": "España"
+        },
+        "telefonos": [
+          {
+            "tipo": "móvil",
+            "numero": "+34 600 123 456"
+          },
+          {
+            "tipo": "fijo",
+            "numero": "+34 965 789 012"
+          }
+        ]
+      },
+      "preferencias": {
+        "idioma": "español",
+        "categorias_interes": [
+          "tecnología",
+          "deportes"
+        ],
+        "notificaciones": {
+          "email": 1,
+          "sms": 0,
+          "push": 1
+        }
+      }
+    },
+    {
+      "id": 2,
+      "nombre": "Ana López",
+      "historial_compras": {
+        "id_compra": "CMP-2025-003",
+        "fecha": "2025-03-10",
+        "total": 349.99,
+        "productos": {
+          "id_producto": 402,
+          "nombre": "Tablet 10\"",
+          "cantidad": 1,
+          "precio_unitario": 349.99
+        }
+      },
+      "informacion_contacto": {
+        "email": "ana.lopez@example.com",
+        "direccion": {
+          "calle": "Avenida Diagonal",
+          "numero": 123,
+          "piso": "1º A",
+          "ciudad": "Barcelona",
+          "codigo_postal": "08018",
+          "pais": "España"
+        },
+        "telefonos": {
+          "tipo": "móvil",
+          "numero": "+34 678 901 234"
+        }
+      },
+      "preferencias": {
+        "idioma": "catalán",
+        "categorias_interes": [
+          "libros",
+          "moda"
+        ],
+        "notificaciones": {
+          "email": 1,
+          "sms": 1,
+          "push": 0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,252 @@
+/**
+ * ==========================================================================
+ * MUTENROS Portfolio - Base Styles
+ * ==========================================================================
+ * 
+ * This file contains foundational styles including:
+ * - CSS Reset
+ * - Base element styling
+ * - Utility classes
+ * 
+ * Author: Dario (MutenRos)
+ * Version: 2.0.0
+ * ==========================================================================
+ */
+
+/* =========================================================================
+ * CSS RESET
+ * =========================================================================
+ * Modern CSS reset for consistent cross-browser rendering
+ */
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Remove default list styles */
+ul,
+ol {
+    list-style: none;
+}
+
+/* Prevent font size inflation on mobile */
+html {
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+    scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-medium);
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    overflow-x: hidden;
+    min-height: 100vh;
+    line-height: var(--line-height-normal);
+}
+
+/* Balance text wrapping on headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+    text-decoration-skip-ink: auto;
+    color: currentColor;
+}
+
+/* Make images easier to work with */
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+/* Remove all animations and transitions for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* =========================================================================
+ * BASE ELEMENT STYLES
+ * =========================================================================
+ */
+
+/* Links */
+a {
+    color: var(--color-neon-cyan);
+    text-decoration: none;
+    transition: color var(--transition-normal);
+}
+
+a:hover {
+    color: var(--color-neon-pink);
+}
+
+/* Buttons */
+button {
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    font-family: var(--font-display);
+}
+
+/* Selection */
+::selection {
+    background-color: var(--color-neon-pink);
+    color: var(--color-text-primary);
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+    outline: 2px solid var(--color-neon-cyan);
+    outline-offset: 3px;
+}
+
+/* =========================================================================
+ * UTILITY CLASSES
+ * =========================================================================
+ */
+
+/* Screen reader only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Text alignment */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* Display utilities */
+.hidden {
+    display: none !important;
+}
+
+.block {
+    display: block;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.flex {
+    display: flex;
+}
+
+.grid {
+    display: grid;
+}
+
+/* Flex utilities */
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+/* Container */
+.container {
+    width: 100%;
+    max-width: var(--container-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--section-padding-x);
+    padding-right: var(--section-padding-x);
+}
+
+.container--narrow {
+    max-width: var(--container-narrow);
+}
+
+.container--wide {
+    max-width: var(--container-wide);
+}
+
+/* Section spacing */
+.section {
+    padding: var(--section-padding-y) var(--section-padding-x);
+    position: relative;
+}
+
+/* Neon text effect */
+.neon-text {
+    color: var(--color-neon-cyan);
+    text-shadow: var(--text-glow-cyan);
+}
+
+.neon-text--pink {
+    color: var(--color-neon-pink);
+    text-shadow: var(--text-glow-pink);
+}
+
+/* Gradient text */
+.gradient-text {
+    background: linear-gradient(90deg, var(--color-neon-cyan), var(--color-neon-pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}

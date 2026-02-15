@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repo Details | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Marked library for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="scanline"></div>
+
+    <div class="screen">
+        <div class="header-bar">
+            <div class="player-info">PLAYER: MUTENROS</div>
+            <div class="score">CREDITS: ∞</div>
+        </div>
+
+        <div class="action-bar">
+            <a href="index.html" class="insert-coin" style="margin-top: 0; font-size: 0.6rem;">&lt; BACK TO MENU</a>
+            <a id="github-link" href="#" target="_blank" class="insert-coin" style="margin-top: 0; font-size: 0.6rem;">PLAY GAME (GITHUB) &gt;</a>
+        </div>
+
+        <h1 id="repo-title" style="margin-bottom: 1rem; font-size: 1.5rem;">LOADING...</h1>
+        
+        <div id="readme-content" class="markdown-body">
+            <p>Loading cartridge data...</p>
+        </div>
+    </div>
+
+    <script>
+        async function loadRepoDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const repoName = urlParams.get('repo');
+            const username = 'MutenRos';
+
+            if (!repoName) {
+                document.getElementById('repo-title').innerText = 'ERROR: NO CARTRIDGE SELECTED';
+                return;
+            }
+
+            // Custom title for Profile Repo
+            if (repoName === 'MutenRos') {
+                document.getElementById('repo-title').innerText = 'PLAYER PROFILE: MUTENROS';
+            } else {
+                document.getElementById('repo-title').innerText = repoName;
+            }
+
+            try {
+                // 1. Get Repo Details (for URL)
+                const repoRes = await fetch(`https://api.github.com/repos/${username}/${repoName}`);
+                if (!repoRes.ok) throw new Error('Repo not found');
+                const repoData = await repoRes.json();
+                
+                document.getElementById('github-link').href = repoData.html_url;
+
+                // 2. Get README
+                // Use the raw content URL to avoid base64 decoding issues manually
+                const readmeRes = await fetch(`https://api.github.com/repos/${username}/${repoName}/readme`, {
+                    headers: { 'Accept': 'application/vnd.github.raw' }
+                });
+
+                if (readmeRes.ok) {
+                    const markdown = await readmeRes.text();
+                    document.getElementById('readme-content').innerHTML = marked.parse(markdown);
+                } else {
+                    document.getElementById('readme-content').innerHTML = '<p>NO MANUAL FOUND (README.md missing)</p>';
+                }
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('readme-content').innerHTML = `<p style="color: red">READ ERROR: ${error.message}</p>`;
+            }
+        }
+
+        loadRepoDetails();
+    </script>
+</body>
+</html>

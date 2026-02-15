@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="825.750061035156" height="367.06250508626295" viewBox="0 0 825.750061035156 367.06250508626295">
+
+  <defs>
+    <style>
+      text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 12px; fill: #111827; }
+      .shape-rect { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-entity { fill: #ffffff; stroke: #111827; stroke-width: 2; }
+      .shape-circle { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-pill { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-db { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .conn { stroke: #111827; stroke-width: 2; fill: none; }
+    </style>
+    <marker id="arrow-end" markerWidth="10" markerHeight="7" refX="10" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#111827"/>
+    </marker>
+    <marker id="arrow-start" markerWidth="10" markerHeight="7" refX="0" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="10 0, 0 3.5, 10 7" fill="#111827"/>
+    </marker>
+  </defs>
+        
+<rect class="shape-entity" x="40" y="189.65000915527338" width="219.99999999999994" height="102.4000040690104" />
+<line x1="40" y1="216.05000559488926" x2="259.99999999999994" y2="216.05000559488926" stroke="#e5e7eb" stroke-width="1"/>
+<text x="149.99999999999997" y="207.65000534057612" text-anchor="middle">Rueda</text>
+<text x="123.68749999999997" y="236.0499928792317">id</text>
+<text x="123.68749999999997" y="260.0499928792317">diametro</text>
+<rect class="shape-entity" x="299.0875040690104" y="200.66250101725254" width="219.99997965494785" height="126.40000406901038" />
+<line x1="299.0875040690104" y1="227.0624974568684" x2="519.0874837239583" y2="227.0624974568684" stroke="#e5e7eb" stroke-width="1"/>
+<text x="409.0874938964843" y="218.66249720255527" text-anchor="middle">Carroceria</text>
+<text x="359.36248779296864" y="247.06250508626295">id</text>
+<text x="359.36248779296864" y="271.06250508626295">tipo_metal</text>
+<text x="359.36248779296864" y="295.06250508626295">numero_bastidor</text>
+<rect class="shape-entity" x="565.7500610351561" y="185.33750915527338" width="219.99999999999994" height="79.99999999999997" />
+<line x1="565.7500610351561" y1="211.73750559488926" x2="785.750061035156" y2="211.73750559488926" stroke="#e5e7eb" stroke-width="1"/>
+<text x="675.7500610351561" y="203.33750534057612" text-anchor="middle">Chapa</text>
+<text x="670.4375610351561" y="231.7374928792317">id</text>
+<rect class="shape-entity" x="294.4000040690104" y="40" width="219.99997965494785" height="102.4000040690104" />
+<line x1="294.4000040690104" y1="66.39999643961588" x2="514.3999837239583" y2="66.39999643961588" stroke="#e5e7eb" stroke-width="1"/>
+<text x="404.3999938964843" y="57.99999618530273" text-anchor="middle">Coche</text>
+<text x="377.11248779296864" y="86.39999898274738">id</text>
+<text x="377.11248779296864" y="110.39999898274738">matricula</text>
+<path class="conn" d="M 237.0382853873625 189.65000915527338 L 317.36170850912174 142.4000040690104" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 407.37171885678913 200.66250101725257 L 405.7899888758386 142.40000406901038" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 594.8330757822941 185.33750915527338 L 507.97373913579827 142.4000040690104" marker-start="url(#arrow-start)" marker-end="url(#arrow-end)" />
+</svg>

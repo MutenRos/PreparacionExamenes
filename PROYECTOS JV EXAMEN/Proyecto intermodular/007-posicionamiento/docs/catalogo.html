@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Catálogo de recortables | recortabl.es</title>
+  <meta name="description" content="Explora recortables para imprimir por categorías: vehículos, edificios, animales, fantasía y más.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mogra&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo/estilo.css">
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <div class="logo">🤖</div>
+        <span><b>rec</b><i>ortabl.es</i></span>
+      </a>
+      <nav>
+        <a href="categorias.html">Categorías ▾</a>
+        <a href="sobrenosotros.html">Sobre nosotros</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="login.html">Login</a>
+        <div class="search" role="search">
+          <div class="icon">🔎</div>
+          <input type="search" placeholder="Buscar..." aria-label="Buscar">
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h1 class="title">Catálogo de recortables</h1>
+      <p class="sub">Explora todos los modelos. Filtra por categoría, nivel y valoración.</p>
+
+      <div class="catalog">
+        <aside>
+          <h3>Filtros</h3>
+          <div class="panel">
+            <label for="q">Buscar</label>
+            <input id="q" type="search" placeholder="Ej: dinosaurio, coche, castillo...">
+          </div>
+          <div class="panel">
+            <label for="cat">Categoría</label>
+            <select id="cat">
+              <option>Todas</option>
+              <option>Vehículos</option>
+              <option>Edificios</option>
+              <option>Robots</option>
+              <option>Animales</option>
+              <option>Navidad</option>
+              <option>Educativos</option>
+              <option>Muñecos</option>
+            </select>
+          </div>
+          <div class="panel">
+            <label for="lvl">Dificultad</label>
+            <select id="lvl">
+              <option>Todas</option>
+              <option>Fácil</option>
+              <option>Media</option>
+              <option>Difícil</option>
+            </select>
+          </div>
+          <div class="panel">
+            <div class="row">
+              <label>Valoración</label>
+              <span style="color:var(--muted);font-weight:800">mínimo</span>
+            </div>
+            <div class="chips" role="listbox" aria-label="Valoración mínima">
+              <span class="chip" aria-current="true">Todas</span>
+              <span class="chip">3★+</span>
+              <span class="chip">4★+</span>
+              <span class="chip">5★</span>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="row">
+              <label for="free">Solo gratis</label>
+              <input id="free" type="checkbox" checked>
+            </div>
+          </div>
+        </aside>
+
+        <div>
+          <div class="toolbar">
+            <div class="toolbar-top">
+              <div class="counts">Mostrando 1–8 de 8</div>
+              <div class="sort">
+                <span>Ordenar</span>
+                <select>
+                  <option>Relevancia</option>
+                  <option>Más descargados</option>
+                  <option>Mejor valorados</option>
+                  <option>Novedades</option>
+                  <option>A–Z</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <article>
+              <img src="img/imgcategoria.png" alt="Castillo Medieval">
+              <div class="card-body">
+                <p class="card-title">Castillo Medieval</p>
+                <p class="meta"><span class="stars">★★★★☆</span><span class="tag">Edificios</span></p>
+                <a class="download" href="producto.html">Descargar PDF</a>
+              </div>
+            </article>
+            <article>
+              <img src="img/imgcategoria.png" alt="Coche de Fórmula 1">
+              <div class="card-body">
+                <p class="card-title">Coche de Fórmula 1</p>
+                <p class="meta"><span class="stars">★★★★★</span><span class="tag">Vehículos</span></p>
+                <a class="download" href="producto.html">Descargar PDF</a>
+              </div>
+            </article>
+            <article>
+              <img src="img/imgcategoria.png" alt="Dinosaurio T-Rex">
+              <div class="card-body">
+                <p class="card-title">Dinosaurio T-Rex</p>
+                <p class="meta"><span class="stars">★★★★★</span><span class="tag">Animales</span></p>
+                <a class="download" href="producto.html">Descargar PDF</a>
+              </div>
+            </article>
+            <article>
+              <img src="img/imgcategoria.png" alt="Robot XL">
+              <div class="card-body">
+                <p class="card-title">Robot XL</p>
+                <p class="meta"><span class="stars">★★★★☆</span><span class="tag">Robots</span></p>
+                <a class="download" href="producto.html">Descargar PDF</a>
+              </div>
+            </article>
+            <article>
+              <img src="img/imgcategoria.png" alt="Avión Bimotor">
+              <div class="card-body">
+                <p class="card-title">Avión Bimotor</p>
+                <p class="meta"><span class="stars">★★★★☆</span><span class="tag">Vehículos</span></p>
+                <a class="download" href="producto.html">Descargar PDF</a>
+              </div>
+            </article>
+            <article>
+              <img src="img/imgcategoria.png" alt="Casa de Muñecas">
+              <div class="card-body">
+                <p class="card-title">Casa de Muñecas</p>
+                <p class="meta"><span class="stars">★★★★★</span><span class="tag">Edificios</span></p>
+                <a class="download" href="producto.html">Descargar PDF</a>
+              </div>
+            </article>
+            <article>
+              <img src="img/imgcategoria.png" alt="Árbol de Navidad">
+              <div class="card-body">
+                <p class="card-title">Árbol de Navidad</p>
+                <p class="meta"><span class="stars">★★★★☆</span><span class="tag">Navidad</span></p>
+                <a class="download" href="producto.html">Descargar PDF</a>
+              </div>
+            </article>
+            <article>
+              <img src="img/imgcategoria.png" alt="Esqueleto Humano">
+              <div class="card-body">
+                <p class="card-title">Esqueleto Humano</p>
+                <p class="meta"><span class="stars">★★★★★</span><span class="tag">Educativos</span></p>
+                <a class="download" href="producto.html">Descargar PDF</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <a href="sobrenosotros.html">Acerca de</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="#">Licencias</a>
+      <a href="#">Aviso Legal</a>
+      <span class="social" aria-label="Redes sociales">
+        <a href="#" title="Facebook">f</a>
+        <a href="#" title="X">x</a>
+        <a href="#" title="YouTube">▶</a>
+        <a href="#" title="Instagram">⌁</a>
+      </span>
+    </div>
+  </footer>
+</body>
+</html>

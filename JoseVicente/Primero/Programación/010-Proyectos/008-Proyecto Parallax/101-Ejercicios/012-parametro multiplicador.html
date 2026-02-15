@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+	<head>
+		<style>
+			body,html{padding:0px;margin:0px;}
+		</style>
+	</head>
+	<body>
+		<canvas></canvas>
+		<script>
+			class Estrella{
+				constructor(){
+					this.x = Math.random()*window.innerWidth;
+					this.y = Math.random()*window.innerHeight
+					this.z = Math.random()*2;
+				}
+			}
+			let lienzo = document.querySelector("canvas");
+			let contexto = lienzo.getContext("2d");
+			
+			lienzo.width = window.innerWidth
+			lienzo.height = window.innerHeight
+			let desfasex = 0
+			let desfasey = 0
+			let multiplicador = 50
+			
+			
+			let numeroestrellas = 800;
+			estrellas = [];
+			for(let i = 0;i<numeroestrellas;i++){
+				estrellas.push(new Estrella());
+			}
+			let temporizador = setTimeout("bucle()",1000)
+			function bucle(){
+				contexto.fillStyle = "black"
+				contexto.fillRect(0,0,window.innerWidth,window.innerHeight);
+				estrellas.forEach(function(estrella){
+					estrella.x += estrella.z
+					if(estrella.x > window.innerWidth){estrella.x = 0}
+					contexto.fillStyle = "white";
+					contexto.beginPath();
+					contexto.arc(
+						estrella.x + desfasex*estrella.z,
+						estrella.y + desfasey*estrella.z,
+						estrella.z,
+						0,
+						Math.PI*2)
+					contexto.fill()
+				})
+				clearTimeout(temporizador)
+				temporizador = setTimeout("bucle()",50)
+			}
+			
+			document.onmousemove = function(evento){
+				let centrox = window.innerWidth/2
+				let centroy = window.innerHeight/2
+				let ratonx = evento.offsetX
+				let ratony = evento.offsetY
+				desfasex = centrox - ratonx
+				desfasey = centroy - ratony
+				desfasex /= multiplicador
+				desfasey /= multiplicador
+			}
+			
+			
+		</script>
+	</body>
+</html>

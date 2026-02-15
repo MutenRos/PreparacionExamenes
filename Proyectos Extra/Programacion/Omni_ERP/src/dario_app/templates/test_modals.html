@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Modals</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        button { padding: 10px 20px; cursor: pointer; }
+        .success { color: green; margin: 10px 0; }
+        .error { color: red; margin: 10px 0; }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        .modal-close {
+            color: #999;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            float: right;
+        }
+        .modal-close:hover {
+            color: #000;
+        }
+        .detail-section {
+            margin-bottom: 20px;
+        }
+        .detail-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .detail-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+        .detail-field {
+            margin-bottom: 10px;
+        }
+        .detail-field label {
+            font-weight: 600;
+            color: #667eea;
+        }
+        .detail-field value {
+            color: #333;
+            font-weight: 600;
+        }
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .items-table th, .items-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .items-table th {
+            background: #f8f9fa;
+            color: #667eea;
+            font-weight: 600;
+        }
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        .badge-danger { background: #f8d7da; color: #721c24; }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    <h1>Test Modal Functionality</h1>
+    
+    <button onclick="verDetalleCompra(1)">View Compra Detail #1</button>
+    <button onclick="verDetalleAlbaran(1)">View Albarán Detail #1</button>
+    
+    <div id="message"></div>
+    
+    <!-- Modal para detalles de compra -->
+    <div id="modalCompra" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="cerrarModalCompra()">&times;</span>
+            <h2>Detalle de Compra</h2>
+            <div id="detalleCompraContent"></div>
+        </div>
+    </div>
+
+    <!-- Modal para detalles de albarán -->
+    <div id="modalAlbaran" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="cerrarModalAlbaran()">&times;</span>
+            <h2>Detalle de Albarán</h2>
+            <div id="detalleAlbaranContent"></div>
+        </div>
+    </div>
+
+    <script>
+        function showSuccess(msg) {
+            document.getElementById('message').innerHTML = '<div class="success">' + msg + '</div>';
+        }
+        
+        function showError(msg) {
+            document.getElementById('message').innerHTML = '<div class="error">' + msg + '</div>';
+        }
+
+        function verDetalleCompra(id) {
+            fetch(`/api/compras/${id}`, { credentials: 'include' })
+                .then(r => r.json())
+                .then(compra => {
+                    const modal = document.getElementById('modalCompra');
+                    const content = document.getElementById('detalleCompraContent');
+                    const total = Number(compra.total ?? 0);
+                    const recep = compra.estado_recepcion || 'Sin recibir';
+                    content.innerHTML = `
+                        <div class="detail-section">
+                            <div class="detail-row">
+                                <div class="detail-field">
+                                    <label>Número:</label>
+                                    <value>${compra.numero}</value>
+                                </div>
+                                <div class="detail-field">
+                                    <label>Fecha:</label>
+                                    <value>${new Date(compra.fecha).toLocaleDateString('es-ES')}</value>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-field">
+                                    <label>Proveedor:</label>
+                                    <value>${compra.proveedor_nombre}</value>
+                                </div>
+                                <div class="detail-field">
+                                    <label>Total:</label>
+                                    <value>€${total.toFixed(2)}</value>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-field">
+                                    <label>Estado:</label>
+                                    <value><span class="badge badge-${compra.estado === 'aprobada' ? 'success' : 'warning'}">${compra.estado}</span></value>
+                                </div>
+                                <div class="detail-field">
+                                    <label>Recepción:</label>
+                                    <value><span class="badge badge-${recep === 'completa' ? 'success' : recep === 'parcial' ? 'warning' : 'danger'}">${recep}</span></value>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="detail-section">
+                            <h3>Estadísticas de Recepción</h3>
+                            <div class="detail-row">
+                                <div class="detail-field">
+                                    <label>Items Esperados:</label>
+                                    <value>${compra.cantidad_items_esperados || 0}</value>
+                                </div>
+                                <div class="detail-field">
+                                    <label>Items Recibidos:</label>
+                                    <value>${compra.cantidad_items_recibidos || 0}</value>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    modal.style.display = 'block';
+                })
+                .catch(err => showError('Error al cargar detalle: ' + err.message));
+        }
+
+        function cerrarModalCompra() {
+            document.getElementById('modalCompra').style.display = 'none';
+        }
+
+        function verDetalleAlbaran(id) {
+            fetch(`/api/recepcion/albaranes/${id}`, { credentials: 'include' })
+                .then(r => r.json())
+                .then(albaran => {
+                    const modal = document.getElementById('modalAlbaran');
+                    const content = document.getElementById('detalleAlbaranContent');
+                    const total = Number(albaran.total_compra ?? 0);
+                    const itemsHtml = albaran.items.map(item => `
+                        <tr>
+                            <td>${item.producto_id}</td>
+                            <td>${item.cantidad_ordenada}</td>
+                            <td>${item.cantidad_recibida}</td>
+                            <td>${item.cantidad_diferencia}</td>
+                        </tr>
+                    `).join('');
+                    content.innerHTML = `
+                        <div class="detail-section">
+                            <div class="detail-row">
+                                <div class="detail-field">
+                                    <label>Número Albarán:</label>
+                                    <value>${albaran.numero}</value>
+                                </div>
+                                <div class="detail-field">
+                                    <label>Número Compra:</label>
+                                    <value>${albaran.compra_numero}</value>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-field">
+                                    <label>Proveedor:</label>
+                                    <value>${albaran.proveedor_nombre}</value>
+                                </div>
+                                <div class="detail-field">
+                                    <label>Total Compra:</label>
+                                    <value>€${total.toFixed(2)}</value>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-field">
+                                    <label>Fecha Recepción:</label>
+                                    <value>${new Date(albaran.fecha_recepcion).toLocaleDateString('es-ES')}</value>
+                                </div>
+                                <div class="detail-field">
+                                    <label>Estado:</label>
+                                    <value><span class="badge badge-${albaran.estado === 'completo' ? 'success' : albaran.estado === 'parcial' ? 'warning' : 'danger'}">${albaran.estado}</span></value>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="detail-section">
+                            <h3>Items Recibidos</h3>
+                            <table class="items-table">
+                                <thead>
+                                    <tr>
+                                        <th>Producto ID</th>
+                                        <th>Ordenado</th>
+                                        <th>Recibido</th>
+                                        <th>Diferencia</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${itemsHtml}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                    modal.style.display = 'block';
+                })
+                .catch(err => showError('Error al cargar detalle: ' + err.message));
+        }
+
+        function cerrarModalAlbaran() {
+            document.getElementById('modalAlbaran').style.display = 'none';
+        }
+
+        // Cerrar modal al hacer clic fuera del contenido
+        window.onclick = function(event) {
+            let modal = document.getElementById('modalCompra');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+            modal = document.getElementById('modalAlbaran');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

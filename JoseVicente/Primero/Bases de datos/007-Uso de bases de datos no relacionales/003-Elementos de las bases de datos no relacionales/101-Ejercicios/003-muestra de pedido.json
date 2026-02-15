@@ -1,0 +1,17 @@
+{
+  "cliente":{
+    "nombre":"Jose Vicente",
+    "apellidos":"Carratala Sanchis",
+    "email":"info@jocarsa.com"
+  },
+  "pedido":{
+    "fecha":"2026-01-08",
+    "numero":"2026001"
+  },
+  "productos":[
+    {"nombre":"Camiseta","cantidad":3,"precio":43},
+    {"nombre":"Pantalon","cantidad":2,"precio":23},
+    {"nombre":"Calcetines","cantidad":3,"precio":33},
+    {"nombre":"Bufanda","cantidad":4,"precio":13}
+  ]
+}

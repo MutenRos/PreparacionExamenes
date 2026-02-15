@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# dario-server: start ERP server consistently on port 8001 using the primary venv
+set -euo pipefail
+
+HOST="0.0.0.0"
+PORT="8001"
+APP="dario_app.api:app"
+ROOT="/home/dario/src"
+# Prefer /home/dario/venv if present; fallback to /home/dario/.venv
+VENV_BASE="/home/dario/venv"
+if [ ! -d "$VENV_BASE" ]; then
+  VENV_BASE="/home/dario/.venv"
+fi
+
+start() {
+  echo "Starting OmniERP on http://$HOST:$PORT using venv: $VENV_BASE"
+  cd "$ROOT"
+  source "$VENV_BASE/bin/activate"
+  export PYTHONPATH="$ROOT"
+  exec python -m uvicorn "$APP" --host "$HOST" --port "$PORT" --reload
+}
+
+case "${1:-start}" in
+  start)
+    start
+    ;;
+  *)
+    echo "Usage: dario-server [start]" >&2
+    exit 2
+    ;;
+esac

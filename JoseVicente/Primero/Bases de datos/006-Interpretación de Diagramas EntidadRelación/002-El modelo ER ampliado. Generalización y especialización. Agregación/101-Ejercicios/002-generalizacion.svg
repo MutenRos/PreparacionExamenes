@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="559.6000269839636" height="230.93748393811669" viewBox="0 0 559.6000269839636 230.93748393811669">
+
+  <defs>
+    <style>
+      text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 12px; fill: #111827; }
+      .shape-rect { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-entity { fill: #ffffff; stroke: #111827; stroke-width: 2; }
+      .shape-circle { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-pill { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-db { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .conn { stroke: #111827; stroke-width: 2; fill: none; }
+    </style>
+    <marker id="arrow-end" markerWidth="10" markerHeight="7" refX="10" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#111827"/>
+    </marker>
+    <marker id="arrow-start" markerWidth="10" markerHeight="7" refX="0" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="10 0, 0 3.5, 10 7" fill="#111827"/>
+    </marker>
+  </defs>
+        
+<rect class="shape-entity" x="40" y="40.53749486019734" width="219.99999999999991" height="150.39998907791934" />
+<line x1="40" y1="66.93750481856495" x2="259.9999999999999" y2="66.93750481856495" stroke="#e5e7eb" stroke-width="1"/>
+<text x="149.99999999999994" y="58.53750610351561" text-anchor="middle">Alumno</text>
+<text x="123.89999871504935" y="86.93750963712992">id</text>
+<text x="123.89999871504935" y="110.93749076441712">nombre</text>
+<text x="123.89999871504935" y="134.93747791491052">apellidos</text>
+<text x="123.89999871504935" y="158.93747108861015">dni</text>
+<rect class="shape-entity" x="299.60002698396374" y="40" width="219.99999999999991" height="150.40000513980257" />
+<line x1="299.60002698396374" y1="66.40000795063217" x2="519.6000269839636" y2="66.40000795063217" stroke="#e5e7eb" stroke-width="1"/>
+<text x="409.6000269839637" y="58.000002208508924" text-anchor="middle">Profesor</text>
+<text x="383.49999357524666" y="86.40001477693255">id</text>
+<text x="383.49999357524666" y="110.39999590421975">nombre</text>
+<text x="383.49999357524666" y="134.39999610499328">apellidos</text>
+<text x="383.49999357524666" y="158.4000083521792">dni</text>
+</svg>

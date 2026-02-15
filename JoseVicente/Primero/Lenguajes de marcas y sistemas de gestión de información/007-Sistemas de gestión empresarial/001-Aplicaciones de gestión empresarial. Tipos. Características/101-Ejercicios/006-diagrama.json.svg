@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="559.5937347412107" height="348.7343851725259" viewBox="0 0 559.5937347412107 348.7343851725259">
+
+  <defs>
+    <style>
+      text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 12px; fill: #111827; }
+      .shape-rect { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-entity { fill: #ffffff; stroke: #111827; stroke-width: 2; }
+      .shape-circle { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-pill { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-db { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .conn { stroke: #111827; stroke-width: 2; fill: none; }
+    </style>
+    <marker id="arrow-end" markerWidth="10" markerHeight="7" refX="10" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#111827"/>
+    </marker>
+    <marker id="arrow-start" markerWidth="10" markerHeight="7" refX="0" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="10 0, 0 3.5, 10 7" fill="#111827"/>
+    </marker>
+  </defs>
+        
+<rect class="shape-rect" x="208.85938008626295" y="79.46873982747397" width="119.99999999999994" height="39.99999999999998" rx="4" ry="4" />
+<text x="268.85938008626295" y="103.46873982747395" text-anchor="middle">HTML</text>
+<rect class="shape-rect" x="208.34373474121082" y="40" width="120.00005086263015" height="39.99999999999998" rx="4" ry="4" />
+<text x="268.3437601725259" y="63.999999999999986" text-anchor="middle">CSS</text>
+<rect class="shape-rect" x="208.76564025878895" y="118.73435974121091" width="119.99999999999994" height="39.99999999999998" rx="4" ry="4" />
+<text x="268.76564025878895" y="142.7343597412109" text-anchor="middle">JS</text>
+<rect class="shape-rect" x="277.50002543131495" y="193.31250508626297" width="119.99999999999994" height="39.99999999999998" rx="4" ry="4" />
+<text x="337.50002543131495" y="217.31250508626297" text-anchor="middle">AI</text>
+<rect class="shape-rect" x="159.17188008626295" y="193.3281199137369" width="119.99999999999994" height="39.99999999999998" rx="4" ry="4" />
+<text x="219.17188008626292" y="217.3281199137369" text-anchor="middle">Controlador</text>
+<rect class="shape-rect" x="40" y="267.8906249999999" width="120.00002543131504" height="39.99999999999998" rx="4" ry="4" />
+<text x="100.00001271565752" y="291.8906249999999" text-anchor="middle">SQL</text>
+<rect class="shape-rect" x="160.000025431315" y="268.7187703450519" width="119.99999999999994" height="39.99999999999998" rx="4" ry="4" />
+<text x="220.00002543131498" y="292.7187703450519" text-anchor="middle">MongoDB</text>
+<rect class="shape-rect" x="279.60940043131495" y="268.3281453450519" width="119.99999999999994" height="39.99999999999998" rx="4" ry="4" />
+<text x="339.60940043131495" y="292.3281453450519" text-anchor="middle">ModelosIA</text>
+<rect class="shape-rect" x="399.59378560384096" y="268.7343851725259" width="119.99994913736973" height="39.99999999999998" rx="4" ry="4" />
+<text x="459.59376017252583" y="292.7343851725259" text-anchor="middle">RAG (Chroma)</text>
+<path class="conn" d="M 232.46890655545337 193.3281199137369 L 255.46861378959852 158.7343597412109" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 319.0671762757047 193.31250508626292 L 287.1984894143992 158.7343597412109" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 131.96564134702737 267.8906249999999 L 187.20625145489305 233.3281199137369" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 219.7803309890163 268.7187703450519 L 219.3915745285616 233.3281199137369" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 339.0470177087992 268.3281453450519 L 338.0624081538307 233.31250508626292" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 427.217549290069 268.7343851725259 L 369.87623631377176 233.31250508626292" marker-end="url(#arrow-end)" />
+</svg>

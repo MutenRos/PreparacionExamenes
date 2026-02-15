@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sprite Debug Tool</title>
+    <style>
+        body {
+            background: #222;
+            color: white;
+            font-family: monospace;
+            padding: 20px;
+        }
+        #sprite-container {
+            display: inline-block;
+            border: 2px solid #0f0;
+            position: relative;
+            margin: 20px;
+        }
+        #sprite-img {
+            display: block;
+            image-rendering: pixelated;
+        }
+        #selection {
+            position: absolute;
+            border: 2px solid red;
+            pointer-events: none;
+            box-shadow: 0 0 10px red;
+        }
+        #preview {
+            display: inline-block;
+            vertical-align: top;
+            margin: 20px;
+            padding: 20px;
+            background: #333;
+            border: 2px solid #555;
+        }
+        #preview-sprite {
+            width: 64px;
+            height: 88px;
+            background-image: url('sprites/Kyle, Stan, Cartman & Kenny.png');
+            background-repeat: no-repeat;
+            image-rendering: pixelated;
+            border: 2px solid #0f0;
+            margin-bottom: 10px;
+        }
+        .control {
+            margin: 10px 0;
+        }
+        input[type="number"] {
+            width: 60px;
+            background: #444;
+            color: white;
+            border: 1px solid #666;
+            padding: 4px;
+        }
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+        #coords {
+            font-size: 14px;
+            color: #0f0;
+            margin-top: 20px;
+        }
+        #css-output {
+            background: #000;
+            padding: 10px;
+            margin-top: 20px;
+            white-space: pre;
+            font-size: 12px;
+            color: #0f0;
+        }
+        h2 { color: #f80; }
+        .character-btn {
+            padding: 8px 16px;
+            margin: 4px;
+            background: #444;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .character-btn:hover { background: #666; }
+        .character-btn.active { background: #080; }
+    </style>
+</head>
+<body>
+    <h1>🎮 South Park GBC Sprite Debug Tool</h1>
+    
+    <div>
+        <button class="character-btn" onclick="selectChar('stan')">Stan</button>
+        <button class="character-btn" onclick="selectChar('kyle')">Kyle</button>
+        <button class="character-btn" onclick="selectChar('cartman')">Cartman</button>
+        <button class="character-btn" onclick="selectChar('kenny')">Kenny</button>
+    </div>
+
+    <div id="sprite-container">
+        <img id="sprite-img" src="sprites/Kyle, Stan, Cartman & Kenny.png">
+        <div id="selection"></div>
+    </div>
+
+    <div id="preview">
+        <h2>Preview (4x scale)</h2>
+        <div id="preview-sprite"></div>
+        
+        <div class="control">
+            <label>X:</label>
+            <input type="number" id="x" value="0" onchange="updatePreview()">
+        </div>
+        <div class="control">
+            <label>Y:</label>
+            <input type="number" id="y" value="0" onchange="updatePreview()">
+        </div>
+        <div class="control">
+            <label>Width:</label>
+            <input type="number" id="w" value="16" onchange="updatePreview()">
+        </div>
+        <div class="control">
+            <label>Height:</label>
+            <input type="number" id="h" value="22" onchange="updatePreview()">
+        </div>
+
+        <div id="coords">Click on sprite to set position</div>
+        
+        <div id="css-output"></div>
+    </div>
+
+    <h2>Quick Reference - Found Positions:</h2>
+    <div id="found-positions"></div>
+
+    <script>
+        let currentChar = 'stan';
+        const positions = {
+            stan: { x: 0, y: 0 },
+            kyle: { x: 0, y: 0 },
+            cartman: { x: 0, y: 0 },
+            kenny: { x: 0, y: 0 }
+        };
+
+        const img = document.getElementById('sprite-img');
+        const selection = document.getElementById('selection');
+        const preview = document.getElementById('preview-sprite');
+
+        function selectChar(name) {
+            currentChar = name;
+            document.querySelectorAll('.character-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById('x').value = positions[name].x;
+            document.getElementById('y').value = positions[name].y;
+            updatePreview();
+        }
+
+        img.addEventListener('click', (e) => {
+            const rect = img.getBoundingClientRect();
+            const x = Math.floor(e.clientX - rect.left);
+            const y = Math.floor(e.clientY - rect.top);
+            
+            document.getElementById('x').value = x;
+            document.getElementById('y').value = y;
+            positions[currentChar] = { x, y };
+            
+            updatePreview();
+        });
+
+        function updatePreview() {
+            const x = parseInt(document.getElementById('x').value) || 0;
+            const y = parseInt(document.getElementById('y').value) || 0;
+            const w = parseInt(document.getElementById('w').value) || 16;
+            const h = parseInt(document.getElementById('h').value) || 22;
+
+            // Update selection box
+            selection.style.left = x + 'px';
+            selection.style.top = y + 'px';
+            selection.style.width = w + 'px';
+            selection.style.height = h + 'px';
+
+            // Update preview
+            preview.style.width = (w * 4) + 'px';
+            preview.style.height = (h * 4) + 'px';
+            preview.style.backgroundPosition = `-${x * 4}px -${y * 4}px`;
+            preview.style.backgroundSize = `${img.naturalWidth * 4}px ${img.naturalHeight * 4}px`;
+
+            // Update coords display
+            document.getElementById('coords').innerHTML = `
+                Position: X=${x}, Y=${y}<br>
+                Size: ${w}x${h}<br>
+                CSS: background-position: -${x}px -${y}px;
+            `;
+
+            // Generate CSS
+            positions[currentChar] = { x, y };
+            generateCSS();
+        }
+
+        function generateCSS() {
+            const w = parseInt(document.getElementById('w').value) || 16;
+            const h = parseInt(document.getElementById('h').value) || 22;
+            
+            let css = `/* Sprite size: ${w}x${h} */\n\n`;
+            
+            for (const [name, pos] of Object.entries(positions)) {
+                if (pos.x || pos.y) {
+                    css += `.char-${name} { background-position: -${pos.x}px -${pos.y}px; }\n`;
+                }
+            }
+            
+            document.getElementById('css-output').textContent = css;
+            
+            // Update found positions
+            let found = '';
+            for (const [name, pos] of Object.entries(positions)) {
+                if (pos.x || pos.y) {
+                    found += `<b>${name}:</b> X=${pos.x}, Y=${pos.y}<br>`;
+                }
+            }
+            document.getElementById('found-positions').innerHTML = found || 'Click on sprite for each character';
+        }
+
+        // Init
+        selectChar('stan');
+    </script>
+</body>
+</html>

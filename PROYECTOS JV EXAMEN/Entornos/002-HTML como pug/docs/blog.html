@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blog — Jose Vicente Carratalá</title>
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+<body class="flex fd-column fj-center fa-center b-lightgrey ff-sans-serif p-20">
+
+  <header class="w-800 b-white p-20 ta-center flex fd-column g-20">
+    <h1 class="p-0 m-0 fs-36">Jose Vicente Carratala</h1>
+    <h2 class="p-0 m-0 fs-16">Desarrollador, profesor y diseñador</h2>
+    <nav class="flex g-1 fa-center fj-center">
+      <a href="index.html" class="b-lightgray p-10 c-black td-none fs-10 w-70">Inicio</a>
+      <a href="pagina.html?p=Servicios" class="b-lightgray p-10 c-black td-none fs-10 w-70">Servicios</a>
+      <a href="pagina.html?p=Proyectos" class="b-lightgray p-10 c-black td-none fs-10 w-70">Proyectos</a>
+      <a href="pagina.html?p=Contacto" class="b-lightgray p-10 c-black td-none fs-10 w-70">Contacto</a>
+      <a href="blog.html" class="b-lightgray p-10 c-black td-none fs-10 w-70">Blog</a>
+    </nav>
+  </header>
+
+  <main class="w-800 b-white p-20 flex fd-column g-20">
+    <!-- Blog: replica la sección @if $p === "blog" de miweb.jvpug -->
+    <section class="grid gc-3 g-20">
+      <article>
+        <h3>Introducción a JVpug</h3>
+        <time>2025-01-15</time>
+        <p>Hoy presento mi motor de plantillas JVpug, una alternativa ligera a Pug implementada en PHP puro. La idea es simplificar la escritura de HTML usando indentación.</p>
+      </article>
+      <article>
+        <h3>JVestilo: CSS utility-first</h3>
+        <time>2025-01-22</time>
+        <p>He creado un framework CSS que genera miles de clases utilitarias de forma dinámica con PHP. Similar a Tailwind pero sin necesidad de Node.js ni build tools.</p>
+      </article>
+      <article>
+        <h3>Conectando JVpug con MySQL</h3>
+        <time>2025-02-01</time>
+        <p>En esta entrada explico cómo he conectado el motor de plantillas con una base de datos MySQL para generar páginas dinámicas y un blog completo.</p>
+      </article>
+      <article>
+        <h3>Directivas @if y @foreach</h3>
+        <time>2025-02-08</time>
+        <p>Las directivas permiten lógica condicional y bucles dentro de las plantillas JVpug, haciendo posible iterar sobre arrays y mostrar contenido dinámico.</p>
+      </article>
+      <article>
+        <h3>Interpolación segura</h3>
+        <time>2025-02-15</time>
+        <p>JVpug soporta dos tipos de interpolación: #{expr} con escape HTML automático para seguridad, y !{expr} sin escape para contenido HTML de confianza.</p>
+      </article>
+      <article>
+        <h3>Deploy y conclusiones</h3>
+        <time>2025-02-22</time>
+        <p>Repaso final del proyecto, lecciones aprendidas y posibles mejoras futuras como soporte para mixins, herencia de layouts y compilación a archivos estáticos.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="w-800 b-white p-20 ta-center">
+    <p>© 2025 Jose Vicente Carratalá — Todos los derechos reservados</p>
+  </footer>
+
+</body>
+</html>

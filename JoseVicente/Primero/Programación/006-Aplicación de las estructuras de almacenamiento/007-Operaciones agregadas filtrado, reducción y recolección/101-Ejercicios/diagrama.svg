@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="391.17897620567896" height="256.2215599646934" viewBox="0 0 391.17897620567896 256.2215599646934">
+
+  <defs>
+    <style>
+      text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 12px; fill: #111827; }
+      .shape-rect { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-entity { fill: #ffffff; stroke: #111827; stroke-width: 2; }
+      .shape-circle { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-pill { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-db { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .conn { stroke: #111827; stroke-width: 2; fill: none; }
+    </style>
+    <marker id="arrow-end" markerWidth="10" markerHeight="7" refX="10" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#111827"/>
+    </marker>
+    <marker id="arrow-start" markerWidth="10" markerHeight="7" refX="0" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="10 0, 0 3.5, 10 7" fill="#111827"/>
+    </marker>
+  </defs>
+        
+<rect class="shape-rect" x="140.07102379432092" y="176.22159517728358" width="119.99997652493984" height="39.99996478740984" rx="4" ry="4" />
+<text x="200.07101205679083" y="200.2215775709885" text-anchor="middle">python</text>
+<rect class="shape-rect" x="139.6874647874098" y="136.10794067382807" width="120.00002347506003" height="39.99998532808742" rx="4" ry="4" />
+<text x="199.68747652493983" y="160.10793333787177" text-anchor="middle">flask</text>
+<rect class="shape-rect" x="40" y="40" width="119.99997652493984" height="39.99998532808742" rx="4" ry="4" />
+<text x="99.99998826246991" y="63.99999266404371" text-anchor="middle">index.html</text>
+<rect class="shape-rect" x="231.1789527306189" y="41.761357234074524" width="120.00002347506003" height="39.99998532808742" rx="4" ry="4" />
+<text x="291.17896446814893" y="65.76134989811823" text-anchor="middle">json(api)</text>
+<path class="conn" d="M 178.94258260704032 136.10794067382807 L 120.74488218036942 79.9999853280874" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 219.08223382269705 136.10794067382807 L 271.7842071703917 81.76134256216193" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 231.1789527306189 61.20856184152376 L 159.99997652493983 60.552780504359305" marker-end="url(#arrow-end)" />
+</svg>

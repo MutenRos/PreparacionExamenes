@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body> 
+    <p></p>
+    <p></p>
+    <p></p>
+    <script>
+      // Primero seleccionamos varios elementos
+      var elementos = document.querySelectorAll("p");
+      // Seleccionamos uno a uno
+      elementos.forEach(function(elemento){
+        // Uno a uno operamos
+        elemento.textContent = "Hola mundo desde Javascript"
+      })
+    </script>
+  </body>
+</html>

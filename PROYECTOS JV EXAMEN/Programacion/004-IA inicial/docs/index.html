@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>jocarsa | microchat — IA Inicial con Ollama</title>
+  <meta name="description" content="MicroChat: aplicación web PHP conectada a un modelo de IA local con Ollama. Proyecto de 12 ejercicios progresivos.">
+  <style>
+    :root{
+      --bg: #eef1f4;
+      --card: #ffffff;
+      --ink: #111827;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --soft: #f3f4f6;
+      --shadow: 0 18px 50px rgba(0,0,0,.12);
+      --shadow-soft: 0 10px 25px rgba(0,0,0,.08);
+      --radius: 22px;
+      --accent: #4f46e5;
+    }
+
+    *{ box-sizing:border-box; }
+
+    html,body{
+      width:100%;height:100%;margin:0;padding:0;
+      font-family: Ubuntu, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(255,255,255,.7), transparent 60%),
+        radial-gradient(900px 500px at 90% 30%, rgba(255,255,255,.55), transparent 55%),
+        var(--bg);
+    }
+
+    body{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      gap:20px;
+    }
+
+    /* ===== HERO / LANDING ===== */
+    .hero{
+      text-align:center;
+      max-width:600px;
+    }
+    .hero h1{
+      font-size:32px;
+      font-weight:800;
+      margin:0 0 8px;
+      letter-spacing:-.5px;
+    }
+    .hero h1 span{ color:var(--accent); }
+    .hero p{
+      font-size:15px;
+      color:var(--muted);
+      line-height:1.5;
+      margin:0 0 16px;
+    }
+    .hero .badges{
+      display:flex;
+      gap:8px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .heroBadge{
+      font-size:11px;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid rgba(0,0,0,.08);
+      background:var(--soft);
+      color:var(--muted);
+      font-weight:600;
+    }
+    .linkRepo{
+      font-size:13px;
+      color:var(--accent);
+      text-decoration:none;
+      font-weight:600;
+    }
+    .linkRepo:hover{ text-decoration:underline; }
+
+    /* ===== CHAT CARD ===== */
+    section{
+      width:min(560px, 100%);
+      background:var(--card);
+      border:1px solid rgba(0,0,0,.06);
+      border-radius: calc(var(--radius) + 6px);
+      box-shadow: var(--shadow);
+      padding:22px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      overflow:hidden;
+    }
+
+    .titleWrap{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding-bottom:10px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .titleWrap h2{
+      margin:0;font-size:18px;letter-spacing:.2px;font-weight:700;line-height:1.2;
+    }
+
+    .badge{
+      font-size:12px;color:var(--muted);background:var(--soft);border:1px solid rgba(0,0,0,.05);
+      padding:6px 10px;border-radius:999px;white-space:nowrap;
+    }
+
+    .messages{
+      display:flex;flex-direction:column;gap:12px;padding:6px 2px;
+      max-height:420px;overflow:auto;
+    }
+
+    .bubble{
+      width:fit-content;max-width:86%;padding:12px 14px;
+      background:var(--soft);border:1px solid rgba(0,0,0,.06);
+      border-radius:16px;box-shadow:var(--shadow-soft);
+      line-height:1.35;font-size:14px;white-space:pre-wrap;word-break:break-word;
+    }
+
+    .bubble.user{
+      align-self:flex-start;border-top-left-radius:8px;
+      background:rgba(79,70,229,.08);border-color:rgba(79,70,229,.15);
+    }
+
+    .bubble.bot{
+      align-self:flex-end;border-top-right-radius:8px;
+      animation: fadeIn .4s ease-out;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(6px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+
+    .inputArea{
+      padding-top:12px;border-top:1px solid var(--line);
+    }
+
+    .inputArea input{
+      width:100%;padding:12px 14px;border-radius:999px;
+      border:1px solid var(--line);background:#fff;outline:none;font-size:14px;
+      box-shadow:0 1px 0 rgba(0,0,0,.02);
+      transition:border-color .2s ease,box-shadow .2s ease;
+    }
+
+    .inputArea input::placeholder{color:#9ca3af;}
+
+    .inputArea input:focus{
+      border-color:rgba(79,70,229,.45);
+      box-shadow:0 0 0 4px rgba(79,70,229,.10);
+    }
+
+    .charCount{text-align:right;font-size:11px;color:var(--muted);padding:4px 14px 0;transition:color .2s;}
+    .charCount.warn{color:#ef4444;}
+
+    /* ===== PROGRESSION TIMELINE ===== */
+    .timeline{
+      width:min(560px,100%);background:var(--card);border:1px solid rgba(0,0,0,.06);
+      border-radius:calc(var(--radius)+6px);box-shadow:var(--shadow);padding:22px;
+    }
+    .timeline h2{margin:0 0 14px;font-size:16px;font-weight:700;}
+    .timeItem{
+      display:flex;align-items:flex-start;gap:12px;padding:8px 0;
+      border-bottom:1px solid rgba(0,0,0,.04);font-size:13px;
+    }
+    .timeItem:last-child{border-bottom:none;}
+    .timeNum{
+      width:28px;height:28px;border-radius:50%;background:var(--soft);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:800;font-size:11px;color:var(--muted);flex:0 0 auto;
+      border:1px solid rgba(0,0,0,.06);
+    }
+    .timeNum.active{background:rgba(79,70,229,.12);color:var(--accent);border-color:rgba(79,70,229,.2);}
+    .timeTxt{flex:1;line-height:1.4;}
+    .timeTxt strong{font-weight:700;}
+    .timeTxt .desc{color:var(--muted);font-size:12px;}
+
+    /* ===== DARK MODE ===== */
+    @media(prefers-color-scheme:dark){
+      :root{
+        --bg:#0f1117;--card:#1a1d27;--ink:#e5e7eb;--muted:#9ca3af;
+        --line:#2d3140;--soft:#23262f;--accent:#818cf8;
+      }
+      .inputArea input{background:var(--soft);color:var(--ink);border-color:var(--line);}
+      .inputArea input::placeholder{color:var(--muted);}
+      .bubble.user{background:rgba(129,140,248,.1);border-color:rgba(129,140,248,.18);}
+    }
+
+    @media(max-width:520px){
+      section,.timeline{padding:18px;}
+      .bubble{max-width:92%;}
+      .hero h1{font-size:24px;}
+    }
+
+    .messages::-webkit-scrollbar{width:10px;}
+    .messages::-webkit-scrollbar-thumb{
+      background:rgba(0,0,0,.10);border-radius:999px;border:3px solid transparent;background-clip:content-box;
+    }
+
+    footer{font-size:11px;color:var(--muted);text-align:center;padding:8px;}
+    footer a{color:var(--accent);text-decoration:none;}
+    footer a:hover{text-decoration:underline;}
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>jocarsa | <span>microchat</span></h1>
+    <p>Aplicación web PHP conectada a un modelo de IA local con Ollama.<br>
+    12 ejercicios progresivos: de texto plano a chat con spinner, sesiones, modo oscuro y accesibilidad.</p>
+    <div class="badges">
+      <span class="heroBadge">PHP 8+</span>
+      <span class="heroBadge">Ollama API</span>
+      <span class="heroBadge">cURL</span>
+      <span class="heroBadge">Sessions</span>
+      <span class="heroBadge">CSS Variables</span>
+      <span class="heroBadge">Dark Mode</span>
+      <span class="heroBadge">ARIA</span>
+    </div>
+    <a class="linkRepo" href="https://github.com/MutenRos/Programacion-004-IA-inicial" target="_blank" rel="noopener">Ver repositorio en GitHub →</a>
+  </div>
+
+  <!-- CHAT SIMULATION -->
+  <section>
+    <div class="titleWrap">
+      <h2>jocarsa | microchat</h2>
+      <span class="badge">local · demo</span>
+    </div>
+
+    <div class="messages" id="messages">
+      <!-- Conversation will be populated by JS -->
+    </div>
+
+    <div class="inputArea">
+      <input id="promptInput" type="text" placeholder="Escribe una pregunta sobre programación y pulsa Enter…" autocomplete="off" maxlength="500" aria-label="Escribe tu pregunta sobre programación">
+      <div class="charCount" id="charCount">0 / 500</div>
+    </div>
+  </section>
+
+  <!-- EXERCISE TIMELINE -->
+  <div class="timeline">
+    <h2>Progresión de ejercicios</h2>
+    <div class="timeItem"><div class="timeNum">01</div><div class="timeTxt"><strong>Comenzar con IA</strong><div class="desc">Instalación de Ollama y descarga de modelos locales (qwen2.5, llama3, deepseek)</div></div></div>
+    <div class="timeItem"><div class="timeNum">02</div><div class="timeTxt"><strong>Ollama lanza HTML</strong><div class="desc">Primera llamada cURL desde PHP — respuesta en texto plano</div></div></div>
+    <div class="timeItem"><div class="timeNum">03</div><div class="timeTxt"><strong>Ollama con estilo</strong><div class="desc">Respuesta dentro de una caja HTML con CSS básico</div></div></div>
+    <div class="timeItem"><div class="timeNum">04</div><div class="timeTxt"><strong>Creador web</strong><div class="desc">La IA genera una página web completa a partir de un prompt</div></div></div>
+    <div class="timeItem"><div class="timeNum">05</div><div class="timeTxt"><strong>Potencia de modelos</strong><div class="desc">Teoría: factores que determinan la calidad de un modelo de IA</div></div></div>
+    <div class="timeItem"><div class="timeNum">06</div><div class="timeTxt"><strong>Creador web mejorado</strong><div class="desc">Prompt detallado: persona concreta, grid CSS, color corporativo</div></div></div>
+    <div class="timeItem"><div class="timeNum">07</div><div class="timeTxt"><strong>Citas inspiradoras</strong><div class="desc">IA genera cita + color CSS según el sentimiento de la frase</div></div></div>
+    <div class="timeItem"><div class="timeNum">08</div><div class="timeTxt"><strong>Microchat (maqueta)</strong><div class="desc">Interfaz de chat con burbujas — sin conexión a IA (solo form POST)</div></div></div>
+    <div class="timeItem"><div class="timeNum">09</div><div class="timeTxt"><strong>Microchat funcional</strong><div class="desc">Chat conectado a Ollama + sanitización de entrada con htmlspecialchars</div></div></div>
+    <div class="timeItem"><div class="timeNum">10</div><div class="timeTxt"><strong>Prompt personalizado</strong><div class="desc">Restricciones: solo programación, solo español, sin código</div></div></div>
+    <div class="timeItem"><div class="timeNum">11</div><div class="timeTxt"><strong>Spinner de carga</strong><div class="desc">Sesiones PHP + meta-refresh + ob_flush para mostrar spinner</div></div></div>
+    <div class="timeItem"><div class="timeNum active">12</div><div class="timeTxt"><strong>Mejoras de estilo</strong><div class="desc">CSS custom properties, dark mode, fadeIn, validación, accesibilidad ARIA</div></div></div>
+  </div>
+
+  <footer>
+    IA Inicial con Ollama · 12 ejercicios · PHP + cURL + CSS + JS ·
+    <a href="https://github.com/MutenRos/Programacion-004-IA-inicial" target="_blank" rel="noopener">GitHub</a>
+  </footer>
+
+  <script>
+    // Simulated conversation (hardcoded answers that mimic Ollama responses)
+    var conversation = [
+      {
+        q: "¿Qué es PHP?",
+        a: "PHP es un lenguaje de programación de código abierto especialmente diseñado para el desarrollo web del lado del servidor. Su nombre es un acrónimo recursivo que significa \"PHP: Hypertext Preprocessor\". Se ejecuta en el servidor, genera HTML dinámico y se integra fácilmente con bases de datos como MySQL. Es uno de los lenguajes más utilizados en la web, siendo la base de plataformas como WordPress, Laravel y muchas otras aplicaciones web modernas."
+      },
+      {
+        q: "¿Cómo funciona cURL en PHP?",
+        a: "cURL en PHP es una biblioteca que permite hacer peticiones HTTP desde el servidor. Se inicializa con curl_init() pasando la URL de destino, se configuran las opciones con curl_setopt_array() (como el método POST, las cabeceras y el cuerpo de la petición en JSON), se ejecuta con curl_exec() y se cierra con curl_close(). Es la herramienta fundamental para comunicarse con APIs externas, como en este proyecto donde se usa para enviar prompts al servidor Ollama y recibir las respuestas del modelo de IA."
+      },
+      {
+        q: "¿Qué son las sesiones en PHP?",
+        a: "Las sesiones en PHP son un mecanismo que permite almacenar datos del usuario entre diferentes peticiones HTTP. Se inician con session_start() y se accede a los datos mediante el array superglobal $_SESSION. En este proyecto se usan para guardar la última pregunta del usuario y la respuesta de Ollama, permitiendo que el spinner se muestre mientras se procesa la petición y luego se reemplace por la respuesta real cuando el meta-refresh recarga la página."
+      },
+      {
+        q: "¿Qué es Ollama?",
+        a: "Ollama es una plataforma de código abierto que permite ejecutar modelos de inteligencia artificial de forma local en tu propio ordenador, sin necesidad de conexión a la nube ni de pagar por APIs externas. Soporta modelos como Qwen, Llama, DeepSeek y muchos otros. Expone una API REST en localhost:11434 que acepta peticiones HTTP con prompts en JSON y devuelve las respuestas del modelo, lo que facilita su integración con cualquier lenguaje de programación."
+      },
+      {
+        q: "¿Para qué sirve htmlspecialchars?",
+        a: "La función htmlspecialchars() en PHP convierte caracteres especiales de HTML como <, >, \", ' y & en sus entidades HTML equivalentes (&lt;, &gt;, &quot;, etc.). Su propósito principal es prevenir ataques de cross-site scripting (XSS), que ocurren cuando un atacante inyecta código JavaScript malicioso a través de campos de formulario. Al escapar estos caracteres antes de mostrarlos en la página, nos aseguramos de que se rendericen como texto plano y no como código ejecutable."
+      }
+    ];
+
+    var msgContainer = document.getElementById('messages');
+    var input = document.getElementById('promptInput');
+    var charCount = document.getElementById('charCount');
+    var convIdx = 0;
+
+    function addBubble(text, cls) {
+      var p = document.createElement('p');
+      p.className = 'bubble ' + cls;
+      p.textContent = text;
+      msgContainer.appendChild(p);
+      msgContainer.scrollTop = msgContainer.scrollHeight;
+    }
+
+    function showSpinner() {
+      var p = document.createElement('p');
+      p.className = 'bubble bot';
+      p.id = 'spinnerBubble';
+      p.innerHTML = '<span style="display:inline-block;width:16px;height:16px;border-radius:50%;border:3px solid rgba(0,0,0,.12);border-top-color:rgba(0,0,0,.55);animation:spin .8s linear infinite;"></span> <span style="opacity:.7;font-size:13px;">Pensando…</span>';
+      msgContainer.appendChild(p);
+      msgContainer.scrollTop = msgContainer.scrollHeight;
+    }
+
+    function removeSpinner() {
+      var s = document.getElementById('spinnerBubble');
+      if (s) s.remove();
+    }
+
+    // Simulate typing on Enter
+    input.addEventListener('keydown', function(e) {
+      if (e.key !== 'Enter') return;
+      e.preventDefault();
+      var text = input.value.trim();
+      if (!text) return;
+
+      // Use hardcoded conversation or generic fallback
+      var entry = conversation[convIdx % conversation.length];
+      addBubble(entry.q, 'user');
+      input.value = '';
+      charCount.textContent = '0 / 500';
+
+      showSpinner();
+
+      // Simulate Ollama delay
+      setTimeout(function() {
+        removeSpinner();
+        addBubble(entry.a, 'bot');
+        convIdx++;
+      }, 1200 + Math.random() * 800);
+    });
+
+    // Character counter
+    input.addEventListener('input', function() {
+      var len = this.value.length;
+      charCount.textContent = len + ' / 500';
+      charCount.classList.toggle('warn', len > 450);
+    });
+
+    // Auto-start first conversation entry on load
+    setTimeout(function() {
+      if (conversation.length > 0) {
+        var first = conversation[0];
+        addBubble(first.q, 'user');
+        showSpinner();
+        setTimeout(function() {
+          removeSpinner();
+          addBubble(first.a, 'bot');
+          convIdx = 1;
+          input.focus();
+        }, 1500);
+      }
+    }, 600);
+  </script>
+</body>
+</html>

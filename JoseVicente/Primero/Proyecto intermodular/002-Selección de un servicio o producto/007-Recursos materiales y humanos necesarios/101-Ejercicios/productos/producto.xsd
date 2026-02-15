@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+
+  <!-- =========================================================
+       ROOT
+       ========================================================= -->
+  <xs:element name="productPage" type="ProductPageType"/>
+
+  <xs:complexType name="ProductPageType">
+    <xs:sequence>
+      <xs:element name="meta" type="MetaType"/>
+      <xs:element name="hero" type="HeroType"/>
+      <xs:element name="problem" type="TitledItemsWithMediaType"/>
+      <xs:element name="solution" type="SolutionWithMediaType"/>
+      <xs:element name="keyFeatures" type="KeyFeaturesWithMediaType"/>
+      <xs:element name="targetAudience" type="TargetAudienceWithMediaType"/>
+      <xs:element name="useCases" type="UseCasesWithMediaType"/>
+      <xs:element name="benefits" type="TitledItemsWithMediaType"/>
+      <xs:element name="integrations" type="IntegrationsWithMediaType" minOccurs="0"/>
+      <xs:element name="trust" type="TrustWithMediaType"/>
+      <xs:element name="finalCTA" type="FinalCTAWithMediaType"/>
+      <xs:element name="faq" type="FAQWithMediaType"/>
+      <xs:element name="footer" type="FooterType"/>
+    </xs:sequence>
+
+    <xs:attribute name="lang" type="xs:language" use="required"/>
+    <xs:attribute name="type" type="xs:string" use="required"/>
+    <xs:attribute name="version" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- =========================================================
+       MEDIA
+       ========================================================= -->
+  <xs:complexType name="MediaType">
+    <xs:sequence>
+      <xs:element name="image" type="ImageType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ImageType">
+    <xs:attribute name="src" type="xs:anyURI" use="required"/>
+    <xs:attribute name="alt" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <!-- =========================================================
+       META
+       ========================================================= -->
+  <xs:complexType name="MetaType">
+    <xs:sequence>
+      <xs:element name="slug" type="xs:string"/>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="category" type="xs:string"/>
+      <xs:element name="audience" type="AudienceType" minOccurs="0"/>
+      <xs:element name="ctaPrimary" type="xs:string" minOccurs="0"/>
+      <xs:element name="ctaSecondary" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="AudienceType">
+    <xs:sequence>
+      <xs:element name="segment" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- =========================================================
+       HERO (con media opcional)
+       ========================================================= -->
+  <xs:complexType name="HeroType">
+    <xs:sequence>
+      <xs:element name="media" type="MediaType" minOccurs="0"/>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="valueProposition" type="xs:string"/>
+      <xs:element name="subtitle" type="xs:string" minOccurs="0"/>
+      <xs:element name="badges" type="BadgesType" minOccurs="0"/>
+      <xs:element name="actions" type="ActionsType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="BadgesType">
+    <xs:sequence>
+      <xs:element name="badge" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ActionsType">
+    <xs:sequence>
+      <xs:element name="action" type="ActionType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ActionType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="type" use="optional">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="primary"/>
+              <xs:enumeration value="secondary"/>
+              <xs:enumeration value="tertiary"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- =========================================================
+       GENERIC: media + <title> + <items><item/></items>
+       ========================================================= -->
+  <xs:complexType name="TitledItemsWithMediaType">
+    <xs:sequence>
+      <xs:element name="media" type="MediaType" minOccurs="0"/>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="items" type="ItemsType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ItemsType">
+    <xs:sequence>
+      <xs:element name="item" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- =========================================================
+       SOLUTION + media
+       ========================================================= -->
+  <xs:complexType name="SolutionWithMediaType">
+    <xs:sequence>
+      <xs:element name="media" type="MediaType" minOccurs="0"/>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="overview" type="xs:string"/>
+      <xs:element name="whatChanges" type="WhatChangesType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="WhatChangesType">
+    <xs:sequence>
+      <xs:element name="change" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- =========================================================
+       KEY FEATURES + media
+       ========================================================= -->
+  <xs:complexType name="KeyFeaturesWithMediaType">
+    <xs:sequence>
+      <xs:element name="media" type="MediaType" minOccurs="0"/>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="feature" type="FeatureType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="FeatureType">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="benefit" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- =========================================================
+       TARGET AUDIENCE + media
+       ========================================================= -->
+  <xs:complexType name="TargetAudienceWithMediaType">
+    <xs:sequence>
+      <xs:element name="media" type="MediaType" minOccurs="0"/>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="profiles" type="ProfilesType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ProfilesType">
+    <xs:sequence>
+      <xs:element name="profile" type="ProfileType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ProfileType">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="fit" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- =========================================================
+       USE CASES + media
+       ========================================================= -->
+  <xs:complexType name="UseCasesWithMediaType">
+    <xs:sequence>
+      <xs:element name="media" type="MediaType" minOccurs="0"/>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="case" type="UseCaseType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="UseCaseType">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="description" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- =========================================================
+       INTEGRATIONS + media
+       ========================================================= -->
+  <xs:complexType name="IntegrationsWithMediaType">
+    <xs:sequence>
+      <xs:element name="media" type="MediaType" minOccurs="0"/>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="notes" type="xs:string" minOccurs="0"/>
+      <xs:element name="items" type="ItemsType"/>
+    </xs:sequence>
+
+    <xs:attribute name="optional" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="true"/>
+          <xs:enumeration value="false"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!-- =========================================================
+       TRUST + media
+       ========================================================= -->
+  <xs:complexType name="TrustWithMediaType">
+    <xs:sequence>
+      <xs:element name="media" type="MediaType" minOccurs="0"/>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="points" type="PointsType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PointsType">
+    <xs:sequence>
+      <xs:element name="point" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- =========================================================
+       FINAL CTA + media
+       ========================================================= -->
+  <xs:complexType name="FinalCTAWithMediaType">
+    <xs:sequence>
+      <xs:element name="media" type="MediaType" minOccurs="0"/>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="actions" type="ActionsType" minOccurs="0"/>
+      <xs:element name="contact" type="ContactType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ContactType">
+    <xs:sequence>
+      <xs:element name="email" type="xs:string" minOccurs="0"/>
+      <xs:element name="form" type="FormType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="FormType">
+    <xs:sequence>
+      <xs:element name="field" type="FieldType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="FieldType">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="type" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="text"/>
+          <xs:enumeration value="email"/>
+          <xs:enumeration value="tel"/>
+          <xs:enumeration value="textarea"/>
+          <xs:enumeration value="number"/>
+          <xs:enumeration value="select"/>
+          <xs:enumeration value="checkbox"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="required" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="true"/>
+          <xs:enumeration value="false"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!-- =========================================================
+       FAQ + media
+       ========================================================= -->
+  <xs:complexType name="FAQWithMediaType">
+    <xs:sequence>
+      <xs:element name="media" type="MediaType" minOccurs="0"/>
+      <xs:element name="title" type="xs:string"/>
+      <xs:element name="qa" type="QAType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="QAType">
+    <xs:sequence>
+      <xs:element name="q" type="xs:string"/>
+      <xs:element name="a" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- =========================================================
+       FOOTER
+       ========================================================= -->
+  <xs:complexType name="FooterType">
+    <xs:sequence>
+      <xs:element name="summary" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+

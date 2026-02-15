@@ -1,0 +1,12 @@
+{
+  "categorias":[
+    "Empresa",
+    "Educación",
+    "Facturación"
+  ],
+  "enlaces":[
+    {"nombre":"cookies","enlace":"https://jocarsa.com/cookies"},
+    {"nombre":"política de privacidad","enlace":"https://jocarsa.com/cookies"},
+    {"nombre":"términos de uso","enlace":"https://jocarsa.com/cookies"}
+  ]
+}

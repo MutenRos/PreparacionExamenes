@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Tienda online</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/estilo.css">
+  </head>
+  <body>
+    <header>
+      <a href="index.html"><h1>Tienda online</h1></a>
+      <div class="header-actions">
+        <a class="carrito-link" href="carrito.html">
+          Carrito
+          <span class="badge">3</span>
+        </a>
+      </div>
+    </header>
+    <main>
+      <section class="producto">
+        <div class="izquierda">
+          <img src="img/producto.webp" alt="Camiseta Azul">
+          <p>Indica cuantas unidades quieres</p>
+          <form action="carrito.html" method="GET">
+            <input type="number" name="unidades" value="1" min="1" max="100" step="1" required>
+            <input type="submit" value="🛍 Comprar">
+          </form>
+        </div>
+        <div class="derecha">
+          <h3>Camiseta Azul</h3>
+          <p>Camiseta de algodón talla M</p>
+          <p>19,99€</p>
+        </div>
+      </section>
+    </main>
+    <footer>
+      (c) Jose Vicente Carratala
+    </footer>
+  </body>
+</html>

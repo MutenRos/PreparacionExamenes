@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logística y Envíos - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <link rel="stylesheet" href="/static/css/tutorial.css">
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; background: var(--bg-secondary); }
+        
+        .header { 
+            background: white; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+            padding: 1rem 2rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--brand-primary); }
+        .back-link { 
+            text-decoration: none; 
+            color: var(--brand-primary); 
+            font-weight: 500; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+        }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        
+        .page-header { 
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%); 
+            color: white; 
+            padding: 2rem; 
+            border-radius: 12px; 
+            margin-bottom: 2rem; 
+        }
+        .page-header h1 { font-size: 2rem; margin: 0 0 0.5rem 0; }
+        .page-header p { margin: 0; opacity: 0.9; }
+        
+        .stats { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 1.5rem; 
+            margin-bottom: 2rem; 
+        }
+        .stat-card { 
+            background: white; 
+            padding: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); 
+        }
+        .stat-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .stat-card .value { font-size: 2rem; font-weight: 700; color: var(--brand-primary); }
+        .stat-card .label { color: var(--text-secondary); margin-top: 0.5rem; }
+        
+        .actions { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 1.5rem; 
+            margin-bottom: 2rem; 
+        }
+        .action-card { 
+            background: white; 
+            padding: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); 
+            cursor: pointer; 
+            transition: transform 0.2s; 
+        }
+        .action-card:hover { transform: none; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .action-card .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .action-card h3 { color: var(--brand-primary); margin: 0 0 0.5rem 0; }
+        .action-card p { color: var(--text-secondary); margin: 0; font-size: 0.9rem; }
+        
+        .shipments { 
+            background: white; 
+            padding: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); 
+        }
+        .shipments h2 { color: var(--brand-primary); margin-top: 0; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border-color-light); }
+        th { background: var(--bg-secondary); font-weight: 600; color: var(--text-primary); }
+        .status { 
+            padding: 0.3rem 0.8rem; 
+            border-radius: 6px; 
+            font-size: 0.85rem; 
+            font-weight: 600; 
+        }
+        .status.pending { background: var(--color-warning-light); color: var(--color-warning-dark); }
+        .status.transit { background: var(--color-info-light); color: var(--color-info-dark); }
+        .status.delivered { background: var(--color-success-light); color: var(--color-success-dark); }
+        
+        .btn { 
+            padding: 0 var(--spacing-lg); 
+            height: 40px;
+            background: var(--brand-primary); 
+            color: white; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-weight: 600; 
+        }
+        .btn:hover { background: var(--brand-primary); }
+    </style>
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    {% include '_assistant_panel.html' %}
+
+    <div class="header">
+        <div class="logo">📦 OmniERP</div>
+        <a href="/app/dashboard" class="back-link">← Volver al Dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>🚚 Logística y Envíos</h1>
+            <p>Gestión de envíos externos, transportistas y entregas a clientes</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="icon">📦</div>
+                <div class="value" id="pending-shipments">0</div>
+                <div class="label">Envíos Pendientes</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🚚</div>
+                <div class="value" id="in-transit">0</div>
+                <div class="label">En Tránsito</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">✅</div>
+                <div class="value" id="delivered-today">0</div>
+                <div class="label">Entregados Hoy</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">⏰</div>
+                <div class="value" id="avg-delivery-time">-</div>
+                <div class="label">Tiempo Promedio</div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <div class="action-card" onclick="alert('Función en desarrollo: Crear nuevo envío')">
+                <div class="icon">📦</div>
+                <h3>Nuevo Envío</h3>
+                <p>Crear envío para pedido de cliente</p>
+            </div>
+            <div class="action-card" onclick="alert('Función en desarrollo: Gestionar transportistas')">
+                <div class="icon">🚛</div>
+                <h3>Transportistas</h3>
+                <p>Gestionar empresas de transporte</p>
+            </div>
+            <div class="action-card" onclick="alert('Función en desarrollo: Tracking de envíos')">
+                <div class="icon">📍</div>
+                <h3>Seguimiento</h3>
+                <p>Rastrear ubicación de envíos</p>
+            </div>
+            <div class="action-card" onclick="alert('Función en desarrollo: Generar etiquetas')">
+                <div class="icon">🏷️</div>
+                <h3>Etiquetas</h3>
+                <p>Imprimir etiquetas de envío</p>
+            </div>
+            <div class="action-card" onclick="alert('Función en desarrollo: Rutas de entrega')">
+                <div class="icon">🗺️</div>
+                <h3>Planificación</h3>
+                <p>Optimizar rutas de entrega</p>
+            </div>
+            <div class="action-card" onclick="alert('Función en desarrollo: Reportes logísticos')">
+                <div class="icon">📊</div>
+                <h3>Reportes</h3>
+                <p>Análisis de rendimiento logístico</p>
+            </div>
+        </div>
+
+        <div class="shipments">
+            <h2>Envíos Recientes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Envío</th>
+                        <th>Cliente</th>
+                        <th>Destino</th>
+                        <th>Transportista</th>
+                        <th>Estado</th>
+                        <th>Fecha Envío</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="shipments-table">
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-tertiary);">
+                            No hay envíos registrados
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Simulación de datos de ejemplo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Actualizar estadísticas de ejemplo
+            document.getElementById('pending-shipments').textContent = '12';
+            document.getElementById('in-transit').textContent = '28';
+            document.getElementById('delivered-today').textContent = '15';
+            document.getElementById('avg-delivery-time').textContent = '2.5 días';
+
+            // Cargar envíos de ejemplo
+            const shipmentsData = [
+                { id: 'ENV-001', customer: 'Empresa ABC', destination: 'Madrid', carrier: 'DHL', status: 'transit', date: '2025-12-23' },
+                { id: 'ENV-002', customer: 'Cliente XYZ', destination: 'Barcelona', carrier: 'MRW', status: 'pending', date: '2025-12-24' },
+                { id: 'ENV-003', customer: 'Industrias DEF', destination: 'Valencia', carrier: 'SEUR', status: 'delivered', date: '2025-12-22' }
+            ];
+
+            const tbody = document.getElementById('shipments-table');
+            tbody.innerHTML = shipmentsData.map(s => `
+                <tr>
+                    <td><strong>${s.id}</strong></td>
+                    <td>${s.customer}</td>
+                    <td>${s.destination}</td>
+                    <td>${s.carrier}</td>
+                    <td><span class="status ${s.status}">${
+                        s.status === 'transit' ? 'En Tránsito' :
+                        s.status === 'pending' ? 'Pendiente' :
+                        'Entregado'
+                    }</span></td>
+                    <td>${s.date}</td>
+                    <td>
+                        <button class="btn" onclick="alert('Ver detalles de ${s.id}')">Ver</button>
+                    </td>
+                </tr>
+            `).join('');
+        });
+    </script>
+    <script src="/static/js/module-tutorial.js?v=2"></script>
+    <script defer src="/static/assistant.js?v=2"></script>
+    <script defer src="/static/assistant-basic-panel.js?v=2"></script>
+    <script defer src="/static/voice-widget.js?v=2"></script>
+</body>
+</html>

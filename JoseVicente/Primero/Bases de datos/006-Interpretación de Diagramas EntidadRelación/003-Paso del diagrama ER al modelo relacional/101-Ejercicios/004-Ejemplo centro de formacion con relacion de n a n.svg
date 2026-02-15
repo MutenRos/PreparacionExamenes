@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="580.6249346051897" height="378.11249869210377" viewBox="0 0 580.6249346051897 378.11249869210377">
+
+  <defs>
+    <style>
+      text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 12px; fill: #111827; }
+      .shape-rect { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-entity { fill: #ffffff; stroke: #111827; stroke-width: 2; }
+      .shape-circle { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-pill { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-db { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .conn { stroke: #111827; stroke-width: 2; fill: none; }
+    </style>
+    <marker id="arrow-end" markerWidth="10" markerHeight="7" refX="10" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#111827"/>
+    </marker>
+    <marker id="arrow-start" markerWidth="10" markerHeight="7" refX="0" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="10 0, 0 3.5, 10 7" fill="#111827"/>
+    </marker>
+  </defs>
+        
+<rect class="shape-entity" x="40.037493024553584" y="211.7125047956194" width="219.99999999999994" height="126.39999389648435" />
+<line x1="40.037493024553584" y1="238.11247689383367" x2="260.03749302455356" y2="238.11247689383367" stroke="#e5e7eb" stroke-width="1"/>
+<text x="150.03749302455356" y="229.7124873570033" text-anchor="middle">Asignatura</text>
+<text x="117.0749947684152" y="258.1124943324497">id</text>
+<text x="117.0749947684152" y="282.1124768938337">nombre</text>
+<text x="117.0749947684152" y="306.11248125348766">descripcion</text>
+<rect class="shape-entity" x="40" y="40" width="219.99999999999994" height="150.4000091552734" />
+<line x1="40" y1="66.3999911717006" x2="259.99999999999994" y2="66.3999911717006" stroke="#e5e7eb" stroke-width="1"/>
+<text x="149.99999999999997" y="57.99999209812709" text-anchor="middle">Alumno</text>
+<text x="123.89998953683033" y="86.39999839237757">id</text>
+<text x="123.89998953683033" y="110.40000683920724">nombre</text>
+<text x="123.89998953683033" y="134.3999873570033">apellidos</text>
+<text x="123.89998953683033" y="158.39999171665733">email</text>
+<rect class="shape-entity" x="320.62499999999994" y="105.62498910086494" width="219.99993460518968" height="150.3999873570033" />
+<line x1="320.62499999999994" y1="132.02499662126812" x2="540.6249346051897" y2="132.02499662126812" stroke="#e5e7eb" stroke-width="1"/>
+<text x="430.62496730259477" y="123.62498937334333" text-anchor="middle">Matricula</text>
+<text x="391.6499720982142" y="152.02500043596535">id</text>
+<text x="391.6499720982142" y="176.0250047956194">fecha</text>
+<text x="391.6499720982142" y="200.02498735700334">alumno_id</text>
+<text x="391.6499720982142" y="224.0249828611101">asignatura_id</text>
+<path class="conn" d="M 204.98746190752297 253.22919475689145 L 369.64996337890614 220.90826540676994" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 198.08748109000067 85.23177439821053 L 369.64996337890614 193.19322020671757" marker-end="url(#arrow-end)" />
+</svg>

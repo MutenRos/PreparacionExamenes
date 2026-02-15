@@ -1,0 +1,58 @@
+{
+  "formas": [
+    {
+      "id": "forma-1",
+      "tipo": "entity",
+      "left": "181.658px",
+      "top": "197.183px",
+      "width": "",
+      "height": "",
+      "entityName": "Rueda",
+      "properties": [
+        {
+          "id": "prop-1",
+          "name": "id"
+        },
+        {
+          "id": "prop-2",
+          "name": "diametro"
+        }
+      ]
+    },
+    {
+      "id": "forma-2",
+      "tipo": "entity",
+      "left": "450.737px",
+      "top": "190.863px",
+      "width": "",
+      "height": "",
+      "entityName": "Carroceria",
+      "properties": [
+        {
+          "id": "prop-3",
+          "name": "id"
+        },
+        {
+          "id": "prop-4",
+          "name": "tipo_metal"
+        }
+      ]
+    },
+    {
+      "id": "forma-3",
+      "tipo": "entity",
+      "left": "703.4px",
+      "top": "196.875px",
+      "width": "",
+      "height": "",
+      "entityName": "Chapa",
+      "properties": [
+        {
+          "id": "prop-5",
+          "name": "id"
+        }
+      ]
+    }
+  ],
+  "flechas": []
+}

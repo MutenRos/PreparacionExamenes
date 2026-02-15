@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Albarán - {{ venta.numero }}</title>
+  <link rel="stylesheet" href="/static/print.css" />
+  <style>
+    .meta-grid { display: grid; grid-template-columns: 220px 1fr; gap: 6px 14px; }
+    .kv { color:#555; }
+    .section-title { margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <header class="doc-header">
+    <div>
+      <h1>Albarán</h1>
+      <div class="subtitle">{{ venta.numero }}</div>
+    </div>
+    <div>
+      <button onclick="window.print()" class="print-btn">Imprimir</button>
+    </div>
+  </header>
+
+  <section class="doc-section">
+    <div class="meta-grid">
+      <div class="kv">Organización</div><div>{{ org.razon_social or org.nombre if org else 'N/A' }}</div>
+      <div class="kv">Cliente</div><div>{{ venta.cliente_nombre }}</div>
+      <div class="kv">Documento</div><div>{{ venta.cliente_documento or '—' }}</div>
+      <div class="kv">Fecha</div><div>{{ venta.fecha }}</div>
+      <div class="kv">Notas</div><div>{{ venta.notas or '—' }}</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <h2 class="section-title">Artículos Entregados</h2>
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>{{ item.producto_id }}</td>
+          <td>{{ item.cantidad }}</td>
+        </tr>
+        {% endfor %}
+        {% if items|length == 0 %}
+        <tr><td colspan="2" class="empty">Sin artículos.</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </section>
+</body>
+</html>

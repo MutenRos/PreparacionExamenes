@@ -1,0 +1,204 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  justify-content: center;
+}
+
+#app {
+  max-width: 1280px;
+  width: 90%;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 20px;
+}
+
+.input-container {
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+  color: #ccc;
+  font-weight: 500;
+}
+
+#reasonInput {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px;
+  font-size: 1.1em;
+  border: 2px solid #555;
+  border-radius: 8px;
+  background-color: #2a2a2a;
+  color: #fff;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+#reasonInput:focus {
+  outline: none;
+  border-color: #d4af37;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1.2em;
+  font-weight: 600;
+  font-family: inherit;
+  background-color: #d4af37; /* Gold */
+  color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s, transform 0.1s;
+}
+
+button:hover {
+  border-color: #fcf6ba;
+  box-shadow: 0 0 10px #d4af37;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+.excusa-box {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 2px solid #d4af37;
+  border-radius: 8px;
+  background-color: #2a2a2a;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.excusa-text {
+  font-size: 1.5rem;
+  color: #fff;
+  font-style: italic;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.placeholder {
+  color: #888;
+}
+
+#historyContainer {
+  margin-top: 3rem;
+  text-align: left;
+  border-top: 1px solid #444;
+  padding-top: 1rem;
+}
+
+#historyList {
+  list-style-type: none;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+#historyList li {
+  padding: 0.5rem;
+  border-bottom: 1px solid #333;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+#clearHistory {
+  background-color: #333;
+  color: #fff;
+  font-size: 0.9em;
+  margin-top: 10px;
+}
+
+#clearHistory:hover {
+  background-color: #444;
+  box-shadow: none;
+  border-color: #666;
+}
+
+/* Accesibilidad: Estilos de foco visible para navegacion por teclado */
+*:focus-visible {
+  outline: 3px solid #d4af37;
+  outline-offset: 2px;
+}
+
+/* Accesibilidad: Reducir animaciones si el usuario lo prefiere */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Boton de copiar excusa */
+.copy-btn {
+  background-color: #2a2a2a;
+  color: #d4af37;
+  font-size: 0.9em;
+  margin-top: 0.8rem;
+  border: 1px solid #d4af37;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.copy-btn:hover {
+  background-color: #d4af37;
+  color: #1a1a1a;
+}
+
+/* Contador de caracteres */
+.char-counter {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.char-counter.near-limit {
+  color: #e74c3c;
+  font-weight: 600;
+}

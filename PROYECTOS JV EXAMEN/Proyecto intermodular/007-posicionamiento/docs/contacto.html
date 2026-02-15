@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contacto | recortabl.es</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mogra&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo/estilo.css">
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <div class="logo">🤖</div>
+        <span><b>rec</b><i>ortabl.es</i></span>
+      </a>
+      <nav>
+        <a href="categorias.html">Categorías ▾</a>
+        <a href="sobrenosotros.html">Sobre nosotros</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="login.html">Login</a>
+        <div class="search" role="search">
+          <div class="icon">🔎</div>
+          <input type="search" placeholder="Buscar..." aria-label="Buscar">
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h1 class="title">Contacto</h1>
+      <p class="sub">¿Tienes dudas, sugerencias o quieres pedir un recortable concreto? Escríbenos.</p>
+
+      <div class="product">
+        <div class="card">
+          <h3 style="margin:0 0 8px;color:#1b5f92;font-weight:900">Cómo te ayudamos</h3>
+          <p style="margin:0;color:#265a79;font-weight:800;line-height:1.5">
+            Respondemos consultas sobre descargas, impresión, montaje y propuestas de nuevos modelos.
+          </p>
+          <div class="details">
+            <div class="card" style="padding:14px">
+              <h3>Temas habituales</h3>
+              <div class="list">
+                <div><span>📄</span><span>Problemas al descargar el PDF</span></div>
+                <div><span>🖨️</span><span>Configuración de impresión (A4, escala, calidad)</span></div>
+                <div><span>✂️</span><span>Dudas de montaje / instrucciones</span></div>
+                <div><span>💡</span><span>Sugerencias y peticiones de nuevos recortables</span></div>
+              </div>
+            </div>
+            <p class="note">✅ Tiempo de respuesta habitual: 24–72 horas laborables.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="p-title" style="font-size:26px">Escríbenos</h2>
+          <p class="p-sub">Rellena el formulario y te contestaremos lo antes posible.</p>
+          <form onsubmit="event.preventDefault();alert('Formulario estático de demostración')" style="display:grid;gap:12px">
+            <div class="panel" style="border-top:0;padding-top:0">
+              <label for="nombre">Nombre</label>
+              <input id="nombre" type="text" placeholder="Tu nombre" required>
+            </div>
+            <div class="panel">
+              <label for="email">Email</label>
+              <input id="email" type="email" placeholder="tu@email.com" required>
+            </div>
+            <div class="panel">
+              <label for="motivo">Motivo</label>
+              <select id="motivo" required>
+                <option value="">Selecciona una opción</option>
+                <option>Consulta</option>
+                <option>Problema con una descarga</option>
+                <option>Sugerencia</option>
+                <option>Petición de recortable</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div class="panel">
+              <label for="mensaje">Mensaje</label>
+              <textarea id="mensaje" rows="6" placeholder="Cuéntanos en detalle tu consulta..." required
+                style="width:100%;padding:10px 12px;border-radius:12px;border:1px solid #dfeffc;outline:0;
+                       background:linear-gradient(180deg,#ffffff,#f6fbff);box-shadow:0 6px 14px rgba(11,42,69,.06);
+                       font:inherit;color:#204b66;resize:vertical"></textarea>
+            </div>
+            <div class="actions" style="margin-top:0">
+              <button class="btn primary" type="submit" style="width:100%;cursor:pointer">Enviar mensaje</button>
+              <a class="btn secondary" href="index.html">Volver a inicio</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <a href="sobrenosotros.html">Acerca de</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="#">Licencias</a>
+      <a href="#">Aviso Legal</a>
+      <span class="social" aria-label="Redes sociales">
+        <a href="#" title="Facebook">f</a>
+        <a href="#" title="X">x</a>
+        <a href="#" title="YouTube">▶</a>
+        <a href="#" title="Instagram">⌁</a>
+      </span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,419 @@
+/**
+ * =============================================================================
+ * BOMBAS IDEAL - Reset & Base Styles
+ * =============================================================================
+ * 
+ * @description  Normalización de estilos del navegador y estilos base del
+ *               documento. Basado en modern-normalize con ajustes propios.
+ * 
+ * @author       Bombas Ideal Development Team
+ * @version      2.0.0
+ * 
+ * TABLA DE CONTENIDOS:
+ * 1. Box sizing
+ * 2. Documento
+ * 3. Secciones
+ * 4. Agrupación de contenido
+ * 5. Semántica de texto
+ * 6. Formularios
+ * 7. Media
+ * 8. Interactividad
+ * 9. Accesibilidad
+ * =============================================================================
+ */
+
+/* =========================================================================
+ * 1. BOX SIZING
+ * =========================================================================
+ * Heredar box-sizing mejora la composición de componentes.
+ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* =========================================================================
+ * 2. DOCUMENTO
+ * =========================================================================
+ */
+
+html {
+    /* Prevenir ajustes de tamaño de fuente en orientación landscape */
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    
+    /* Scroll suave nativo */
+    scroll-behavior: smooth;
+    
+    /* Tamaño base para rem */
+    font-size: 16px;
+    
+    /* Altura mínima del documento */
+    min-height: 100%;
+    
+    /* Mejora del rendering de fuentes */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    /* Tipografía base */
+    font-family: var(--bi-font-secondary);
+    font-size: var(--bi-text-base);
+    font-weight: var(--bi-font-normal);
+    line-height: var(--bi-leading-normal);
+    
+    /* Colores */
+    color: var(--bi-text-primary);
+    background-color: var(--bi-bg-primary);
+    
+    /* Prevenir scroll horizontal accidental */
+    overflow-x: hidden;
+    
+    /* Altura mínima */
+    min-height: 100vh;
+}
+
+/* =========================================================================
+ * 3. SECCIONES
+ * =========================================================================
+ */
+
+/* Encabezados */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--bi-font-primary);
+    font-weight: var(--bi-font-bold);
+    line-height: var(--bi-leading-tight);
+    color: var(--bi-gray-900);
+}
+
+h1 {
+    font-size: var(--bi-text-5xl);
+    letter-spacing: var(--bi-tracking-tight);
+}
+
+h2 {
+    font-size: var(--bi-text-4xl);
+}
+
+h3 {
+    font-size: var(--bi-text-2xl);
+}
+
+h4 {
+    font-size: var(--bi-text-xl);
+}
+
+h5 {
+    font-size: var(--bi-text-lg);
+}
+
+h6 {
+    font-size: var(--bi-text-base);
+}
+
+/* Secciones semánticas */
+main {
+    display: block; /* IE */
+}
+
+/* =========================================================================
+ * 4. AGRUPACIÓN DE CONTENIDO
+ * =========================================================================
+ */
+
+/* Separador horizontal */
+hr {
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;
+    border: 0;
+    border-top: 1px solid var(--bi-gray-200);
+    margin: var(--bi-space-8) 0;
+}
+
+/* Preformateado */
+pre {
+    font-family: var(--bi-font-mono);
+    font-size: 1em;
+    overflow-x: auto;
+    background-color: var(--bi-gray-100);
+    padding: var(--bi-space-4);
+    border-radius: var(--bi-radius-md);
+}
+
+/* Listas */
+ul, ol {
+    list-style: none;
+}
+
+/* Párrafos */
+p {
+    margin-bottom: var(--bi-space-4);
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+/* =========================================================================
+ * 5. SEMÁNTICA DE TEXTO
+ * =========================================================================
+ */
+
+/* Enlaces */
+a {
+    color: inherit;
+    text-decoration: none;
+    background-color: transparent;
+    transition: var(--bi-transition-colors);
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* Negrita */
+b, strong {
+    font-weight: var(--bi-font-bold);
+}
+
+/* Código inline */
+code, kbd, samp {
+    font-family: var(--bi-font-mono);
+    font-size: 0.875em;
+    background-color: var(--bi-gray-100);
+    padding: 0.125em 0.375em;
+    border-radius: var(--bi-radius-sm);
+}
+
+/* Texto pequeño */
+small {
+    font-size: 80%;
+}
+
+/* Subíndice y superíndice */
+sub, sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sub {
+    bottom: -0.25em;
+}
+
+sup {
+    top: -0.5em;
+}
+
+/* Abreviaciones */
+abbr[title] {
+    text-decoration: underline dotted;
+    cursor: help;
+}
+
+/* Citas */
+blockquote {
+    border-left: 4px solid var(--bi-primary-500);
+    padding-left: var(--bi-space-4);
+    margin: var(--bi-space-4) 0;
+    font-style: italic;
+    color: var(--bi-text-secondary);
+}
+
+/* =========================================================================
+ * 6. FORMULARIOS
+ * =========================================================================
+ */
+
+button,
+input,
+optgroup,
+select,
+textarea {
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+}
+
+/* Botones */
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+    -webkit-appearance: button;
+    appearance: button;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+    border-style: none;
+    padding: 0;
+}
+
+/* Textarea */
+textarea {
+    overflow: auto;
+    resize: vertical;
+}
+
+/* Fieldset */
+fieldset {
+    border: 1px solid var(--bi-gray-300);
+    padding: var(--bi-space-4);
+    border-radius: var(--bi-radius-md);
+}
+
+legend {
+    padding: 0 var(--bi-space-2);
+    font-weight: var(--bi-font-semibold);
+}
+
+/* Progress */
+progress {
+    vertical-align: baseline;
+}
+
+/* =========================================================================
+ * 7. MEDIA
+ * =========================================================================
+ */
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Iframe */
+iframe {
+    border: 0;
+}
+
+/* Audio/Video */
+audio,
+video {
+    display: inline-block;
+}
+
+audio:not([controls]) {
+    display: none;
+    height: 0;
+}
+
+/* SVG */
+svg:not(:root) {
+    overflow: hidden;
+}
+
+/* =========================================================================
+ * 8. INTERACTIVIDAD
+ * =========================================================================
+ */
+
+/* Elementos ocultos */
+[hidden] {
+    display: none !important;
+}
+
+/* Cursor pointer */
+summary {
+    display: list-item;
+    cursor: pointer;
+}
+
+/* Template */
+template {
+    display: none;
+}
+
+/* =========================================================================
+ * 9. ACCESIBILIDAD
+ * =========================================================================
+ */
+
+/* Focus visible */
+:focus-visible {
+    outline: 2px solid var(--bi-primary-500);
+    outline-offset: 2px;
+}
+
+/* Remover outline en click */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Skip link */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--bi-primary-500);
+    color: var(--bi-text-inverse);
+    padding: var(--bi-space-2) var(--bi-space-4);
+    z-index: var(--bi-z-maximum);
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Reducir movimiento para usuarios que lo prefieran */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Mejora accesibilidad: indicador de foco visible para navegación con teclado */
+*:focus-visible {
+    outline: 3px solid var(--bi-accent, #00d4ff);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Texto solo para lectores de pantalla */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.sr-only-focusable:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: inherit;
+}

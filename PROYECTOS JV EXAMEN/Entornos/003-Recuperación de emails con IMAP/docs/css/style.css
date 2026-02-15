@@ -1,0 +1,206 @@
+/* ============================================
+   Blog de correos – Estilos principales
+   Extraído de 007-vinculos.php
+   ============================================ */
+
+:root {
+    --bg: #f4f4f5;
+    --bg-card: #ffffff;
+    --border: #e4e4e7;
+    --text: #18181b;
+    --muted: #71717a;
+    --accent: #2563eb;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.layout {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+}
+
+/* --- Header --- */
+header.site-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.site-title {
+    font-size: 2rem;
+    margin: 0 0 0.25rem;
+}
+
+.site-subtitle {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+/* --- Social Icons --- */
+.social img {
+    width: 35px;
+    margin-left: 5px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.social a:hover img {
+    transform: scale(1.15);
+    opacity: 0.8;
+}
+
+/* --- Back Link --- */
+.back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* --- Posts Grid --- */
+.posts {
+    display: grid;
+    gap: 1.5rem;
+}
+
+/* --- Card --- */
+article.post {
+    background: var(--bg-card);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Hero Image --- */
+.post-hero {
+    position: relative;
+    max-height: 260px;
+    overflow: hidden;
+}
+
+.post-hero img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center center;
+    transition: transform 0.4s ease;
+}
+
+article.post:hover .post-hero img {
+    transform: scale(1.03);
+}
+
+/* --- Post Content --- */
+.post-content {
+    padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.post-header {
+    margin-bottom: 0.75rem;
+}
+
+.post-title {
+    margin: 0 0 0.25rem;
+    font-size: 1.25rem;
+    line-height: 1.25;
+}
+
+.post-title a {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.post-title a:hover {
+    color: var(--accent);
+}
+
+/* --- Meta --- */
+.post-meta {
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.post-meta span + span::before {
+    content: "•";
+    margin: 0 0.4rem;
+}
+
+/* --- Body --- */
+.post-body {
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.post-body img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* --- Read More --- */
+.read-more {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.read-more a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.read-more a:hover {
+    text-decoration: underline;
+}
+
+/* --- Empty State --- */
+.empty {
+    margin-top: 2rem;
+    text-align: center;
+    color: var(--muted);
+}
+
+/* --- Footer --- */
+footer.site-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+/* --- Responsive --- */
+@media (max-width: 640px) {
+    .layout {
+        padding-inline: 1rem;
+    }
+
+    header.site-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+}

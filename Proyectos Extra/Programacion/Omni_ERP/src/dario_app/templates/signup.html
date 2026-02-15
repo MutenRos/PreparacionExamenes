@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/aaaaa-animations.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-2xl);
+        }
+        .signup-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 500px;
+            width: 100%;
+            padding: 3rem;
+        }
+        .logo {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        input {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+        }
+        .plan-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+        }
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .benefits {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .benefits ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .benefits li {
+            padding: 0.3rem 0;
+            color: #333;
+        }
+        .benefits li:before {
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    <div class="signup-container">
+        <div class="logo">⚡ OmniERP</div>
+        <h1>Comienza tu prueba gratuita</h1>
+        <p class="subtitle">14 días gratis, sin tarjeta de crédito</p>
+
+        <div class="benefits">
+            <ul>
+                <li>Configuración en 2 minutos</li>
+                <li>Todas las funcionalidades incluidas</li>
+                <li>Cancela cuando quieras</li>
+            </ul>
+        </div>
+
+        <form method="POST" action="/app/signup">
+            <div class="form-group">
+                <label for="organization_name">Nombre de tu negocio *</label>
+                <input type="text" id="organization_name" name="organization_name" required placeholder="Ej: Mi Tienda SA">
+            </div>
+
+            <div class="form-group">
+                <label for="nombre_completo">Tu nombre completo *</label>
+                <input type="text" id="nombre_completo" name="nombre_completo" required placeholder="Juan Pérez">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" required placeholder="tu@email.com">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña *</label>
+                <input type="password" id="password" name="password" required placeholder="Mínimo 8 caracteres" minlength="8">
+            </div>
+
+            <input type="hidden" name="plan" value="{{ plan }}">
+
+            <button type="submit" class="btn-submit">Crear mi cuenta gratis</button>
+        </form>
+
+        <div class="login-link">
+            ¿Ya tienes cuenta? <a href="/app/login">Inicia sesión</a>
+        </div>
+    </div>
+</body>
+</html>

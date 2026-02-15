@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <title>jocarsa | dni</title>
+    <meta charset="utf-8">
+    <style>
+      body{background:lightsteelblue;font-family:sans-serif;text-align:center;}
+      input{background:lightsteelblue;border:none;padding:5px;outline:none;height:30px;}
+      .error{background:lightcoral;}
+      .correcto{background:lightgreen;}
+      header,main,footer{background:white;padding:20px;margin:auto;width:250px;}
+      main{display:flex;justify-content:center;}
+      #letra{border:3px solid lightsteelblue;width:30px;text-align:center;line-height:30px;height:34px;}
+      footer p{font-size:10px;}
+    </style>
+  </head>
+  <body> 
+    <header>
+      <h1>jocarsa | dni</h1>
+      <p>Introduce los números de un DNI para calcular la letra</p>
+    </header>
+    <main>
+      <input type="number"><div id="letra">
+    </main>
+    <footer>
+    <p>Retroalimentación:</p>
+    (c) 2025 Jose Vicente Carratalá
+    
+    </footer>
+    <script>
+      function calculaLetra(numero){
+        let cadena = "TRWAGMYFPDXBNJZSQVHLCKE";
+        return cadena[numero % 23];
+      }
+ 
+      let entrada = document.querySelector("input");
+      let salida = document.querySelector("#letra")
+      let retroalimentacion = document.querySelector("footer p")
+      entrada.onkeyup = function(){
+        let contenido = this.value;
+        // Compruebo la longitud del campo
+        if(contenido.length == 8){
+          entrada.classList.add("correcto")
+          salida.textContent = calculaLetra(contenido)
+          retroalimentacion.textContent = "Ahora es correcto."
+          retroalimentacion.style.color = "green"
+        }else{
+          entrada.classList = ""
+          entrada.classList.add("error")
+          retroalimentacion.innerHTML = "El valor que has introducido tiene  "+this.value.length+" caracteres. <br>Debe tener 8 caracteres."
+          retroalimentacion.style.color = "red"
+        }
+        
+      }
+    </script>
+  </body>
+</html>

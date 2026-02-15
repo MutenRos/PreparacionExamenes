@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compras - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/aaaaa-animations.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <link rel="stylesheet" href="/static/css/tutorial.css">
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            color: #667eea;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .table th {
+            background: #667eea;
+            color: white;
+        }
+        .table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .badge-pendiente {
+            background: #ffc107;
+            color: #333;
+        }
+        .badge-recibida {
+            background: #28a745;
+            color: white;
+        }
+        .badge-cancelada {
+            background: #dc3545;
+            color: white;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+        /* Tabs Styles */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+        .tab:hover {
+            color: #667eea;
+        }
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .section-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+        }
+        .step-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    {% include '_assistant_panel.html' %}
+
+    <link rel="stylesheet" href="/static/assistant.css">
+    <div class="container">
+        <div class="header">
+            <h1>📦 Gestión de Compras</h1>
+            <div>
+                <a href="/app/dashboard" class="btn btn-secondary">⬅️ Dashboard</a>
+                <button class="btn btn-success" onclick="openProveedorModal()">🤝 Nuevo Proveedor</button>
+            </div>
+        </div>
+
+        <div id="moduleDisabledMsg" class="alert alert-warning" style="display:none;">
+            ⚠️ Este módulo no está habilitado para su organización. Actívelo en Configuración → Módulos.
+        </div>
+
+        <div class="content">
+            <!-- Tabs Navigation -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('ordenes')">📦 Órdenes de Compra</button>
+                <button class="tab" onclick="switchTab('proveedores')">🤝 Proveedores</button>
+                <button class="tab" onclick="switchTab('solicitudes')">📧 Solicitudes</button>
+            </div>
+
+            <div id="message"></div>
+
+            <!-- TAB: ÓRDENES -->
+            <div id="ordenes" class="tab-content active">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h2>Gestión de Compras</h2>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn btn-secondary" onclick="generarAutoCompra()">⚙️ Sugerencias Auto</button>
+                        <button class="btn btn-success" onclick="abrirManualCompra()">➕ Nueva Compra Manual</button>
+                    </div>
+                </div>
+
+                <!-- FILTERS -->
+                <div class="section-box" style="padding: 15px; background: #fff; border: 1px solid #ddd;">
+                    <div style="display:flex; gap:15px; flex-wrap:wrap; align-items:flex-end;">
+                        <div style="flex:1; min-width:200px;">
+                            <label style="font-size:12px; font-weight:bold; display:block; margin-bottom:4px;">Buscar (Prov, Nº, Item)</label>
+                            <input type="text" id="filterSearch" class="form-control" placeholder="Ej: PROV-01, 12345, TORNILLO..." style="width:100%; padding:8px;" onkeyup="aplicarFiltros()">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; font-weight:bold; display:block; margin-bottom:4px;">Desde</label>
+                            <input type="date" id="filterDateStart" class="form-control" style="padding:8px;" onchange="aplicarFiltros()">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; font-weight:bold; display:block; margin-bottom:4px;">Hasta</label>
+                            <input type="date" id="filterDateEnd" class="form-control" style="padding:8px;" onchange="aplicarFiltros()">
+                        </div>
+                        <div>
+                            <label style="font-size:12px; font-weight:bold; display:block; margin-bottom:4px;">Estado</label>
+                            <select id="filterStatus" class="form-control" style="padding:8px; min-width:120px;" onchange="aplicarFiltros()">
+                                <option value="todos">Todos</option>
+                                <option value="pendiente">Pendientes</option>
+                                <option value="aprobada">Aprobadas</option>
+                                <option value="recibida">Recibidas (Completa)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="btn btn-secondary" onclick="limpiarFiltros()">Limpiar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-box">
+                    <h3>⏳ Pendientes de Aprobación</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Proveedor</th>
+                                <th>Fecha</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comprasPendientesTable">
+                            <tr><td colspan="6">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section-box">
+                    <h3>🚚 En Curso / Historial</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Proveedor</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Recepción</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comprasHistorialTable">
+                            <tr><td colspan="6">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB: PROVEEDORES -->
+            <div id="proveedores" class="tab-content">
+                <h2>Directorio de Proveedores</h2>
+                <div id="proveedoresMessage"></div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Contacto</th>
+                            <th>Términos</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="proveedoresTable">
+                        <tr><td colspan="7" style="text-align: center;">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TAB: SOLICITUDES -->
+            <div id="solicitudes" class="tab-content">
+                <h2>Generar Solicitud de Compra</h2>
+                <div class="section-box">
+                    <div class="step-label">Paso 1: Selecciona Proveedor</div>
+                    <select id="proveedorSelector" onchange="cargarProductosPorProveedor()" class="form-control" style="width: 100%; max-width:400px; padding:8px;">
+                        <option value="">-- Selecciona un proveedor --</option>
+                    </select>
+
+                    <div class="step-label" style="margin-top: 20px;">Paso 2: Selecciona Productos</div>
+                    <div id="productosParaSolicitud" class="mb-20" style="max-height:300px; overflow-y:auto; border:1px solid #eee; padding:10px;"></div>
+
+                    <div class="step-label" style="margin-top: 20px;">Paso 3: Notas</div>
+                    <textarea id="notasSolicitud" placeholder="Ej: Urgente, necesario para el fin de semana" class="form-control" style="width:100%; min-height: 80px; padding:8px;"></textarea>
+
+                    <button class="btn btn-primary" style="margin-top:20px; background:#667eea; color:white;" onclick="generarSolicitudCompra()">📧 Enviar Solicitud</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Proveedor -->
+    <div id="proveedorModal" class="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1000;">
+        <div style="background:white; margin:60px auto; padding:30px; border-radius:8px; max-width:600px; box-shadow:0 4px 20px rgba(0,0,0,0.15);">
+            <h2 style="margin-top:0;">Nuevo Proveedor</h2>
+            <form id="proveedorForm" onsubmit="crearProveedor(event)">
+                <div class="form-grid-2">
+                    <div style="margin-bottom:15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:600;">Nombre *</label>
+                        <input type="text" name="nombre" required style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:600;">Email *</label>
+                        <input type="email" name="email" required style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
+                    </div>
+                </div>
+                <div class="form-grid-2">
+                    <div style="margin-bottom:15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:600;">Teléfono</label>
+                        <input type="text" name="telefono" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:600;">Contacto</label>
+                        <input type="text" name="contacto_nombre" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
+                    </div>
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Dirección</label>
+                    <input type="text" name="direccion" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
+                </div>
+                <div class="form-grid-2">
+                    <div style="margin-bottom:15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:600;">Términos Pago</label>
+                        <input type="text" name="terminos_pago" placeholder="Ej: 30 días" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:600;">Días Entrega</label>
+                        <input type="number" name="dias_entrega_promedio" value="7" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
+                    </div>
+                </div>
+                <div id="proveedorFormMessage" style="margin-bottom:15px;"></div>
+                <div style="display:flex; justify-content:flex-end; gap:10px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeProveedorModal()">Cancelar</button>
+                    <button type="submit" class="btn" style="background:#667eea; color:white;">Guardar Proveedor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+        <!-- Review & Approve Modal -->
+        <div id="reviewModal" class="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4);">
+            <div style="background:white; margin:60px auto; padding:20px; border-radius:8px; max-width:900px;">
+                <h3>Revisar Compra <span id="revNumero"></span></h3>
+                <div id="revHeader" style="margin-bottom:12px;"></div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID Detalle</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Subtotal</th>
+                            <th>Editar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="revDetBody"></tbody>
+                </table>
+                <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px;">
+                    <button class="btn btn-secondary" onclick="cerrarModal()">Cerrar</button>
+                    <button class="btn" style="background: var(--color-success); color:white;" onclick="aprobarActual()">✅ Aprobar</button>
+                </div>
+            </div>
+        </div>
+
+    <!-- Modal Manual Compra -->
+    <div id="manualCompraModal" class="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1000; overflow-y:auto;">
+        <div style="background:white; margin:40px auto; padding:30px; border-radius:8px; max-width:800px; box-shadow:0 4px 20px rgba(0,0,0,0.15);">
+            <h2>Nueva Compra Manual</h2>
+            <div class="form-grid-2">
+                <div>
+                    <label>Proveedor</label>
+                    <select id="mcProveedor" class="form-control" style="width:100%; padding:8px;" onchange="mcCargarProductos()"></select>
+                </div>
+                <div>
+                    <label>Número / Referencia</label>
+                    <input type="text" id="mcNumero" class="form-control" style="width:100%; padding:8px;" placeholder="Auto-generado si vacío">
+                </div>
+            </div>
+            
+            <h4 style="margin-top:20px;">Items</h4>
+            <table class="table" id="mcItemsTable">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unit.</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <button class="btn btn-secondary" style="margin-top:10px;" onclick="mcAgregarFila()">+ Agregar Producto</button>
+
+            <div style="margin-top:20px;">
+                <label>Notas</label>
+                <textarea id="mcNotas" class="form-control" style="width:100%; height:60px;"></textarea>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+                <button class="btn btn-secondary" onclick="document.getElementById('manualCompraModal').style.display='none'">Cancelar</button>
+                <button class="btn btn-success" onclick="guardarCompraManual()">Crear Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Recepción -->
+    <div id="recepcionModal" class="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1000;">
+        <div style="background:white; margin:60px auto; padding:30px; border-radius:8px; max-width:700px;">
+            <h3>Recepcionar Compra <span id="rcTitulo"></span></h3>
+            <p>Confirma las cantidades recibidas para actualizar el stock.</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Solicitado</th>
+                        <th>Recibido Previo</th>
+                        <th>A Recibir Ahora</th>
+                    </tr>
+                </thead>
+                <tbody id="rcBody"></tbody>
+            </table>
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+                <button class="btn btn-secondary" onclick="document.getElementById('recepcionModal').style.display='none'">Cancelar</button>
+                <button class="btn btn-success" onclick="confirmarRecepcion()">✅ Confirmar Entrada Stock</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getAuthHeaders() {
+            const token = localStorage.getItem('token');
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            return headers;
+        }
+
+        let allCompras = [];
+
+        async function cargarCompras() {
+            try {
+                // Usar endpoint de debug temporalmente
+                const response = await fetch('/api/compras/debug-no-auth', { 
+                    credentials: 'include'
+                });
+                if (!response.ok) {
+                    throw new Error('Error al cargar compras');
+                }
+                allCompras = await response.json();
+                aplicarFiltros();
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('message').innerHTML = '<p class="error">Error al cargar compras. Asegúrate de estar autenticado.</p>';
+            }
+        }
+
+        function aplicarFiltros() {
+            const search = document.getElementById('filterSearch').value.toLowerCase();
+            const dateStart = document.getElementById('filterDateStart').value;
+            const dateEnd = document.getElementById('filterDateEnd').value;
+            const status = document.getElementById('filterStatus').value;
+
+            const filtradas = allCompras.filter(c => {
+                // 1. Search Filter (Numero, Proveedor, Item Code/Name)
+                let matchSearch = true;
+                if (search) {
+                    const matchBasic = (c.numero || '').toLowerCase().includes(search) || 
+                                     (c.proveedor_nombre || '').toLowerCase().includes(search);
+                    
+                    // Check items if basic match fails
+                    let matchItems = false;
+                    if (!matchBasic && c.detalles) {
+                        matchItems = c.detalles.some(d => 
+                            (d.producto_codigo || '').toLowerCase().includes(search) || 
+                            (d.producto_nombre || '').toLowerCase().includes(search)
+                        );
+                    }
+                    matchSearch = matchBasic || matchItems;
+                }
+
+                // 2. Date Filter
+                let matchDate = true;
+                const cDate = new Date(c.fecha).toISOString().split('T')[0]; // YYYY-MM-DD
+                if (dateStart && cDate < dateStart) matchDate = false;
+                if (dateEnd && cDate > dateEnd) matchDate = false;
+
+                // 3. Status Filter
+                let matchStatus = true;
+                if (status !== 'todos') {
+                    if (status === 'pendiente') matchStatus = (c.estado === 'pendiente');
+                    else if (status === 'aprobada') matchStatus = (c.estado === 'aprobada'); // Includes partial/complete reception
+                    else if (status === 'recibida') matchStatus = (c.estado_recepcion === 'completa');
+                }
+
+                return matchSearch && matchDate && matchStatus;
+            });
+
+            renderTablas(filtradas);
+        }
+
+        function renderTablas(compras) {
+            const pendientes = compras.filter(c => c.estado === 'pendiente');
+            const historial = compras.filter(c => c.estado !== 'pendiente');
+
+            // Render Pendientes
+            const tbodyPend = document.getElementById('comprasPendientesTable');
+            if (pendientes.length === 0) {
+                tbodyPend.innerHTML = '<tr><td colspan="6" style="text-align: center; color:#888;">No hay compras pendientes que coincidan</td></tr>';
+            } else {
+                tbodyPend.innerHTML = pendientes.map(c => `
+                    <tr>
+                        <td>${c.numero}</td>
+                        <td>${c.proveedor_nombre}</td>
+                        <td>${new Date(c.fecha).toLocaleDateString('es-ES')}</td>
+                        <td>${c.detalles?.length || 0} items</td>
+                        <td>$${c.total.toFixed(2)}</td>
+                        <td>
+                            <button class="btn" onclick="abrirRevision(${c.id})">🔍 Revisar / Aprobar</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            // Render Historial
+            const tbodyHist = document.getElementById('comprasHistorialTable');
+            if (historial.length === 0) {
+                tbodyHist.innerHTML = '<tr><td colspan="6" style="text-align: center; color:#888;">No hay historial que coincida</td></tr>';
+            } else {
+                tbodyHist.innerHTML = historial.map(c => {
+                    const estadoRec = c.estado_recepcion || 'pendiente';
+                    const badgeClass = estadoRec === 'completa' ? 'badge-recibida' : (estadoRec === 'parcial' ? 'badge-pendiente' : 'badge-secondary');
+                    
+                    let btnAccion = '';
+                    if (c.estado === 'aprobada' && estadoRec !== 'completa') {
+                        btnAccion = `<button class="btn btn-success" style="padding:4px 8px; font-size:12px;" onclick="abrirRecepcion(${c.id})">📦 Recepcionar</button>`;
+                    } else if (estadoRec === 'completa') {
+                        btnAccion = `<span style="color:green;">✓ Completada</span>`;
+                    }
+
+                    return `
+                    <tr>
+                        <td>${c.numero}</td>
+                        <td>${c.proveedor_nombre}</td>
+                        <td>${new Date(c.fecha).toLocaleDateString('es-ES')}</td>
+                        <td><span class="badge badge-${c.estado}">${c.estado}</span></td>
+                        <td><span class="badge ${badgeClass}">${estadoRec}</span></td>
+                        <td>${btnAccion}</td>
+                    </tr>
+                `}).join('');
+            }
+        }
+
+        function limpiarFiltros() {
+            document.getElementById('filterSearch').value = '';
+            document.getElementById('filterDateStart').value = '';
+            document.getElementById('filterDateEnd').value = '';
+            document.getElementById('filterStatus').value = 'todos';
+            aplicarFiltros();
+        }
+
+        async function verificarModuloCompras() {
+            try {
+                const resp = await fetch('/api/organization/modules-config', {
+                    headers: { 'Authorization': 'Bearer ' + (localStorage.getItem('token') || '') }
+                });
+                if (!resp.ok) return;
+                const data = await resp.json();
+                const enabled = data.enabled_modules || [];
+                const activo = enabled.includes('compras');
+                const msg = document.getElementById('moduleDisabledMsg');
+                if (!activo) {
+                    msg.style.display = 'block';
+                    const content = document.querySelector('.content');
+                    if (content) content.style.display = 'none';
+                }
+            } catch (e) {
+                console.warn('No se pudo verificar módulos');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', verificarModuloCompras);
+
+                async function generarAutoCompra() {
+                    try {
+                        const res = await fetch('/api/compras/auto-por-stock-bajo', {
+                            method: 'POST',
+                            credentials: 'include',
+                            headers: getAuthHeaders(),
+                            body: JSON.stringify({ reset_stock: false, incluir_necesidades_op: true })
+                        });
+                        if (!res.ok) throw new Error('No se pudo generar compra automática');
+                        const data = await res.json();
+                        document.getElementById('message').innerHTML = `<p>Generada compra ${data.numero} con ${data.cantidad_items} items.</p>`;
+                        await cargarCompras();
+                    } catch (e) {
+                        document.getElementById('message').innerHTML = '<p class="error">Error generando compra automática.</p>';
+                    }
+                }
+
+                let compraActual = null;
+                async function abrirRevision(id) {
+                    // Load header
+                    const h = await fetch(`/api/compras/${id}`, { 
+                        credentials: 'include',
+                        headers: getAuthHeaders()
+                    });
+                    if (!h.ok) { alert('Error cargando compra'); return; }
+                    compraActual = await h.json();
+                    document.getElementById('revNumero').textContent = `#${compraActual.id} (${compraActual.estado})`;
+                    document.getElementById('revHeader').innerHTML = `
+                        <label>Proveedor: <input id="revProv" value="${compraActual.proveedor_nombre}"></label>
+                        <label style="margin-left:8px;">Documento: <input id="revDoc" value="${compraActual.proveedor_documento ?? ''}"></label>
+                        <label style="margin-left:8px;">Notas: <input id="revNotas" value="${compraActual.notas ?? ''}"></label>
+                        <button class="btn" style="margin-left:8px;" onclick="guardarHeader()">Guardar</button>
+                    `;
+
+                    // Load details
+                    const d = await fetch(`/api/compras/${id}/detalles`, { 
+                        credentials: 'include',
+                        headers: getAuthHeaders()
+                    });
+                    if (!d.ok) { alert('Error cargando detalles'); return; }
+                    const detalles = await d.json();
+                    const tbody = document.getElementById('revDetBody');
+                    tbody.innerHTML = detalles.map(det => {
+                        // Format product info: codigo - nombre
+                        const productInfo = (det.producto_codigo && det.producto_nombre) 
+                            ? `${det.producto_codigo} - ${det.producto_nombre}`
+                            : `ID: ${det.producto_id}`;
+                        
+                        // Get OPs waiting for this material
+                        const opsInfo = det.ordenes_produccion && det.ordenes_produccion.length > 0
+                            ? det.ordenes_produccion.map(op => 
+                                `${op.op_numero} (${op.cantidad_op} unidades)${op.material_faltante ? ' ⚠️' : ''}`
+                              ).join('; ')
+                            : 'N/A';
+                        
+                        return `
+                        <tr>
+                            <td>${det.id}</td>
+                            <td title="${productInfo}">${productInfo}</td>
+                            <td><input type="number" min="1" value="${det.cantidad}" id="cant_${det.id}"></td>
+                            <td><input type="number" step="0.01" min="0" value="${det.precio_unitario}" id="precio_${det.id}"></td>
+                            <td>${det.subtotal}</td>
+                            <td><button class="btn" onclick="guardarDetalle(${det.id})">💾</button></td>
+                        </tr>
+                        <tr style="background: var(--bg-secondary); font-size:12px;">
+                            <td colspan="6"><strong>OPs esperando:</strong> ${opsInfo}</td>
+                        </tr>
+                    `}).join('');
+
+                    document.getElementById('reviewModal').style.display = 'block';
+                }
+
+                function cerrarModal() {
+                    document.getElementById('reviewModal').style.display = 'none';
+                }
+
+                async function guardarHeader() {
+                    if (!compraActual || compraActual.estado !== 'pendiente') { alert('Solo se puede editar si está pendiente'); return; }
+                    const payload = {
+                        proveedor_nombre: document.getElementById('revProv').value,
+                        proveedor_documento: document.getElementById('revDoc').value,
+                        notas: document.getElementById('revNotas').value
+                    };
+                    const res = await fetch(`/api/compras/${compraActual.id}`, {
+                        method: 'PUT', 
+                        credentials: 'include', 
+                        headers: getAuthHeaders(), 
+                        body: JSON.stringify(payload)
+                    });
+                    if (!res.ok) { alert('Error guardando cabecera'); return; }
+                    compraActual = await res.json();
+                    document.getElementById('message').innerHTML = '<p>Cabecera actualizada.</p>';
+                    await cargarCompras();
+                }
+
+                async function guardarDetalle(detId) {
+                    if (!compraActual || compraActual.estado !== 'pendiente') { alert('Solo se puede editar si está pendiente'); return; }
+                    const payload = {
+                        cantidad: parseInt(document.getElementById(`cant_${detId}`).value, 10),
+                        precio_unitario: parseFloat(document.getElementById(`precio_${detId}`).value)
+                    };
+                    const res = await fetch(`/api/compras/${compraActual.id}/detalles/${detId}`, {
+                        method: 'PUT', 
+                        credentials: 'include', 
+                        headers: getAuthHeaders(), 
+                        body: JSON.stringify(payload)
+                    });
+                    if (!res.ok) { alert('Error guardando detalle'); return; }
+                    document.getElementById('message').innerHTML = '<p>Detalle actualizado.</p>';
+                    // Reload details
+                    abrirRevision(compraActual.id);
+                    await cargarCompras();
+                }
+
+                async function aprobarActual() {
+                    if (!compraActual) return;
+                    const res = await fetch(`/api/compras/${compraActual.id}/aprobar`, { 
+                        method:'POST', 
+                        credentials: 'include',
+                        headers: getAuthHeaders()
+                    });
+                    if (!res.ok) { alert('Error al aprobar'); return; }
+                    document.getElementById('message').innerHTML = '<p>Compra aprobada.</p>';
+                    cerrarModal();
+                    await cargarCompras();
+                }
+
+        // ===== TABS LOGIC =====
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            // Find button
+            const buttons = document.querySelectorAll('.tab');
+            if (tabName === 'ordenes') buttons[0].classList.add('active');
+            else if (tabName === 'proveedores') buttons[1].classList.add('active');
+            else if (tabName === 'solicitudes') buttons[2].classList.add('active');
+
+            if (tabName === 'ordenes') cargarCompras();
+            else if (tabName === 'proveedores') cargarProveedores();
+            else if (tabName === 'solicitudes') cargarProveedoresSolicitud();
+        }
+
+        // ===== PROVEEDORES LOGIC =====
+        function openProveedorModal() {
+            document.getElementById('proveedorModal').style.display = 'block';
+        }
+
+        function closeProveedorModal() {
+            document.getElementById('proveedorModal').style.display = 'none';
+            document.getElementById('proveedorForm').reset();
+            document.getElementById('proveedorFormMessage').innerHTML = '';
+        }
+
+        async function cargarProveedores() {
+            try {
+                const response = await fetch('/api/inventario/proveedores/', { credentials: 'include' });
+                if (!response.ok) throw new Error('Error');
+                const proveedores = await response.json();
+
+                const tbody = document.getElementById('proveedoresTable');
+                if (proveedores.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No hay proveedores. Crea uno nuevo.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = proveedores.map(p => `
+                    <tr>
+                        <td>${p.nombre}</td>
+                        <td>${p.email}</td>
+                        <td>${p.telefono || '-'}</td>
+                        <td>${p.contacto_nombre || '-'}</td>
+                        <td>${p.terminos_pago || '-'}</td>
+                        <td><span class="badge ${p.es_activo ? 'badge-recibida' : 'badge-pendiente'}">${p.es_activo ? 'Activo' : 'Inactivo'}</span></td>
+                        <td><button class="btn btn-secondary" onclick="alert('Editar: ' + ${p.id})">✏️</button></td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                document.getElementById('proveedoresMessage').innerHTML = '<p class="error">Error al cargar proveedores</p>';
+            }
+        }
+
+        async function crearProveedor(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = {
+                nombre: formData.get('nombre'),
+                email: formData.get('email'),
+                telefono: formData.get('telefono') || null,
+                contacto_nombre: formData.get('contacto_nombre') || null,
+                direccion: formData.get('direccion') || null,
+                terminos_pago: formData.get('terminos_pago') || '30 días',
+                descuento_volumen: parseFloat(formData.get('descuento_volumen')) || null,
+                dias_entrega_promedio: parseInt(formData.get('dias_entrega_promedio')) || 7,
+                es_activo: true
+            };
+
+            try {
+                const response = await fetch('/api/inventario/proveedores/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Error al crear proveedor');
+                }
+
+                document.getElementById('proveedorFormMessage').innerHTML = '<p style="color:green;">✓ Proveedor creado</p>';
+                setTimeout(() => {
+                    closeProveedorModal();
+                    cargarProveedores();
+                }, 1500);
+            } catch (error) {
+                document.getElementById('proveedorFormMessage').innerHTML = `<p class="error">${error.message}</p>`;
+            }
+        }
+
+        // ===== SOLICITUDES LOGIC =====
+        async function cargarProveedoresSolicitud() {
+            try {
+                const response = await fetch('/api/inventario/proveedores/', { credentials: 'include' });
+                if (!response.ok) throw new Error('Error');
+                const proveedores = await response.json();
+
+                const select = document.getElementById('proveedorSelector');
+                select.innerHTML = '<option value="">-- Selecciona un proveedor --</option>';
+                proveedores.forEach(p => {
+                    const option = document.createElement('option');
+                    option.value = p.id;
+                    option.textContent = p.nombre + ' (' + p.email + ')';
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function cargarProductosPorProveedor() {
+            const proveedorId = document.getElementById('proveedorSelector').value;
+            if (!proveedorId) {
+                document.getElementById('productosParaSolicitud').innerHTML = '';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/inventario/?limit=600', { credentials: 'include' });
+                if (!response.ok) throw new Error('Error');
+                const productos = await response.json();
+
+                const productosProveedor = productos.filter(p => p.proveedor_id == proveedorId);
+
+                if (productosProveedor.length === 0) {
+                    document.getElementById('productosParaSolicitud').innerHTML = '<p style="color: #666;">No hay productos asignados a este proveedor</p>';
+                    return;
+                }
+
+                const html = productosProveedor.map(p => `
+                    <div style="padding: 10px; border: 1px solid #eee; border-radius: 4px; margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center;">
+                        <label style="display: flex; align-items: center; gap: 10px; flex:1;">
+                            <input type="checkbox" value="${p.id}" class="producto-solicitud-checkbox" data-nombre="${p.nombre}" data-precio="${p.precio_compra}">
+                            <span><strong>${p.nombre}</strong> (${p.codigo}) - $${parseFloat(p.precio_compra).toFixed(2)} c/u</span>
+                        </label>
+                        <div style="margin-left: 10px;">
+                            <label>Cant: <input type="number" min="1" value="${p.cantidad_minima_compra || 1}" class="cantidad-solicitud" style="width: 60px; padding: 4px; border-radius: 4px; border: 1px solid #ddd;"></label>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('productosParaSolicitud').innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function generarSolicitudCompra() {
+            const proveedorId = document.getElementById('proveedorSelector').value;
+            if (!proveedorId) {
+                alert('Selecciona un proveedor');
+                return;
+            }
+
+            const checkboxes = document.querySelectorAll('.producto-solicitud-checkbox:checked');
+            if (checkboxes.length === 0) {
+                alert('Selecciona al menos un producto');
+                return;
+            }
+
+            const items = Array.from(checkboxes).map(cb => {
+                const cantidadInput = cb.parentElement.parentElement.parentElement.querySelector('.cantidad-solicitud');
+                return {
+                    producto_id: parseInt(cb.value),
+                    cantidad: parseInt(cantidadInput.value) || 1
+                };
+            });
+
+            const notas = document.getElementById('notasSolicitud').value || null;
+
+            try {
+                const response = await fetch('/api/compras/generar-solicitud-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ proveedor_id: parseInt(proveedorId), items, notas })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Error');
+                }
+
+                const result = await response.json();
+                alert(`✓ Solicitud generada para ${result.proveedor_nombre}\n\n${result.cantidad_items} productos\nEmail: ${result.proveedor_email}\n\n${result.mensaje}`);
+
+                // Limpiar formulario
+                document.getElementById('proveedorSelector').value = '';
+                document.getElementById('productosParaSolicitud').innerHTML = '';
+                document.getElementById('notasSolicitud').value = '';
+
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // ===== MANUAL PURCHASE LOGIC =====
+        let productosCache = [];
+
+        async function abrirManualCompra() {
+            document.getElementById('manualCompraModal').style.display = 'block';
+            // Load providers
+            const res = await fetch('/api/inventario/proveedores/', { credentials: 'include' });
+            const provs = await res.json();
+            const sel = document.getElementById('mcProveedor');
+            sel.innerHTML = '<option value="">-- Selecciona --</option>' + provs.map(p => `<option value="${p.id}">${p.nombre}</option>`).join('');
+            
+            // Load products cache
+            const resProd = await fetch('/api/inventario/?limit=1000', { credentials: 'include' });
+            productosCache = await resProd.json();
+            
+            document.getElementById('mcItemsTable').querySelector('tbody').innerHTML = '';
+            mcAgregarFila();
+        }
+
+        function mcCargarProductos() {
+            // Filter products by provider if needed, or just show all
+            // For now, we show all, but maybe highlight preferred ones
+        }
+
+        function mcAgregarFila() {
+            const tbody = document.getElementById('mcItemsTable').querySelector('tbody');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <select class="form-control mc-prod-select" style="width:100%" onchange="mcActualizarPrecio(this)">
+                        <option value="">-- Producto --</option>
+                        ${productosCache.map(p => `<option value="${p.id}" data-precio="${p.precio_compra}">${p.nombre} (${p.codigo})</option>`).join('')}
+                    </select>
+                </td>
+                <td><input type="number" min="1" value="1" class="form-control mc-cant" style="width:80px" onchange="mcCalcSubtotal(this)"></td>
+                <td><input type="number" step="0.01" class="form-control mc-precio" style="width:100px" onchange="mcCalcSubtotal(this)"></td>
+                <td class="mc-subtotal">$0.00</td>
+                <td><button class="btn btn-secondary" onclick="this.closest('tr').remove()">🗑️</button></td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        function mcActualizarPrecio(select) {
+            const opt = select.options[select.selectedIndex];
+            const precio = opt.getAttribute('data-precio') || 0;
+            const row = select.closest('tr');
+            row.querySelector('.mc-precio').value = precio;
+            mcCalcSubtotal(select);
+        }
+
+        function mcCalcSubtotal(el) {
+            const row = el.closest('tr');
+            const cant = parseFloat(row.querySelector('.mc-cant').value) || 0;
+            const precio = parseFloat(row.querySelector('.mc-precio').value) || 0;
+            row.querySelector('.mc-subtotal').textContent = '$' + (cant * precio).toFixed(2);
+        }
+
+        async function guardarCompraManual() {
+            const provId = document.getElementById('mcProveedor').value;
+            if (!provId) { alert('Selecciona un proveedor'); return; }
+            
+            const provText = document.getElementById('mcProveedor').options[document.getElementById('mcProveedor').selectedIndex].text;
+            
+            const detalles = [];
+            document.querySelectorAll('#mcItemsTable tbody tr').forEach(tr => {
+                const prodId = tr.querySelector('.mc-prod-select').value;
+                if (prodId) {
+                    detalles.push({
+                        producto_id: parseInt(prodId),
+                        cantidad: parseInt(tr.querySelector('.mc-cant').value),
+                        precio_unitario: parseFloat(tr.querySelector('.mc-precio').value)
+                    });
+                }
+            });
+
+            if (detalles.length === 0) { alert('Agrega al menos un producto'); return; }
+
+            const payload = {
+                numero: document.getElementById('mcNumero').value || ('MAN-' + Date.now()),
+                proveedor_nombre: provText,
+                proveedor_documento: null,
+                notas: document.getElementById('mcNotas').value,
+                detalles: detalles
+            };
+
+            try {
+                const res = await fetch('/api/compras/', {
+                    method: 'POST',
+                    headers: getAuthHeaders(),
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error('Error creando compra');
+                document.getElementById('manualCompraModal').style.display = 'none';
+                document.getElementById('message').innerHTML = '<p>Compra creada exitosamente.</p>';
+                cargarCompras();
+            } catch (e) {
+                alert(e.message);
+            }
+        }
+
+        // ===== RECEPTION LOGIC =====
+        let recepcionActualId = null;
+        async function abrirRecepcion(id) {
+            recepcionActualId = id;
+            const res = await fetch(`/api/compras/${id}/detalles`, { headers: getAuthHeaders() });
+            const detalles = await res.json();
+            
+            document.getElementById('rcTitulo').textContent = `#${id}`;
+            const tbody = document.getElementById('rcBody');
+            tbody.innerHTML = detalles.map(d => `
+                <tr data-id="${d.id}">
+                    <td>${d.producto_nombre || d.producto_id}</td>
+                    <td>${d.cantidad}</td>
+                    <td>${d.cantidad_recibida || 0}</td>
+                    <td>
+                        <input type="number" min="0" max="${d.cantidad - (d.cantidad_recibida||0)}" 
+                               value="${d.cantidad - (d.cantidad_recibida||0)}" 
+                               class="form-control rc-input">
+                    </td>
+                </tr>
+            `).join('');
+            
+            document.getElementById('recepcionModal').style.display = 'block';
+        }
+
+        async function confirmarRecepcion() {
+            const items = [];
+            document.querySelectorAll('#rcBody tr').forEach(tr => {
+                const cant = parseInt(tr.querySelector('.rc-input').value) || 0;
+                if (cant > 0) {
+                    items.push({
+                        detalle_id: parseInt(tr.getAttribute('data-id')),
+                        cantidad: cant
+                    });
+                }
+            });
+
+            if (items.length === 0) { alert('No hay cantidades a recibir'); return; }
+
+            try {
+                const res = await fetch(`/api/compras/${recepcionActualId}/recibir`, {
+                    method: 'POST',
+                    headers: getAuthHeaders(),
+                    body: JSON.stringify(items)
+                });
+                if (!res.ok) throw new Error('Error en recepción');
+                
+                document.getElementById('recepcionModal').style.display = 'none';
+                document.getElementById('message').innerHTML = '<p>Recepción registrada y stock actualizado.</p>';
+                cargarCompras();
+            } catch (e) {
+                alert(e.message);
+            }
+        }
+
+        // Cargar compras al inicio
+        cargarCompras();
+    </script>
+    <script defer src="/static/assistant.js?v=2"></script>
+    <script defer src="/static/assistant-basic-panel.js?v=2"></script>
+    <script defer src="/static/voice-widget.js?v=2"></script>
+    <script src="/static/js/module-tutorial.js?v=2"></script>
+</body>
+</html>

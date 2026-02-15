@@ -1,0 +1,27 @@
+<personas>
+  <persona>
+    <nombre>Juan</nombre>
+    <apellidos>xxx</apellidos>
+    <telefonos>
+      <telefono>xxx</telefono>
+      <telefono>yyyy</telefono>
+      <telefono>zzzz</telefono>
+    </telefonos>
+  </persona>
+  <persona>
+    <nombre>Jorge</nombre>
+    <apellidos>xxx</apellidos>
+    <telefono>xxx</telefono>
+  </persona>
+  <persona>
+    <nombre>Jaime</nombre>
+    <apellidos>xxx</apellidos>
+    <telefono>xxx</telefono>
+  </persona>
+  <persona>
+    <nombre>Jose</nombre>
+    <apellidos>xxx</apellidos>
+    <telefono>xxx</telefono>
+  </persona>
+</personas>
+

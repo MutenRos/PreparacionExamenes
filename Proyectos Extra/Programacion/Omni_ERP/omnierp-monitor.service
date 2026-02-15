@@ -1,0 +1,17 @@
+[Unit]
+Description=OmniERP Server Monitor and Keeper
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=dario
+WorkingDirectory=/home/dario
+ExecStart=/home/dario/monitor_server.sh
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,315 @@
+/**
+ * =============================================================================
+ * BOMBAS IDEAL - CSS Custom Properties (Variables)
+ * =============================================================================
+ * 
+ * @description  Sistema de diseño centralizado con variables CSS personalizadas.
+ *               Todas las propiedades de diseño se definen aquí para mantener
+ *               consistencia visual en todo el proyecto.
+ * 
+ * @author       Bombas Ideal Development Team
+ * @version      2.0.0
+ * @since        2024
+ * 
+ * @see          https://bombasideal.com
+ * 
+ * TABLA DE CONTENIDOS:
+ * 1. Colores de marca
+ * 2. Colores semánticos
+ * 3. Tipografía
+ * 4. Espaciado
+ * 5. Sombras
+ * 6. Transiciones
+ * 7. Bordes
+ * 8. Z-index
+ * 9. Breakpoints (documentación)
+ * =============================================================================
+ */
+
+:root {
+    /* =========================================================================
+     * 1. COLORES DE MARCA
+     * =========================================================================
+     * Paleta principal basada en la identidad corporativa de Bombas Ideal.
+     * El azul representa agua, confianza y profesionalismo.
+     */
+    
+    /* Azul primario - Color corporativo principal */
+    --bi-primary-50: #e6f0fa;
+    --bi-primary-100: #cce0f5;
+    --bi-primary-200: #99c2eb;
+    --bi-primary-300: #66a3e0;
+    --bi-primary-400: #3385d6;
+    --bi-primary-500: #0066cc;  /* Color principal */
+    --bi-primary-600: #0052a3;
+    --bi-primary-700: #003d7a;
+    --bi-primary-800: #002952;
+    --bi-primary-900: #001429;
+    
+    /* Gradientes corporativos */
+    --bi-gradient-primary: linear-gradient(135deg, #0066cc 0%, #004999 100%);
+    --bi-gradient-hero: linear-gradient(135deg, rgba(0, 102, 204, 0.9) 0%, rgba(0, 73, 153, 0.95) 100%);
+    --bi-gradient-dark: linear-gradient(180deg, #0a1628 0%, #1a2d4a 100%);
+    
+    /* Cian/Turquesa - Color secundario (agua) */
+    --bi-secondary-50: #e6f9fc;
+    --bi-secondary-100: #ccf3f9;
+    --bi-secondary-200: #99e7f3;
+    --bi-secondary-300: #66dbed;
+    --bi-secondary-400: #33cfe7;
+    --bi-secondary-500: #00a8e8;  /* Secundario */
+    --bi-secondary-600: #0086ba;
+    --bi-secondary-700: #00658b;
+    --bi-secondary-800: #00435d;
+    --bi-secondary-900: #00222e;
+    
+    /* Acento - Cian brillante */
+    --bi-accent: #00d4ff;
+    --bi-accent-light: #66e5ff;
+    --bi-accent-dark: #00a3c4;
+    
+    /* =========================================================================
+     * 2. COLORES SEMÁNTICOS
+     * =========================================================================
+     * Colores con significado funcional para estados y feedback.
+     */
+    
+    /* Escala de grises */
+    --bi-gray-50: #f7fafc;
+    --bi-gray-100: #edf2f7;
+    --bi-gray-200: #e2e8f0;
+    --bi-gray-300: #cbd5e0;
+    --bi-gray-400: #a0aec0;
+    --bi-gray-500: #718096;
+    --bi-gray-600: #4a5568;
+    --bi-gray-700: #2d3748;
+    --bi-gray-800: #1a202c;
+    --bi-gray-900: #0a1628;
+    
+    /* Estados */
+    --bi-success-light: #c6f6d5;
+    --bi-success: #38a169;
+    --bi-success-dark: #276749;
+    
+    --bi-warning-light: #fefcbf;
+    --bi-warning: #ecc94b;
+    --bi-warning-dark: #b7791f;
+    
+    --bi-error-light: #fed7d7;
+    --bi-error: #e53e3e;
+    --bi-error-dark: #c53030;
+    
+    --bi-info-light: #bee3f8;
+    --bi-info: #3182ce;
+    --bi-info-dark: #2c5282;
+    
+    /* Fondos */
+    --bi-bg-primary: #ffffff;
+    --bi-bg-secondary: #f7fafc;
+    --bi-bg-dark: #0a1628;
+    --bi-bg-darker: #06101c;
+    
+    /* Texto */
+    --bi-text-primary: #1a202c;
+    --bi-text-secondary: #4a5568;
+    --bi-text-muted: #718096;
+    --bi-text-light: #a0aec0;
+    --bi-text-inverse: #ffffff;
+    
+    /* =========================================================================
+     * 3. TIPOGRAFÍA
+     * =========================================================================
+     * Sistema tipográfico con escalas armónicas.
+     */
+    
+    /* Familias tipográficas */
+    --bi-font-primary: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --bi-font-secondary: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --bi-font-mono: 'Fira Code', 'Consolas', monospace;
+    
+    /* Tamaños de fuente (escala modular 1.25) */
+    --bi-text-xs: 0.75rem;      /* 12px */
+    --bi-text-sm: 0.875rem;     /* 14px */
+    --bi-text-base: 1rem;       /* 16px */
+    --bi-text-lg: 1.125rem;     /* 18px */
+    --bi-text-xl: 1.25rem;      /* 20px */
+    --bi-text-2xl: 1.5rem;      /* 24px */
+    --bi-text-3xl: 1.875rem;    /* 30px */
+    --bi-text-4xl: 2.25rem;     /* 36px */
+    --bi-text-5xl: 3rem;        /* 48px */
+    --bi-text-6xl: 3.75rem;     /* 60px */
+    
+    /* Pesos de fuente */
+    --bi-font-light: 300;
+    --bi-font-normal: 400;
+    --bi-font-medium: 500;
+    --bi-font-semibold: 600;
+    --bi-font-bold: 700;
+    --bi-font-extrabold: 800;
+    
+    /* Altura de línea */
+    --bi-leading-none: 1;
+    --bi-leading-tight: 1.25;
+    --bi-leading-snug: 1.375;
+    --bi-leading-normal: 1.5;
+    --bi-leading-relaxed: 1.625;
+    --bi-leading-loose: 2;
+    
+    /* Espaciado entre letras */
+    --bi-tracking-tight: -0.025em;
+    --bi-tracking-normal: 0;
+    --bi-tracking-wide: 0.025em;
+    --bi-tracking-wider: 0.05em;
+    --bi-tracking-widest: 0.1em;
+    
+    /* =========================================================================
+     * 4. ESPACIADO
+     * =========================================================================
+     * Sistema de espaciado basado en múltiplos de 4px.
+     */
+    
+    --bi-space-0: 0;
+    --bi-space-1: 0.25rem;      /* 4px */
+    --bi-space-2: 0.5rem;       /* 8px */
+    --bi-space-3: 0.75rem;      /* 12px */
+    --bi-space-4: 1rem;         /* 16px */
+    --bi-space-5: 1.25rem;      /* 20px */
+    --bi-space-6: 1.5rem;       /* 24px */
+    --bi-space-8: 2rem;         /* 32px */
+    --bi-space-10: 2.5rem;      /* 40px */
+    --bi-space-12: 3rem;        /* 48px */
+    --bi-space-16: 4rem;        /* 64px */
+    --bi-space-20: 5rem;        /* 80px */
+    --bi-space-24: 6rem;        /* 96px */
+    --bi-space-32: 8rem;        /* 128px */
+    
+    /* Contenedores */
+    --bi-container-sm: 640px;
+    --bi-container-md: 768px;
+    --bi-container-lg: 1024px;
+    --bi-container-xl: 1280px;
+    --bi-container-2xl: 1536px;
+    
+    /* =========================================================================
+     * 5. SOMBRAS
+     * =========================================================================
+     * Sistema de elevación con sombras progresivas.
+     */
+    
+    --bi-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --bi-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --bi-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --bi-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.15);
+    --bi-shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.2);
+    --bi-shadow-2xl: 0 25px 80px rgba(0, 0, 0, 0.25);
+    
+    /* Sombras con color (glow) */
+    --bi-shadow-primary: 0 0 30px rgba(0, 102, 204, 0.3);
+    --bi-shadow-accent: 0 0 20px rgba(0, 212, 255, 0.3);
+    
+    /* Sombra interior */
+    --bi-shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    
+    /* =========================================================================
+     * 6. TRANSICIONES
+     * =========================================================================
+     * Duraciones y curvas de animación estandarizadas.
+     */
+    
+    /* Duraciones */
+    --bi-duration-fast: 150ms;
+    --bi-duration-normal: 300ms;
+    --bi-duration-slow: 500ms;
+    --bi-duration-slower: 700ms;
+    
+    /* Curvas de animación */
+    --bi-ease-linear: linear;
+    --bi-ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --bi-ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --bi-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --bi-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    /* Transiciones predefinidas */
+    --bi-transition-fast: all 150ms ease;
+    --bi-transition-normal: all 300ms ease;
+    --bi-transition-slow: all 500ms ease;
+    --bi-transition-colors: color 200ms ease, background-color 200ms ease, border-color 200ms ease;
+    --bi-transition-transform: transform 300ms ease;
+    --bi-transition-opacity: opacity 300ms ease;
+    
+    /* =========================================================================
+     * 7. BORDES
+     * =========================================================================
+     * Sistema de bordes y radios.
+     */
+    
+    /* Anchos de borde */
+    --bi-border-0: 0;
+    --bi-border-1: 1px;
+    --bi-border-2: 2px;
+    --bi-border-4: 4px;
+    
+    /* Radios de borde */
+    --bi-radius-none: 0;
+    --bi-radius-sm: 4px;
+    --bi-radius-md: 8px;
+    --bi-radius-lg: 12px;
+    --bi-radius-xl: 16px;
+    --bi-radius-2xl: 24px;
+    --bi-radius-full: 9999px;
+    
+    /* =========================================================================
+     * 8. Z-INDEX
+     * =========================================================================
+     * Escala de capas para controlar el apilamiento.
+     */
+    
+    --bi-z-behind: -1;
+    --bi-z-base: 0;
+    --bi-z-dropdown: 100;
+    --bi-z-sticky: 200;
+    --bi-z-fixed: 300;
+    --bi-z-modal-backdrop: 400;
+    --bi-z-modal: 500;
+    --bi-z-popover: 600;
+    --bi-z-tooltip: 700;
+    --bi-z-toast: 800;
+    --bi-z-maximum: 9999;
+    
+    /* =========================================================================
+     * 9. BREAKPOINTS (DOCUMENTACIÓN)
+     * =========================================================================
+     * Referencia para media queries (no se pueden usar como variables CSS).
+     * 
+     * --bi-screen-sm: 640px   // Móviles grandes
+     * --bi-screen-md: 768px   // Tablets
+     * --bi-screen-lg: 1024px  // Laptops
+     * --bi-screen-xl: 1280px  // Escritorios
+     * --bi-screen-2xl: 1536px // Pantallas grandes
+     */
+}
+
+/* =============================================================================
+ * MODO OSCURO (preparado para futura implementación)
+ * =============================================================================
+ */
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Descomentar para activar modo oscuro automático */
+        /* --bi-bg-primary: #0a1628;
+        --bi-bg-secondary: #1a2d4a;
+        --bi-text-primary: #f7fafc;
+        --bi-text-secondary: #e2e8f0; */
+    }
+}
+
+/* =============================================================================
+ * CLASE UTILITARIA PARA MODO OSCURO MANUAL
+ * =============================================================================
+ */
+.dark-mode {
+    --bi-bg-primary: var(--bi-gray-900);
+    --bi-bg-secondary: var(--bi-gray-800);
+    --bi-text-primary: var(--bi-gray-50);
+    --bi-text-secondary: var(--bi-gray-200);
+}

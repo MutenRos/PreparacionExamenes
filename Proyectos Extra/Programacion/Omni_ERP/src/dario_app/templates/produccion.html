@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <title>Producción - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/aaaaa-animations.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <link rel="stylesheet" href="/static/css/tutorial.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 100; }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--brand-primary); }
+        .back-link { text-decoration: none; color: var(--brand-primary); font-weight: 500; display: flex; align-items: center; gap: 0.5rem; }
+        .back-link:hover { color: var(--brand-secondary); }
+        .container { max-width: 1000px; width: 100%; margin: 0 auto; padding: 2rem; }
+        .page-title { background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%); color: white; padding: 2rem; border-radius: 12px; margin-bottom: 2rem; }
+        .page-title h1 { font-size: 2rem; margin: 0 0 0.5rem 0; }
+        .page-title p { margin: 0; opacity: 0.9; }
+        .controls { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+        .btn { padding: 0.7rem 1.2rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+        .btn-primary { background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(var(--brand-primary-rgb), 0.3); }
+        .btn-secondary { background: var(--brand-primary-light); color: var(--brand-primary); border: 1px solid var(--gray-200); }
+        .btn-secondary:hover { background: var(--brand-primary-light); }
+        .search-box { flex: 1; min-width: 220px; }
+        .search-box input { width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 0.95rem; }
+        .search-box input:focus { outline: none; border-color: var(--brand-primary); box-shadow: 0 0 0 3px rgba(var(--brand-primary-rgb), 0.1); }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.2rem; margin-bottom: 1.5rem; }
+        .stat-card { background: white; padding: 1.2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .stat-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .stat-card .value { font-size: 1.8rem; font-weight: 700; color: var(--brand-primary); }
+        .stat-card .label { color: var(--gray-600); margin-top: 0.5rem; font-size: 0.95rem; }
+        .tabs { display: flex; gap: 0.5rem; margin: 1rem 0 1.5rem 0; flex-wrap: wrap; justify-content: center; }
+        .tab { padding: 0.6rem 1rem; border-radius: 8px; cursor: pointer; border: 1px solid var(--gray-200); background: var(--gray-100); font-weight: 600; color: var(--gray-600); transition: all 0.2s; }
+        .tab:hover { background: var(--brand-primary-light); }
+        .tab.active { background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%); color: white; border-color: transparent; }
+        .card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 1.5rem; display: none; }
+        .card.active { display: block; }
+        .card h3 { margin: 0 0 1rem 0; color: var(--gray-800); font-size: 1.3rem; }
+        .timeline { border-left: 3px solid var(--gray-200); padding-left: 1rem; }
+        .timeline-item { margin-bottom: 1.5rem; }
+        .timeline-item .title { font-weight: 700; color: var(--gray-800); }
+        .timeline-item .meta { color: #777; font-size: 0.9rem; margin-top: 0.3rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem; border-bottom: 1px solid var(--gray-200); text-align: left; }
+        thead { background: #f9f9f9; border-bottom: 2px solid var(--gray-200); font-weight: 600; }
+        .status { display: inline-block; padding: 0.35rem 0.65rem; border-radius: 12px; font-size: 0.85rem; font-weight: 700; }
+        .status-ok { background: var(--color-success-light); color: #065f46; }
+        .status-warn { background: var(--color-warning-light); color: #92400e; }
+        .status-bad { background: var(--color-danger-light); color: #991b1b; }
+        .actions { display: flex; gap: 0.4rem; }
+        .action-btn { padding: 0.45rem 0.7rem; background: var(--brand-primary-light); color: var(--brand-primary); border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+        .action-btn:hover { background: var(--brand-primary-light); transform: translateY(-1px); }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; }
+        .modal.open { display: flex; }
+        .modal-content { background: white; border-radius: 12px; padding: 2rem; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .modal-header h2 { margin: 0; color: var(--gray-800); }
+        .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #999; }
+        .modal-close:hover { color: var(--gray-800); }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--gray-600); }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.7rem; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 0.95rem; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--brand-primary); box-shadow: 0 0 0 3px rgba(var(--brand-primary-rgb), 0.1); }
+        .form-actions { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem; }
+    </style>
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    {% include '_assistant_panel.html' %}
+
+    <div class="header">
+        <a href="/app/dashboard" class="back-link">← OmniERP</a>
+        <div class="logo">Producción</div>
+    </div>
+
+    <div class="container">
+        <div class="page-title">
+            <h1>🏗️ Gestión de Producción</h1>
+            <p>Control de órdenes, internos vs. externos, trazabilidad y monitoreo en tiempo real.</p>
+        </div>
+        <div id="moduleDisabledMsg" class="alert alert-warning" style="display:none;">
+            ⚠️ Este módulo no está habilitado para su organización. Actívelo en Configuración → Módulos.
+        </div>
+
+        <div class="controls" id="controlsSectionTop">
+            <button class="btn btn-primary" onclick="showNewOrderModal()">+ Nueva Orden</button>
+            <button class="btn btn-secondary" onclick="alert('Funcionalidad Plan Maestro: Próximamente')">Plan Maestro</button>
+            <button class="btn btn-secondary" onclick="alert('Funcionalidad Capacidad & Carga: Próximamente')">Capacidad & Carga</button>
+            <div class="search-box"><input type="text" placeholder="Buscar orden, producto o referencia..."></div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="icon">📦</div>
+                <div class="value" id="stat-activas">24</div>
+                <div class="label">Órdenes activas</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">⚙️</div>
+                <div class="value" id="stat-internas">16</div>
+                <div class="label">Órdenes internas</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🤝</div>
+                <div class="value" id="stat-externas">8</div>
+                <div class="label">Órdenes externas</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">⏱️</div>
+                <div class="value" id="stat-cumplimiento">92%</div>
+                <div class="label">Cumplimiento vs plan</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('internas', this)">Internas</div>
+            <div class="tab" onclick="switchTab('externas', this)">Externas (terceros)</div>
+            <div class="tab" onclick="switchTab('calendario', this)">Calendario</div>
+            <div class="tab" onclick="switchTab('alertas', this)">Alertas</div>
+        </div>
+
+        <!-- TAB: Órdenes Internas -->
+        <div class="card active" id="tab-internas">
+            <h3>Órdenes internas</h3>
+            <div class="actions" style="margin-bottom: 1rem;">
+                <button class="action-btn" onclick="alert('Funcionalidad: Iniciar orden')">Iniciar</button>
+                <button class="action-btn" onclick="alert('Funcionalidad: Pausar orden')">Pausar</button>
+                <button class="action-btn" onclick="alert('Funcionalidad: Cerrar orden')">Cerrar</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th><th>Producto</th><th>Etapa</th><th>Avance</th><th>Estado</th><th></th>
+                    </tr>
+                </thead>
+                <tbody id="table-internas">
+                    <tr><td colspan="6" style="text-align:center; padding:2rem;">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TAB: Órdenes Externas -->
+        <div class="card" id="tab-externas">
+            <h3>Órdenes externas (terceros)</h3>
+            <div class="actions" style="margin-bottom: 1rem;">
+                <button class="action-btn" onclick="alert('Funcionalidad: Enviar a tercero')">Enviar a tercero</button>
+                <button class="action-btn" onclick="alert('Funcionalidad: Registrar retorno')">Registrar retorno</button>
+            </div>
+            <div class="timeline" id="timeline-externas">
+                <div style="text-align:center; padding:2rem; color:#999;">Cargando...</div>
+            </div>
+        </div>
+
+        <!-- TAB: Calendario -->
+        <div class="card" id="tab-calendario">
+            <h3>Calendario de Producción</h3>
+            <p style="text-align:center; color:#999; padding:2rem;">Próximamente: Vista de calendario integrada con todos los eventos de producción</p>
+        </div>
+
+        <!-- TAB: Alertas -->
+        <div class="card" id="tab-alertas">
+            <h3>Alertas y calidad</h3>
+            <table>
+                <thead><tr><th>Orden</th><th>Motivo</th><th>Severidad</th><th></th></tr></thead>
+                <tbody id="table-alertas">
+                    <tr><td colspan="4" style="text-align:center; padding:2rem;">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Nueva Orden -->
+    <div class="modal" id="newOrderModal">
+        <!-- TAB: Calendario -->
+        <div class="card" id="tab-calendario">
+            <h3>Calendario de Producción</h3>
+            <p style="text-align:center; color:#999; padding:2rem;">Próximamente: Vista de calendario integrada con todos los eventos de producción</p>
+        </div>
+
+        <!-- TAB: Alertas -->
+        <div class="card" id="tab-alertas">
+            <h3>Alertas y calidad</h3>
+            <table>
+                <thead><tr><th>Orden</th><th>Motivo</th><th>Severidad</th><th></th></tr></thead>
+                <tbody id="table-alertas">
+                    <tr><td colspan="4" style="text-align:center; padding:2rem;">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Nueva Orden -->
+    <div class="modal" id="newOrderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nueva Orden de Producción</h2>
+                <button class="modal-close" onclick="closeNewOrderModal()">&times;</button>
+            </div>
+            <form id="newOrderForm" onsubmit="createNewOrder(event)">
+                <div class="form-group">
+                    <label>Tipo de Orden *</label>
+                    <select id="orderType" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="interna">Interna</option>
+                        <option value="externa">Externa (Tercero)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Producto / Descripción *</label>
+                    <input type="text" id="orderProduct" required placeholder="Ej: Kit A, Componente X">
+                </div>
+                <div class="form-group">
+                    <label>Sección de Producción *</label>
+                    <select id="orderSeccion" required>
+                        <option value="">Seleccionar sección...</option>
+                        <optgroup label="Líneas de Fabricación">
+                            <option value="seccion-centrifuga">Bomba Centrífuga BC-100</option>
+                            <option value="seccion-sumergible">Bomba Sumergible BS-200</option>
+                            <option value="seccion-autoaspirante">Bomba Autoaspirante BA-150</option>
+                            <option value="seccion-diesel">Bomba Diésel BD-300</option>
+                            <option value="seccion-presion">Bomba Presión BP-180</option>
+                            <option value="seccion-industrial">Bomba Industrial BI-500</option>
+                        </optgroup>
+                        <optgroup label="Secciones de Apoyo">
+                            <option value="seccion-mecanizado">Mecanizado</option>
+                            <option value="seccion-pintura">Pintura</option>
+                            <option value="seccion-embalaje">Embalaje</option>
+                        </optgroup>
+                    </select>
+                    <small style="color:#777; font-size:0.85rem;">Bombas Omni - Fabricación de bombas de agua. El proyecto iniciará con picking en almacén de esa sección.</small>
+                </div>
+                <div class="form-group" id="internalFields" style="display:none;">
+                    <label>Etapa Inicial</label>
+                    <select id="orderEtapa">
+                        <option value="Picking">Picking (adquisición de piezas)</option>
+                        <option value="Corte">Corte</option>
+                        <option value="Ensamble">Ensamble</option>
+                        <option value="Pintura">Pintura</option>
+                        <option value="Inspección">Inspección</option>
+                        <option value="Empaque">Empaque</option>
+                    </select>
+                </div>
+                <div class="form-group" id="externalFields" style="display:none;">
+                    <label>Proveedor / Tercero *</label>
+                    <input type="text" id="orderProveedor" placeholder="Nombre del proveedor">
+                </div>
+                <div class="form-group">
+                    <label>Fecha Prevista *</label>
+                    <input type="date" id="orderFecha" required>
+                </div>
+                <div class="form-group">
+                    <label>Responsable</label>
+                    <input type="text" id="orderResponsable" placeholder="Nombre del responsable">
+                </div>
+                <div class="form-group">
+                    <label>Notas</label>
+                    <textarea id="orderNotas" rows="3" placeholder="Información adicional..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeNewOrderModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear Orden</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Asistentes flotantes -->
+    <script defer src="/static/assistant.js"></script>
+    <script defer src="/static/assistant-basic-panel.js"></script>
+    <script defer src="/static/voice-assistant-widget.js"></script>
+    <script defer src="/static/voice-widget.js"></script>
+
+    <!-- Modal Detalle Orden (inline en /app/produccion) -->
+    <div class="modal" id="orderDetailModal">
+        <div class="modal-content" id="orderDetailContent" style="max-width: 900px;">
+            <!-- Contenido cargado dinámicamente -->
+        </div>
+    </div>
+
+    <script>
+        let allOrdersInternas = [];
+        let allOrdersExternas = [];
+        let allAlertas = [];
+            tabElement.classList.add('active');
+            
+            // Load data based on tab
+            if (tabName === 'internas') {
+                if (allOrdersInternas.length === 0) loadOrdeneInternas();
+                else renderOrdeneInternas();
+            } else if (tabName === 'externas') {
+                if (allOrdersExternas.length === 0) loadOrdeneExternas();
+                else renderOrdeneExternas();
+            } else if (tabName === 'alertas') {
+                if (allAlertas.length === 0) loadAlertas();
+                else renderAlertas();
+            }
+        }
+
+        async function loadOrdeneInternas() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    allOrdersInternas = [];
+                    renderOrdeneInternas();
+                    return;
+                }
+                const resAuth = await fetch('/api/produccion-ordenes/', { headers: { 'Authorization': `Bearer ${token}` } });
+                allOrdersInternas = resAuth.ok ? (await resAuth.json()) : [];
+                renderOrdeneInternas();
+            } catch (err) {
+                console.error('Error loading internal orders:', err);
+                document.getElementById('table-internas').innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Error al cargar órdenes</td></tr>';
+            }
+        }
+
+        function renderOrdeneInternas() {
+            const tbody = document.getElementById('table-internas');
+            let html = '';
+            
+            allOrdersInternas.forEach(orden => {
+                // Normalize fields between auth and demo endpoints
+                const numero = orden.numero || '-';
+                const producto = orden.producto_nombre || orden.producto || '-';
+                const avance = (orden.porcentaje_completado !== undefined) ? orden.porcentaje_completado : (orden.avance || 0);
+                const estado = orden.estado || 'planificada';
+                const estadoClass = estado === 'en_proceso' ? 'status-warn' : (estado === 'completada' ? 'status-ok' : 'status-warn');
+                const estadoLabel = estado.replace('_', ' ');
+                const etapa = (orden.total_operaciones !== undefined) ? `${orden.total_operaciones} ops` : (orden.etapa || '-');
+                const ordenId = orden.id;
+
+                html += `
+                    <tr>
+                        <td>${numero}</td>
+                        <td>${producto}</td>
+                        <td>${etapa}</td>
+                        <td><span style="font-weight:700;color:var(--brand-primary);">${avance}%</span></td>
+                        <td><span class="status ${estadoClass}">${estadoLabel}</span></td>
+                        <td><button class="action-btn" onclick="goToOrdenDetalle(${ordenId})">Detalle</button></td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html || '<tr><td colspan="6" style="text-align:center;">Sin órdenes</td></tr>';
+        }
+
+        // Abre detalle en el mismo dashboard (sin navegar a otra página)
+        async function goToOrdenDetalle(ordenId) {
+            if (!ordenId) return;
+            await openOrderDetailModal(ordenId);
+        }
+
+        async function loadOrdeneExternas() {
+            try {
+                const res = await fetch('/api/produccion/ordenes-externas');
+                allOrdersExternas = await res.json();
+                renderOrdeneExternas();
+            } catch (err) {
+                console.error('Error loading external orders:', err);
+                document.getElementById('timeline-externas').innerHTML = '<div style="text-align:center; color:red;">Error al cargar órdenes</div>';
+            }
+        }
+
+        // ========= MODAL DETALLE ORDEN (EN ESTA PÁGINA) =========
+        async function openOrderDetailModal(ordenId) {
+            const modal = document.getElementById('orderDetailModal');
+            const content = document.getElementById('orderDetailContent');
+            modal.classList.add('open');
+            content.innerHTML = '<div style="padding:20px; text-align:center; color:var(--gray-600);">Cargando detalle...</div>';
+
+            try {
+                const detalle = await fetchOrderDetailInline(ordenId);
+                if (!detalle) {
+                    content.innerHTML = '<div style="padding:20px; text-align:center; color:red;">No se pudo cargar el detalle</div>';
+                    return;
+                }
+
+                const operacionesHTML = (detalle.operaciones || []).map(op => `
+                    <div style="padding:6px 0; border-bottom:1px solid var(--gray-100); font-size:13px; display:flex; justify-content:space-between;">
+                        <span>Op ${op.secuencia || ''}</span>
+                        <span>${op.estado || 'pendiente'}${op.duracion_estimada ? ' • ' + op.duracion_estimada + ' min' : ''}</span>
+                    </div>
+                `).join('') || '<div style="color:var(--gray-400);">Sin operaciones</div>';
+
+                const movimientosHTML = (detalle.movimientos_material || []).map(mov => `
+                    <div style="padding:6px 0; border-bottom:1px solid var(--gray-100); font-size:13px; display:flex; justify-content:space-between;">
+                        <span>${mov.tipo || 'Movimiento'}</span>
+                        <span>${mov.cantidad || 0} ${mov.unidad || ''} • ${mov.producto_nombre || ''}</span>
+                    </div>
+                `).join('') || '<div style="color:var(--gray-400);">Sin movimientos</div>';
+
+                content.innerHTML = `
+                    <div style="padding:20px; max-width:900px;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:12px;">
+                            <div>
+                                <h2 style="margin:0; font-size:20px;">${detalle.numero}</h2>
+                                <p style="margin:4px 0; color:var(--gray-600);">${detalle.producto_nombre || ''}</p>
+                                <p style="margin:0; color:var(--gray-500); font-size:13px;">Venta: ${detalle.venta_numero || detalle.venta_id || 'N/A'} • Cliente: ${detalle.cliente_nombre || 'N/A'}</p>
+                            </div>
+                            <span class="status status-${detalle.estado || 'planificada'}">${(detalle.estado || '').replace('_',' ')}</span>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin-bottom:16px;">
+                            <div style="background:#f8fafc; border:1px solid var(--gray-200); border-radius:10px; padding:12px;">
+                                <div style="font-size:13px; color:var(--gray-500);">Cantidad</div>
+                                <div style="font-weight:700; font-size:18px;">${detalle.cantidad_completada || 0} / ${detalle.cantidad_ordenada || 0}</div>
+                            </div>
+                            <div style="background:#f8fafc; border:1px solid var(--gray-200); border-radius:10px; padding:12px;">
+                                <div style="font-size:13px; color:var(--gray-500);">Prioridad</div>
+                                <div style="font-weight:700; text-transform:capitalize;">${detalle.prioridad || 'N/A'}</div>
+                            </div>
+                            <div style="background:#f8fafc; border:1px solid var(--gray-200); border-radius:10px; padding:12px;">
+                                <div style="font-size:13px; color:var(--gray-500);">Progreso</div>
+                                <div style="font-weight:700;">${detalle.porcentaje_completado || 0}%</div>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom:16px;">
+                            <h3 style="margin:0 0 8px 0; color:var(--gray-900);">Operaciones</h3>
+                            ${operacionesHTML}
+                        </div>
+
+                        <div style="margin-bottom:16px;">
+                            <h3 style="margin:0 0 8px 0; color:var(--gray-900);">Movimientos</h3>
+                            ${movimientosHTML}
+                        </div>
+
+                        <div style="margin-bottom:16px; padding:14px; border-radius:12px; background:#ecfdf3; border:1px solid #bbf7d0;">
+                            <h3 style="margin:0 0 10px 0; color:#15803d;">👷 Registro de Trabajo</h3>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+                                <input id="rtNombre" placeholder="Nombre del trabajador" style="padding:10px; border:1px solid var(--gray-200); border-radius:10px;" />
+                                <input id="rtHora" type="time" style="padding:10px; border:1px solid var(--gray-200); border-radius:10px;" />
+                            </div>
+                            <button onclick="registrarInicioProd(${detalle.id})" style="width:100%; padding:12px; border:none; border-radius:10px; background:#16a34a; color:white; font-weight:700; cursor:pointer;">✓ Registrar inicio de trabajo</button>
+                        </div>
+
+                        <div style="margin-bottom:16px; padding:14px; border-radius:12px; background:#fff7ed; border:1px solid #fed7aa;">
+                            <h3 style="margin:0 0 10px 0; color:#c2410c;">⚠️ Reportar Incidencia</h3>
+                            <label style="display:block; font-size:12px; font-weight:700; margin-bottom:6px; color:#92400e;">Tipo de Incidencia</label>
+                            <select id="incTipo" style="width:100%; padding:10px; border:1px solid var(--gray-200); border-radius:10px; margin-bottom:10px;">
+                                <option value="">Seleccionar...</option>
+                                <option value="defecto_material">Defecto en material</option>
+                                <option value="herramienta_rota">Herramienta rota</option>
+                                <option value="equipo_falla">Falla de equipo</option>
+                                <option value="material_insuficiente">Material insuficiente</option>
+                                <option value="retraso_planificacion">Retraso en planificación</option>
+                                <option value="problema_calidad">Problema de calidad</option>
+                                <option value="accidente_seguridad">Accidente/Seguridad</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                            <textarea id="incDesc" rows="3" placeholder="Describe la incidencia en detalle..." style="width:100%; padding:10px; border:1px solid var(--gray-200); border-radius:10px;"></textarea>
+                            <button onclick="reportarIncidenciaProd(${detalle.id})" style="width:100%; margin-top:10px; padding:12px; border:none; border-radius:10px; background:var(--color-warning); color:white; font-weight:700; cursor:pointer;">🔔 Reportar Incidencia</button>
+                        </div>
+
+                        <div style="margin-bottom:16px; padding:14px; border-radius:12px; background:#e0f2fe; border:1px solid #bfdbfe;">
+                            <h3 style="margin:0 0 10px 0; color:#1d4ed8;">📦 Solicitar Material/Repuesto</h3>
+                            <input id="matProd" placeholder="Descripción del material" style="width:100%; padding:10px; border:1px solid var(--gray-200); border-radius:10px; margin-bottom:10px;" />
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+                                <input id="matCant" type="number" step="0.1" placeholder="Cantidad" style="padding:10px; border:1px solid var(--gray-200); border-radius:10px;" />
+                                <select id="matUrg" style="padding:10px; border:1px solid var(--gray-200); border-radius:10px;">
+                                    <option value="normal">Normal</option>
+                                    <option value="urgente">Urgente</option>
+                                    <option value="critica">Crítica</option>
+                                </select>
+                            </div>
+                            <textarea id="matMotivo" rows="3" placeholder="¿Por qué se necesita este material?" style="width:100%; padding:10px; border:1px solid var(--gray-200); border-radius:10px;"></textarea>
+                            <button onclick="solicitarMaterialProd(${detalle.id})" style="width:100%; margin-top:10px; padding:12px; border:none; border-radius:10px; background:var(--color-info-dark); color:white; font-weight:700; cursor:pointer;">✉️ Enviar Solicitud al Almacén</button>
+                        </div>
+
+                        <div style="margin-bottom:16px; padding:14px; border-radius:12px; background:#f3e8ff; border:1px solid #e9d5ff;">
+                            <h3 style="margin:0 0 10px 0; color:#6b21a8;">🛒 Compras Asociadas a esta Orden</h3>
+                            <div id="comprasInline" style="color:var(--gray-500); font-size:14px; margin-bottom:10px;">Cargando compras...</div>
+                            <button onclick="verComprasAsociadas(${detalle.id})" style="width:100%; padding:12px; border:none; border-radius:10px; background:#7c3aed; color:white; font-weight:700; cursor:pointer;">👁️ Ver Detalles de Compras</button>
+                        </div>
+
+                        <div style="margin-bottom:16px; padding:14px; border-radius:12px; background:var(--color-danger-light); border:1px solid #fecdd3;">
+                            <h3 style="margin:0 0 10px 0; color:#b91c1c;">❌ Gestión de Faltantes</h3>
+                            <div id="faltantesInline" style="color:var(--gray-500); font-size:14px; margin-bottom:10px;">Sin faltantes registrados</div>
+                            <button onclick="registrarFaltanteProd(${detalle.id})" style="width:100%; padding:12px; border:none; border-radius:10px; background:var(--color-danger); color:white; font-weight:700; cursor:pointer;">+ Registrar Faltante</button>
+                        </div>
+
+                        <div style="display:flex; gap:10px;">
+                            <button onclick="closeOrderDetailModal()" style="flex:1; padding:12px; border:none; border-radius:10px; background:var(--gray-900); color:white; font-weight:700; cursor:pointer;">Cerrar</button>
+                        </div>
+                    </div>
+                `;
+
+            } catch (e) {
+                console.error(e);
+                content.innerHTML = '<div style="padding:20px; text-align:center; color:red;">Error al cargar el detalle</div>';
+            }
+        }
+
+        function closeOrderDetailModal() {
+            document.getElementById('orderDetailModal').classList.remove('open');
+        }
+
+        async function fetchOrderDetailInline(id) {
+            const token = localStorage.getItem('token');
+            if (!token) return null;
+            try {
+                const res = await fetch(`/api/produccion-ordenes/${id}`, { headers: { 'Authorization': `Bearer ${token}` } });
+                if (res.ok) return await res.json();
+            } catch (_) {}
+            return null;
+        }
+
+        // Acciones (llaman a endpoints; si no existen mostrar aviso)
+        async function registrarInicioProd(id) {
+            const nombre = document.getElementById('rtNombre').value.trim();
+            const hora = document.getElementById('rtHora').value;
+            if (!nombre || !hora) { alert('Completa nombre y hora.'); return; }
+            try {
+                const res = await fetch(`/api/produccion-ordenes/${id}/registrar-inicio`, {
+                    method: 'POST', headers: { 'Content-Type':'application/json' },
+                    body: JSON.stringify({ trabajador_nombre: nombre, hora_inicio: hora, fecha: new Date().toISOString().split('T')[0] })
+                });
+                if (res.ok) alert('Inicio registrado'); else alert('Endpoint no implementado o error');
+            } catch { alert('Endpoint no implementado'); }
+        }
+
+        async function reportarIncidenciaProd(id) {
+            const tipo = document.getElementById('incTipo').value;
+            const desc = document.getElementById('incDesc').value.trim();
+            if (!tipo || !desc) { alert('Completa tipo y descripción.'); return; }
+            try {
+                const res = await fetch(`/api/produccion-ordenes/${id}/reportar-incidencia`, {
+                    method: 'POST', headers: { 'Content-Type':'application/json' },
+                    body: JSON.stringify({ tipo_incidencia: tipo, descripcion: desc, fecha_reporte: new Date().toISOString() })
+                });
+                if (res.ok) alert('Incidencia reportada'); else alert('Endpoint no implementado o error');
+            } catch { alert('Endpoint no implementado'); }
+        }
+
+        async function solicitarMaterialProd(id) {
+            const prod = document.getElementById('matProd').value.trim();
+            const cant = document.getElementById('matCant').value;
+            const urg = document.getElementById('matUrg').value;
+            const mot = document.getElementById('matMotivo').value.trim();
+            if (!prod || !cant || !mot) { alert('Completa producto, cantidad y motivo.'); return; }
+            try {
+                const res = await fetch(`/api/produccion-ordenes/${id}/solicitar-material`, {
+                    method: 'POST', headers: { 'Content-Type':'application/json' },
+                    body: JSON.stringify({ producto_descripcion: prod, cantidad: parseFloat(cant), urgencia: urg, motivo: mot, fecha_solicitud: new Date().toISOString() })
+                });
+                if (res.ok) alert('Solicitud enviada'); else alert('Endpoint no implementado o error');
+            } catch { alert('Endpoint no implementado'); }
+        }
+
+        function verComprasAsociadas(id) {
+            alert('Endpoint compras-asociadas no implementado todavía.');
+        }
+
+        function registrarFaltanteProd(id) {
+            alert('Endpoint faltantes no implementado todavía.');
+        }
+
+        function renderOrdeneExternas() {
+            const timeline = document.getElementById('timeline-externas');
+            let html = '';
+            
+            allOrdersExternas.forEach(orden => {
+                const etaText = orden.eta ? new Date(orden.eta).toLocaleDateString('es-ES') : 'N/A';
+                html += `
+                    <div class="timeline-item">
+                        <div class="title">${orden.numero} → ${orden.proveedor}</div>
+                        <div class="meta">Estado: ${orden.estado} | ETA: ${etaText}</div>
+                    </div>
+                `;
+            });
+            
+            timeline.innerHTML = html || '<div style="text-align:center; color:#999;">Sin órdenes externas</div>';
+        }
+
+        async function loadAlertas() {
+            try {
+                const res = await fetch('/api/produccion/alertas');
+                allAlertas = await res.json();
+                renderAlertas();
+            } catch (err) {
+                console.error('Error loading alerts:', err);
+                document.getElementById('table-alertas').innerHTML = '<tr><td colspan="4" style="text-align:center; color:red;">Error al cargar alertas</td></tr>';
+            }
+        }
+
+        function renderAlertas() {
+            const tbody = document.getElementById('table-alertas');
+            let html = '';
+            
+            allAlertas.forEach(alerta => {
+                const severClass = alerta.severidad === 'media' ? 'status-warn' : 'status-bad';
+                html += `
+                    <tr>
+                        <td>${alerta.orden}</td>
+                        <td>${alerta.motivo}</td>
+                        <td><span class="status ${severClass}">${alerta.severidad.charAt(0).toUpperCase() + alerta.severidad.slice(1)}</span></td>
+                        <td><button class="action-btn" onclick="alert('Alerta: ${alerta.motivo}')">Ver</button></td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html || '<tr><td colspan="4" style="text-align:center;">Sin alertas</td></tr>';
+        }
+
+        // Modal functions
+        function showNewOrderModal() {
+            document.getElementById('newOrderModal').classList.add('open');
+        }
+
+        function closeNewOrderModal() {
+            document.getElementById('newOrderModal').classList.remove('open');
+            document.getElementById('newOrderForm').reset();
+            document.getElementById('internalFields').style.display = 'none';
+            document.getElementById('externalFields').style.display = 'none';
+        }
+
+        // Show/hide fields based on order type
+        document.getElementById('orderType').addEventListener('change', function(e) {
+            const internalFields = document.getElementById('internalFields');
+            const externalFields = document.getElementById('externalFields');
+            
+            if (e.target.value === 'interna') {
+                internalFields.style.display = 'block';
+                externalFields.style.display = 'none';
+            } else if (e.target.value === 'externa') {
+                internalFields.style.display = 'none';
+                externalFields.style.display = 'block';
+            } else {
+                internalFields.style.display = 'none';
+                externalFields.style.display = 'none';
+            }
+        });
+
+        async function createNewOrder(event) {
+            event.preventDefault();
+            
+            const orderType = document.getElementById('orderType').value;
+            const producto = document.getElementById('orderProduct').value;
+            const seccion = document.getElementById('orderSeccion').value;
+            const fecha = document.getElementById('orderFecha').value;
+            const responsable = document.getElementById('orderResponsable').value;
+            const notas = document.getElementById('orderNotas').value;
+            
+            const newOrder = {
+                producto,
+                seccion_produccion: seccion,
+                fecha_inicio: new Date().toISOString(),
+                fecha_prevista: new Date(fecha).toISOString(),
+                responsable: responsable || 'Sin asignar',
+            };
+            
+            if (orderType === 'interna') {
+                alert('Para crear órdenes internas aquí, selecciona una Venta, BOM y Producto en Producción Órdenes o aprueba una venta POS. Esta vista no usa endpoints demo.');
+                return;
+            } else if (orderType === 'externa') {
+                const proveedor = document.getElementById('orderProveedor').value;
+                newOrder.proveedor = proveedor;
+                newOrder.estado = 'pendiente';
+                newOrder.fecha_envio = new Date().toISOString();
+                newOrder.eta = new Date(fecha).toISOString();
+                newOrder.notas = notas;
+                
+                alert('✅ Orden externa creada: ' + newOrder.numero + '\nProveedor: ' + proveedor);
+                closeNewOrderModal();
+                // In real implementation, would POST to /api/produccion/ordenes-externas
+            }
+        }
+
+        function mapSeccionToProductoCodigo(seccion) {
+            switch (seccion) {
+                case 'seccion-centrifuga': return 'BC-100-001';
+                case 'seccion-sumergible': return 'BS-200-001';
+                case 'seccion-autoaspirante': return 'BA-150-001';
+                case 'seccion-diesel': return 'BD-300-001';
+                case 'seccion-presion': return 'BP-180-001';
+                case 'seccion-industrial': return 'BI-500-001';
+                default: return null;
+            }
+        }
+
+        // Close modal on outside click
+        document.getElementById('newOrderModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeNewOrderModal();
+            }
+        });
+        // Gating por módulo habilitado
+        async function verificarModuloProduccion() {
+            try {
+                const resp = await fetch('/api/organization/modules-config', {
+                    headers: { 'Authorization': 'Bearer ' + (localStorage.getItem('token') || '') }
+                });
+                if (!resp.ok) return; // Silencioso si no autenticado
+                const data = await resp.json();
+                const enabled = data.enabled_modules || [];
+                const activo = enabled.includes('produccion');
+                const msg = document.getElementById('moduleDisabledMsg');
+                if (!activo) {
+                    msg.style.display = 'block';
+                    const controls = document.getElementById('controlsSectionTop');
+                    if (controls) controls.style.display = 'none';
+                    const stats = document.querySelector('.stats');
+                    if (stats) stats.style.display = 'none';
+                }
+            } catch (e) {
+                console.warn('No se pudo verificar módulos');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', verificarModuloProduccion);
+    </script>
+    <script src="/static/js/module-tutorial.js?v=2"></script>
+</body>
+</html>

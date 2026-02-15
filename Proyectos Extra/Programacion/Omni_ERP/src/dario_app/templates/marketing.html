@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing - {{ title }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <link rel="stylesheet" href="/static/css/tutorial.css">
+    <style>
+        .marketing-container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color-light);
+        }
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            background: white;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab:hover {
+            background: inherit;
+        }
+        .tab.active {
+            border-bottom-color: var(--color-info-dark);
+            color: var(--color-info-dark);
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .campaign-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .campaign-card:hover {
+            background: inherit;
+            box-shadow: none;
+        }
+        .campaign-card.active {
+            background: var(--color-info-light);
+            border-color: var(--color-info-dark);
+        }
+        .campaign-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .campaign-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status-draft { background: var(--color-warning); color: var(--text-primary); }
+        .status-active { background: var(--color-success); color: white; }
+        .status-completed { background: var(--gray-500); color: white; }
+        .status-canceled { background: var(--color-danger); color: white; }
+        .campaign-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .metric {
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--color-info-dark);
+        }
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: var(--color-info-dark);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--color-info-dark);
+        }
+        .btn-success {
+            background: var(--color-success);
+            color: white;
+        }
+        .btn-success:hover {
+            background: var(--color-success);
+        }
+        .btn-secondary {
+            background: var(--gray-500);
+            color: white;
+        }
+        .template-editor {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .template-preview {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 20px;
+            margin-top: 15px;
+            min-height: 300px;
+        }
+        .list-item {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .list-item-name {
+            font-weight: bold;
+        }
+        .journey-canvas {
+            background: var(--bg-tertiary);
+            border: 2px dashed var(--border-color-light);
+            border-radius: 8px;
+            padding: 30px;
+            min-height: 400px;
+            text-align: center;
+            color: var(--text-tertiary);
+        }
+        .lead-score-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .grade-A { color: var(--color-success); }
+        .grade-B { color: var(--color-info); }
+        .grade-C { color: var(--color-warning); }
+        .grade-D { color: var(--brand-secondary); }
+        .grade-F { color: var(--color-danger); }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    {% include '_assistant_panel.html' %}
+
+    <div class="marketing-container">
+        <h1>📢 Marketing</h1>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('campaigns')">Campañas</button>
+            <button class="tab" onclick="switchTab('templates')">Templates Email</button>
+            <button class="tab" onclick="switchTab('lists')">Listas Marketing</button>
+            <button class="tab" onclick="switchTab('journeys')">Customer Journeys</button>
+            <button class="tab" onclick="switchTab('scoring')">Lead Scoring</button>
+        </div>
+
+        <!-- Campaigns Tab -->
+        <div id="campaigns-tab" class="tab-content active">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Campañas de Marketing</h2>
+                <button class="btn btn-primary" onclick="showCampaignForm()">+ Nueva Campaña</button>
+            </div>
+
+            <div id="campaign-form" style="display: none; background: var(--bg-tertiary); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <h3>Nueva Campaña</h3>
+                <div class="form-group">
+                    <label>Nombre:</label>
+                    <input type="text" id="campaign-name">
+                </div>
+                <div class="form-group">
+                    <label>Descripción:</label>
+                    <textarea id="campaign-desc"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Tipo:</label>
+                    <select id="campaign-type">
+                        <option value="email">Email</option>
+                        <option value="social">Redes Sociales</option>
+                        <option value="event">Evento</option>
+                        <option value="webinar">Webinar</option>
+                    </select>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Fecha Inicio:</label>
+                        <input type="date" id="campaign-start">
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha Fin:</label>
+                        <input type="date" id="campaign-end">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Presupuesto:</label>
+                    <input type="number" id="campaign-budget" step="0.01">
+                </div>
+                <button class="btn btn-primary" onclick="createCampaign()">Crear Campaña</button>
+                <button class="btn btn-secondary" onclick="hideCampaignForm()">Cancelar</button>
+            </div>
+
+            <div id="campaigns-list"></div>
+        </div>
+
+        <!-- Templates Tab -->
+        <div id="templates-tab" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Templates de Email</h2>
+                <button class="btn btn-primary" onclick="showTemplateForm()">+ Nuevo Template</button>
+            </div>
+
+            <div id="template-form" style="display: none;">
+                <div class="template-editor">
+                    <h3>Nuevo Template de Email</h3>
+                    <div class="form-group">
+                        <label>Nombre:</label>
+                        <input type="text" id="template-name">
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo:</label>
+                        <select id="template-type">
+                            <option value="newsletter">Newsletter</option>
+                            <option value="promo">Promocional</option>
+                            <option value="transactional">Transaccional</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Asunto:</label>
+                        <input type="text" id="template-subject">
+                    </div>
+                    <div class="form-group">
+                        <label>Contenido HTML:</label>
+                        <textarea id="template-html" style="min-height: 200px; font-family: monospace;"></textarea>
+                        <small>Variables disponibles: {{nombre}}, {{email}}, {{empresa}}</small>
+                    </div>
+                    <button class="btn btn-primary" onclick="createTemplate()">Guardar Template</button>
+                    <button class="btn btn-secondary" onclick="hideTemplateForm()">Cancelar</button>
+                </div>
+            </div>
+
+            <div id="templates-list"></div>
+        </div>
+
+        <!-- Lists Tab -->
+        <div id="lists-tab" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Listas de Marketing</h2>
+                <button class="btn btn-primary" onclick="showListForm()">+ Nueva Lista</button>
+            </div>
+
+            <div id="list-form" style="display: none; background: var(--bg-tertiary); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <h3>Nueva Lista de Marketing</h3>
+                <div class="form-group">
+                    <label>Nombre:</label>
+                    <input type="text" id="list-name">
+                </div>
+                <div class="form-group">
+                    <label>Descripción:</label>
+                    <textarea id="list-desc"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Tipo:</label>
+                    <select id="list-type">
+                        <option value="static">Estática</option>
+                        <option value="dynamic">Dinámica</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="createList()">Crear Lista</button>
+                <button class="btn btn-secondary" onclick="hideListForm()">Cancelar</button>
+            </div>
+
+            <div id="lists-list"></div>
+        </div>
+
+        <!-- Customer Journeys Tab -->
+        <div id="journeys-tab" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Customer Journeys</h2>
+                <button class="btn btn-primary" onclick="showJourneyForm()">+ Nuevo Journey</button>
+            </div>
+
+            <div id="journey-form" style="display: none; background: var(--bg-tertiary); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <h3>Nuevo Customer Journey</h3>
+                <div class="form-group">
+                    <label>Nombre:</label>
+                    <input type="text" id="journey-name">
+                </div>
+                <div class="form-group">
+                    <label>Descripción:</label>
+                    <textarea id="journey-desc"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Trigger de Entrada:</label>
+                    <select id="journey-trigger">
+                        <option value="form_submit">Envío de Formulario</option>
+                        <option value="lead_created">Lead Creado</option>
+                        <option value="opportunity_created">Oportunidad Creada</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="createJourney()">Crear Journey</button>
+                <button class="btn btn-secondary" onclick="hideJourneyForm()">Cancelar</button>
+            </div>
+
+            <div id="journeys-list"></div>
+        </div>
+
+        <!-- Lead Scoring Tab -->
+        <div id="scoring-tab" class="tab-content">
+            <h2>Lead Scoring</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">Sistema de puntuación automática de leads basado en comportamiento y demografía.</p>
+            
+            <div id="scores-list"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentCampaign = null;
+
+        // Tab switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+
+            // Load data for the active tab
+            if (tabName === 'campaigns') loadCampaigns();
+            else if (tabName === 'templates') loadTemplates();
+            else if (tabName === 'lists') loadLists();
+            else if (tabName === 'journeys') loadJourneys();
+            else if (tabName === 'scoring') loadScores();
+        }
+
+        // Campaigns
+        async function loadCampaigns() {
+            const response = await fetch('/api/marketing/campaigns');
+            const campaigns = await response.json();
+            
+            const html = campaigns.map(c => `
+                <div class="campaign-card ${currentCampaign?.id === c.id ? 'active' : ''}" onclick="selectCampaign(${c.id})">
+                    <div class="campaign-header">
+                        <div class="campaign-title">${c.name}</div>
+                        <span class="status-badge status-${c.status}">${c.status.toUpperCase()}</span>
+                    </div>
+                    <div>${c.descripcion || ''}</div>
+                    <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">
+                        ${c.campaign_code} | ${c.campaign_type} | Presupuesto: €${c.budget}
+                    </div>
+                    ${c.status === 'active' ? `
+                        <div class="campaign-metrics">
+                            <div class="metric">
+                                <div class="metric-value">${c.total_sent}</div>
+                                <div class="metric-label">Enviados</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">${c.total_opened}</div>
+                                <div class="metric-label">Abiertos</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">${c.total_clicked}</div>
+                                <div class="metric-label">Clicks</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">${c.total_leads_generated}</div>
+                                <div class="metric-label">Leads</div>
+                            </div>
+                        </div>
+                    ` : ''}
+                    ${c.status === 'draft' ? `
+                        <button class="btn btn-success" style="margin-top: 10px;" onclick="event.stopPropagation(); activateCampaign(${c.id})">Activar Campaña</button>
+                    ` : ''}
+                </div>
+            `).join('');
+            
+            document.getElementById('campaigns-list').innerHTML = html;
+        }
+
+        function showCampaignForm() {
+            document.getElementById('campaign-form').style.display = 'block';
+        }
+
+        function hideCampaignForm() {
+            document.getElementById('campaign-form').style.display = 'none';
+        }
+
+        async function createCampaign() {
+            const payload = {
+                name: document.getElementById('campaign-name').value,
+                descripcion: document.getElementById('campaign-desc').value,
+                campaign_type: document.getElementById('campaign-type').value,
+                start_date: document.getElementById('campaign-start').value || null,
+                end_date: document.getElementById('campaign-end').value || null,
+                budget: parseFloat(document.getElementById('campaign-budget').value) || 0
+            };
+
+            const response = await fetch('/api/marketing/campaigns', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                hideCampaignForm();
+                loadCampaigns();
+                // Clear form
+                document.getElementById('campaign-name').value = '';
+                document.getElementById('campaign-desc').value = '';
+            }
+        }
+
+        async function activateCampaign(id) {
+            const response = await fetch(`/api/marketing/campaigns/${id}/activate`, {
+                method: 'POST'
+            });
+            if (response.ok) {
+                loadCampaigns();
+            }
+        }
+
+        function selectCampaign(id) {
+            currentCampaign = { id };
+            loadCampaigns();
+        }
+
+        // Templates
+        async function loadTemplates() {
+            const response = await fetch('/api/marketing/email-templates');
+            const templates = await response.json();
+            
+            const html = templates.map(t => `
+                <div class="list-item">
+                    <div>
+                        <div class="list-item-name">${t.name}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">${t.template_code} | ${t.template_type} | ${t.subject}</div>
+                    </div>
+                    <span class="status-badge status-${t.status}">${t.status.toUpperCase()}</span>
+                </div>
+            `).join('');
+            
+            document.getElementById('templates-list').innerHTML = html;
+        }
+
+        function showTemplateForm() {
+            document.getElementById('template-form').style.display = 'block';
+        }
+
+        function hideTemplateForm() {
+            document.getElementById('template-form').style.display = 'none';
+        }
+
+        async function createTemplate() {
+            const payload = {
+                name: document.getElementById('template-name').value,
+                template_type: document.getElementById('template-type').value,
+                subject: document.getElementById('template-subject').value,
+                html_content: document.getElementById('template-html').value
+            };
+
+            const response = await fetch('/api/marketing/email-templates', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                hideTemplateForm();
+                loadTemplates();
+                document.getElementById('template-name').value = '';
+                document.getElementById('template-subject').value = '';
+                document.getElementById('template-html').value = '';
+            }
+        }
+
+        // Lists
+        async function loadLists() {
+            const response = await fetch('/api/marketing/lists');
+            const lists = await response.json();
+            
+            const html = lists.map(l => `
+                <div class="list-item">
+                    <div>
+                        <div class="list-item-name">${l.name}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">${l.list_code} | ${l.list_type} | ${l.member_count} miembros</div>
+                    </div>
+                    <span class="status-badge status-${l.status}">${l.status.toUpperCase()}</span>
+                </div>
+            `).join('');
+            
+            document.getElementById('lists-list').innerHTML = html;
+        }
+
+        function showListForm() {
+            document.getElementById('list-form').style.display = 'block';
+        }
+
+        function hideListForm() {
+            document.getElementById('list-form').style.display = 'none';
+        }
+
+        async function createList() {
+            const payload = {
+                name: document.getElementById('list-name').value,
+                descripcion: document.getElementById('list-desc').value,
+                list_type: document.getElementById('list-type').value
+            };
+
+            const response = await fetch('/api/marketing/lists', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                hideListForm();
+                loadLists();
+                document.getElementById('list-name').value = '';
+                document.getElementById('list-desc').value = '';
+            }
+        }
+
+        // Customer Journeys
+        async function loadJourneys() {
+            const response = await fetch('/api/marketing/customer-journeys');
+            const journeys = await response.json();
+            
+            const html = journeys.map(j => `
+                <div class="list-item">
+                    <div>
+                        <div class="list-item-name">${j.name}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">
+                            ${j.journey_code} | ${j.total_participants} participantes | ${j.active_participants} activos
+                        </div>
+                    </div>
+                    <div>
+                        <span class="status-badge status-${j.status}">${j.status.toUpperCase()}</span>
+                        ${j.status === 'draft' ? `
+                            <button class="btn btn-success" style="margin-left: 10px;" onclick="activateJourney(${j.id})">Activar</button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('journeys-list').innerHTML = html;
+        }
+
+        function showJourneyForm() {
+            document.getElementById('journey-form').style.display = 'block';
+        }
+
+        function hideJourneyForm() {
+            document.getElementById('journey-form').style.display = 'none';
+        }
+
+        async function createJourney() {
+            const payload = {
+                name: document.getElementById('journey-name').value,
+                descripcion: document.getElementById('journey-desc').value,
+                entry_trigger: document.getElementById('journey-trigger').value
+            };
+
+            const response = await fetch('/api/marketing/customer-journeys', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                hideJourneyForm();
+                loadJourneys();
+                document.getElementById('journey-name').value = '';
+                document.getElementById('journey-desc').value = '';
+            }
+        }
+
+        async function activateJourney(id) {
+            const response = await fetch(`/api/marketing/customer-journeys/${id}/activate`, {
+                method: 'POST'
+            });
+            if (response.ok) {
+                loadJourneys();
+            }
+        }
+
+        // Lead Scoring
+        async function loadScores() {
+            const response = await fetch('/api/marketing/lead-scores');
+            const scores = await response.json();
+            
+            const html = scores.map(s => `
+                <div class="lead-score-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Lead ID: ${s.lead_id}</strong>
+                            <div style="font-size: 12px; color: var(--text-secondary);">
+                                Demográfico: ${s.demographic_score} | Comportamiento: ${s.behavioral_score}
+                            </div>
+                        </div>
+                        <div class="score-display grade-${s.grade || 'F'}">
+                            ${s.total_score}
+                            <div style="font-size: 24px;">${s.grade || 'F'}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('scores-list').innerHTML = html || '<p style="text-align: center; color: var(--text-tertiary);">No hay scores registrados</p>';
+        }
+
+        // Initial load
+        loadCampaigns();
+    </script>
+    <script src="/static/js/module-tutorial.js?v=2"></script>
+    <script defer src="/static/assistant.js?v=2"></script>
+    <script defer src="/static/assistant-basic-panel.js?v=2"></script>
+    <script defer src="/static/voice-widget.js?v=2"></script>
+</body>
+</html>

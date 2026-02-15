@@ -1,0 +1,6 @@
+theme: jekyll-theme-cayman
+title: Tienda Online DAM
+description: Proyecto de Bases de Datos — DAM
+exclude:
+  - "101-Ejercicios/**"
+  - "301-Resumen/**"

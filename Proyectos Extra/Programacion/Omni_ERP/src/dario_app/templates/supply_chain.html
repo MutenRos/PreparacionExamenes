@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Chain - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <style>
+        :root { /* Using global design tokens; no local overrides */ }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+                background: var(--bg-primary);
+                color: var(--text-primary);
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 28px;
+            position: sticky;
+            top: 0;
+            background: rgba(11,18,33,0.92);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+            z-index: 10;
+        }
+        .logo { font-weight: 700; letter-spacing: 0.6px; color: var(--brand-primary); }
+        .nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-left: 16px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+        }
+        .nav a:hover { border-color: var(--border); background: inherit; }
+        .page {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        h1 { margin: 0; font-size: 28px; }
+        p.lead { color: var(--text-secondary); margin-top: 6px; }
+        .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); margin-top: 20px; }
+        .card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 18px 18px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+        .card h2 { margin: 0 0 10px; font-size: 18px; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+        .card p.desc { margin: 0 0 14px; color: var(--text-secondary); font-size: 14px; }
+        label { display: block; margin-bottom: 6px; color: var(--text-secondary); font-weight: 600; font-size: 13px; }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        textarea { min-height: 80px; resize: vertical; }
+        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+        button {
+            border: none;
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
+            color: var(--text-inverse);
+            padding: 0 var(--spacing-lg);
+            height: 40px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+        button.secondary { background: transparent; color: var(--text-primary); border: 1px solid var(--border-color); }
+        .list { border: 1px solid var(--border-color); border-radius: 10px; padding: 10px; max-height: 240px; overflow-y: auto; background: var(--bg-tertiary); }
+        .list-item { padding: 8px 6px; border-bottom: 1px solid var(--border-color); font-size: 13px; }
+        .list-item:last-child { border-bottom: none; }
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 999px; font-size: 11px; background: var(--primary-light); color: var(--brand-primary); margin-left: 6px; }
+        .pill { padding: 4px 8px; border-radius: 8px; background: var(--primary-light); color: var(--brand-primary); font-size: 12px; margin-right: 6px; }
+        .status { display: inline-flex; align-items: center; gap: 6px; color: var(--text-secondary); font-size: 13px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand-primary); display: inline-block; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { color: var(--text-secondary); font-weight: 700; }
+        .inline { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        @media (max-width: 720px) { header { flex-direction: column; gap: 8px; align-items: flex-start; } }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+{% include '_assistant_panel.html' %}
+<header>
+    <div class="logo">⚡ Supply Chain</div>
+    <div class="nav">
+        <a href="/app/dashboard">← Volver al dashboard</a>
+        <a href="/api/enterprise/docs">API</a>
+    </div>
+</header>
+
+<main class="page">
+    <h1>Supply Chain Management</h1>
+    <p class="lead">MRP, políticas de reposición, landed cost y ubicaciones en una sola vista.</p>
+
+    <div class="grid">
+        <div class="card">
+            <h2>📡 Estado & Reorden</h2>
+            <p class="desc">Monitorea políticas activas y sugerencias de compra.</p>
+            <div class="inline" style="margin-bottom:10px;">
+                <span class="status"><span class="dot" id="dotReorder"></span><span id="reorderSummary">—</span></span>
+                <span class="badge" id="badgeNeeds">0 sugerencias</span>
+            </div>
+            <div class="list" id="reorderList"></div>
+            <button onclick="loadReorderCheck()">Actualizar sugerencias</button>
+        </div>
+
+        <div class="card">
+            <h2>⚙️ Políticas de reposición</h2>
+            <p class="desc">Define EOQ/reorder point con proveedor preferido.</p>
+            <div class="row">
+                <div><label>Producto ID</label><input id="policyProducto" type="number" placeholder="123"></div>
+                <div><label>Tipo</label>
+                    <select id="policyTipo">
+                        <option value="reorder_point">Reorder point</option>
+                        <option value="minmax">Min/Max</option>
+                        <option value="eoq">EOQ</option>
+                    </select>
+                </div>
+                <div><label>Reorder point</label><input id="policyROP" type="number" step="0.01"></div>
+                <div><label>Cantidad orden</label><input id="policyQty" type="number" step="0.01"></div>
+                <div><label>Safety stock</label><input id="policySafety" type="number" step="0.01"></div>
+                <div><label>Lead time (días)</label><input id="policyLead" type="number"></div>
+                <div><label>Proveedor preferido</label><input id="policySupplier" type="number" placeholder="ID opcional"></div>
+            </div>
+            <button onclick="createPolicy()">Crear política</button>
+            <div class="list" id="policyList" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="card">
+            <h2>📐 EOQ</h2>
+            <p class="desc">Calcula lote económico por producto.</p>
+            <div class="row">
+                <div><label>Demanda anual</label><input id="eoqDemand" type="number" step="0.01"></div>
+                <div><label>Coste pedido</label><input id="eoqOrdering" type="number" step="0.01"></div>
+                <div><label>% coste posesión</label><input id="eoqHolding" type="number" step="0.01"></div>
+                <div><label>Coste unitario</label><input id="eoqUnit" type="number" step="0.01"></div>
+            </div>
+            <div class="inline" id="eoqResult" style="margin-top:8px;color:var(--muted);">Sin cálculo.</div>
+            <button onclick="calculateEOQ()">Calcular EOQ</button>
+        </div>
+
+        <div class="card">
+            <h2>🧠 MRP</h2>
+            <p class="desc">Lanza el cálculo y revisa necesidades.</p>
+            <div class="row">
+                <div><label>Horizonte (días)</label><input id="mrpHorizon" type="number" value="90"></div>
+            </div>
+            <button onclick="runMRP()">Ejecutar MRP</button>
+            <div class="list" id="mrpRuns" style="margin-top:10px;"></div>
+            <div class="list" id="mrpRequirements" style="margin-top:10px; max-height:180px;"></div>
+        </div>
+
+        <div class="card">
+            <h2>🚢 Landed cost</h2>
+            <p class="desc">Reparte fletes y gastos sobre compras.</p>
+            <div class="row">
+                <div><label>Compra ID</label><input id="lcCompra" type="number"></div>
+                <div><label>Referencia envío</label><input id="lcRef" type="text" placeholder="BL/Tracking"></div>
+                <div><label>Fecha envío</label><input id="lcFecha" type="date"></div>
+            </div>
+            <button onclick="createLandedCost()">Crear cálculo</button>
+            <div class="row" style="margin-top:10px;">
+                <div><label>LC ID activo</label><input id="lcId" type="number" readonly></div>
+                <div><label>Tipo coste</label><input id="lcTipo" type="text" placeholder="Freight"></div>
+                <div><label>Importe</label><input id="lcImporte" type="number" step="0.01"></div>
+                <div><label>Proveedor ID</label><input id="lcProveedor" type="number" placeholder="Opcional"></div>
+                <div><label>Método</label>
+                    <select id="lcMetodo">
+                        <option value="by_value">Por valor</option>
+                        <option value="by_weight">Por peso</option>
+                        <option value="equal">Igualitario</option>
+                    </select>
+                </div>
+            </div>
+            <button onclick="addLandedCostLine()">Añadir línea</button>
+            <div class="inline" style="margin-top:8px;">
+                <button class="secondary" onclick="calculateLandedCost()">Calcular</button>
+                <button class="secondary" onclick="applyLandedCost()">Aplicar</button>
+                <button class="secondary" onclick="listLandedCosts()">Listar cálculos</button>
+            </div>
+            <div class="list" id="lcList" style="margin-top:10px; max-height:160px;"></div>
+        </div>
+
+        <div class="card">
+            <h2>🏭 Ubicaciones</h2>
+            <p class="desc">Altas rápidas y stock por ubicación.</p>
+            <div class="row">
+                <div><label>Código</label><input id="locCode" type="text" placeholder="MAD-01"></div>
+                <div><label>Nombre</label><input id="locName" type="text" placeholder="Almacén central"></div>
+                <div><label>Tipo</label>
+                    <select id="locType">
+                        <option value="warehouse">Warehouse</option>
+                        <option value="store">Store</option>
+                        <option value="yard">Yard</option>
+                    </select>
+                </div>
+                <div><label>Ciudad</label><input id="locCity" type="text" placeholder="Madrid"></div>
+            </div>
+            <button onclick="createLocation()">Crear ubicación</button>
+            <div class="list" id="locationList" style="margin-top:10px;"></div>
+            <div class="list" id="locationInventory" style="margin-top:10px; max-height:140px;"></div>
+        </div>
+    </div>
+</main>
+
+<script>
+const api = async (url, options = {}) => {
+    const opts = Object.assign({credentials:'include', headers:{'Content-Type':'application/json'}}, options);
+    const resp = await fetch(url, opts);
+    if (!resp.ok) {
+        const text = await resp.text();
+        throw new Error(text || resp.statusText);
+    }
+    const ct = resp.headers.get('content-type') || '';
+    return ct.includes('application/json') ? resp.json() : resp.text();
+};
+
+async function loadReorderCheck(){
+    try {
+        const data = await api('/api/supply-chain/reorder-check');
+        document.getElementById('reorderSummary').textContent = `${data.reorder_needed_count || 0} pendientes / ${data.total_policies || 0} políticas`;
+        document.getElementById('badgeNeeds').textContent = `${data.reorder_needed_count || 0} sugerencias`;
+        document.getElementById('dotReorder').style.background = (data.reorder_needed_count || 0) > 0 ? 'var(--color-warning)' : 'var(--color-success)';
+        const list = document.getElementById('reorderList');
+        list.innerHTML = (data.reorder_items || []).map(item => `<div class="list-item"><strong>${item.producto_codigo}</strong> · ${item.producto_nombre || ''}<br>Stock ${item.stock_actual}/${item.reorder_point} · Sugerido: ${item.order_quantity} · Acción: ${item.suggested_action}</div>`).join('') || '<div class="list-item" style="color:var(--muted)">Sin alertas</div>';
+    } catch (e) {
+        document.getElementById('reorderList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`;
+    }
+}
+
+async function loadPolicies(){
+    try {
+        const data = await api('/api/supply-chain/reorder-policies');
+        const list = document.getElementById('policyList');
+        list.innerHTML = data.map(p => `<div class="list-item"><span class="pill">${p.policy_type}</span><strong>${p.producto_codigo || p.producto_id}</strong> · ROP ${p.reorder_point} · Qty ${p.reorder_quantity} · SS ${p.safety_stock}</div>`).join('') || '<div class="list-item" style="color:var(--muted)">No hay políticas</div>';
+    } catch (e) {
+        document.getElementById('policyList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`;
+    }
+}
+
+async function createPolicy(){
+    try {
+        await api('/api/supply-chain/reorder-policies', {
+            method:'POST',
+            body: JSON.stringify({
+                producto_id: Number(document.getElementById('policyProducto').value),
+                policy_type: document.getElementById('policyTipo').value,
+                reorder_point: Number(document.getElementById('policyROP').value || 0),
+                reorder_quantity: Number(document.getElementById('policyQty').value || 0),
+                safety_stock: Number(document.getElementById('policySafety').value || 0),
+                lead_time_days: Number(document.getElementById('policyLead').value || 0),
+                preferred_supplier_id: document.getElementById('policySupplier').value ? Number(document.getElementById('policySupplier').value) : null
+            })
+        });
+        loadPolicies();
+        loadReorderCheck();
+    } catch (e) { alert(e.message); }
+}
+
+async function calculateEOQ(){
+    try {
+        const data = await api('/api/supply-chain/eoq/calculate', {
+            method:'POST',
+            body: JSON.stringify({
+                annual_demand: Number(document.getElementById('eoqDemand').value || 0),
+                ordering_cost: Number(document.getElementById('eoqOrdering').value || 0),
+                holding_cost_percent: Number(document.getElementById('eoqHolding').value || 0),
+                unit_cost: Number(document.getElementById('eoqUnit').value || 0)
+            })
+        });
+        document.getElementById('eoqResult').textContent = `EOQ: ${data.eoq || 0} unidades · Frecuencia: ${data.order_frequency_per_year || 0}/año`;
+    } catch (e) { document.getElementById('eoqResult').textContent = e.message; }
+}
+
+async function runMRP(){
+    try {
+        await api('/api/supply-chain/mrp/run', { method:'POST', body: JSON.stringify({ horizon_days: Number(document.getElementById('mrpHorizon').value || 90) }) });
+        loadMrpRuns();
+    } catch (e) { alert(e.message); }
+}
+
+async function loadMrpRuns(){
+    try {
+        const data = await api('/api/supply-chain/mrp/runs');
+        const list = document.getElementById('mrpRuns');
+        list.innerHTML = data.map(r => `<div class="list-item" onclick="loadRequirements(${r.id})" style="cursor:pointer"><strong>#${r.id}</strong> · ${new Date(r.run_date).toLocaleString()} · ${r.status} · reqs: ${r.total_requirements}</div>`).join('') || '<div class="list-item" style="color:var(--muted)">Sin ejecuciones</div>';
+    } catch (e) { document.getElementById('mrpRuns').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+}
+
+async function loadRequirements(runId){
+    try {
+        const data = await api(`/api/supply-chain/mrp/runs/${runId}/requirements?limit=50`);
+        const list = document.getElementById('mrpRequirements');
+        list.innerHTML = data.map(req => `<div class="list-item"><strong>${req.producto_codigo}</strong> · Necesario ${req.required_quantity} antes de ${new Date(req.required_date).toLocaleDateString()} · Acción: ${req.suggested_action} (${req.order_quantity || 0})</div>`).join('') || '<div class="list-item" style="color:var(--muted)">Sin requerimientos</div>';
+    } catch (e) { document.getElementById('mrpRequirements').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+}
+
+async function createLandedCost(){
+    try {
+        const fecha = document.getElementById('lcFecha').value;
+        const data = await api('/api/supply-chain/landed-costs', {
+            method:'POST',
+            body: JSON.stringify({
+                compra_id: Number(document.getElementById('lcCompra').value),
+                shipment_reference: document.getElementById('lcRef').value || null,
+                shipment_date: fecha ? new Date(fecha).toISOString() : null
+            })
+        });
+        document.getElementById('lcId').value = data.id;
+        listLandedCosts();
+    } catch (e) { alert(e.message); }
+}
+
+async function addLandedCostLine(){
+    const lcId = document.getElementById('lcId').value;
+    if (!lcId) { alert('Crea o selecciona un landed cost.'); return; }
+    try {
+        await api(`/api/supply-chain/landed-costs/${lcId}/lines`, {
+            method:'POST',
+            body: JSON.stringify({
+                cost_type: document.getElementById('lcTipo').value || 'Otros',
+                descripcion: document.getElementById('lcTipo').value || 'Coste',
+                cost_amount: Number(document.getElementById('lcImporte').value || 0),
+                proveedor_id: document.getElementById('lcProveedor').value ? Number(document.getElementById('lcProveedor').value) : null,
+                allocation_method: document.getElementById('lcMetodo').value
+            })
+        });
+        listLandedCosts();
+    } catch (e) { alert(e.message); }
+}
+
+async function calculateLandedCost(){
+    const lcId = document.getElementById('lcId').value;
+    if (!lcId) return alert('Sin LC activo');
+    try { await api(`/api/supply-chain/landed-costs/${lcId}/calculate`, {method:'POST'}); listLandedCosts(); } catch(e){ alert(e.message); }
+}
+
+async function applyLandedCost(){
+    const lcId = document.getElementById('lcId').value;
+    if (!lcId) return alert('Sin LC activo');
+    try { await api(`/api/supply-chain/landed-costs/${lcId}/apply`, {method:'POST'}); listLandedCosts(); } catch(e){ alert(e.message); }
+}
+
+async function listLandedCosts(){
+    try {
+        const data = await api('/api/supply-chain/landed-costs?limit=30');
+        const list = document.getElementById('lcList');
+        list.innerHTML = data.map(lc => `<div class="list-item" onclick="document.getElementById('lcId').value=${lc.id}" style="cursor:pointer"><strong>#${lc.id}</strong> · Compra ${lc.compra_numero || lc.compra_id} · Estado ${lc.status} · Total ${lc.total_value || '-'} </div>`).join('') || '<div class="list-item" style="color:var(--muted)">Sin cálculos</div>';
+    } catch (e) { document.getElementById('lcList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+}
+
+async function createLocation(){
+    try {
+        await api('/api/supply-chain/locations', {
+            method:'POST',
+            body: JSON.stringify({
+                location_code: document.getElementById('locCode').value,
+                location_name: document.getElementById('locName').value,
+                location_type: document.getElementById('locType').value,
+                city: document.getElementById('locCity').value || null
+            })
+        });
+        loadLocations();
+    } catch (e) { alert(e.message); }
+}
+
+async function loadLocations(){
+    try {
+        const data = await api('/api/supply-chain/locations');
+        const list = document.getElementById('locationList');
+        list.innerHTML = data.map(loc => `<div class="list-item" onclick="loadLocationInventory(${loc.id})" style="cursor:pointer"><strong>${loc.location_code}</strong> · ${loc.location_name} · ${loc.location_type}</div>`).join('') || '<div class="list-item" style="color:var(--muted)">Sin ubicaciones</div>';
+    } catch (e) { document.getElementById('locationList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+}
+
+async function loadLocationInventory(locId){
+    try {
+        const data = await api(`/api/supply-chain/locations/${locId}/inventory`);
+        const list = document.getElementById('locationInventory');
+        list.innerHTML = data.map(i => `<div class="list-item"><strong>${i.producto_codigo}</strong> · ${i.producto_nombre || ''} · Stock: ${i.on_hand}</div>`).join('') || '<div class="list-item" style="color:var(--muted)">Sin stock</div>';
+    } catch (e) { document.getElementById('locationInventory').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+}
+
+// Init
+loadReorderCheck();
+loadPolicies();
+loadMrpRuns();
+listLandedCosts();
+loadLocations();
+</script>
+    <script defer src="/static/assistant.js"></script>
+    <script defer src="/static/assistant-basic-panel.js"></script>
+    <script defer src="/static/voice-widget.js"></script>
+</body>
+</html>

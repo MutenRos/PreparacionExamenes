@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🦞 OpenClaw - Manual Completo</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #e4e4e4;
+        line-height: 1.6;
+      }
+      h1 {
+        color: #ff6b6b;
+        text-align: center;
+        font-size: 2.5em;
+        margin-bottom: 0.2em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      h2 {
+        color: #4ecdc4;
+        border-bottom: 2px solid #4ecdc4;
+        padding-bottom: 10px;
+        margin-top: 40px;
+      }
+      h3 {
+        color: #ffd93d;
+        margin-top: 25px;
+      }
+      .header-info {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .header-info p {
+        margin: 5px 0;
+      }
+      .status-enabled {
+        color: #4ecdc4;
+        font-weight: bold;
+      }
+      .status-disabled {
+        color: #ff6b6b;
+        font-weight: bold;
+      }
+      .section {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 25px;
+        margin: 20px 0;
+        border-left: 4px solid #4ecdc4;
+      }
+      .skill-card {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        padding: 15px;
+        margin: 15px 0;
+        border-left: 3px solid #ffd93d;
+      }
+      .skill-card h4 {
+        color: #ff6b6b;
+        margin: 0 0 10px 0;
+      }
+      .skill-usage {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 5px;
+        padding: 8px 12px;
+        font-family: "Courier New", monospace;
+        font-size: 0.9em;
+        color: #4ecdc4;
+        margin-top: 10px;
+      }
+      code {
+        background: rgba(0, 0, 0, 0.4);
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-family: "Courier New", monospace;
+        color: #4ecdc4;
+      }
+      pre {
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        padding: 15px;
+        overflow-x: auto;
+        border-left: 3px solid #ff6b6b;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      th {
+        background: rgba(78, 205, 196, 0.2);
+        color: #4ecdc4;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+      }
+      .channel-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+      }
+      .channel-icon {
+        font-size: 2em;
+        margin-bottom: 10px;
+      }
+      .quick-start {
+        background: linear-gradient(
+          135deg,
+          rgba(78, 205, 196, 0.2) 0%,
+          rgba(255, 107, 107, 0.2) 100%
+        );
+        border-radius: 15px;
+        padding: 25px;
+        margin: 30px 0;
+      }
+      .quick-start ol {
+        padding-left: 20px;
+      }
+      .quick-start li {
+        margin: 15px 0;
+      }
+      .footer {
+        text-align: center;
+        margin-top: 50px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.5);
+      }
+      @media print {
+        body {
+          background: white;
+          color: black;
+        }
+        h1 {
+          color: #c0392b;
+        }
+        h2 {
+          color: #16a085;
+        }
+        h3 {
+          color: #f39c12;
+        }
+        .section,
+        .skill-card,
+        .channel-card {
+          border: 1px solid #ddd;
+          background: #f9f9f9;
+        }
+        pre,
+        code {
+          background: #f5f5f5;
+          color: #333;
+        }
+      }
+      .print-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #ff6b6b;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 30px;
+        font-size: 1.1em;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        transition: all 0.3s;
+      }
+      .print-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+      }
+      @media print {
+        .print-btn {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button class="print-btn" onclick="window.print()">📄 Guardar como PDF</button>
+
+    <h1>🦞 OpenClaw</h1>
+    <p style="text-align: center; font-size: 1.3em; color: #888">Manual Completo de Usuario</p>
+
+    <div class="header-info">
+      <p><strong>Versión:</strong> 2026.2.1</p>
+      <p><strong>Modelo IA:</strong> OpenAI GPT-4o</p>
+      <p><strong>Usuario:</strong> dario</p>
+      <p><strong>WhatsApp:</strong> +34692145043</p>
+    </div>
+
+    <h2>📱 Canales Configurados</h2>
+
+    <div class="grid">
+      <div class="channel-card">
+        <div class="channel-icon">💬</div>
+        <h3>WhatsApp</h3>
+        <p class="status-enabled">✅ Conectado</p>
+        <p>Número: +34692145043</p>
+        <p>Self-chat habilitado</p>
+      </div>
+      <div class="channel-card">
+        <div class="channel-icon">🎮</div>
+        <h3>Discord</h3>
+        <p class="status-disabled">❌ Deshabilitado</p>
+        <p>Necesita Message Content Intent</p>
+      </div>
+    </div>
+
+    <h2>🎤 Funciones de Audio</h2>
+
+    <div class="section">
+      <h3>Transcripción (Speech-to-Text)</h3>
+      <p><strong>Proveedor:</strong> OpenAI Whisper</p>
+      <p><strong>Modelo:</strong> whisper-1</p>
+      <div class="skill-usage">
+        💡 Envía un mensaje de voz por WhatsApp → Se transcribirá automáticamente
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Respuesta con Voz (Text-to-Speech)</h3>
+      <p><strong>Proveedor:</strong> OpenAI TTS</p>
+      <p><strong>Modelo:</strong> tts-1</p>
+      <p><strong>Voz:</strong> alloy (neutral)</p>
+      <p><strong>Modo:</strong> <code>inbound</code> - responde con voz cuando recibe audio</p>
+      <div class="skill-usage">💡 Envía un audio → Recibirás la respuesta también como audio</div>
+    </div>
+
+    <h2>🖼️ Procesamiento de Media</h2>
+
+    <div class="grid">
+      <div class="channel-card">
+        <div class="channel-icon">📸</div>
+        <h3>Imágenes</h3>
+        <p class="status-enabled">✅ Habilitado</p>
+        <p>GPT-4o Vision</p>
+      </div>
+      <div class="channel-card">
+        <div class="channel-icon">🎬</div>
+        <h3>Videos</h3>
+        <p class="status-enabled">✅ Habilitado</p>
+        <p>Análisis de frames</p>
+      </div>
+      <div class="channel-card">
+        <div class="channel-icon">📄</div>
+        <h3>Documentos</h3>
+        <p class="status-enabled">✅ Habilitado</p>
+        <p>PDF, Excel, Word</p>
+      </div>
+    </div>
+
+    <h2>📦 Skills de ClawHub</h2>
+
+    <div class="skill-card">
+      <h4>🎬 youtube-mbo</h4>
+      <p>Resumir videos de YouTube, extraer transcripciones</p>
+      <div class="skill-usage">"Resume este video de YouTube: [URL]"</div>
+    </div>
+
+    <div class="skill-card">
+      <h4>📧 email-triage</h4>
+      <p>Clasificar emails con IA vía IMAP</p>
+      <div class="skill-usage">"Revisa mis emails y clasifícalos por prioridad"</div>
+    </div>
+
+    <div class="skill-card">
+      <h4>🔍 pr-reviewer</h4>
+      <p>Review automático de Pull Requests en GitHub</p>
+      <div class="skill-usage">"Revisa este PR: [URL]"</div>
+    </div>
+
+    <div class="skill-card">
+      <h4>💱 ve-exchange-rates</h4>
+      <p>Tasas de cambio de Venezuela (BCV oficial)</p>
+      <div class="skill-usage">"¿Cuál es la tasa del dólar en Venezuela?"</div>
+    </div>
+
+    <div class="skill-card">
+      <h4>🐦 twitter-sum / twitter-u7c</h4>
+      <p>Monitorear X/Twitter, trends, búsquedas</p>
+      <div class="skill-usage">"¿Qué está trending en Twitter?" o "Busca tweets sobre [tema]"</div>
+    </div>
+
+    <div class="skill-card">
+      <h4>📄 pdf-qdx / pdf-h65</h4>
+      <p>Trabajar con archivos PDF</p>
+      <div class="skill-usage">Envía un PDF y pregunta sobre su contenido</div>
+    </div>
+
+    <div class="skill-card">
+      <h4>📊 excel-orp</h4>
+      <p>Trabajar con archivos Excel</p>
+      <div class="skill-usage">Envía un Excel y pide análisis o modificaciones</div>
+    </div>
+
+    <div class="skill-card">
+      <h4>🌐 browser-agent-*</h4>
+      <p>Automatización de navegador web</p>
+      <div class="skill-usage">"Abre [sitio web] y haz [acción]"</div>
+    </div>
+
+    <div class="skill-card">
+      <h4>💻 coding-agent-*</h4>
+      <p>Tareas de programación</p>
+      <div class="skill-usage">"Escribe código para [tarea]" o "Arregla este bug"</div>
+    </div>
+
+    <div class="skill-card">
+      <h4>📚 grokipedia</h4>
+      <p>Búsqueda de información tipo Wikipedia</p>
+      <div class="skill-usage">"¿Qué es [concepto]?"</div>
+    </div>
+
+    <div class="skill-card">
+      <h4>✅ weeek-tasks</h4>
+      <p>Gestión de tareas WEEEK</p>
+      <div class="skill-usage">"Crea una tarea en WEEEK"</div>
+    </div>
+
+    <div class="skill-card">
+      <h4>📱 whatsapp-guf / whatsapp-qgs</h4>
+      <p>Control avanzado de WhatsApp</p>
+      <div class="skill-usage">"Envía un mensaje de WhatsApp a [contacto]"</div>
+    </div>
+
+    <div class="skill-card">
+      <h4>🔐 skills-security-check-*</h4>
+      <p>Operaciones de seguridad</p>
+      <div class="skill-usage">"Verifica la seguridad de [sistema]"</div>
+    </div>
+
+    <h2>🛠️ Skills Preinstalados (Bundled)</h2>
+
+    <div class="grid">
+      <div class="skill-card">
+        <h4>🌤️ weather</h4>
+        <div class="skill-usage">"¿Qué tiempo hace en Madrid?"</div>
+      </div>
+      <div class="skill-card">
+        <h4>🎨 openai-image-gen</h4>
+        <div class="skill-usage">"Genera una imagen de [descripción]"</div>
+      </div>
+      <div class="skill-card">
+        <h4>🎙️ openai-whisper-api</h4>
+        <div class="skill-usage">Automático para audio</div>
+      </div>
+      <div class="skill-card">
+        <h4>🧵 tmux</h4>
+        <div class="skill-usage">"Ejecuta [comando]"</div>
+      </div>
+      <div class="skill-card">
+        <h4>📦 skill-creator</h4>
+        <div class="skill-usage">"Crea un skill para..."</div>
+      </div>
+      <div class="skill-card">
+        <h4>📦 clawhub</h4>
+        <div class="skill-usage">"Instala el skill [nombre]"</div>
+      </div>
+    </div>
+
+    <h2>🚀 Inicio Rápido</h2>
+
+    <div class="quick-start">
+      <ol>
+        <li>
+          <strong>Iniciar el sistema:</strong>
+          <pre><code>cd ~/openclaw
+pnpm openclaw gateway run &
+pnpm openclaw node run &</code></pre>
+        </li>
+        <li><strong>Enviar mensaje por WhatsApp</strong> a tu propio número (+34692145043)</li>
+        <li>
+          <strong>Probar funciones:</strong>
+          <ul>
+            <li>💬 Texto: "Hola, ¿qué puedes hacer?"</li>
+            <li>🎤 Audio: Envía un mensaje de voz</li>
+            <li>📸 Imagen: Envía una foto y pregunta sobre ella</li>
+            <li>🎬 YouTube: "Resume este video: [URL]"</li>
+            <li>🌤️ Clima: "¿Qué tiempo hace en [ciudad]?"</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+
+    <h2>💻 Comandos Útiles</h2>
+
+    <table>
+      <tr>
+        <th>Acción</th>
+        <th>Comando</th>
+      </tr>
+      <tr>
+        <td>Iniciar Gateway</td>
+        <td><code>pnpm openclaw gateway run</code></td>
+      </tr>
+      <tr>
+        <td>Detener Gateway</td>
+        <td><code>pnpm openclaw gateway stop</code></td>
+      </tr>
+      <tr>
+        <td>Iniciar Node Host</td>
+        <td><code>pnpm openclaw node run</code></td>
+      </tr>
+      <tr>
+        <td>Ver configuración</td>
+        <td><code>cat ~/.openclaw/openclaw.json</code></td>
+      </tr>
+      <tr>
+        <td>Ver skills</td>
+        <td><code>pnpm openclaw skills list</code></td>
+      </tr>
+      <tr>
+        <td>Instalar skill</td>
+        <td><code>npx clawhub install [nombre]</code></td>
+      </tr>
+      <tr>
+        <td>Buscar skills</td>
+        <td><code>npx clawhub search "[término]"</code></td>
+      </tr>
+    </table>
+
+    <h2>📁 Archivos Importantes</h2>
+
+    <table>
+      <tr>
+        <th>Archivo</th>
+        <th>Descripción</th>
+      </tr>
+      <tr>
+        <td><code>~/.openclaw/openclaw.json</code></td>
+        <td>Configuración principal</td>
+      </tr>
+      <tr>
+        <td><code>~/.openclaw/agents/main/agent/auth-profiles.json</code></td>
+        <td>API keys</td>
+      </tr>
+      <tr>
+        <td><code>~/.openclaw/.env</code></td>
+        <td>Variables de entorno</td>
+      </tr>
+      <tr>
+        <td><code>/tmp/openclaw/openclaw-*.log</code></td>
+        <td>Logs del gateway</td>
+      </tr>
+    </table>
+
+    <h2>❓ Solución de Problemas</h2>
+
+    <div class="section">
+      <h3>El gateway no inicia</h3>
+      <pre><code>pnpm openclaw gateway stop
+kill -9 $(lsof -t -i:18789)
+pnpm openclaw gateway run</code></pre>
+    </div>
+
+    <div class="section">
+      <h3>No responde en WhatsApp</h3>
+      <ul>
+        <li>Verifica que el gateway esté corriendo</li>
+        <li>Revisa logs: <code>tail -f /tmp/openclaw/openclaw-*.log</code></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h3>No transcribe audios</h3>
+      <p>Verifica: <code>cat ~/.openclaw/openclaw.json | grep -A5 "audio"</code></p>
+      <p>Debe tener <code>tools.media.audio.enabled: true</code></p>
+    </div>
+
+    <div class="footer">
+      <p>🦞 OpenClaw v2026.2.1</p>
+      <p>
+        Repositorio:
+        <a href="https://github.com/openclaw/openclaw" style="color: #4ecdc4"
+          >github.com/openclaw/openclaw</a
+        >
+      </p>
+      <p style="margin-top: 20px">Generado automáticamente el 2 de febrero de 2026</p>
+    </div>
+  </body>
+</html>

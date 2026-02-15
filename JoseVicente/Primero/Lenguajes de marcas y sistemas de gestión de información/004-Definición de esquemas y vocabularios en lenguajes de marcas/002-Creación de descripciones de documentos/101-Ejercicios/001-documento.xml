@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persona>
+  <nombre>Jose Vicente</nombre>
+  <apellidos>Carratalá Sanchis</apellidos>
+  <profesion>Profesor de FP en desarrollo de software</profesion>
+
+  <roles>
+    <rol>Autor de libros técnicos (Python, SQL, etc.)</rol>
+    <rol>Creador de contenidos educativos en YouTube</rol>
+    <rol>Desarrollador de software y soluciones empresariales</rol>
+  </roles>
+
+  <proyectosDestacados>
+    <proyecto>Jocarsa (ecosistema de soluciones SaaS)</proyecto>
+    <proyecto>comoprogramar.es</proyecto>
+    <proyecto>Simulaciones 3D y gráficos en C++/CUDA</proyecto>
+    <proyecto>Modelos educativos fine-tuned con LLMs</proyecto>
+    <proyecto>Aplicaciones web en Flask, PHP, React y Next.js</proyecto>
+  </proyectosDestacados>
+
+  <interesesTecnicos>
+    <interes>Inteligencia Artificial y modelos LLM</interes>
+    <interes>Desarrollo web full stack</interes>
+    <interes>Gráficos 3D y simulaciones</interes>
+    <interes>Educación y automatización docente</interes>
+  </interesesTecnicos>
+
+  <ubicacion>Valencia (España)</ubicacion>
+</persona>
+

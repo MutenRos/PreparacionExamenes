@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sprite Test</title>
+    <style>
+        body { background: #333; padding: 40px; }
+        .test-row {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+            align-items: flex-end;
+        }
+        .sprite-test {
+            background-image: url('sprites/Kyle, Stan, Cartman & Kenny.png');
+            background-repeat: no-repeat;
+            image-rendering: pixelated;
+            border: 1px solid lime;
+        }
+        h2 { color: white; font-family: monospace; }
+        .label { color: #0f0; font-family: monospace; font-size: 12px; text-align: center; }
+    </style>
+</head>
+<body>
+    <h2>Finding correct sprite positions...</h2>
+    
+    <!-- Test different Y positions for Stan (row 0) -->
+    <h2>ROW 0 - Testing Y positions (Stan should be here)</h2>
+    <div class="test-row">
+        <div>
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: 0 0;"></div>
+            <div class="label">0,0</div>
+        </div>
+        <div style="margin-left:40px">
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: -17px 0;"></div>
+            <div class="label">17,0</div>
+        </div>
+        <div style="margin-left:40px">
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: -34px 0;"></div>
+            <div class="label">34,0</div>
+        </div>
+        <div style="margin-left:40px">
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: -51px 0;"></div>
+            <div class="label">51,0</div>
+        </div>
+        <div style="margin-left:40px">
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: -68px 0;"></div>
+            <div class="label">68,0</div>
+        </div>
+    </div>
+
+    <h2>ROW 1 - Y=22</h2>
+    <div class="test-row">
+        <div>
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: 0 -22px;"></div>
+            <div class="label">0,22</div>
+        </div>
+        <div style="margin-left:40px">
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: -17px -22px;"></div>
+            <div class="label">17,22</div>
+        </div>
+    </div>
+
+    <h2>ROW 2 - Y=44</h2>
+    <div class="test-row">
+        <div>
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: 0 -44px;"></div>
+            <div class="label">0,44</div>
+        </div>
+        <div style="margin-left:40px">
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: -17px -44px;"></div>
+            <div class="label">17,44</div>
+        </div>
+    </div>
+
+    <h2>ROW 3 - Y=66 (Kyle?)</h2>
+    <div class="test-row">
+        <div>
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: 0 -66px;"></div>
+            <div class="label">0,66</div>
+        </div>
+        <div style="margin-left:40px">
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: -17px -66px;"></div>
+            <div class="label">17,66</div>
+        </div>
+    </div>
+
+    <h2>ROW 4 - Y=88</h2>
+    <div class="test-row">
+        <div>
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: 0 -88px;"></div>
+            <div class="label">0,88</div>
+        </div>
+        <div style="margin-left:40px">
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: -17px -88px;"></div>
+            <div class="label">17,88</div>
+        </div>
+    </div>
+
+    <h2>ROW 5 - Y=110</h2>
+    <div class="test-row">
+        <div>
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: 0 -110px;"></div>
+            <div class="label">0,110</div>
+        </div>
+    </div>
+
+    <h2>ROW 6 - Y=132 (Cartman?)</h2>
+    <div class="test-row">
+        <div>
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: 0 -132px;"></div>
+            <div class="label">0,132</div>
+        </div>
+        <div style="margin-left:40px">
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: -17px -132px;"></div>
+            <div class="label">17,132</div>
+        </div>
+    </div>
+
+    <h2>ROW 9 - Y=198 (Kenny?)</h2>
+    <div class="test-row">
+        <div>
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: 0 -198px;"></div>
+            <div class="label">0,198</div>
+        </div>
+        <div style="margin-left:40px">
+            <div class="sprite-test" style="width:16px; height:22px; transform:scale(3); background-position: -17px -198px;"></div>
+            <div class="label">17,198</div>
+        </div>
+    </div>
+
+    <h2>Testing different row heights (maybe 24px rows?)</h2>
+    <div class="test-row">
+        <div>
+            <div class="sprite-test" style="width:16px; height:24px; transform:scale(3); background-position: 0 0;"></div>
+            <div class="label">h=24, 0,0</div>
+        </div>
+        <div style="margin-left:40px">
+            <div class="sprite-test" style="width:16px; height:24px; transform:scale(3); background-position: 0 -24px;"></div>
+            <div class="label">h=24, 0,24</div>
+        </div>
+        <div style="margin-left:40px">
+            <div class="sprite-test" style="width:16px; height:24px; transform:scale(3); background-position: 0 -48px;"></div>
+            <div class="label">h=24, 0,48</div>
+        </div>
+        <div style="margin-left:40px">
+            <div class="sprite-test" style="width:16px; height:24px; transform:scale(3); background-position: 0 -72px;"></div>
+            <div class="label">h=24, 0,72</div>
+        </div>
+        <div style="margin-left:40px">
+            <div class="sprite-test" style="width:16px; height:24px; transform:scale(3); background-position: 0 -96px;"></div>
+            <div class="label">h=24, 0,96</div>
+        </div>
+    </div>
+
+    <h2>Full sheet scan (every 24px)</h2>
+    <div id="scan"></div>
+    
+    <script>
+        // Scan the spritesheet
+        const scan = document.getElementById('scan');
+        let html = '<div class="test-row" style="flex-wrap:wrap;">';
+        for (let y = 0; y < 300; y += 24) {
+            html += `
+                <div style="margin:10px">
+                    <div class="sprite-test" style="width:16px; height:24px; transform:scale(2); transform-origin:top left; background-position: 0 -${y}px;"></div>
+                    <div class="label">Y=${y}</div>
+                </div>
+            `;
+        }
+        html += '</div>';
+        scan.innerHTML = html;
+    </script>
+</body>
+</html>

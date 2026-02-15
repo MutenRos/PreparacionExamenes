@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <!-- Duplicado eliminado: modules-base.css ya cargado arriba -->
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/aaaaa-animations.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <link rel="stylesheet" href="/static/css/tutorial.css">
+    <style>
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+            animation: slideDown var(--transition-base);
+        }
+        .header h1 {
+            color: var(--primary);
+            margin: 0;
+        }
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            animation: scaleIn 600ms var(--spring-easing);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--gray-200);
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-600);
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+        .tab:hover {
+            color: var(--primary);
+        }
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .stock-bajo {
+            background: #fef3c7 !important;
+        }
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .form-grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+        .section-box {
+            background: var(--gray-50);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            animation: scaleIn 500ms var(--spring-easing);
+            border: 1px solid var(--gray-200);
+        }
+        .section-box h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+        .step-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-600);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    {% include '_assistant_panel.html' %}
+
+    <div class="container">
+        <div class="header">
+            <h1>📦 Inventario</h1>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="openProductoModal()">➕ Nuevo Producto</button>
+                <a href="/app/dashboard" class="btn btn-secondary">⬅️ Dashboard</a>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Pestañas -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('productos')">📦 Productos</button>
+                <button class="tab" onclick="switchTab('fichaProducto')">📄 Ficha de Producto</button>
+                <button class="tab" onclick="switchTab('asistente')">🤖 Asistente básico</button>
+            </div>
+
+            <!-- TAB 1: PRODUCTOS -->
+            <div id="productos" class="tab-content active">
+                <h2>Lista de Productos</h2>
+                <div id="productosMessage"></div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>SKU</th>
+                            <th>Nombre</th>
+                            <th>Precio Venta</th>
+                            <th>Margen %</th>
+                            <th>Stock</th>
+                            <th>Stock Min.</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productosTable">
+                        <tr>
+                            <td colspan="9" style="text-align: center;">Cargando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TAB 1.5: FICHA DE PRODUCTO -->
+            <div id="fichaProducto" class="tab-content">
+                <h2>Ficha de Producto</h2>
+                <div id="fichaProductoMessage"></div>
+                
+                <div class="section-box">
+                    <div class="step-label">Busca un producto por código o nombre</div>
+                    <div style="position: relative; width: 100%; max-width: 500px;">
+                        <input 
+                            type="text" 
+                            id="buscadorProducto" 
+                            placeholder="Ej: PROD-001 o Bomba de agua" 
+                            class="form-control" 
+                            oninput="filtrarProductosBusqueda()"
+                            style="width: 100%; padding: 12px; border: 2px solid var(--primary); border-radius: 8px; font-size: 14px;">
+                        <div 
+                            id="resultadosBusqueda" 
+                            style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid var(--border-color); border-radius: 8px; max-height: 300px; overflow-y: auto; z-index: 100; margin-top: 5px; box-shadow: var(--shadow-sm); display: none;">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="fichaProductoDetalle"></div>
+            </div>
+
+
+
+
+
+            <!-- TAB 4: ASISTENTE BÁSICO -->
+            <div id="asistente" class="tab-content">
+                <h2>Asistente básico (sugerencias)</h2>
+                <div class="mb-20" style="display: flex; gap: 10px; align-items: center;">
+                    <button class="btn btn-primary" onclick="cargarSugerenciasBasico()">🔄 Actualizar sugerencias</button>
+                    <span id="asistenteStatus" class="text-gray-600 text-sm"></span>
+                </div>
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+                    <div class="card">
+                        <h3>Compras sugeridas</h3>
+                        <div id="comprasSugeridas"></div>
+                    </div>
+                    <div class="card">
+                        <h3>Recordatorios</h3>
+                        <div id="recordatoriosLista"></div>
+                    </div>
+                </div>
+                <div class="card mt-20">
+                    <h3>Resumen del asistente</h3>
+                    <pre id="resumenAsistente" style="white-space: pre-wrap; background: var(--gray-50); padding: 12px; border-radius: 6px; min-height: 80px; font-family: 'Segoe UI', sans-serif;"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Producto -->
+    <div class="modal" id="productoModal">
+        <div class="modal-content">
+            <h2 id="productoModalTitle">Nuevo Producto</h2>
+            <form id="productoForm" onsubmit="crearProducto(event)">
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Código * <small>(auto)</small></label>
+                        <input type="text" name="codigo" id="codigoProducto" readonly style="background: var(--gray-100);" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>SKU</label>
+                        <input type="text" name="sku" placeholder="Código interno único" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Nombre *</label>
+                    <input type="text" name="nombre" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea name="descripcion" rows="3" class="form-control"></textarea>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <input type="text" name="categoria" onchange="generarCodigo()" class="form-control">
+                    </div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Precio Compra *</label>
+                        <input type="number" name="precio_compra" step="0.01" min="0" value="0" required onchange="calcularPrecioVenta()" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Margen % (ganancia) *</label>
+                        <input type="number" name="margen_porcentaje" step="0.01" min="0" value="20" required onchange="calcularPrecioVenta()" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Precio Venta * <small>(calculado automáticamente)</small></label>
+                    <input type="number" name="precio_venta" step="0.01" min="0" value="0" readonly style="background: var(--gray-100); font-weight: bold; color: var(--success);" class="form-control">
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Cant. Mín. Compra</label>
+                        <input type="number" name="cantidad_minima_compra" min="1" value="1" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Actual *</label>
+                        <input type="number" name="stock_actual" min="0" value="0" required class="form-control">
+                    </div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Stock Mínimo *</label>
+                        <input type="number" name="stock_minimo" min="0" value="0" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Unidad de Medida</label>
+                        <select name="unidad_medida" class="form-control">
+                            <option value="unidad">Unidad</option>
+                            <option value="kg">Kilogramo</option>
+                            <option value="litro">Litro</option>
+                            <option value="metro">Metro</option>
+                            <option value="caja">Caja</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" name="visible_en_pos" checked style="width: auto;">
+                        <span>Visible en POS</span>
+                    </label>
+                    <small class="text-gray-600">Si está marcado, el producto aparecerá en el punto de venta</small>
+                </div>
+                <div id="productoFormMessage" class="mt-20"></div>
+                <div class="mt-20" style="display: flex; gap: 10px;">
+                    <button type="submit" id="productoSubmitBtn" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeProductoModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Proveedor -->
+    <div class="modal" id="proveedorModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <h2>Nuevo Proveedor</h2>
+            <form id="proveedorForm" onsubmit="crearProveedor(event)">
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Nombre Razón Social *</label>
+                        <input type="text" name="nombre" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" name="email" required class="form-control">
+                    </div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <input type="tel" name="telefono" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Contacto (Persona)</label>
+                        <input type="text" name="contacto_nombre" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Dirección</label>
+                    <input type="text" name="direccion" class="form-control">
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Términos de Pago</label>
+                        <input type="text" name="terminos_pago" placeholder="Ej: 30 días" value="30 días" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Días Entrega Promedio</label>
+                        <input type="number" name="dias_entrega_promedio" min="1" value="7" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Descuento por Volumen %</label>
+                    <input type="number" name="descuento_volumen" step="0.01" min="0" value="0" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Documento (RUC, NIF, etc.)</label>
+                    <input type="text" name="documento_proveedor" placeholder="Ej: RUC12345678" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Notas</label>
+                    <textarea name="notas" rows="2" class="form-control"></textarea>
+                </div>
+                <div id="proveedorFormMessage"></div>
+                <div class="mt-20" style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeProveedorModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let productosCache = [];
+        let proveedoresCache = [];
+        let editingProductoId = null;
+
+        // ===== CARGAR FICHA DE PRODUCTO =====
+        async function filtrarProductosBusqueda() {
+            const buscador = document.getElementById('buscadorProducto');
+            const resultados = document.getElementById('resultadosBusqueda');
+            const query = buscador.value.toLowerCase().trim();
+
+            if (query.length === 0) {
+                resultados.style.display = 'none';
+                return;
+            }
+
+            // Filtrar productos por código o nombre
+            const productosFiltrados = productosCache.filter(p => 
+                p.codigo.toLowerCase().includes(query) || 
+                p.nombre.toLowerCase().includes(query)
+            ).slice(0, 10); // Limitar a 10 resultados
+
+            if (productosFiltrados.length === 0) {
+                resultados.innerHTML = '<div style="padding: 12px; color: var(--gray-600); text-align: center;">No se encontraron productos</div>';
+                resultados.style.display = 'block';
+                return;
+            }
+
+            resultados.innerHTML = productosFiltrados.map(p => `
+                <div 
+                    onclick="seleccionarProductoBusqueda(${p.id})" 
+                    style="padding: 12px; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: background 0.2s;"
+                    onmouseover="this.style.background='var(--primary-light)'"
+                    onmouseout="this.style.background='transparent'">
+                    <div style="font-weight: 600; color: var(--primary);">${p.codigo}</div>
+                    <div style="font-size: 13px; color: var(--gray-700);">${p.nombre}</div>
+                    <div style="font-size: 12px; color: var(--gray-600);">Stock: ${p.stock_actual} | Precio: €${p.precio_venta.toFixed(2)}</div>
+                </div>
+            `).join('');
+
+            resultados.style.display = 'block';
+        }
+
+        function seleccionarProductoBusqueda(productoId) {
+            const buscador = document.getElementById('buscadorProducto');
+            const producto = productosCache.find(p => p.id === productoId);
+            
+            if (producto) {
+                buscador.value = `${producto.codigo} - ${producto.nombre}`;
+                document.getElementById('resultadosBusqueda').style.display = 'none';
+                cargarFichaProductoDirecta(productoId);
+            }
+        }
+
+        async function cargarFichaProductoDirecta(productoId) {
+            const detalleEl = document.getElementById('fichaProductoDetalle');
+            const messageEl = document.getElementById('fichaProductoMessage');
+
+            try {
+                const response = await fetch(`/api/inventario/productos/${productoId}`);
+                if (!response.ok) throw new Error('No se encontró el producto');
+
+                const producto = await response.json();
+
+                // Calcular indicadores
+                const diasCobertura = producto.stock_actual > 0 && producto.consumo_diario 
+                    ? (producto.stock_actual / producto.consumo_diario).toFixed(1) 
+                    : 'N/D';
+                const stockAlert = producto.stock_actual < producto.stock_minimo ? 'stock-bajo' : '';
+                const margenReal = producto.precio_compra > 0 
+                    ? (((producto.precio_venta - producto.precio_compra) / producto.precio_compra) * 100).toFixed(2)
+                    : '0.00';
+
+                detalleEl.innerHTML = `
+                    <div class="section-box" style="border: 2px solid var(--primary);">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                            <!-- INFORMACIÓN GENERAL -->
+                            <div>
+                                <h3 style="margin-top: 0; color: var(--primary);">📋 Información General</h3>
+                                <div style="display: grid; gap: 15px;">
+                                    <div>
+                                        <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Código</label>
+                                        <div style="font-size: 18px; font-weight: 700; color: var(--primary);">${producto.codigo}</div>
+                                    </div>
+                                    <div>
+                                        <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">SKU</label>
+                                        <div style="font-size: 14px;">${producto.sku || '-'}</div>
+                                    </div>
+                                    <div>
+                                        <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Nombre</label>
+                                        <div style="font-size: 18px; font-weight: 700;">${producto.nombre}</div>
+                                    </div>
+                                    <div>
+                                        <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Descripción</label>
+                                        <div style="font-size: 14px; color: var(--gray-700);">${producto.descripcion || '-'}</div>
+                                    </div>
+                                    <div>
+                                        <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Categoría</label>
+                                        <div style="font-size: 14px; padding: 6px 12px; background: var(--primary-light); color: var(--primary); border-radius: 6px; display: inline-block;">${producto.categoria || '-'}</div>
+                                    </div>
+                                    <div>
+                                        <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Unidad de Medida</label>
+                                        <div style="font-size: 14px;">${producto.unidad_medida || 'unidad'}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PRECIOS Y MÁRGENES -->
+                            <div>
+                                <h3 style="margin-top: 0; color: var(--success);">💰 Precios y Márgenes</h3>
+                                <div style="display: grid; gap: 15px;">
+                                    <div>
+                                        <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Precio Compra (Unitario)</label>
+                                        <div style="font-size: 18px; font-weight: 700; color: var(--gray-800);">€${producto.precio_compra.toFixed(2)}</div>
+                                    </div>
+                                    <div>
+                                        <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Precio Venta (Unitario)</label>
+                                        <div style="font-size: 18px; font-weight: 700; color: var(--success);">€${producto.precio_venta.toFixed(2)}</div>
+                                    </div>
+                                    <div>
+                                        <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Margen % (Configurado)</label>
+                                        <div style="font-size: 18px; font-weight: 700; color: var(--warning);">${producto.margen_porcentaje}%</div>
+                                    </div>
+                                    <div>
+                                        <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Margen Real</label>
+                                        <div style="font-size: 14px; color: var(--gray-700);">${margenReal}%</div>
+                                    </div>
+                                    <div>
+                                        <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Cantidad Mínima Compra</label>
+                                        <div style="font-size: 14px;">${producto.cantidad_minima_compra} unidades</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STOCK Y REABASTECIMIENTO -->
+                    <div class="section-box" style="border: 2px solid var(--warning);">
+                        <h3 style="margin-top: 0; color: var(--warning);">📦 Stock y Reabastecimiento</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                            <div>
+                                <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Stock Actual</label>
+                                <div style="font-size: 24px; font-weight: 700; color: ${stockAlert === 'stock-bajo' ? 'var(--danger)' : 'var(--success)'};">${producto.stock_actual}</div>
+                                <small style="color: ${stockAlert === 'stock-bajo' ? 'var(--danger)' : 'var(--success)'};">
+                                    ${stockAlert === 'stock-bajo' ? '⚠️ Bajo stock' : '✓ Nivel óptimo'}
+                                </small>
+                            </div>
+                            <div>
+                                <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Stock Mínimo</label>
+                                <div style="font-size: 24px; font-weight: 700; color: var(--warning);">${producto.stock_minimo}</div>
+                            </div>
+                            <div>
+                                <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Cobertura (días)</label>
+                                <div style="font-size: 24px; font-weight: 700; color: var(--info);">${diasCobertura}</div>
+                            </div>
+                            <div>
+                                <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Consumo Diario</label>
+                                <div style="font-size: 14px;">${producto.consumo_diario ? producto.consumo_diario.toFixed(2) + ' u/d' : 'N/D'}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PROVEEDOR -->
+                    <div class="section-box" style="border: 2px solid var(--primary);">
+                        <h3 style="margin-top: 0; color: var(--primary);">🤝 Proveedor Asociado</h3>
+                        ${producto.proveedor ? `
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                                <div>
+                                    <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Nombre</label>
+                                    <div style="font-size: 16px; font-weight: 600;">${producto.proveedor.nombre}</div>
+                                </div>
+                                <div>
+                                    <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Email</label>
+                                    <div style="font-size: 14px;"><a href="mailto:${producto.proveedor.email}">${producto.proveedor.email}</a></div>
+                                </div>
+                                <div>
+                                    <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Teléfono</label>
+                                    <div style="font-size: 14px;">${producto.proveedor.telefono || '-'}</div>
+                                </div>
+                                <div>
+                                    <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Contacto</label>
+                                    <div style="font-size: 14px;">${producto.proveedor.contacto_nombre || '-'}</div>
+                                </div>
+                                <div>
+                                    <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Términos de Pago</label>
+                                    <div style="font-size: 14px;">${producto.proveedor.terminos_pago || '-'}</div>
+                                </div>
+                                <div>
+                                    <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Lead Time</label>
+                                    <div style="font-size: 14px;">${producto.proveedor.dias_entrega_promedio || '-'} días</div>
+                                </div>
+                                <div>
+                                    <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Descuento Volumen</label>
+                                    <div style="font-size: 14px;">${producto.proveedor.descuento_volumen || '0'}%</div>
+                                </div>
+                                <div>
+                                    <label style="color: var(--gray-600); font-weight: 600; font-size: 12px;">Dirección</label>
+                                    <div style="font-size: 14px;">${producto.proveedor.direccion || '-'}</div>
+                                </div>
+                            </div>
+                        ` : `
+                            <div style="color: var(--gray-600); font-style: italic;">Sin proveedor asociado</div>
+                        `}
+                    </div>
+
+                    <!-- ACCIONES -->
+                    <div class="section-box" style="background: var(--primary-light); border: none;">
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="btn btn-primary" onclick="editarProductoDesdesFicha(${producto.id})">✏️ Editar Producto</button>
+                            <button class="btn btn-success" onclick="abrirSolicitudRapida(${producto.id})">📧 Solicitud de Compra</button>
+                            ${producto.proveedor ? `
+                                <button class="btn btn-secondary" onclick="contactarProveedor(${producto.proveedor.id})">📞 Contactar Proveedor</button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+
+                messageEl.innerHTML = '';
+            } catch (error) {
+                messageEl.innerHTML = `<div style="color: var(--danger); padding: 10px; background: var(--danger-light); border-radius: 6px;">Error: ${error.message}</div>`;
+                detalleEl.innerHTML = '';
+            }
+        }
+
+        async function cargarFichaProducto() {
+            const productoId = document.getElementById('fichaProductoSelector').value;
+            if (!productoId) return;
+            cargarFichaProductoDirecta(productoId);
+        }
+
+        async function editarProductoDesdesFicha(productoId) {
+            const producto = productosCache.find(p => p.id === productoId);
+            if (producto) {
+                openProductoModal(producto);
+            }
+        }
+
+        async function abrirSolicitudRapida(productoId) {
+            alert('Funcionalidad de solicitud rápida - será redirigido a solicitudes');
+            switchTab('solicitudes');
+        }
+
+        async function contactarProveedor(proveedorId) {
+            alert('Funcionalidad de contacto - será implementada');
+        }
+
+        // Cargar selector de ficha cuando se carguen los productos
+        async function actualizarSelectorFicha() {
+            // Función ya no necesaria con el nuevo buscador
+            // pero la dejamos para compatibilidad
+        }
+
+        // ===== FUNCIONES DE MODAL =====
+        async function openProductoModal(producto = null) {
+            await cargarProveedoresSelect();
+            const titleEl = document.getElementById('productoModalTitle');
+            const submitEl = document.getElementById('productoSubmitBtn');
+            const form = document.getElementById('productoForm');
+
+            if (producto) {
+                editingProductoId = producto.id;
+                titleEl.textContent = 'Editar Producto';
+                submitEl.textContent = 'Actualizar';
+
+                form.codigo.value = producto.codigo;
+                form.sku.value = producto.sku || '';
+                form.nombre.value = producto.nombre || '';
+                form.descripcion.value = producto.descripcion || '';
+                form.categoria.value = producto.categoria || '';
+                form.proveedor_id.value = producto.proveedor_id || '';
+                form.precio_compra.value = producto.precio_compra || 0;
+                form.margen_porcentaje.value = producto.margen_porcentaje || 0;
+                form.precio_venta.value = producto.precio_venta || 0;
+                form.cantidad_minima_compra.value = producto.cantidad_minima_compra || 1;
+                form.stock_actual.value = producto.stock_actual || 0;
+                form.stock_minimo.value = producto.stock_minimo || 0;
+                form.unidad_medida.value = producto.unidad_medida || 'unidad';
+            } else {
+                editingProductoId = null;
+                titleEl.textContent = 'Nuevo Producto';
+                submitEl.textContent = 'Guardar';
+                form.reset();
+                generarCodigo();
+            }
+
+            document.getElementById('productoModal').classList.add('active');
+        }
+        function closeProductoModal() {
+            editingProductoId = null;
+            document.getElementById('productoModal').classList.remove('active');
+            document.getElementById('productoForm').reset();
+            document.getElementById('productoFormMessage').innerHTML = '';
+            document.getElementById('productoModalTitle').textContent = 'Nuevo Producto';
+            document.getElementById('productoSubmitBtn').textContent = 'Guardar';
+        }
+        function openProveedorModal() {
+            document.getElementById('proveedorModal').classList.add('active');
+        }
+        function closeProveedorModal() {
+            document.getElementById('proveedorModal').classList.remove('active');
+            document.getElementById('proveedorForm').reset();
+            document.getElementById('proveedorFormMessage').innerHTML = '';
+        }
+
+        // ===== FUNCIONES PARA GENERACIÓN AUTOMÁTICA =====
+        function generarCodigo() {
+            const categoria = document.querySelector('input[name="categoria"]').value || 'PROD';
+            const prefijo = categoria.substring(0, 3).toUpperCase();
+
+            // Filtrar productos de la categoría actual
+            const productosCategoria = productosCache.filter(p => p.categoria && p.categoria.toUpperCase().startsWith(categoria.toUpperCase()));
+
+            // Obtener siguiente número
+            let maxNum = 0;
+            productosCategoria.forEach(p => {
+                const match = p.codigo.match(/-(\d+)$/);
+                if (match) {
+                    const num = parseInt(match[1]);
+                    if (num > maxNum) maxNum = num;
+                }
+            });
+
+            const siguienteNum = (maxNum + 1).toString().padStart(4, '0');
+            const codigo = `${prefijo}-${siguienteNum}`;
+            document.getElementById('codigoProducto').value = codigo;
+        }
+
+        function calcularPrecioVenta() {
+            const precioCompra = parseFloat(document.querySelector('input[name="precio_compra"]').value) || 0;
+            const margen = parseFloat(document.querySelector('input[name="margen_porcentaje"]').value) || 0;
+
+            const precioVenta = precioCompra * (1 + margen / 100);
+            document.querySelector('input[name="precio_venta"]').value = precioVenta.toFixed(2);
+        }
+
+        // ===== FUNCIONES DE PESTAÑAS =====
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(tab).classList.add('active');
+
+            if (tab === 'productos') cargarProductos();
+            else if (tab === 'asistente') cargarSugerenciasBasico();
+        }
+
+        // ===== FUNCIONES PRODUCTO =====
+        async function cargarProductos() {
+            try {
+                // Solo datos del tenant autenticado
+                let response = await fetch('/api/inventario/?limit=600', { credentials: 'include' });
+                if (response.ok) {
+                    productosCache = await response.json();
+                }
+
+                const tbody = document.getElementById('productosTable');
+                if (productosCache.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No hay productos. Crea uno nuevo.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = productosCache.map(p => {
+                    const stockBajo = p.stock_actual <= p.stock_minimo;
+                    return `
+                        <tr class="${stockBajo ? 'stock-bajo' : ''}">
+                            <td>${p.codigo}</td>
+                            <td>${p.sku || '-'}</td>
+                            <td>${p.nombre}</td>
+                            <td>$${parseFloat(p.precio_venta).toFixed(2)}</td>
+                            <td>${p.margen_porcentaje ? parseFloat(p.margen_porcentaje).toFixed(1) + '%' : '-'}</td>
+                            <td>${p.stock_actual}</td>
+                            <td>${p.stock_minimo}</td>
+                            <td style="display:flex; gap:6px;">
+                                <button class="btn btn-secondary" onclick="editarProducto(${p.id})">✏️</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                
+                // Actualizar selector de ficha de producto
+                actualizarSelectorFicha();
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('productosMessage').innerHTML = '<p class="error">Error al cargar productos</p>';
+            }
+        }
+
+        function editarProducto(id) {
+            const producto = productosCache.find(p => p.id === id);
+            if (!producto) {
+                alert('Producto no encontrado');
+                return;
+            }
+            openProductoModal(producto);
+        }
+
+
+
+        async function crearProducto(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = {
+                codigo: formData.get('codigo'),
+                nombre: formData.get('nombre'),
+                sku: formData.get('sku') || null,
+                descripcion: formData.get('descripcion') || null,
+                categoria: formData.get('categoria') || null,
+                precio_compra: parseFloat(formData.get('precio_compra')),
+                precio_venta: parseFloat(formData.get('precio_venta')),
+                margen_porcentaje: parseFloat(formData.get('margen_porcentaje')) || null,
+                cantidad_minima_compra: parseInt(formData.get('cantidad_minima_compra')) || 1,
+                stock_actual: parseInt(formData.get('stock_actual')),
+                stock_minimo: parseInt(formData.get('stock_minimo')),
+                unidad_medida: formData.get('unidad_medida'),
+                proveedor_id: parseInt(formData.get('proveedor_id')) || null,
+                activo: true,
+                visible_en_pos: formData.get('visible_en_pos') === 'on'
+            };
+
+            const url = editingProductoId ? `/api/inventario/${editingProductoId}` : '/api/inventario/';
+            const method = editingProductoId ? 'PUT' : 'POST';
+
+            try {
+                const response = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Error al guardar producto');
+                }
+
+                document.getElementById('productoFormMessage').innerHTML = `<p class="success">✓ Producto ${editingProductoId ? 'actualizado' : 'creado'}</p>`;
+                setTimeout(() => {
+                    closeProductoModal();
+                    cargarProductos();
+                }, 1200);
+            } catch (error) {
+                document.getElementById('productoFormMessage').innerHTML = `<p class="error">${error.message}</p>`;
+            }
+        }
+
+
+
+
+
+        // ===== ASISTENTE BÁSICO =====
+        async function cargarSugerenciasBasico() {
+            const statusEl = document.getElementById('asistenteStatus');
+            const comprasEl = document.getElementById('comprasSugeridas');
+            const recEl = document.getElementById('recordatoriosLista');
+            const resumenEl = document.getElementById('resumenAsistente');
+            statusEl.textContent = 'Cargando sugerencias...';
+            comprasEl.innerHTML = '';
+            recEl.innerHTML = '';
+            resumenEl.textContent = '';
+
+            try {
+                const resp = await fetch('/api/ai/sugerencias-basico');
+                if (!resp.ok) throw new Error('No se pudieron cargar las sugerencias');
+                const data = await resp.json();
+
+                if (!data.compras_sugeridas || data.compras_sugeridas.length === 0) {
+                    comprasEl.innerHTML = '<p style="color: var(--text-secondary);">Sin compras urgentes</p>';
+                } else {
+                    const rows = data.compras_sugeridas.map(c => `
+                        <tr>
+                            <td>${c.codigo}</td>
+                            <td>${c.nombre}</td>
+                            <td>${c.proveedor || '-'} (${c.dias_entrega || '-'}d)</td>
+                            <td>${c.stock_actual} / ${c.stock_minimo}</td>
+                            <td>${c.consumo_diario ? c.consumo_diario.toFixed(2) + ' u/d' : 'N/D'}</td>
+                            <td>${c.cobertura_dias ? c.cobertura_dias.toFixed(1) + 'd' : 'N/D'}</td>
+                            <td>${c.cantidad_sugerida}</td>
+                            <td>${c.motivo}</td>
+                        </tr>
+                    `).join('');
+                    comprasEl.innerHTML = `
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Código</th><th>Producto</th><th>Proveedor</th><th>Stock</th><th>Consumo</th><th>Cobertura</th><th>Comprar</th><th>Motivo</th>
+                                </tr>
+                            </thead>
+                            <tbody>${rows}</tbody>
+                        </table>`;
+                }
+
+                if (!data.recordatorios || data.recordatorios.length === 0) {
+                    recEl.innerHTML = '<p style="color: var(--text-secondary);">Sin recordatorios</p>';
+                } else {
+                    recEl.innerHTML = data.recordatorios.map(r => `
+                        <div style="padding:8px; border-bottom:1px solid var(--border-color-light);">
+                            <strong>${r.tipo}:</strong> ${r.entidad} — ${r.mensaje}
+                        </div>
+                    `).join('');
+                }
+
+                resumenEl.textContent = data.resumen_llm || 'Sin resumen disponible.';
+                statusEl.textContent = 'Actualizado';
+            } catch (err) {
+                statusEl.textContent = 'Error al cargar sugerencias';
+                comprasEl.innerHTML = `<p class="error">${err.message}</p>`;
+            }
+        }
+
+        // Cargar al inicio
+        cargarProductos();
+    </script>
+    <script defer src="/static/assistant.js?v=2"></script>
+    <script defer src="/static/assistant-basic-panel.js?v=2"></script>
+    <script defer src="/static/voice-assistant-widget.js?v=2"></script>
+    <script defer src="/static/voice-widget.js?v=2"></script>
+    <script src="/static/js/module-tutorial.js?v=2"></script>
+</body>
+</html>

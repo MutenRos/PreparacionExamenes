@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Calendario</title>
+    <style>
+      #jvcalendario .mes{display:grid;width:400px;grid-template-columns:repeat(7,100fr);}
+      #jvcalendario .mes .dia{border:1px solid lightgray;}
+    </style>
+  </head>
+  <body>
+    <div id="jvcalendario"></div>
+    <script>
+      let contenedor = document.querySelector("#jvcalendario");
+      let anio = 2026;
+      let meses = 12;
+      let nombres_meses = ['Enero','Febrero','Maz','Abril','Mayo','Junio','Julio',
+      'Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+      for(let i = 1;i<=meses;i++){
+        let mes = document.createElement("div");
+        mes.classList.add("mes");
+        mes.setAttribute("mes",nombres_meses[i-1])
+          for(let j = 1;j<=30;j++){
+            let dia = document.createElement("div");
+            dia.classList.add("dia")
+            dia.textContent = j
+            mes.appendChild(dia)
+          }
+        contenedor.appendChild(mes)
+      }
+    </script>
+  </body>
+</html>

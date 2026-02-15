@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      input{
+        border:1px solid lightgrey;
+        background:lightgray;
+        padding:5px;
+        transition: all 1s;
+      }
+      .activado{
+        background:lightgreen;
+      }
+    </style>
+  </head>
+  <body> 
+    <input type="text">
+    <script>
+      let entrada = document.querySelector("input")
+      entrada.onfocus = function(){
+        entrada.classList.add("activado")
+      }
+      entrada.onblur = function(){
+        entrada.classList.remove("activado")
+      }
+      
+    </script>
+  </body>
+</html>

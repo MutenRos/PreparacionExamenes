@@ -1,0 +1,14 @@
+{
+  "name": "CodeAcademy",
+  "short_name": "CodeAcademy",
+  "description": "Academia online de programación con gamificación real",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#d97706",
+  "orientation": "portrait-primary",
+  "icons": [],
+  "categories": ["education", "productivity"],
+  "lang": "es",
+  "dir": "ltr"
+}

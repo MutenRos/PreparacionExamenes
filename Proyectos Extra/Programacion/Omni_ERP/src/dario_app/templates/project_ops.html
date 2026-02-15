@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Proyectos - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <style>
+        :root { --spacing: 16px; --radius: 12px; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: var(--font-sans); background: var(--bg-primary); color: var(--text-primary); }
+        
+        header {
+            display:flex; justify-content:space-between; align-items:center; padding:20px 28px;
+            border-bottom:1px solid var(--border-color); position:sticky; top:0; z-index:20;
+            background: var(--bg-secondary); box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .logo { font-weight:700; color: var(--brand-primary); font-size:20px; display:flex; align-items:center; gap:10px; }
+        .nav a { color:var(--text-secondary); text-decoration:none; margin-left:16px; padding:8px 12px;
+            border-radius:8px; transition: all 0.2s; }
+        .nav a:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+        
+        .container { max-width:1400px; margin:0 auto; padding:24px; }
+        
+        .header-section { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:32px; }
+        h1 { margin:0; font-size:32px; letter-spacing:-0.5px; color: var(--text-primary); }
+        .lead { color: var(--text-secondary); margin-top:6px; max-width:600px; }
+        
+        .kpi-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:32px; }
+        .kpi-card {
+            background: white; border-radius:12px; padding:18px; border:1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .kpi-value { font-size:28px; font-weight:700; color: var(--brand-primary); }
+        .kpi-label { font-size:13px; color: var(--text-secondary); margin-top:8px; }
+        
+        /* Tabs */
+        .tabs { display:flex; gap:12px; border-bottom:1px solid var(--border-color); margin-bottom:28px;
+            overflow-x:auto; padding-bottom:0; }
+        .tab-btn { background:none; border:none; padding:14px 16px; color: var(--text-secondary);
+            font-weight:600; cursor:pointer; border-bottom:3px solid transparent; transition: all 0.2s;
+            white-space:nowrap; }
+        .tab-btn:hover { color: var(--text-primary); background: var(--bg-secondary); }
+        .tab-btn.active { color: var(--brand-primary); border-bottom-color: var(--brand-primary); }
+        
+        .tab-content { display:none; }
+        .tab-content.active { display:block; animation: fadeIn 0.2s; }
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+        
+        /* Cards & Layout */
+        .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap:20px; }
+        .card {
+            background: white; border:1px solid var(--border-color); border-radius:14px;
+            padding:20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .card h3 { margin:0 0 8px; font-size:16px; color: var(--text-primary); display:flex; gap:8px; align-items:center; }
+        .card p { margin:0 0 16px; color: var(--text-secondary); font-size:13px; }
+        
+        /* Forms */
+        .form-group { margin-bottom:16px; }
+        label { display:block; margin-bottom:6px; color: var(--text-primary); font-weight:600; font-size:13px; }
+        input, select, textarea {
+            width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--border-color);
+            background: white; color: var(--text-primary); font-size:14px; font-family: inherit;
+        }
+        input:focus, select:focus, textarea:focus { outline:none; border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        textarea { min-height:80px; resize:vertical; }
+        
+        .form-row { display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:12px; }
+        
+        /* Buttons */
+        .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:8px;
+            border:none; cursor:pointer; font-weight:600; font-size:14px; transition: all 0.2s; }
+        .btn-primary { background: linear-gradient(135deg, var(--brand-primary) 0%, #2563eb 100%);
+            color: white; }
+        .btn-primary:hover { transform:translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+        .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border:1px solid var(--border-color); }
+        .btn-secondary:hover { background: var(--border-color); }
+        .btn-sm { padding:8px 12px; font-size:12px; }
+        .btn-block { width:100%; }
+        
+        /* List / Table */
+        .list { border:1px solid var(--border-color); border-radius:10px; overflow:hidden;
+            max-height:360px; overflow-y:auto; }
+        .list-item {
+            padding:12px 14px; border-bottom:1px solid var(--border-color); display:flex;
+            justify-content:space-between; align-items:center; font-size:13px;
+        }
+        .list-item:last-child { border-bottom:none; }
+        .list-item.empty { color: var(--text-secondary); text-align:center; }
+        
+        .badge { display:inline-block; padding:4px 10px; border-radius:6px; font-size:11px;
+            font-weight:600; }
+        .badge-success { background: #d1fae5; color: #065f46; }
+        .badge-warning { background: #fef3c7; color: #92400e; }
+        .badge-info { background: #dbeafe; color: #0c4a6e; }
+        .badge-danger { background: #fee2e2; color: #7f1d1d; }
+        
+        /* Status Chips */
+        .chip { display:inline-flex; align-items:center; gap:6px; padding:6px 12px;
+            border-radius:20px; background: var(--bg-tertiary); border:1px solid var(--border-color);
+            font-size:12px; font-weight:500; }
+        
+        .stats-line { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+            padding:12px 0; border-top:1px solid var(--border-color); color: var(--text-secondary);
+            font-size:12px; }
+        
+        @media (max-width:768px) {
+            .container { padding:16px; }
+            header { flex-direction:column; align-items:flex-start; gap:12px; }
+            .header-section { flex-direction:column; }
+            .grid { grid-template-columns:1fr; }
+            .form-row { grid-template-columns:1fr; }
+            .tabs { gap:8px; }
+        }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    {% include '_assistant_panel.html' %}
+    <header>
+        <div class="logo">📊 Gestión de Proyectos</div>
+        <div class="nav">
+            <a href="/app/dashboard">← Dashboard</a>
+            <a href="/api/docs">Documentación</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="header-section">
+            <div>
+                <h1>Proyectos, recursos y facturación</h1>
+                <p class="lead">Planifica proyectos, asigna equipos, registra tiempo y gastos para facturación automática.</p>
+            </div>
+        </div>
+
+        <!-- KPI Summary -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpiProjects">0</div>
+                <div class="kpi-label">Proyectos activos</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpiTasks">0</div>
+                <div class="kpi-label">Tareas pendientes</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpiBudget">€0</div>
+                <div class="kpi-label">Presupuesto total</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpiBilling">€0</div>
+                <div class="kpi-label">Listo para facturar</div>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">📁 Proyectos</button>
+            <button class="tab-btn" onclick="switchTab(1)">📋 Tareas</button>
+            <button class="tab-btn" onclick="switchTab(2)">👥 Recursos</button>
+            <button class="tab-btn" onclick="switchTab(3)">⏱️ Tiempo</button>
+            <button class="tab-btn" onclick="switchTab(4)">💸 Gastos</button>
+            <button class="tab-btn" onclick="switchTab(5)">💰 Facturación</button>
+        </div>
+
+        <!-- TAB 0: Proyectos -->
+        <div class="tab-content active" id="tab0">
+            <div class="grid">
+                <div class="card">
+                    <h3>➕ Crear Proyecto</h3>
+                    <p>Inicia un nuevo proyecto con presupuesto y fechas.</p>
+                    <div class="form-group">
+                        <label>Código del proyecto *</label>
+                        <input id="projCode" placeholder="PRJ-2025-001" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input id="projName" placeholder="Implementación planta">
+                        </div>
+                        <div class="form-group">
+                            <label>Cliente</label>
+                            <input id="projCliente" placeholder="Nombre cliente">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Presupuesto (€)</label>
+                            <input id="projBudget" type="number" step="0.01" placeholder="25000">
+                        </div>
+                        <div class="form-group">
+                            <label>Estado inicial</label>
+                            <select id="projStatus">
+                                <option>active</option>
+                                <option>planning</option>
+                                <option>on-hold</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Inicio</label>
+                            <input id="projStart" type="date">
+                        </div>
+                        <div class="form-group">
+                            <label>Fin estimado</label>
+                            <input id="projEnd" type="date">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="createProject()">✓ Crear proyecto</button>
+                </div>
+
+                <div class="card">
+                    <h3>📂 Proyectos actuales</h3>
+                    <p>Haz clic en un proyecto para editarlo y ver detalles.</p>
+                    <div class="list" id="projList">
+                        <div class="list-item empty">Cargando proyectos...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 1: Tareas -->
+        <div class="tab-content" id="tab1">
+            <div class="grid">
+                <div class="card">
+                    <h3>✏️ Selecciona un proyecto</h3>
+                    <p>Las tareas se asignan a proyectos específicos.</p>
+                    <div id="projSelectorTaskTab">
+                        <div class="chip">Ningún proyecto seleccionado</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>➕ Nueva tarea</h3>
+                    <p>Define los entregables del proyecto.</p>
+                    <div class="form-group">
+                        <label>Nombre de la tarea *</label>
+                        <input id="taskName" placeholder="Fase análisis">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Horas estimadas</label>
+                            <input id="taskHours" type="number" step="0.5" placeholder="40">
+                        </div>
+                        <div class="form-group">
+                            <label>Prioridad</label>
+                            <select id="taskPriority">
+                                <option>Alta</option>
+                                <option>Media</option>
+                                <option>Baja</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <textarea id="taskDesc" placeholder="Detalle del alcance y criterios de aceptación"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Inicio</label>
+                            <input id="taskStart" type="date">
+                        </div>
+                        <div class="form-group">
+                            <label>Fin</label>
+                            <input id="taskEnd" type="date">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="createTask()">✓ Crear tarea</button>
+                </div>
+            </div>
+
+            <div style="margin-top:20px;">
+                <div class="card">
+                    <h3>📋 Tareas del proyecto</h3>
+                    <div class="list" id="taskList">
+                        <div class="list-item empty">Selecciona un proyecto para ver tareas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: Recursos -->
+        <div class="tab-content" id="tab2">
+            <div class="grid">
+                <div class="card">
+                    <h3>➕ Asignar recurso</h3>
+                    <p>Añade miembros del equipo con roles y tarifas.</p>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nombre del recurso *</label>
+                            <input id="asResName" placeholder="Juan Pérez">
+                        </div>
+                        <div class="form-group">
+                            <label>Rol</label>
+                            <input id="asRole" placeholder="Desarrollador Senior">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tarifa facturación (€/h)</label>
+                            <input id="asBill" type="number" step="0.01" placeholder="85">
+                        </div>
+                        <div class="form-group">
+                            <label>Tarifa coste (€/h)</label>
+                            <input id="asCost" type="number" step="0.01" placeholder="45">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Capacidad semanal (h)</label>
+                            <input id="asCap" type="number" step="0.5" placeholder="40">
+                        </div>
+                        <div class="form-group">
+                            <label>Disponibilidad</label>
+                            <select id="asAvail">
+                                <option>Disponible</option>
+                                <option>Parcial</option>
+                                <option>No disponible</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="addAssignment()">✓ Asignar</button>
+                </div>
+
+                <div class="card">
+                    <h3>👥 Equipo actual</h3>
+                    <div class="list" id="asList">
+                        <div class="list-item empty">Sin recursos asignados</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: Tiempo -->
+        <div class="tab-content" id="tab3">
+            <div class="grid">
+                <div class="card">
+                    <h3>⏱️ Registrar tiempo</h3>
+                    <p>Captura las horas trabajadas diarias.</p>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Recurso *</label>
+                            <select id="tsRes">
+                                <option value="">-- Selecciona recurso --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tarea</label>
+                            <select id="tsTask">
+                                <option value="">-- Selecciona tarea --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Fecha *</label>
+                            <input id="tsDate" type="date">
+                        </div>
+                        <div class="form-group">
+                            <label>Horas *</label>
+                            <input id="tsHours" type="number" step="0.25" placeholder="8" min="0.25" max="24">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción de actividad</label>
+                        <textarea id="tsNotes" placeholder="Detalle del trabajo realizado"></textarea>
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="createTimesheet()">✓ Registrar</button>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Partes de tiempo pendientes</h3>
+                    <p>Aprueba bloques de horas para facturación.</p>
+                    <div class="list" id="tsList">
+                        <div class="list-item empty">Sin registros de tiempo</div>
+                    </div>
+                    <div style="margin-top:12px;">
+                        <button class="btn btn-secondary btn-block btn-sm" onclick="approveTimesheets()">✓ Aprobar seleccionados</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: Gastos -->
+        <div class="tab-content" id="tab4">
+            <div class="grid">
+                <div class="card">
+                    <h3>💸 Nuevo gasto</h3>
+                    <p>Registra desplazamientos, materiales o dietas.</p>
+                    <div class="form-group">
+                        <label>Recurso *</label>
+                        <select id="expRes">
+                            <option value="">-- Selecciona recurso --</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Fecha *</label>
+                            <input id="expDate" type="date">
+                        </div>
+                        <div class="form-group">
+                            <label>Importe (€) *</label>
+                            <input id="expAmount" type="number" step="0.01" placeholder="0.00">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Categoría</label>
+                            <select id="expCat">
+                                <option>Hotel</option>
+                                <option>Transporte</option>
+                                <option>Comidas</option>
+                                <option>Material</option>
+                                <option>Otros</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tarea asociada</label>
+                            <select id="expTask">
+                                <option value="">-- Opcional --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <textarea id="expNotes" placeholder="Hotel en Madrid, viaje cliente..."></textarea>
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="createExpense()">✓ Registrar gasto</button>
+                </div>
+
+                <div class="card">
+                    <h3>🧾 Gastos pendientes</h3>
+                    <p>Aprueba gastos para incluirlos en facturación.</p>
+                    <div class="list" id="expList">
+                        <div class="list-item empty">Sin gastos registrados</div>
+                    </div>
+                    <div style="margin-top:12px;">
+                        <button class="btn btn-secondary btn-block btn-sm" onclick="approveExpenses()">✓ Aprobar seleccionados</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: Facturación -->
+        <div class="tab-content" id="tab5">
+            <div class="grid">
+                <div class="card">
+                    <h3>💰 Generar facturación</h3>
+                    <p>Crea eventos de facturación desde horas y gastos aprobados.</p>
+                    <div id="billingSummary" style="margin-bottom:16px;">
+                        <div style="font-size:13px; color: var(--text-secondary); margin-bottom:8px;">Estado de facturación</div>
+                        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                            <span class="chip"><strong id="billHours">0</strong> horas</span>
+                            <span class="chip"><strong id="billExpenses">0</strong> gastos</span>
+                            <span class="chip"><strong id="billTotal">€0</strong> total</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="generateBilling()">🚀 Generar eventos</button>
+                </div>
+
+                <div class="card">
+                    <h3>📑 Eventos de facturación</h3>
+                    <p>Líneas listas para crear facturas en el módulo de ventas.</p>
+                    <div class="list" id="billList">
+                        <div class="list-item empty">Genera eventos para ver aquí</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentProject = null;
+        let allProjects = [];
+        let allResources = [];
+        let allTasks = [];
+
+        function switchTab(index) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`.tab-btn:nth-child(${index + 1})`).classList.add('active');
+            document.getElementById(`tab${index}`).classList.add('active');
+        }
+
+        const api = async (url, options={}) => {
+            const opts = Object.assign({credentials:'include', headers:{'Content-Type':'application/json'}}, options);
+            const resp = await fetch(url, opts);
+            if(!resp.ok){ const t = await resp.text(); throw new Error(t || resp.statusText); }
+            const ct = resp.headers.get('content-type')||''; return ct.includes('application/json') ? resp.json() : resp.text();
+        };
+
+        function updateProjectSelector() {
+            const select = document.getElementById('tsRes');
+            select.innerHTML = '<option value="">-- Selecciona recurso --</option>';
+            allResources.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r.resource_id || r.id;
+                opt.textContent = r.resource_name || `ID ${r.resource_id}`;
+                select.appendChild(opt);
+            });
+            const expSelect = document.getElementById('expRes');
+            expSelect.innerHTML = '<option value="">-- Selecciona recurso --</option>';
+            allResources.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r.resource_id || r.id;
+                opt.textContent = r.resource_name || `ID ${r.resource_id}`;
+                expSelect.appendChild(opt);
+            });
+        }
+
+        function selectProject(id, code, name) {
+            currentProject = id;
+            document.getElementById('projSelectorTaskTab').innerHTML = `<span class="chip">📁 ${code} · ${name}</span>`;
+            loadTasks();
+            loadAssignments();
+            loadTimesheets();
+            loadExpenses();
+            loadBilling();
+            updateTaskSelector();
+        }
+
+        function updateTaskSelector() {
+            const select = document.getElementById('tsTask');
+            const expSelect = document.getElementById('expTask');
+            select.innerHTML = '<option value="">-- Selecciona tarea --</option>';
+            expSelect.innerHTML = '<option value="">-- Opcional --</option>';
+            allTasks.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.id;
+                opt.textContent = t.name;
+                select.appendChild(opt);
+                const opt2 = opt.cloneNode(true);
+                expSelect.appendChild(opt2);
+            });
+        }
+
+        async function createProject(){
+            const code = document.getElementById('projCode').value.trim();
+            if(!code) return alert('El código es requerido');
+            try {
+                const data = await api('/api/project-ops/projects',{method:'POST',body:JSON.stringify({
+                    project_code: code,
+                    name: document.getElementById('projName').value,
+                    customer_name: document.getElementById('projCliente').value || null,
+                    budget_amount: document.getElementById('projBudget').value ? Number(document.getElementById('projBudget').value) : 0,
+                    status: document.getElementById('projStatus').value || 'active',
+                    start_date: document.getElementById('projStart').value || null,
+                    end_date: document.getElementById('projEnd').value || null
+                })});
+                selectProject(data.id, data.project_code, data.name);
+                loadProjects();
+                document.getElementById('projCode').value = '';
+                document.getElementById('projName').value = '';
+                document.getElementById('projCliente').value = '';
+                document.getElementById('projBudget').value = '';
+                document.getElementById('projStart').value = '';
+                document.getElementById('projEnd').value = '';
+            } catch(e){ alert(`Error: ${e.message}`); }
+        }
+
+        async function loadProjects(){
+            try {
+                const data = await api('/api/project-ops/projects');
+                allProjects = data || [];
+                const list = document.getElementById('projList');
+                if(allProjects.length === 0) {
+                    list.innerHTML = '<div class="list-item empty">No hay proyectos. ¡Crea uno nuevo!</div>';
+                } else {
+                    list.innerHTML = allProjects.map(p => `
+                        <div class="list-item" onclick="selectProject(${p.id}, '${p.project_code}', '${p.name}')" style="cursor:pointer; position:relative; align-items:flex-start;">
+                            <div style="flex:1;">
+                                <strong>${p.project_code}</strong> · ${p.name}
+                                <div style="margin-top:4px; font-size:12px; color: var(--text-secondary);">${p.customer_name || 'Sin cliente'} · <span class="badge ${p.status==='active'?'badge-success':(p.status==='completed'?'badge-info':(p.status==='converted_to_sale'?'badge-success':'badge-warning'))}">${p.status}</span></div>
+                            </div>
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <span class="badge badge-info">€${(p.budget_amount || 0).toFixed(2)}</span>
+                                ${(p.status==='draft'||p.status==='active'||p.status==='completed') && p.status!=='converted_to_sale' ? `<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); convertProjectToSale(${p.id})">🔄 Venta</button>` : ''}
+                            </div>
+                        </div>
+                    `).join('');
+                }
+                updateKPIs();
+            } catch(e){ document.getElementById('projList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+        }
+
+        async function createTask(){
+            if(!currentProject) return alert('Selecciona un proyecto primero');
+            const name = document.getElementById('taskName').value.trim();
+            if(!name) return alert('El nombre es requerido');
+            try {
+                const data = await api(`/api/project-ops/projects/${currentProject}/tasks`, {method:'POST', body: JSON.stringify({
+                    name,
+                    descripcion: document.getElementById('taskDesc').value || null,
+                    start_date: document.getElementById('taskStart').value || null,
+                    end_date: document.getElementById('taskEnd').value || null,
+                    planned_hours: document.getElementById('taskHours').value ? Number(document.getElementById('taskHours').value) : 0
+                })});
+                loadTasks();
+                document.getElementById('taskName').value = '';
+                document.getElementById('taskHours').value = '';
+                document.getElementById('taskDesc').value = '';
+                document.getElementById('taskStart').value = '';
+                document.getElementById('taskEnd').value = '';
+            } catch(e){ alert(`Error: ${e.message}`); }
+        }
+
+        async function loadTasks(){
+            if(!currentProject){ document.getElementById('taskList').innerHTML = '<div class="list-item empty">Selecciona un proyecto</div>'; return; }
+            try {
+                const data = await api(`/api/project-ops/projects/${currentProject}/tasks`);
+                allTasks = data || [];
+                const list = document.getElementById('taskList');
+                if(allTasks.length === 0) {
+                    list.innerHTML = '<div class="list-item empty">Sin tareas. Crea una nueva.</div>';
+                } else {
+                    list.innerHTML = allTasks.map(t => `<div class="list-item"><div style="flex:1;"><strong>${t.name}</strong><br><span style="font-size:12px; color:var(--text-secondary);">${t.start_date || ''} a ${t.end_date || ''}</span></div><span class="badge badge-info">${t.planned_hours || 0}h</span></div>`).join('');
+                }
+                updateTaskSelector();
+            } catch(e){ document.getElementById('taskList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+        }
+
+        async function addAssignment(){
+            if(!currentProject) return alert('Selecciona un proyecto');
+            const name = document.getElementById('asResName').value.trim();
+            if(!name) return alert('El nombre es requerido');
+            try {
+                await api(`/api/project-ops/projects/${currentProject}/assignments`, {method:'POST', body: JSON.stringify({
+                    resource_name: name,
+                    role: document.getElementById('asRole').value || null,
+                    bill_rate: document.getElementById('asBill').value ? Number(document.getElementById('asBill').value) : 0,
+                    cost_rate: document.getElementById('asCost').value ? Number(document.getElementById('asCost').value) : 0,
+                    capacity_hours: document.getElementById('asCap').value ? Number(document.getElementById('asCap').value) : 0,
+                    task_id: null
+                })});
+                loadAssignments();
+                document.getElementById('asResName').value = '';
+                document.getElementById('asRole').value = '';
+                document.getElementById('asBill').value = '';
+                document.getElementById('asCost').value = '';
+                document.getElementById('asCap').value = '';
+            } catch(e){ alert(`Error: ${e.message}`); }
+        }
+
+        async function loadAssignments(){
+            if(!currentProject){ document.getElementById('asList').innerHTML = '<div class="list-item empty">Selecciona un proyecto</div>'; return; }
+            try {
+                const data = await api(`/api/project-ops/projects/${currentProject}/assignments`);
+                allResources = data || [];
+                const list = document.getElementById('asList');
+                if(allResources.length === 0) {
+                    list.innerHTML = '<div class="list-item empty">Sin recursos asignados.</div>';
+                } else {
+                    list.innerHTML = allResources.map(a => `<div class="list-item"><div style="flex:1;"><strong>${a.resource_name}</strong><br><span style="font-size:12px; color:var(--text-secondary);">${a.role || 'Sin rol'}</span></div><span class="badge badge-warning">€${(a.bill_rate || 0).toFixed(2)}/h</span></div>`).join('');
+                }
+                updateProjectSelector();
+            } catch(e){ document.getElementById('asList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+        }
+
+        async function createTimesheet(){
+            if(!currentProject) return alert('Selecciona un proyecto');
+            const date = document.getElementById('tsDate').value;
+            const hours = document.getElementById('tsHours').value;
+            if(!date || !hours) return alert('Fecha y horas son requeridas');
+            try {
+                await api(`/api/project-ops/projects/${currentProject}/timesheets`, {method:'POST', body: JSON.stringify({
+                    resource_id: document.getElementById('tsRes').value ? Number(document.getElementById('tsRes').value) : null,
+                    resource_name: null,
+                    task_id: document.getElementById('tsTask').value ? Number(document.getElementById('tsTask').value) : null,
+                    work_date: date,
+                    hours: Number(hours),
+                    notes: document.getElementById('tsNotes').value || null
+                })});
+                loadTimesheets();
+                document.getElementById('tsDate').value = '';
+                document.getElementById('tsHours').value = '';
+                document.getElementById('tsNotes').value = '';
+            } catch(e){ alert(`Error: ${e.message}`); }
+        }
+
+        async function loadTimesheets(){
+            if(!currentProject){ document.getElementById('tsList').innerHTML = '<div class="list-item empty">Selecciona un proyecto</div>'; return; }
+            try {
+                const data = await api(`/api/project-ops/projects/${currentProject}/timesheets`);
+                const list = document.getElementById('tsList');
+                if(!data || data.length === 0) {
+                    list.innerHTML = '<div class="list-item empty">Sin registros de tiempo.</div>';
+                } else {
+                    list.innerHTML = data.map(t => `<div class="list-item"><input type="checkbox" data-ts="${t.id}"> <div style="flex:1; margin-left:8px;"><strong>${t.work_date}</strong> · ${t.hours}h<br><span style="font-size:12px; color:var(--text-secondary);">${t.notes || ''}</span></div><span class="badge ${t.status==='approved'?'badge-success':'badge-warning'}">${t.status}</span></div>`).join('');
+                }
+            } catch(e){ document.getElementById('tsList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+        }
+
+        async function approveTimesheets(){
+            const ids = Array.from(document.querySelectorAll('[data-ts]:checked')).map(el => Number(el.getAttribute('data-ts')));
+            if(!ids.length) return alert('Selecciona al menos una entrada');
+            try {
+                await api('/api/project-ops/timesheets/approve',{method:'POST',body:JSON.stringify({ids})});
+                loadTimesheets();
+            } catch(e){ alert(`Error: ${e.message}`); }
+        }
+
+        async function createExpense(){
+            if(!currentProject) return alert('Selecciona un proyecto');
+            const date = document.getElementById('expDate').value;
+            const amount = document.getElementById('expAmount').value;
+            if(!date || !amount) return alert('Fecha e importe son requeridos');
+            try {
+                await api(`/api/project-ops/projects/${currentProject}/expenses`, {method:'POST', body: JSON.stringify({
+                    resource_id: document.getElementById('expRes').value ? Number(document.getElementById('expRes').value) : null,
+                    resource_name: null,
+                    expense_date: date,
+                    amount: Number(amount),
+                    category: document.getElementById('expCat').value || null,
+                    task_id: document.getElementById('expTask').value ? Number(document.getElementById('expTask').value) : null,
+                    notes: document.getElementById('expNotes').value || null
+                })});
+                loadExpenses();
+                document.getElementById('expDate').value = '';
+                document.getElementById('expAmount').value = '';
+                document.getElementById('expNotes').value = '';
+            } catch(e){ alert(`Error: ${e.message}`); }
+        }
+
+        async function loadExpenses(){
+            if(!currentProject){ document.getElementById('expList').innerHTML = '<div class="list-item empty">Selecciona un proyecto</div>'; return; }
+            try {
+                const data = await api(`/api/project-ops/projects/${currentProject}/expenses`);
+                const list = document.getElementById('expList');
+                if(!data || data.length === 0) {
+                    list.innerHTML = '<div class="list-item empty">Sin gastos registrados.</div>';
+                } else {
+                    list.innerHTML = data.map(x => `<div class="list-item"><input type="checkbox" data-exp="${x.id}"> <div style="flex:1; margin-left:8px;"><strong>${x.expense_date}</strong> · ${x.category || 'Sin categoría'}</div><span class="badge badge-info">€${(x.amount || 0).toFixed(2)}</span><span class="badge ${x.status==='approved'?'badge-success':'badge-warning'}">${x.status}</span></div>`).join('');
+                }
+            } catch(e){ document.getElementById('expList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+        }
+
+        async function approveExpenses(){
+            const ids = Array.from(document.querySelectorAll('[data-exp]:checked')).map(el => Number(el.getAttribute('data-exp')));
+            if(!ids.length) return alert('Selecciona al menos un gasto');
+            try {
+                await api('/api/project-ops/expenses/approve',{method:'POST',body:JSON.stringify({ids})});
+                loadExpenses();
+            } catch(e){ alert(`Error: ${e.message}`); }
+        }
+
+        async function generateBilling(){
+            if(!currentProject) return alert('Selecciona un proyecto');
+            try {
+                const data = await api(`/api/project-ops/projects/${currentProject}/billing/generate`,{method:'POST'});
+                loadBilling();
+                loadTimesheets();
+                loadExpenses();
+            } catch(e){ alert(`Error: ${e.message}`); }
+        }
+
+        async function loadBilling(){
+            if(!currentProject){ document.getElementById('billList').innerHTML = '<div class="list-item empty">Selecciona un proyecto</div>'; return; }
+            try {
+                const data = await api(`/api/project-ops/projects/${currentProject}/billing`);
+                const list = document.getElementById('billList');
+                if(!data || data.length === 0) {
+                    list.innerHTML = '<div class="list-item empty">Sin eventos de facturación.</div>';
+                } else {
+                    list.innerHTML = data.map(b => `<div class="list-item"><div style="flex:1;"><strong>${b.event_type}</strong><br><span style="font-size:12px; color:var(--text-secondary);">${b.description || ''}</span></div><span class="badge badge-info">€${(b.amount || 0).toFixed(2)}</span></div>`).join('');
+                }
+            } catch(e){ document.getElementById('billList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+        }
+
+        async function updateKPIs() {
+            let activeProjects = 0, totalTasks = 0, totalBudget = 0;
+            allProjects.forEach(p => {
+                if(p.status === 'active') activeProjects++;
+                totalBudget += p.budget_amount || 0;
+            });
+            document.getElementById('kpiProjects').textContent = activeProjects;
+            document.getElementById('kpiBudget').textContent = `€${totalBudget.toFixed(2)}`;
+        }
+
+        async function convertProjectToSale(projectId) {
+            try {
+                const projectData = allProjects.find(p => p.id === projectId);
+                if (!projectData) return alert('Proyecto no encontrado');
+                
+                if (projectData.status === 'canceled' || projectData.status === 'converted_to_sale') {
+                    return alert(`No se puede convertir un proyecto con estado "${projectData.status}"`);
+                }
+
+                if (!confirm(`¿Convertir el proyecto "${projectData.name}" a cotización de venta?`)) return;
+
+                const response = await api(`/api/project-ops/projects/${projectId}/convert-to-sale`, {
+                    method: 'POST'
+                });
+
+                if (response.success) {
+                    alert(`✅ ${response.message}\n\nCotización: #${response.quote_number}`);
+                    loadProjects();
+                    // Opcionalmente redirigir a la cotización creada
+                    // window.location.href = `/app/ventas/quotes/${response.quote_id}`;
+                } else {
+                    alert(`❌ Error: ${response.detail || 'No se pudo convertir el proyecto'}`);
+                }
+            } catch (e) {
+                alert(`❌ Error: ${e.message}`);
+            }
+        }
+
+        // Init
+        loadProjects();
+    </script>
+
+    <script defer src="/static/assistant.js"></script>
+    <script defer src="/static/assistant-basic-panel.js"></script>
+    <script defer src="/static/voice-widget.js"></script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{titulo1}} {{titulo2}}</title>
+  <link rel="stylesheet" href="estilochatgpt.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="topbar">
+        <div id="corporativo" aria-label="Marca">
+          <img src="logo.png" alt="Logo">
+          <div class="texto">
+            <span class="t1">{{titulo1}}</span>
+            <span class="t2">{{titulo2}}</span>
+          </div>
+        </div>
+
+        <nav aria-label="Navegación principal">
+          <a href="#heroe">{{enlace 1}}</a>
+          <a href="#destacado2">{{enlace 2}}</a>
+          <a href="#destacado4">{{enlace 3}}</a>
+          <a href="#destacado7">{{enlace 4}}</a>
+          <a href="#contacto" class="nav-cta">{{enlace 5}}</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section id="heroe" aria-label="Héroe">
+      <div class="container hero-inner">
+        <h3>{{heroetitulo}}</h3>
+        <p>{{heroetexto}}</p>
+        <a class="btn btn-primary" href="#destacado2">{{heroeaccion}}</a>
+      </div>
+    </section>
+
+    <!-- DESTACADO 1 (tarjeta con foto circular a la izquierda) -->
+    <section id="destacado1" class="soft" aria-label="Destacado 1">
+      <div class="container">
+        <div class="pill-card">
+          <div class="left">
+            <!-- Sustituye la imagen por un retrato o foto corporativa -->
+            <img src="destacado1.jpg" alt="">
+          </div>
+          <div class="right">
+            <h4>{{destacado1titulo}}</h4>
+            <p>{{destacado1texto}}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTACADO 2 (texto izquierda + imagen derecha con botón) -->
+    <section id="destacado2" aria-label="Destacado 2">
+      <div class="container section-grid">
+        <div class="content">
+          <span class="kicker">Technology × Performance</span>
+          <h4>{{destacado2titulo}}</h4>
+          <p>{{destacado2texto}}</p>
+          <a class="btn btn-primary" href="#destacado4">{{destacado2accion}}</a>
+        </div>
+        <div class="media">
+          <img src="destacado2.jpg" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTACADO 3 (icono + título y texto debajo) -->
+    <section id="destacado3" class="soft" aria-label="Destacado 3">
+      <div class="container">
+        <div class="iconline">
+          <div class="iconbox">
+            <img src="destacado3_icono.png" alt="">
+          </div>
+          <h4>{{destacado3titulo}}</h4>
+        </div>
+        <p>{{destacado3texto}}</p>
+      </div>
+    </section>
+
+    <!-- DESTACADO 4 (texto derecha + imagen izquierda, con botón) -->
+    <section id="destacado4" aria-label="Destacado 4">
+      <div class="container section-grid reverse">
+        <div class="media">
+          <img src="destacado4.jpg" alt="">
+        </div>
+        <div class="content">
+          <h4>{{destacado4titulo}}</h4>
+          <p>{{destacado4texto}}</p>
+          <a class="btn btn-primary" href="#destacado6">{{destacado4accion}}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTACADO 5 (dos columnas de texto, tipo “Immersive strategies”) -->
+    <section id="destacado5" class="soft" aria-label="Destacado 5">
+      <div class="container section-grid">
+        <div class="content">
+          <h4>{{destacado5titulo1}}</h4>
+          <p>{{destacado5texto1}}</p>
+        </div>
+        <div class="content">
+          <h5 style="font-size:20px;font-weight:900;margin-top:4px;">{{destacado5titulo2}}</h5>
+          <p>{{destacado5texto2}}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTACADO 6 (CTA con foto de fondo “No more death by PowerPoint…”) -->
+    <section id="destacado6" class="cta-photo" aria-label="Destacado 6">
+      <div class="container">
+        <div class="cta-inner">
+          <h3>{{destacado6titulo1}}</h3>
+          <p>{{destacado6texto1}}</p>
+          <a class="btn btn-primary" href="#contacto">{{destacado6accion}}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTACADO 7 (Why us + callout naranja) -->
+    <section id="destacado7" class="soft" aria-label="Destacado 7">
+      <div class="container why">
+        <div class="why-card">
+          <h5 style="font-size:26px;font-weight:900;">{{destacado7titulo1}}</h5>
+          <p>{{destacado7texto1}}</p>
+          <p>{{destacado7texto2}}</p>
+        </div>
+        <div class="callout">
+          <p><strong>{{destacado7texto3}}</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTACADO 8 (banda verde + foto a la derecha) -->
+    <section id="destacado8" aria-label="Destacado 8">
+      <div class="container">
+        <div class="band">
+          <div class="band-left">
+            <h4>{{destacado8titulo}}</h4>
+            <p>{{destacado8texto}}</p>
+            <a class="btn btn-primary" href="#contacto">{{destacado8accion}}</a>
+          </div>
+          <div class="band-right">
+            <img src="destacado8.jpg" alt="">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESTACADO 9 (texto derecha + imagen izquierda, similar a bloque final del ejemplo) -->
+    <section id="destacado9" class="soft" aria-label="Destacado 9">
+      <div class="container section-grid reverse">
+        <div class="media">
+          <img src="destacado9.jpg" alt="">
+        </div>
+        <div class="content">
+          <h4>{{destacado9titulo}}</h4>
+          <p>{{destacado9texto}}</p>
+          <a class="btn btn-primary" href="#contacto">{{destacado9accion}}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" aria-label="Contacto">
+      <div class="container contact-grid">
+
+        <div class="footer-mini" id="infocorporacion">
+          <h4 style="font-size:22px;font-weight:900;margin-bottom:10px;">Contact Us</h4>
+          <p>El viaje hacia mejores resultados y cultura empieza con una conversación.</p>
+
+          <div style="margin-top:14px;">
+            <p><strong>Dirección:</strong> {{direccion}}</p>
+            <p><strong>Teléfono:</strong> {{telefono}}</p>
+            <p><strong>Email:</strong> {{email}}</p>
+          </div>
+
+          <div class="social" style="margin-top:14px;">
+            <a href="#" aria-label="LinkedIn">in</a>
+            <a href="#" aria-label="X">x</a>
+            <a href="#" aria-label="YouTube">▶</a>
+          </div>
+        </div>
+
+        <form action="" method="post">
+          <h5 style="font-size:20px;font-weight:900;margin-bottom:6px;">Contacto</h5>
+          <p>Frase que invita a contactar</p>
+
+          <div class="form-row">
+            <div>
+              <label for="nombre">Nombre</label>
+              <input id="nombre" type="text" name="nombre" placeholder="Tu nombre" required>
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" type="email" name="email" placeholder="tu@email.com" required>
+            </div>
+          </div>
+
+          <label for="mensaje">Mensaje</label>
+          <textarea id="mensaje" name="mensaje" placeholder="¿En qué puedo ayudarte?" required></textarea>
+
+          <div style="margin-top:14px;">
+            <button class="btn btn-primary" type="submit">Enviar mensaje</button>
+          </div>
+        </form>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container footer-wrap">
+      <div>(c) {{anio}} {{titulo1}} {{titulo2}} — Todos los derechos reservados</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="#" style="opacity:.85;">Privacy Policy</a>
+        <a href="#" style="opacity:.85;">Terms of Use</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
+

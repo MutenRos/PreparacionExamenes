@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noticias | Bombas Ideal S.A.</title>
+    <meta name="description" content="Últimas noticias y novedades de Bombas Ideal. Ferias, eventos, nuevos productos y sostenibilidad.">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="stylesheet" href="styles.css?v=4">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .noticias-page {
+            padding: 120px 0 60px;
+            min-height: 80vh;
+        }
+        .noticias-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .noticias-header h1 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        .noticias-header h1 span {
+            color: var(--primary);
+        }
+        .noticias-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        .noticia-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        .noticia-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        .noticia-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .noticia-image i {
+            font-size: 4rem;
+            color: white;
+            opacity: 0.9;
+        }
+        .noticia-content {
+            padding: 25px;
+        }
+        .noticia-date {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
+        .noticia-content h2 {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .noticia-content p {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        .noticia-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        .noticia-tag {
+            background: #f0f4f8;
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        @media (max-width: 768px) {
+            .noticias-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar fixed">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><img src="assets/images/logo.svg" alt="Bombas Ideal" class="logo-img"></a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Inicio</a></li>
+                <li><a href="index.html#empresa" class="nav-link">La Empresa</a></li>
+                <li><a href="index.html#productos" class="nav-link">Productos</a></li>
+                <li><a href="index.html#aplicaciones" class="nav-link">Aplicaciones</a></li>
+                <li><a href="bips.html" class="nav-link bips-link"><i class="fas fa-microchip"></i> BIPS</a></li>
+                <li><a href="index.html#contacto" class="nav-link">Contacto</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="tel:+34961402143" class="nav-phone"><i class="fas fa-phone"></i><span>+34 961 402 143</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="noticias-page">
+        <div class="container">
+            <div class="noticias-header">
+                <span class="section-tag">Actualidad</span>
+                <h1>Últimas <span>Noticias</span></h1>
+                <p>Mantente informado sobre las novedades de Bombas Ideal</p>
+            </div>
+            
+            <div class="noticias-grid">
+                <article class="noticia-card">
+                    <div class="noticia-image">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="noticia-content">
+                        <span class="noticia-date"><i class="fas fa-calendar"></i> Febrero 2026</span>
+                        <h2>Bombas Ideal participa en SICUR 2026</h2>
+                        <p>Un año más, Bombas Ideal ha participado en SICUR, el Salón Internacional de la Seguridad celebrado en IFEMA Madrid. La empresa ha presentado sus últimas novedades en equipos contraincendios, reforzando su compromiso con la seguridad y la protección.</p>
+                        <p>Los visitantes pudieron conocer de primera mano los grupos de bombeo certificados según normativas UNE EN-12845, NFPA20 y UNE 23500, así como las soluciones personalizadas para grandes instalaciones industriales y comerciales.</p>
+                        <div class="noticia-tags">
+                            <span class="noticia-tag">Ferias</span>
+                            <span class="noticia-tag">Contraincendios</span>
+                            <span class="noticia-tag">SICUR</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="noticia-card">
+                    <div class="noticia-image">
+                        <i class="fas fa-cloud-rain"></i>
+                    </div>
+                    <div class="noticia-content">
+                        <span class="noticia-date"><i class="fas fa-calendar"></i> Octubre 2025</span>
+                        <h2>Un año después de la DANA: Reconstrucción y Solidaridad</h2>
+                        <p>Se cumple un año de la devastadora DANA que afectó a la Comunidad Valenciana en octubre de 2024. Bombas Ideal, como empresa valenciana, quiere rendir homenaje a todas las víctimas y reconocer el esfuerzo de reconstrucción que sigue en marcha.</p>
+                        <p>Desde el primer momento, la empresa colaboró en las tareas de achique y recuperación, poniendo a disposición de los servicios de emergencia equipos de bombeo y personal técnico especializado.</p>
+                        <div class="noticia-tags">
+                            <span class="noticia-tag">Solidaridad</span>
+                            <span class="noticia-tag">Valencia</span>
+                            <span class="noticia-tag">DANA</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="noticia-card">
+                    <div class="noticia-image">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="noticia-content">
+                        <span class="noticia-date"><i class="fas fa-calendar"></i> Noviembre 2024</span>
+                        <h2>Bombas Ideal y la COP30: El Agua como Eje Climático</h2>
+                        <p>En el marco de la Conferencia de las Partes sobre el Cambio Climático, Bombas Ideal reafirma su compromiso con la gestión sostenible del agua. La empresa ha desarrollado tecnologías de alta eficiencia energética que contribuyen a reducir la huella de carbono.</p>
+                        <p>Los sistemas de bombeo solar y los grupos con variador de frecuencia representan soluciones clave para la adaptación climática en sectores como la agricultura, el abastecimiento urbano y la industria.</p>
+                        <div class="noticia-tags">
+                            <span class="noticia-tag">Sostenibilidad</span>
+                            <span class="noticia-tag">Clima</span>
+                            <span class="noticia-tag">Eficiencia</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="noticia-card">
+                    <div class="noticia-image">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="noticia-content">
+                        <span class="noticia-date"><i class="fas fa-calendar"></i> 2019</span>
+                        <h2>Bombeo Solar: La Forma Más Ecológica de Bombear Agua</h2>
+                        <p>Bombas Ideal presenta su gama de sistemas de bombeo solar SBS, la solución más ecológica y económica para extraer agua sin necesidad de conexión a la red eléctrica. Ideal para fincas agrícolas, ganaderías y viviendas aisladas.</p>
+                        <p>Los sistemas SBS incluyen bomba sumergida, variador solar con tecnología MPPT y estructura para paneles fotovoltaicos. Funcionamiento 100% autónomo y coste operativo cero.</p>
+                        <div class="noticia-tags">
+                            <span class="noticia-tag">Solar</span>
+                            <span class="noticia-tag">Renovables</span>
+                            <span class="noticia-tag">Innovación</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="noticia-card">
+                    <div class="noticia-image">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <div class="noticia-content">
+                        <span class="noticia-date"><i class="fas fa-calendar"></i> 2023</span>
+                        <h2>Nueva Planta de Fabricación: Ampliación de Capacidad</h2>
+                        <p>Bombas Ideal ha completado la ampliación de sus instalaciones de fabricación en el Polígono Industrial Mediterráneo de Massalfassar. La nueva planta permite aumentar la capacidad productiva y mejorar los tiempos de entrega.</p>
+                        <p>Las nuevas instalaciones incorporan tecnología de fabricación avanzada y sistemas de control de calidad de última generación, manteniendo los estándares que caracterizan a la marca desde 1902.</p>
+                        <div class="noticia-tags">
+                            <span class="noticia-tag">Fabricación</span>
+                            <span class="noticia-tag">Crecimiento</span>
+                            <span class="noticia-tag">Calidad</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="noticia-card">
+                    <div class="noticia-image">
+                        <i class="fas fa-globe-europe"></i>
+                    </div>
+                    <div class="noticia-content">
+                        <span class="noticia-date"><i class="fas fa-calendar"></i> 2022</span>
+                        <h2>Expansión Internacional: Nuevos Mercados en África y Asia</h2>
+                        <p>Bombas Ideal continúa su expansión internacional con la apertura de nuevas delegaciones comerciales en el norte de África y el sudeste asiático. La empresa ya está presente en más de 72 países de los cinco continentes.</p>
+                        <p>Esta estrategia de internacionalización permite ofrecer un servicio más cercano a los clientes y adaptarse a las necesidades específicas de cada mercado.</p>
+                        <div class="noticia-tags">
+                            <span class="noticia-tag">Internacional</span>
+                            <span class="noticia-tag">Expansión</span>
+                            <span class="noticia-tag">Export</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Bombas Ideal S.A. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

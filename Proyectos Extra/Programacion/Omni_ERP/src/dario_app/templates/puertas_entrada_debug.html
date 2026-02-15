@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - Puerta de Entrada</title>
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>🔍 Debug - Puerta de Entrada</h1>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5>Test de API</h5>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-primary mb-3" onclick="testAPI()">Test API</button>
+                        <div id="apiResult" class="alert alert-info" style="display:none;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5>Console Logs</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre id="logs" style="max-height: 400px; overflow-y: auto; background: var(--bg-tertiary); padding: 10px; border-radius: 5px;"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-warning">
+                        <h5>Datos Cargados</h5>
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-warning mb-3" onclick="mostrarDatos()">Mostrar Datos</button>
+                        <pre id="dataResult" style="max-height: 400px; overflow-y: auto; background: var(--bg-tertiary); padding: 10px; border-radius: 5px;"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let logs = [];
+        
+        // Interceptar console.log
+        const originalLog = console.log;
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' '));
+            updateLogs();
+        };
+        
+        function updateLogs() {
+            document.getElementById('logs').textContent = logs.join('\n');
+        }
+        
+        async function testAPI() {
+            const resultDiv = document.getElementById('apiResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<p><strong>Probando API...</strong></p>';
+            
+            try {
+                const response = await fetch('/api/puertas/entrada/pendientes');
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <h6>✓ API Funciona</h6>
+                    <p><strong>Status:</strong> ${response.status}</p>
+                    <p><strong>Documentos retornados:</strong> ${data.length}</p>
+                    <ul>
+                        ${data.slice(0, 3).map(d => `<li>${d.numero_documento} (${d.total_items} items)</li>`).join('')}
+                    </ul>
+                `;
+                
+                console.log('API Test OK:', data.length, 'documentos');
+            } catch(e) {
+                resultDiv.innerHTML = `<h6>✗ Error en API: ${e.message}</h6>`;
+                console.log('API Error:', e);
+            }
+        }
+        
+        async function mostrarDatos() {
+            const dataDiv = document.getElementById('dataResult');
+            try {
+                const response = await fetch('/api/puertas/entrada/pendientes');
+                const data = await response.json();
+                dataDiv.textContent = JSON.stringify(data, null, 2);
+            } catch(e) {
+                dataDiv.textContent = 'Error: ' + e.message;
+            }
+        }
+        
+        window.addEventListener('load', function() {
+            console.log('Página cargada');
+            console.log('API Base:', window.location.origin);
+            testAPI();
+        });
+    </script>
+</body>
+</html>

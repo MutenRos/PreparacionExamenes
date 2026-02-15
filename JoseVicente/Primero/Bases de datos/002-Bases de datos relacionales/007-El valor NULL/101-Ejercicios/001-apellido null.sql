@@ -1,0 +1,2 @@
+ALTER TABLE clientes
+  MODIFY COLUMN apellidos VARCHAR(100) NULL;

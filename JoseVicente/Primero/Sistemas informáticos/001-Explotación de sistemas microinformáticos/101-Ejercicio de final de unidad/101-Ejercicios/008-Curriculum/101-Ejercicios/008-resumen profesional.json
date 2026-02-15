@@ -1,0 +1,101 @@
+{
+  "datos personales":{
+    "nombre":"Jose Vicente",
+    "apellidos":"Carratalá Sanchis",
+    "email":"info@josevicentecarratala.com",
+    "teléfono":"620891718",
+    "fotografia":"josevicentecarratala.jpg",
+    "resumen profesional":"Lorem ipsum",
+    "redes sociales":[
+        {
+          "nombre":"Facebook",
+          "url":"https://www.facebook.com/carratala"
+        },
+        {
+          "nombre":"Instagram",
+          "url":"https://www.instagram.com/jvcarratala/"
+        },
+        {
+          "nombre":"Linkedin",
+          "url":"https://www.linkedin.com/in/jvcarratala/"
+        },
+        {
+          "nombre":"GitHub",
+          "url":"https://github.com/jocarsa"
+        }
+    ]
+  },
+  "experiencia laboral":[
+    {
+      "inicio":"XX",
+      "final":"XX",
+      "localidad":"XX",
+      "empresa":"XX",
+      "cargo":"XX",
+      "responsabilidades":[
+        "Responsabilidad 1",
+        "Responsabilidad 2",
+        "Responsabilidad 3"
+      ]
+    },
+    {
+      "inicio":"XX",
+      "final":"XX",
+      "localidad":"XX",
+      "empresa":"XX",
+      "cargo":"XX",
+      "responsabilidades":[
+        "Responsabilidad 1",
+        "Responsabilidad 2",
+        "Responsabilidad 3"
+      ]
+    },
+    {
+      "inicio":"XX",
+      "final":"XX",
+      "localidad":"XX",
+      "empresa":"XX",
+      "cargo":"XX",
+      "responsabilidades":[
+        "Responsabilidad 1",
+        "Responsabilidad 2",
+        "Responsabilidad 3"
+      ]
+    }
+  ],
+  "formacion":[
+    {
+      "inicio":"1997",
+      "final":"2000",
+      "entidad":"Entidad de la formación",
+      "titulo":"Nombre del título obtenido"
+    },
+    {
+      "inicio":"1997",
+      "final":"2000",
+      "entidad":"Entidad de la formación",
+      "titulo":"Nombre del título obtenido"
+    }
+  ],
+  "habilidades informáticas":[
+    "HTML,CSS,Javascript",
+    "MySQL, SQLite, PostgreSQL, MongoDB",
+    "Python, Javascript, Java, PHP",
+    "..."
+  ],
+  "idiomas":[
+    {
+      "idioma":"inglés",
+      "nivel":"90"
+    },
+    {
+      "idioma":"francés",
+      "nivel":"60"
+    },
+    {
+      "idioma":"alemán",
+      "nivel":"30"
+    }
+  ]
+  
+}

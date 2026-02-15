@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Login | recortabl.es</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mogra&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo/estilo.css">
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <div class="logo">🤖</div>
+        <span><b>rec</b><i>ortabl.es</i></span>
+      </a>
+      <nav>
+        <a href="categorias.html">Categorías ▾</a>
+        <a href="sobrenosotros.html">Sobre nosotros</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="login.html">Login</a>
+        <div class="search" role="search">
+          <div class="icon">🔎</div>
+          <input type="search" placeholder="Buscar..." aria-label="Buscar">
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h1 class="title">Accede a tu cuenta</h1>
+      <p class="sub">Inicia sesión o crea una cuenta nueva para descargar recortables y guardar tus favoritos.</p>
+    </section>
+
+    <div class="product" style="align-items:start">
+
+      <!-- LOGIN -->
+      <div class="card">
+        <h2 class="p-title" style="font-size:24px">🔑 Iniciar sesión</h2>
+        <form onsubmit="event.preventDefault();alert('Formulario estático de demostración')" style="display:grid;gap:14px">
+          <div class="panel" style="border-top:0;padding-top:0">
+            <label for="login-email">Email</label>
+            <input id="login-email" type="email" placeholder="tu@email.com" required>
+          </div>
+          <div class="panel">
+            <label for="login-pass">Contraseña</label>
+            <input id="login-pass" type="password" placeholder="••••••••" required>
+          </div>
+          <div class="actions" style="margin-top:0">
+            <button class="btn primary" type="submit" style="width:100%;cursor:pointer">Entrar</button>
+          </div>
+          <p style="text-align:center;margin:0;font-size:14px;color:#5d8aa8">
+            <a href="#" style="color:#1b5f92;text-decoration:underline">¿Olvidaste tu contraseña?</a>
+          </p>
+        </form>
+      </div>
+
+      <!-- REGISTRO -->
+      <div class="card">
+        <h2 class="p-title" style="font-size:24px">📝 Crear cuenta</h2>
+        <form onsubmit="event.preventDefault();alert('Formulario estático de demostración')" style="display:grid;gap:14px">
+          <div class="panel" style="border-top:0;padding-top:0">
+            <label for="reg-user">Nombre de usuario</label>
+            <input id="reg-user" type="text" placeholder="Tu nombre de usuario" required>
+          </div>
+          <div class="panel">
+            <label for="reg-email">Email</label>
+            <input id="reg-email" type="email" placeholder="tu@email.com" required>
+          </div>
+          <div class="panel">
+            <label for="reg-pass">Contraseña</label>
+            <input id="reg-pass" type="password" placeholder="Mínimo 8 caracteres" required minlength="8">
+          </div>
+          <div class="panel">
+            <label for="reg-pass2">Repetir contraseña</label>
+            <input id="reg-pass2" type="password" placeholder="Repite la contraseña" required minlength="8">
+          </div>
+          <div class="panel" style="border-top:0;padding:0">
+            <label style="display:flex;align-items:start;gap:8px;cursor:pointer;font-size:14px;color:#5d8aa8">
+              <input type="checkbox" required style="margin-top:3px">
+              Acepto la <a href="#" style="color:#1b5f92;text-decoration:underline">política de privacidad</a> y los <a href="#" style="color:#1b5f92;text-decoration:underline">términos de uso</a>.
+            </label>
+          </div>
+          <div class="actions" style="margin-top:0">
+            <button class="btn primary" type="submit" style="width:100%;cursor:pointer">Crear cuenta</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+    <section class="info" style="margin-top:40px">
+      <div>
+        <h3>📥 Descargas ilimitadas</h3>
+        <p>Como usuario registrado tendrás acceso a la sección de descargas con todos tus recortables disponibles al instante.</p>
+      </div>
+      <div>
+        <h3>⭐ Favoritos</h3>
+        <p>Guarda tus modelos preferidos para encontrarlos rápidamente y recibir notificaciones cuando se publiquen nuevos recortables similares.</p>
+      </div>
+      <div>
+        <h3>📊 Historial</h3>
+        <p>Consulta tu historial de descargas, revisa qué modelos has montado y lleva un registro de tu colección.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <a href="sobrenosotros.html">Acerca de</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="#">Licencias</a>
+      <a href="#">Aviso Legal</a>
+      <span class="social" aria-label="Redes sociales">
+        <a href="#" title="Facebook">f</a>
+        <a href="#" title="X">x</a>
+        <a href="#" title="YouTube">▶</a>
+        <a href="#" title="Instagram">⌁</a>
+      </span>
+    </div>
+  </footer>
+</body>
+</html>

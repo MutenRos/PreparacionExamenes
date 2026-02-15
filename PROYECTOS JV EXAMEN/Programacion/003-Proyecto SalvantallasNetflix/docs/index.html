@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>ScreenSaver.es · Free screensavers · 4K & 10-hour videos</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Free screensavers in 4K and 10-hour videos. Browse 8 playlists and 230+ videos: ambient loops, space, fluids, relax visuals.">
+  <meta name="keywords" content="free screensavers, screensaver, screensavers 4k, 10 hour screensaver, ambient screensaver">
+  <meta name="theme-color" content="#000000">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ScreenSaver.es · Free screensavers · 4K & 10-hour videos">
+  <meta property="og:description" content="Free screensavers in 4K and 10-hour videos. 8 playlists and 230+ videos.">
+  <style>
+    *{margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    html,body{
+      width:100%;height:100%;
+      background:black;color:white;
+      font-family:ubuntu,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      overflow-x:hidden;
+    }
+    :focus-visible{outline:2px solid rgba(120,160,255,.7);outline-offset:2px;}
+
+    /* NAV */
+    nav{
+      width:320px;background:midnightblue;position:fixed;height:100%;
+      padding:18px 16px;box-sizing:border-box;left:-320px;
+      transition:all 400ms ease;z-index:1000;overflow:auto;
+    }
+    .sacado{left:0px;}
+    nav .navTitle{font-weight:900;font-size:16px;margin-bottom:8px;}
+    nav .navMeta{opacity:.85;font-size:12px;margin-bottom:12px;}
+    .navList{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .navItem a{
+      display:block;padding:10px;border-radius:10px;color:white;text-decoration:none;
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+      font-weight:800;font-size:13px;line-height:1.2;
+    }
+    .navItem a:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.18);}
+    .navItem small{display:block;margin-top:6px;opacity:.80;font-weight:600;}
+
+    /* HEADER */
+    header,main,footer{padding:20px;}
+    header{
+      display:flex;align-items:center;justify-content:space-between;
+      position:fixed;top:0;width:100%;background:black;box-sizing:border-box;
+      z-index:900;border-bottom:1px solid rgba(255,255,255,0.06);gap:14px;
+    }
+    main{padding-top:92px;}
+    h1{font-size:20px;}
+    .tagline{font-size:12px;opacity:.9;}
+    .topActions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end;}
+    .btnTop{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:9px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.06);color:white;text-decoration:none;cursor:pointer;
+      font-weight:900;font-size:13px;user-select:none;white-space:nowrap;
+    }
+    .btnTop:hover{background:rgba(255,255,255,.12);}
+    .btnTopPrimary{border-color:rgba(120,160,255,.40);background:rgba(120,160,255,.16);}
+    .btnTopPrimary:hover{background:rgba(120,160,255,.24);}
+
+    /* HERO */
+    .hero{position:relative;width:100%;min-height:380px;border-bottom:1px solid rgba(255,255,255,0.08);overflow:hidden;margin-bottom:18px;}
+    .heroSlides{position:relative;width:100%;height:380px;}
+    .heroSlide{
+      position:absolute;inset:0;opacity:0;transform:scale(1.02);
+      transition:opacity .6s ease,transform .8s ease;
+      background:#0b0b0b;background-size:cover;background-position:center;
+    }
+    .heroSlide.activo{opacity:1;transform:scale(1.0);}
+    .heroShade{
+      position:absolute;inset:0;
+      background:linear-gradient(90deg,rgba(0,0,0,.78) 0%,rgba(0,0,0,.40) 55%,rgba(0,0,0,.20) 100%),
+                 radial-gradient(60% 70% at 20% 30%,rgba(0,0,0,.55),rgba(0,0,0,0));
+      pointer-events:none;
+    }
+    .heroInner{position:relative;height:380px;display:flex;align-items:flex-end;box-sizing:border-box;padding:22px 20px;}
+    .heroText{max-width:980px;}
+    .heroKicker{font-size:12px;opacity:.80;margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase;}
+    .heroTitle{font-size:34px;line-height:1.08;font-weight:900;margin-bottom:10px;text-shadow:0 4px 20px rgba(0,0,0,.5);}
+    .heroDesc{font-size:14px;line-height:1.5;opacity:.92;max-width:920px;}
+    .heroActions{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.06);color:white;text-decoration:none;cursor:pointer;
+      font-weight:900;font-size:13px;user-select:none;
+    }
+    .btn:hover{background:rgba(255,255,255,.12);}
+    .btnPrimary{border-color:rgba(120,160,255,.40);background:rgba(120,160,255,.16);}
+    .btnPrimary:hover{background:rgba(120,160,255,.24);}
+    .heroDots{position:absolute;left:20px;right:20px;bottom:16px;display:flex;gap:8px;align-items:center;justify-content:flex-end;z-index:3;}
+    .dot{width:10px;height:10px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);cursor:pointer;opacity:.9;}
+    .dot.activo{background:rgba(255,255,255,.85);border-color:rgba(255,255,255,.85);}
+    .heroArrows{position:absolute;inset:0;pointer-events:none;z-index:3;}
+    .heroPrev,.heroNext{
+      pointer-events:auto;position:absolute;top:50%;transform:translateY(-50%);
+      width:44px;height:44px;border-radius:999px;border:1px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.35);color:white;font-size:22px;line-height:42px;text-align:center;
+      cursor:pointer;user-select:none;opacity:.35;transition:opacity .2s ease,background .2s ease;
+    }
+    .heroPrev:hover,.heroNext:hover{opacity:.95;background:rgba(0,0,0,.55);}
+    .heroPrev{left:14px;}.heroNext{right:14px;}
+
+    /* SEO */
+    .seoBlock{padding:14px 0 2px 0;opacity:.92;font-size:13px;line-height:1.55;max-width:1100px;}
+    .seoBlock a{color:white;text-decoration:underline;}
+
+    /* ROWS */
+    section.row{width:100%;position:relative;margin-bottom:22px;scroll-margin-top:110px;}
+    section.row h2{margin:0 0 10px 0;font-weight:900;font-size:18px;}
+    section.row .contenedor{
+      display:flex;gap:20px;width:20000px;position:relative;
+      transition:all 350ms ease;left:10px;
+    }
+    section.row article{
+      width:300px;height:170px;background:#1a1a1a;padding:10px;box-sizing:border-box;border-radius:5px;
+      display:flex;gap:10px;align-items:flex-end;cursor:pointer;
+      border:1px solid rgba(255,255,255,0.08);position:relative;overflow:hidden;
+      transition:border-color .25s ease,transform .25s ease;
+    }
+    section.row article:hover{border-color:rgba(255,255,255,0.20);transform:scale(1.03);}
+    .meta{display:flex;flex-direction:column;gap:6px;min-width:0;text-shadow:0 0 2px black,0 0 3px black,0 0 4px black;}
+    .vtitle{font-size:14px;line-height:1.2;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px;}
+    .vlink{font-size:12px;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px;}
+    .izquierda,.derecha{
+      position:absolute;top:50%;transform:translateY(-50%);
+      background:black;color:white;width:40px;height:40px;font-size:20px;line-height:40px;text-align:center;
+      border-radius:40px;transition:opacity 250ms ease;opacity:0.12;font-weight:bold;user-select:none;cursor:pointer;
+    }
+    .izquierda{left:0;}.derecha{right:0;}
+    .izquierda:hover,.derecha:hover{opacity:0.95;}
+
+    /* MODAL */
+    .modalOverlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;
+      align-items:center;justify-content:center;z-index:2000;padding:20px;box-sizing:border-box;
+    }
+    .modalOverlay.abierto{display:flex;}
+    .modalCard{
+      width:min(920px,96vw);background:#0f0f0f;border:1px solid rgba(255,255,255,.12);
+      border-radius:10px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6);display:flex;
+    }
+    .modalMedia{width:min(520px,55vw);background:#111;position:relative;flex:0 0 auto;}
+    .modalMedia img{width:100%;height:100%;max-height:420px;object-fit:cover;display:block;background:#222;}
+    .modalBody{padding:16px;box-sizing:border-box;display:flex;flex-direction:column;gap:10px;flex:1 1 auto;min-width:0;}
+    .modalTop{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+    .modalTitle{font-size:18px;font-weight:900;line-height:1.2;max-width:100%;overflow:hidden;text-overflow:ellipsis;}
+    .modalClose{
+      flex:0 0 auto;width:34px;height:34px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);
+      color:white;cursor:pointer;font-size:18px;line-height:32px;text-align:center;user-select:none;
+    }
+    .modalClose:hover{background:rgba(255,255,255,.12);}
+    .modalMetaLine{font-size:12px;opacity:.75;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .modalDesc{font-size:13px;line-height:1.45;opacity:.90;max-height:180px;overflow:auto;padding-right:6px;}
+    .modalActions{display:flex;gap:10px;margin-top:auto;padding-top:6px;}
+    @media(max-width:780px){.modalCard{flex-direction:column;}.modalMedia{width:100%;}.modalMedia img{max-height:260px;}}
+
+    /* BACK TO TOP */
+    #backToTop{
+      position:fixed;bottom:24px;right:24px;width:44px;height:44px;border-radius:50%;
+      background:rgba(120,160,255,.25);border:1px solid rgba(120,160,255,.4);
+      color:white;font-size:20px;line-height:44px;text-align:center;cursor:pointer;
+      opacity:0;transition:opacity .3s ease;z-index:999;user-select:none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav aria-label="Playlists navigation">
+    <div class="navTitle">Playlists</div>
+    <div class="navMeta">8 playlists · 230 videos</div>
+    <ul class="navList">
+      <li class="navItem"><a href="#pl-motivational-sentences" data-scroll="#pl-motivational-sentences">Motivational Sentences<small>50 videos</small></a></li>
+      <li class="navItem"><a href="#pl-colors" data-scroll="#pl-colors">Colors<small>50 videos · Solid colors</small></a></li>
+      <li class="navItem"><a href="#pl-fish-tank" data-scroll="#pl-fish-tank">Fish Tank<small>46 videos · Virtual fish</small></a></li>
+      <li class="navItem"><a href="#pl-matrix" data-scroll="#pl-matrix">Matrix<small>50 videos · Raincode</small></a></li>
+      <li class="navItem"><a href="#pl-espirografos" data-scroll="#pl-espirografos">Espirógrafos<small>15 videos</small></a></li>
+      <li class="navItem"><a href="#pl-relojes" data-scroll="#pl-relojes">Relojes<small>5 videos</small></a></li>
+      <li class="navItem"><a href="#pl-fluidos" data-scroll="#pl-fluidos">Fluidos<small>14 videos</small></a></li>
+      <li class="navItem"><a href="#pl-estrellas" data-scroll="#pl-estrellas">Estrellas<small>Videos de estrellas</small></a></li>
+    </ul>
+  </nav>
+
+  <!-- HEADER -->
+  <header>
+    <div>
+      <h1>ScreenSaver.es</h1>
+      <div class="tagline">Free screensavers · 4K &amp; 10-hour videos</div>
+    </div>
+    <div class="topActions">
+      <a class="btnTop btnTopPrimary" href="#">Frontpage</a>
+      <a class="btnTop" href="videos.html">All videos</a>
+      <div id="hamburguesa" class="btnTop" style="font-size:18px;padding:9px 12px;" aria-label="Open navigation" role="button" tabindex="0">☰</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SLIDER -->
+    <section class="hero" id="hero" aria-label="Featured playlists slider">
+      <div class="heroSlides" id="heroSlides">
+
+        <div class="heroSlide activo" data-index="0" style="background-image:url(https://i.ytimg.com/vi/u1gN46P-Z8o/hqdefault.jpg);">
+          <div class="heroShade"></div>
+          <div class="heroInner"><div class="heroText">
+            <div class="heroKicker">Free screensavers playlist</div>
+            <div class="heroTitle">Motivational Sentences</div>
+            <div class="heroDesc">Motivational sentences displayed in stunning 4K resolution. Perfect as a screensaver or ambient background for 10 hours.</div>
+            <div class="heroActions">
+              <a class="btn btnPrimary" href="https://www.youtube.com/playlist?list=PLzsSsHbxfY09yQnz_Q8pjDb1kKru6ijLA" target="_blank" rel="noopener">Open playlist on YouTube</a>
+              <div class="btn" data-scroll-to="#pl-motivational-sentences">See videos below</div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="heroSlide" data-index="1" style="background-image:url(https://i.ytimg.com/vi/K58gmY_gucQ/hqdefault.jpg);">
+          <div class="heroShade"></div>
+          <div class="heroInner"><div class="heroText">
+            <div class="heroKicker">Free screensavers playlist</div>
+            <div class="heroTitle">Fish Tank</div>
+            <div class="heroDesc">Simulations of fish in a virtual tank. Relaxing aquarium screensavers perfect for any screen.</div>
+            <div class="heroActions">
+              <a class="btn btnPrimary" href="https://www.youtube.com/playlist?list=PLzsSsHbxfY080Djure6wlgy0k1nUOp7rs" target="_blank" rel="noopener">Open playlist on YouTube</a>
+              <div class="btn" data-scroll-to="#pl-fish-tank">See videos below</div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="heroSlide" data-index="2" style="background-image:url(https://i.ytimg.com/vi/hH_xbCwQbQs/hqdefault.jpg);">
+          <div class="heroShade"></div>
+          <div class="heroInner"><div class="heroText">
+            <div class="heroKicker">Free screensavers playlist</div>
+            <div class="heroTitle">Matrix</div>
+            <div class="heroDesc">Screensavers with raincode from Matrix Movie. Digital rain wallpaper loops in 4K resolution.</div>
+            <div class="heroActions">
+              <a class="btn btnPrimary" href="https://www.youtube.com/playlist?list=PLzsSsHbxfY08KwvxhsycNFQy8W2NaREwY" target="_blank" rel="noopener">Open playlist on YouTube</a>
+              <div class="btn" data-scroll-to="#pl-matrix">See videos below</div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="heroSlide" data-index="3" style="background-image:url(https://i.ytimg.com/vi/5MNqILGab2M/hqdefault.jpg);">
+          <div class="heroShade"></div>
+          <div class="heroInner"><div class="heroText">
+            <div class="heroKicker">Free screensavers playlist</div>
+            <div class="heroTitle">Fluidos</div>
+            <div class="heroDesc">Amazing fluid simulation screensavers. Mesmerizing 3D fluid dynamics in high definition.</div>
+            <div class="heroActions">
+              <a class="btn btnPrimary" href="https://www.youtube.com/playlist?list=PLzsSsHbxfY08utTa9yq6StGEvaXykZ4Mk" target="_blank" rel="noopener">Open playlist on YouTube</a>
+              <div class="btn" data-scroll-to="#pl-fluidos">See videos below</div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="heroSlide" data-index="4" style="background-image:url(https://i.ytimg.com/vi/Y_uf_1mtjEw/hqdefault.jpg);">
+          <div class="heroShade"></div>
+          <div class="heroInner"><div class="heroText">
+            <div class="heroKicker">Free screensavers playlist</div>
+            <div class="heroTitle">Estrellas</div>
+            <div class="heroDesc">Star field screensavers. Travel through space with beautiful star animations and cosmic visuals.</div>
+            <div class="heroActions">
+              <a class="btn btnPrimary" href="https://www.youtube.com/playlist?list=PLzsSsHbxfY09XV2rnIco4EF8iKAQfTLfz" target="_blank" rel="noopener">Open playlist on YouTube</a>
+              <div class="btn" data-scroll-to="#pl-estrellas">See videos below</div>
+            </div>
+          </div></div>
+        </div>
+
+      </div>
+
+      <div class="heroArrows" aria-hidden="true">
+        <div class="heroPrev" id="heroPrev">‹</div>
+        <div class="heroNext" id="heroNext">›</div>
+      </div>
+
+      <div class="heroDots" id="heroDots" aria-label="Slider pagination">
+        <div class="dot activo" data-dot="0"></div>
+        <div class="dot" data-dot="1"></div>
+        <div class="dot" data-dot="2"></div>
+        <div class="dot" data-dot="3"></div>
+        <div class="dot" data-dot="4"></div>
+      </div>
+    </section>
+
+    <!-- SEO BLOCK -->
+    <section class="seoBlock" aria-label="About free screensavers">
+      <h2 style="font-size:18px;font-weight:900;margin-bottom:8px;">Free screensavers for any screen</h2>
+      <p>
+        ScreenSaver.es is a free library of long videos designed to work as <strong>screensavers</strong> on TVs, desktops, tablets, and digital signage.
+        Explore playlists like
+        <a href="#pl-motivational-sentences">Motivational Sentences</a>,
+        <a href="#pl-colors">Colors</a>,
+        <a href="#pl-fish-tank">Fish Tank</a>,
+        <a href="#pl-matrix">Matrix</a>,
+        <a href="#pl-espirografos">Espirógrafos</a>,
+        <a href="#pl-fluidos">Fluidos</a>,
+        and use any video as a <strong>4K screensaver</strong> or a <strong>10-hour ambient loop</strong>.
+      </p>
+    </section>
+
+    <!-- PLAYLIST ROWS -->
+
+    <!-- Motivational Sentences -->
+    <section class="row" id="pl-motivational-sentences" aria-label="Playlist Motivational Sentences">
+      <h2>Motivational Sentences</h2>
+      <p style="opacity:.85;font-size:13px;line-height:1.5;margin:-4px 0 10px 0;">
+        Motivational sentences in 4K resolution for 10 hours.
+        · <a href="https://www.youtube.com/playlist?list=PLzsSsHbxfY09yQnz_Q8pjDb1kKru6ijLA" target="_blank" rel="noopener" style="color:white;text-decoration:underline;">YouTube playlist</a>
+      </p>
+      <div class="contenedor" style="left:0px;">
+        <article data-url="https://www.youtube.com/watch?v=u1gN46P-Z8o" data-title="Motivational Sentences 10h 4K #09" data-desc="10 hours of motivational sentences in full 4K resolution" data-thumb="https://i.ytimg.com/vi/u1gN46P-Z8o/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/u1gN46P-Z8o/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Motivational Sentences 10h 4K #09</div><div class="vlink">youtube.com/watch?v=u1gN46P-Z8o</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=ijCAId-BxQo" data-title="Motivational Sentences 10h 4K #08" data-desc="10 hours of motivational sentences in full 4K resolution" data-thumb="https://i.ytimg.com/vi/ijCAId-BxQo/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/ijCAId-BxQo/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Motivational Sentences 10h 4K #08</div><div class="vlink">youtube.com/watch?v=ijCAId-BxQo</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=0-qDTv4x82g" data-title="Motivational Sentences 10h 4K #07" data-desc="10 hours of motivational sentences in full 4K resolution" data-thumb="https://i.ytimg.com/vi/0-qDTv4x82g/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/0-qDTv4x82g/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Motivational Sentences 10h 4K #07</div><div class="vlink">youtube.com/watch?v=0-qDTv4x82g</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=eEY14_sv5G4" data-title="Motivational Sentences 10h 4K #06" data-desc="Motivational sentences screensaver" data-thumb="https://i.ytimg.com/vi/eEY14_sv5G4/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/eEY14_sv5G4/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Motivational Sentences 10h 4K #06</div><div class="vlink">youtube.com/watch?v=eEY14_sv5G4</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=f9cueSaIhy0" data-title="Motivational Sentences 10h 4K #05" data-desc="Motivational sentences screensaver" data-thumb="https://i.ytimg.com/vi/f9cueSaIhy0/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/f9cueSaIhy0/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Motivational Sentences 10h 4K #05</div><div class="vlink">youtube.com/watch?v=f9cueSaIhy0</div></div></article>
+      </div>
+      <div class="izquierda" aria-label="Scroll left">🡠</div>
+      <div class="derecha" aria-label="Scroll right">🡢</div>
+    </section>
+
+    <!-- Colors -->
+    <section class="row" id="pl-colors" aria-label="Playlist Colors">
+      <h2>Colors</h2>
+      <p style="opacity:.85;font-size:13px;line-height:1.5;margin:-4px 0 10px 0;">
+        Solid colors as relaxing screensavers in 4K resolution with color name.
+        · <a href="https://www.youtube.com/playlist?list=PLzsSsHbxfY0-aEB1O4IS4LIbONdtRkimS" target="_blank" rel="noopener" style="color:white;text-decoration:underline;">YouTube playlist</a>
+      </p>
+      <div class="contenedor" style="left:0px;">
+        <article data-url="https://www.youtube.com/watch?v=RN0R3XKCnJo" data-title="1 hour FireBrick color 4K" data-desc="1 hour FireBrick color relaxing screensaver in 4K" data-thumb="https://i.ytimg.com/vi/RN0R3XKCnJo/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/RN0R3XKCnJo/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">1 hour FireBrick color 4K</div><div class="vlink">youtube.com/watch?v=RN0R3XKCnJo</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=7u8LTV_i3z4" data-title="1 hour FloralWhite color 4K" data-desc="1 hour FloralWhite color relaxing screensaver in 4K" data-thumb="https://i.ytimg.com/vi/7u8LTV_i3z4/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/7u8LTV_i3z4/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">1 hour FloralWhite color 4K</div><div class="vlink">youtube.com/watch?v=7u8LTV_i3z4</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=KSSIOwDBEXM" data-title="1 hour ForestGreen color 4K" data-desc="1 hour ForestGreen color relaxing screensaver in 4K" data-thumb="https://i.ytimg.com/vi/KSSIOwDBEXM/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/KSSIOwDBEXM/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">1 hour ForestGreen color 4K</div><div class="vlink">youtube.com/watch?v=KSSIOwDBEXM</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=75syRGZIYuU" data-title="1 hour Crimson color 4K" data-desc="1 hour Crimson color relaxing screensaver in 4K" data-thumb="https://i.ytimg.com/vi/75syRGZIYuU/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/75syRGZIYuU/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">1 hour Crimson color 4K</div><div class="vlink">youtube.com/watch?v=75syRGZIYuU</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=dpaoXHXqeKg" data-title="1 hour DodgerBlue color 4K" data-desc="1 hour DodgerBlue color relaxing screensaver in 4K" data-thumb="https://i.ytimg.com/vi/dpaoXHXqeKg/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/dpaoXHXqeKg/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">1 hour DodgerBlue color 4K</div><div class="vlink">youtube.com/watch?v=dpaoXHXqeKg</div></div></article>
+      </div>
+      <div class="izquierda" aria-label="Scroll left">🡠</div>
+      <div class="derecha" aria-label="Scroll right">🡢</div>
+    </section>
+
+    <!-- Fish Tank -->
+    <section class="row" id="pl-fish-tank" aria-label="Playlist Fish Tank">
+      <h2>Fish Tank</h2>
+      <p style="opacity:.85;font-size:13px;line-height:1.5;margin:-4px 0 10px 0;">
+        Simulations of fish in a virtual tank. Relaxing aquarium screensavers.
+        · <a href="https://www.youtube.com/playlist?list=PLzsSsHbxfY080Djure6wlgy0k1nUOp7rs" target="_blank" rel="noopener" style="color:white;text-decoration:underline;">YouTube playlist</a>
+      </p>
+      <div class="contenedor" style="left:0px;">
+        <article data-url="https://www.youtube.com/watch?v=K58gmY_gucQ" data-title="Fish Simulation Screensaver" data-desc="Virtual fish tank simulation screensaver" data-thumb="https://i.ytimg.com/vi/K58gmY_gucQ/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/K58gmY_gucQ/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Fish Simulation Screensaver</div><div class="vlink">youtube.com/watch?v=K58gmY_gucQ</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=tRyY6jA6Y8A" data-title="Fish Simulation Aquarium" data-desc="Fish simulation aquarium screensaver" data-thumb="https://i.ytimg.com/vi/tRyY6jA6Y8A/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/tRyY6jA6Y8A/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Fish Simulation Aquarium</div><div class="vlink">youtube.com/watch?v=tRyY6jA6Y8A</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=cVw_izYA28Q" data-title="Fish Tank Virtual 4K" data-desc="Virtual fish tank 4K screensaver" data-thumb="https://i.ytimg.com/vi/cVw_izYA28Q/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/cVw_izYA28Q/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Fish Tank Virtual 4K</div><div class="vlink">youtube.com/watch?v=cVw_izYA28Q</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=GfOezZCtpkU" data-title="Aquarium Fish Loop" data-desc="Relaxing aquarium loop screensaver" data-thumb="https://i.ytimg.com/vi/GfOezZCtpkU/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/GfOezZCtpkU/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Aquarium Fish Loop</div><div class="vlink">youtube.com/watch?v=GfOezZCtpkU</div></div></article>
+      </div>
+      <div class="izquierda" aria-label="Scroll left">🡠</div>
+      <div class="derecha" aria-label="Scroll right">🡢</div>
+    </section>
+
+    <!-- Matrix -->
+    <section class="row" id="pl-matrix" aria-label="Playlist Matrix">
+      <h2>Matrix</h2>
+      <p style="opacity:.85;font-size:13px;line-height:1.5;margin:-4px 0 10px 0;">
+        Screensavers with raincode from Matrix Movie. Digital rain wallpaper 4K loops.
+        · <a href="https://www.youtube.com/playlist?list=PLzsSsHbxfY08KwvxhsycNFQy8W2NaREwY" target="_blank" rel="noopener" style="color:white;text-decoration:underline;">YouTube playlist</a>
+      </p>
+      <div class="contenedor" style="left:0px;">
+        <article data-url="https://www.youtube.com/watch?v=hH_xbCwQbQs" data-title="Matrix Rain Wallpaper 4K (1h)" data-desc="Matrix Rain Wallpaper 4K - Loop (1 Hour)" data-thumb="https://i.ytimg.com/vi/hH_xbCwQbQs/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/hH_xbCwQbQs/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Matrix Rain Wallpaper 4K (1h)</div><div class="vlink">youtube.com/watch?v=hH_xbCwQbQs</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=UcPEtFxrdPY" data-title="Matrix Rain 4K Loop #2" data-desc="Matrix Rain digital wallpaper 4K" data-thumb="https://i.ytimg.com/vi/UcPEtFxrdPY/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/UcPEtFxrdPY/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Matrix Rain 4K Loop #2</div><div class="vlink">youtube.com/watch?v=UcPEtFxrdPY</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=lfV8GfeXFWE" data-title="Matrix Rain 4K Loop #3" data-desc="Matrix Rain digital wallpaper 4K" data-thumb="https://i.ytimg.com/vi/lfV8GfeXFWE/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/lfV8GfeXFWE/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Matrix Rain 4K Loop #3</div><div class="vlink">youtube.com/watch?v=lfV8GfeXFWE</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=aAuZMSyvUis" data-title="Matrix Rain Green 4K" data-desc="Green matrix digital rain" data-thumb="https://i.ytimg.com/vi/aAuZMSyvUis/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/aAuZMSyvUis/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Matrix Rain Green 4K</div><div class="vlink">youtube.com/watch?v=aAuZMSyvUis</div></div></article>
+      </div>
+      <div class="izquierda" aria-label="Scroll left">🡠</div>
+      <div class="derecha" aria-label="Scroll right">🡢</div>
+    </section>
+
+    <!-- Espirógrafos -->
+    <section class="row" id="pl-espirografos" aria-label="Playlist Espirógrafos">
+      <h2>Espirógrafos</h2>
+      <div class="contenedor" style="left:0px;">
+        <article data-url="https://www.youtube.com/watch?v=pM2Wl_f3kdg" data-title="Spirograph Screensaver" data-desc="Spirograph animation screensaver" data-thumb="https://i.ytimg.com/vi/pM2Wl_f3kdg/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/pM2Wl_f3kdg/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Spirograph Screensaver</div><div class="vlink">youtube.com/watch?v=pM2Wl_f3kdg</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=c_5l9Pa_YdY" data-title="Spirograph 1h Animation" data-desc="Output spirograph 1h loop" data-thumb="https://i.ytimg.com/vi/c_5l9Pa_YdY/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/c_5l9Pa_YdY/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Spirograph 1h Animation</div><div class="vlink">youtube.com/watch?v=c_5l9Pa_YdY</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=w2EvhsISbWk" data-title="Spirograph 10h HD 1080p" data-desc="Spirograph animation screensaver 10 hours HD" data-thumb="https://i.ytimg.com/vi/w2EvhsISbWk/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/w2EvhsISbWk/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Spirograph 10h HD 1080p</div><div class="vlink">youtube.com/watch?v=w2EvhsISbWk</div></div></article>
+      </div>
+      <div class="izquierda" aria-label="Scroll left">🡠</div>
+      <div class="derecha" aria-label="Scroll right">🡢</div>
+    </section>
+
+    <!-- Relojes -->
+    <section class="row" id="pl-relojes" aria-label="Playlist Relojes">
+      <h2>Relojes</h2>
+      <div class="contenedor" style="left:0px;">
+        <article data-url="https://www.youtube.com/watch?v=qYlgtgxF4FU" data-title="Clock Outer Circle 12h" data-desc="Clock screensaver with outer circle ring" data-thumb="https://i.ytimg.com/vi/qYlgtgxF4FU/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/qYlgtgxF4FU/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Clock Outer Circle 12h</div><div class="vlink">youtube.com/watch?v=qYlgtgxF4FU</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=Os7bpE9ppBU" data-title="Clock Divisors 12h" data-desc="Clock screensaver with divisors" data-thumb="https://i.ytimg.com/vi/Os7bpE9ppBU/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/Os7bpE9ppBU/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Clock Divisors 12h</div><div class="vlink">youtube.com/watch?v=Os7bpE9ppBU</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=LWVEh8NnKJI" data-title="Clock Guides 12h" data-desc="Clock screensaver with guides" data-thumb="https://i.ytimg.com/vi/LWVEh8NnKJI/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/LWVEh8NnKJI/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Clock Guides 12h</div><div class="vlink">youtube.com/watch?v=LWVEh8NnKJI</div></div></article>
+      </div>
+      <div class="izquierda" aria-label="Scroll left">🡠</div>
+      <div class="derecha" aria-label="Scroll right">🡢</div>
+    </section>
+
+    <!-- Fluidos -->
+    <section class="row" id="pl-fluidos" aria-label="Playlist Fluidos">
+      <h2>Fluidos</h2>
+      <div class="contenedor" style="left:0px;">
+        <article data-url="https://www.youtube.com/watch?v=5MNqILGab2M" data-title="Fluid Simulation 1h 1080p" data-desc="Amazing fluid simulation screensaver 1 hour long 1080p" data-thumb="https://i.ytimg.com/vi/5MNqILGab2M/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/5MNqILGab2M/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Fluid Simulation 1h 1080p</div><div class="vlink">youtube.com/watch?v=5MNqILGab2M</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=XO5dxpihBFY" data-title="Fluid Simulation 3D" data-desc="Fluid simulation 3D screensaver" data-thumb="https://i.ytimg.com/vi/XO5dxpihBFY/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/XO5dxpihBFY/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Fluid Simulation 3D</div><div class="vlink">youtube.com/watch?v=XO5dxpihBFY</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=wLBNVwMF9uc" data-title="Fluid Colors Loop" data-desc="Colorful fluid simulation loop" data-thumb="https://i.ytimg.com/vi/wLBNVwMF9uc/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/wLBNVwMF9uc/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Fluid Colors Loop</div><div class="vlink">youtube.com/watch?v=wLBNVwMF9uc</div></div></article>
+      </div>
+      <div class="izquierda" aria-label="Scroll left">🡠</div>
+      <div class="derecha" aria-label="Scroll right">🡢</div>
+    </section>
+
+    <!-- Estrellas -->
+    <section class="row" id="pl-estrellas" aria-label="Playlist Estrellas">
+      <h2>Estrellas</h2>
+      <div class="contenedor" style="left:0px;">
+        <article data-url="https://www.youtube.com/watch?v=Y_uf_1mtjEw" data-title="Star Field Screensaver" data-desc="Star field animation screensaver" data-thumb="https://i.ytimg.com/vi/Y_uf_1mtjEw/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/Y_uf_1mtjEw/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Star Field Screensaver</div><div class="vlink">youtube.com/watch?v=Y_uf_1mtjEw</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=-InyulOZAuY" data-title="Stars Animation Loop" data-desc="Space stars animation loop" data-thumb="https://i.ytimg.com/vi/-InyulOZAuY/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/-InyulOZAuY/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Stars Animation Loop</div><div class="vlink">youtube.com/watch?v=-InyulOZAuY</div></div></article>
+        <article data-url="https://www.youtube.com/watch?v=eGFOTd-GMxI" data-title="Cosmic Stars 4K" data-desc="Cosmic stars animation in 4K resolution" data-thumb="https://i.ytimg.com/vi/eGFOTd-GMxI/hqdefault.jpg" style="background:url(https://i.ytimg.com/vi/eGFOTd-GMxI/hqdefault.jpg);background-size:cover;background-position:center;"><div class="meta"><div class="vtitle">Cosmic Stars 4K</div><div class="vlink">youtube.com/watch?v=eGFOTd-GMxI</div></div></article>
+      </div>
+      <div class="izquierda" aria-label="Scroll left">🡠</div>
+      <div class="derecha" aria-label="Scroll right">🡢</div>
+    </section>
+
+  </main>
+
+  <!-- BACK TO TOP -->
+  <div id="backToTop" title="Back to top" aria-label="Back to top">↑</div>
+
+  <footer style="padding:20px;border-top:1px solid rgba(255,255,255,.08);opacity:.85;font-size:12px;">
+    <div>ScreenSaver.es · Free screensavers · Updated: 2026-02-13</div>
+    <div style="margin-top:6px;opacity:.7;">8 playlists · 230 videos · Screensaver catalog</div>
+    <div style="margin-top:8px;opacity:.5;font-size:11px;">
+      Static mockup for GitHub Pages ·
+      <a href="https://github.com/MutenRos/Programacion-003-Proyecto-SalvantallasNetflix" style="color:white;">Repository</a>
+    </div>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modalOverlay" id="modalOverlay" aria-hidden="true">
+    <div class="modalCard" id="modalCard">
+      <div class="modalMedia"><img id="modalThumb" alt="Video thumbnail" src="" loading="lazy"></div>
+      <div class="modalBody">
+        <div class="modalTop">
+          <div style="min-width:0;">
+            <div class="modalTitle" id="modalTitle"></div>
+            <div class="modalMetaLine" id="modalUrl"></div>
+          </div>
+          <div class="modalClose" id="modalClose" title="Close">✕</div>
+        </div>
+        <div class="modalDesc" id="modalDesc"></div>
+        <div class="modalActions">
+          <a class="btn btnPrimary" id="modalGo" href="#" target="_blank" rel="noopener">Watch on YouTube</a>
+          <div class="btn" id="modalCancel">Close</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // HAMBURGER
+    var abierto = false;
+    var hamburguesa = document.getElementById("hamburguesa");
+    var navegacion = document.querySelector("nav");
+    function toggleMenu(){
+      if(abierto){ hamburguesa.textContent="☰"; navegacion.classList.remove("sacado"); abierto=false; }
+      else{ hamburguesa.textContent="🗙"; navegacion.classList.add("sacado"); abierto=true; }
+    }
+    hamburguesa.onclick = toggleMenu;
+
+    // NAV scroll-to
+    document.querySelectorAll('nav a[data-scroll]').forEach(function(a){
+      a.addEventListener("click", function(e){
+        var sel = this.getAttribute("data-scroll"); if(!sel) return;
+        e.preventDefault();
+        var sec = document.querySelector(sel);
+        if(sec){ sec.scrollIntoView({behavior:"smooth",block:"start"}); if(abierto) toggleMenu(); }
+      });
+    });
+
+    // LEFT/RIGHT SCROLLERS
+    document.querySelectorAll(".izquierda").forEach(function(b){
+      b.onclick=function(){ var t=this.parentElement.querySelector('.contenedor'); if(!t)return; var a=parseFloat(t.style.left||"0"); t.style.left=(a+320)+"px"; }
+    });
+    document.querySelectorAll(".derecha").forEach(function(b){
+      b.onclick=function(){ var t=this.parentElement.querySelector('.contenedor'); if(!t)return; var a=parseFloat(t.style.left||"0"); t.style.left=(a-320)+"px"; }
+    });
+
+    // MODAL
+    var overlay=document.getElementById("modalOverlay"),mThumb=document.getElementById("modalThumb"),
+      mTitle=document.getElementById("modalTitle"),mDesc=document.getElementById("modalDesc"),
+      mUrl=document.getElementById("modalUrl"),mGo=document.getElementById("modalGo"),
+      mClose=document.getElementById("modalClose"),mCancel=document.getElementById("modalCancel");
+
+    function openModal(o){
+      mTitle.textContent=o.title||"Untitled"; mUrl.textContent=o.url||""; mGo.href=o.url||"#";
+      mDesc.textContent=(o.desc||"").trim()||"No description available.";
+      if(o.thumb){mThumb.src=o.thumb;mThumb.style.display="block";}else{mThumb.removeAttribute("src");mThumb.style.display="none";}
+      overlay.classList.add("abierto"); overlay.setAttribute("aria-hidden","false");
+    }
+    function closeModal(){ overlay.classList.remove("abierto"); overlay.setAttribute("aria-hidden","true"); mGo.href="#"; }
+
+    document.querySelectorAll("[data-url][data-title]").forEach(function(el){
+      el.addEventListener("click",function(){
+        var u=this.getAttribute("data-url"),t=this.getAttribute("data-title"),d=this.getAttribute("data-desc"),th=this.getAttribute("data-thumb");
+        if(!u||u==="#") return; openModal({title:t,desc:d,url:u,thumb:th});
+      });
+    });
+    mClose.onclick=closeModal; mCancel.onclick=closeModal;
+    overlay.onclick=function(e){if(e.target===overlay)closeModal();};
+    document.addEventListener("keydown",function(e){if(e.key==="Escape"&&overlay.classList.contains("abierto"))closeModal();});
+
+    // HERO SLIDER
+    var slides=Array.from(document.querySelectorAll(".heroSlide")),
+      dots=Array.from(document.querySelectorAll(".dot")),
+      heroIndex=0,heroTimer=null,heroPaused=false;
+
+    function setHero(i){
+      if(!slides.length)return;
+      heroIndex=(i+slides.length)%slides.length;
+      slides.forEach(function(s,idx){s.classList.toggle("activo",idx===heroIndex);});
+      dots.forEach(function(d,idx){d.classList.toggle("activo",idx===heroIndex);});
+    }
+    function nextHero(){setHero(heroIndex+1);}
+    function startHero(){if(heroTimer)clearInterval(heroTimer);heroTimer=setInterval(function(){if(!heroPaused)nextHero();},5000);}
+
+    document.getElementById("heroPrev").onclick=function(){setHero(heroIndex-1);startHero();};
+    document.getElementById("heroNext").onclick=function(){nextHero();startHero();};
+    dots.forEach(function(d){d.onclick=function(){setHero(parseInt(this.getAttribute("data-dot")||"0"));startHero();};});
+
+    document.querySelectorAll("[data-scroll-to]").forEach(function(b){
+      b.addEventListener("click",function(){var t=this.getAttribute("data-scroll-to");var s=document.querySelector(t);if(s)s.scrollIntoView({behavior:"smooth",block:"start"});});
+    });
+
+    var hero=document.getElementById("hero");
+    if(hero){hero.onmouseenter=function(){heroPaused=true;};hero.onmouseleave=function(){heroPaused=false;};}
+    setHero(0); startHero();
+
+    // BACK TO TOP
+    var btt=document.getElementById("backToTop");
+    window.addEventListener("scroll",function(){btt.style.opacity=(window.scrollY>400)?"1":"0";});
+    btt.onclick=function(){window.scrollTo({top:0,behavior:"smooth"});};
+  </script>
+</body>
+</html>

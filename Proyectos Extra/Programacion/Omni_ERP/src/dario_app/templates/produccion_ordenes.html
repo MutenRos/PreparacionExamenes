@@ -1,0 +1,2112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <link rel="stylesheet" href="/static/css/tutorial.css">
+    <title>Órdenes de Producción - OmniERP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: var(--color-info);
+            --secondary: #8b5cf6;
+            --success: var(--color-success);
+            --warning: var(--color-warning);
+            --danger: var(--color-danger);
+            --dark: var(--gray-800);
+            --light: var(--gray-100);
+            --border: var(--gray-200);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        select {
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--color-info-dark);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .card-header h3 {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .card-header p {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-planificada {
+            background-color: var(--color-info-light);
+            color: #1e40af;
+        }
+
+        .status-en_proceso {
+            background-color: #fed7aa;
+            color: #92400e;
+        }
+
+        .status-completada {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .priority-urgente {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        .priority-alta {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .priority-media {
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        .priority-baja {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .priority-muy_baja {
+            color: var(--gray-500);
+            font-weight: 600;
+        }
+
+        .card-body {
+            margin: 15px 0;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--gray-500);
+        }
+
+        .info-value {
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border);
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--success);
+            transition: width 0.3s;
+        }
+
+        .operations-list {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .operation-item {
+            display: flex;
+            gap: 10px;
+            margin: 8px 0;
+            padding: 8px;
+            background-color: var(--light);
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .operation-seq {
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 30px;
+        }
+
+        .operation-name {
+            flex: 1;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-small {
+            padding: 8px 12px;
+            font-size: 12px;
+            flex: 1;
+            background-color: var(--primary);
+        }
+
+        .btn-secondary {
+            background-color: var(--gray-500);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--gray-600);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray-500);
+        }
+
+        .no-data {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            color: var(--gray-500);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray-500);
+        }
+
+        .form-group {
+            margin: 15px 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .tab-btn:hover {
+            background: var(--brand-primary-light) !important;
+        }
+
+        .tab-btn.active {
+            color: var(--primary) !important;
+            border-bottom-color: var(--primary) !important;
+        }
+
+        .tab-view {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .workflow-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .workflow-pendiente_asignacion {
+            background: var(--color-warning-light);
+            color: #92400e;
+        }
+
+        .workflow-asignada {
+            background: var(--color-info-light);
+            color: #1e40af;
+        }
+
+        .workflow-aceptada {
+            background: var(--color-success-light);
+            color: #065f46;
+        }
+
+        .workflow-adquisicion_materiales {
+            background: var(--brand-primary-light);
+            color: #3730a3;
+        }
+
+        .workflow-en_proceso {
+            background: #fed7aa;
+            color: #92400e;
+        }
+
+        .seccion-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--primary);
+        }
+
+        .seccion-card h3 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+        }
+
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .kanban-column {
+            background: var(--gray-100);
+            padding: 15px;
+            border-radius: 8px;
+            min-height: 300px;
+        }
+
+        .kanban-column h3 {
+            margin: 0 0 15px 0;
+            font-size: 14px;
+            text-transform: uppercase;
+            color: var(--gray-600);
+        }
+
+        .kanban-item {
+            background: white;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .kanban-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .search-box {
+                min-width: 100%;
+            }
+
+            .kanban-board {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+        {% include '_assistant_panel.html' %}
+    <div class="container">
+        <header>
+            <div>
+                <h1>Órdenes de Producción</h1>
+                <p>Gestión completa del flujo de trabajo de producción</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="seedDemoData()" style="padding: 10px 20px; background: var(--warning); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">🌱 Sembrar Datos Demo</button>
+                <button onclick="resetProduccionDemo()" style="padding: 10px 20px; background: var(--danger); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">🧹 Reiniciar Producción Demo</button>
+                <button onclick="showNewOrderForm()" style="padding: 10px 20px; background: var(--success); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">+ Nueva Orden</button>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; border-bottom: 2px solid var(--border);">
+            <button class="tab-btn active" onclick="switchTab('pendientes')" id="tabPendientes" style="padding: 12px 24px; background: none; border: none; border-bottom: 3px solid var(--primary); cursor: pointer; font-weight: 600; color: var(--primary);">
+                📋 Pendientes Asignación
+            </button>
+            <button class="tab-btn" onclick="switchTab('secciones')" id="tabSecciones" style="padding: 12px 24px; background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-weight: 600; color: var(--gray-600);">
+                🏭 Secciones Producción
+            </button>
+            <button class="tab-btn" onclick="switchTab('monitoreo')" id="tabMonitoreo" style="padding: 12px 24px; background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-weight: 600; color: var(--gray-600);">
+                📊 Monitoreo Global
+            </button>
+            <button class="tab-btn" onclick="switchTab('supervisor')" id="tabSupervisor" style="padding: 12px 24px; background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-weight: 600; color: var(--gray-600);">
+                👤 Vista Supervisor
+            </button>
+        </div>
+
+        <div class="stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
+            <div class="stat-card" style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                <div style="font-size: 1.5rem; margin-bottom: 5px;">📦</div>
+                <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary);" id="statTotal">0</div>
+                <div style="color: var(--gray-500); font-size: 14px;">Total órdenes</div>
+            </div>
+            <div class="stat-card" style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                <div style="font-size: 1.5rem; margin-bottom: 5px;">📋</div>
+                <div style="font-size: 1.8rem; font-weight: 700; color: var(--warning);" id="statPendientes">0</div>
+                <div style="color: var(--gray-500); font-size: 14px;">Pendientes Asignación</div>
+            </div>
+            <div class="stat-card" style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                <div style="font-size: 1.5rem; margin-bottom: 5px;">⚙️</div>
+                <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary);" id="statEnProceso">0</div>
+                <div style="color: var(--gray-500); font-size: 14px;">En proceso</div>
+            </div>
+            <div class="stat-card" style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                <div style="font-size: 1.5rem; margin-bottom: 5px;">✅</div>
+                <div style="font-size: 1.8rem; font-weight: 700; color: var(--success);" id="statCompletadas">0</div>
+                <div style="color: var(--gray-500); font-size: 14px;">Completadas</div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Pendientes Asignación -->
+        <div id="viewPendientes" class="tab-view">
+            <h2 style="margin-bottom: 15px;">Órdenes Pendientes de Asignación</h2>
+            <div id="bulkToolbar" style="display:flex; gap:10px; align-items:center; margin-bottom:12px;">
+                <button onclick="selectAllPendientes(true)" class="btn-small" style="padding:6px 10px;">Seleccionar todo</button>
+                <button onclick="selectAllPendientes(false)" class="btn-small" style="padding:6px 10px;">Quitar selección</button>
+                <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
+                    <label style="font-size:12px; color:var(--gray-500);">Cambiar prioridad:</label>
+                    <select id="bulkPrioritySelect" style="padding:6px 8px;">
+                        <option value="">Seleccionar...</option>
+                        <option value="muy_baja">Muy baja</option>
+                        <option value="baja">Baja</option>
+                        <option value="media">Media</option>
+                        <option value="alta">Alta</option>
+                        <option value="urgente">Urgente</option>
+                    </select>
+                    <button onclick="applyBulkPriority()" class="btn-small" style="background:#8b5cf6; color:white; padding:6px 12px; border:none; border-radius:6px;">Aplicar</button>
+                </div>
+            </div>
+            <div id="pendientesContainer" class="grid">
+                <div class="loading">Cargando órdenes pendientes...</div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Secciones Producción -->
+        <div id="viewSecciones" class="tab-view" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h2>Secciones de Producción</h2>
+                <button onclick="showNewSeccionForm()" style="padding: 10px 20px; background: var(--success); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">+ Nueva Sección</button>
+            </div>
+            <div id="seccionesContainer" class="grid">
+                <div class="loading">Cargando secciones...</div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Monitoreo Global -->
+        <div id="viewMonitoreo" class="tab-view" style="display: none;">
+            <h2 style="margin-bottom: 15px;">Monitoreo Global de Órdenes</h2>
+            <div id="monitoreoContainer">
+                <div class="loading">Cargando monitoreo...</div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Vista Supervisor -->
+        <div id="viewSupervisor" class="tab-view" style="display: none;">
+            <h2 style="margin-bottom: 15px;">Órdenes Asignadas - Vista Supervisor</h2>
+            <div id="supervisorContainer" class="grid">
+                <div class="loading">Cargando órdenes asignadas...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeOrderModal()">&times;</button>
+            <div id="orderDetails"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" style="position: fixed; bottom: 20px; right: 20px; max-width: 400px; padding: 16px 20px; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-left: 4px solid var(--success); z-index: 2000; display: none; animation: slideIn 0.3s ease;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <span id="toastIcon" style="font-size: 20px;">✅</span>
+            <div>
+                <div style="font-weight: 600; color: var(--dark);" id="toastTitle">Actualizado</div>
+                <div style="font-size: 13px; color: var(--gray-500);" id="toastMessage">El cambio se aplicó correctamente</div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(400px); opacity: 0; }
+        }
+    </style>
+
+    <script>
+        let allOrdenes = [];
+        let filteredOrdenes = [];
+
+        async function loadOrdenes() {
+            try {
+                console.log('🔄 Cargando órdenes (solo datos reales)...');
+
+                const res = await fetch('/api/produccion-ordenes/');
+                const ordenes = res.ok ? await res.json() : [];
+
+                if (ordenes && ordenes.length > 0) {
+                    allOrdenes = ordenes;
+                    updateStats(ordenes);
+                    console.log('✅ Se cargaron', ordenes.length, 'órdenes correctamente');
+                    
+                    // Render current tab
+                    if (currentTab === 'pendientes') loadPendientes();
+                    else if (currentTab === 'secciones') loadSeccionesTab();
+                    else if (currentTab === 'monitoreo') loadMonitoreo();
+                    else if (currentTab === 'supervisor') loadSupervisorView();
+                    
+                    // Auto-open modal if orderId is provided in query string
+                    const qOrderId = getQueryParam('orderId');
+                    if (qOrderId) {
+                        const id = parseInt(qOrderId, 10);
+                        if (!isNaN(id)) {
+                            openOrderModal(id);
+                        }
+                    }
+                } else {
+                    console.warn('⚠️ No se encontraron órdenes');
+                    allOrdenes = [];
+                    updateStats([]);
+                    // Still render empty state
+                    if (currentTab === 'pendientes') loadPendientes();
+                    else if (currentTab === 'secciones') loadSeccionesTab();
+                    else if (currentTab === 'monitoreo') loadMonitoreo();
+                    else if (currentTab === 'supervisor') loadSupervisorView();
+                }
+            } catch (error) {
+                console.error('❌ Error cargando órdenes:', error);
+                allOrdenes = [];
+                updateStats([]);
+            }
+        }
+
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function updateStats(ordenes) {
+            const total = ordenes.length;
+            const pendientes = ordenes.filter(o => o.estado === 'pendiente_asignacion').length;
+            const enProceso = ordenes.filter(o => o.estado === 'en_proceso' || o.estado === 'asignada' || o.estado === 'aceptada' || o.estado === 'adquisicion_materiales').length;
+            const completadas = ordenes.filter(o => o.estado === 'completada').length;
+            
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statPendientes').textContent = pendientes;
+            document.getElementById('statEnProceso').textContent = enProceso;
+            document.getElementById('statCompletadas').textContent = completadas;
+        }
+
+        async function seedDemoData() {
+            showToast('Aviso', 'Semilla demo deshabilitada en entorno multi-tenant', true);
+        }
+
+        function showNewOrderForm() {
+            alert('Formulario de nueva orden: próximamente.\n\nUsa Ventas/POS para generar órdenes, o crea desde /api/produccion-ordenes con venta_id, bom_id y producto_id.');
+        }
+
+        async function tryLoadFromAuth() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) return null;
+
+                const response = await fetch('/api/produccion-ordenes/', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    return await response.json();
+                }
+            } catch (error) {
+                console.log('Auth endpoint unavailable, trying demo...');
+            }
+            return null;
+        }
+
+        async function tryLoadFromDemo() { return null; }
+
+        async function resetProduccionDemo() { showToast('Aviso', 'Reset demo deshabilitado', true); }
+
+        // renderOrdenes function removed - each tab has its own rendering function
+        // (loadPendientes, loadMonitoreo, loadSupervisorView)
+
+        async function openOrderModal(ordenId) {
+            const ordenListItem = allOrdenes.find(o => o.id === ordenId);
+            if (!ordenListItem) return;
+
+            document.getElementById('orderDetails').innerHTML = '<div class="loading">Cargando detalle...</div>';
+            document.getElementById('orderModal').classList.add('active');
+
+            const orden = await loadOrderDetail(ordenId, ordenListItem);
+            if (!orden) {
+                document.getElementById('orderDetails').innerHTML = '<div class="no-data">No se pudo cargar el detalle</div>';
+                return;
+            }
+
+            const operacionesHTML = (orden.operaciones || []).map(op => `
+                <div class="info-row">
+                    <span class="info-label">Operación ${op.secuencia || ''}:</span>
+                    <span>
+                        ${op.estado || 'pendiente'}
+                        ${op.duracion_estimada ? ' • ' + op.duracion_estimada + ' min' : ''}
+                    </span>
+                </div>
+            `).join('');
+
+            const movimientosHTML = (orden.movimientos_material || []).map(mov => `
+                <div class="info-row">
+                    <span class="info-label">${mov.tipo || 'Movimiento'}:</span>
+                    <span>${mov.cantidad || 0} ${mov.unidad || ''} • ${mov.producto_nombre || ''}</span>
+                </div>
+            `).join('');
+
+            const html = `
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3>${orden.numero}</h3>
+                            <p>${orden.producto_nombre || ''}</p>
+                        </div>
+                        <div>
+                            <span class="status-badge status-${orden.estado}">${orden.estado}</span>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="info-row">
+                            <span class="info-label">Cantidad:</span>
+                            <span>${orden.cantidad_completada}/${orden.cantidad_ordenada}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${orden.porcentaje_completado || 0}%"></div>
+                        </div>
+                        <div class="info-row">
+                            <span>${(orden.porcentaje_completado || 0)}% completado</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 10px;">Fechas</h4>
+                        <div class="info-row">
+                            <span class="info-label">Creación:</span>
+                            <span>${orden.fecha_creacion ? new Date(orden.fecha_creacion).toLocaleDateString('es-ES') : 'N/A'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Inicio Estimado:</span>
+                            <span>${orden.fecha_inicio_estimada ? new Date(orden.fecha_inicio_estimada).toLocaleDateString('es-ES') : 'N/A'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Fin Estimado:</span>
+                            <span>${orden.fecha_fin_estimada ? new Date(orden.fecha_fin_estimada).toLocaleDateString('es-ES') : 'N/A'}</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 10px;">Detalles</h4>
+                        <div class="info-row">
+                            <span class="info-label">Pedido de venta:</span>
+                            <span>${orden.venta_numero || (orden.venta_id ? ('Venta #' + orden.venta_id) : 'No vinculado')}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Cliente:</span>
+                            <span>${orden.cliente_nombre || 'N/A'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Producto:</span>
+                            <span>${orden.producto_codigo || ''} - ${orden.producto_nombre || ''}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Total Operaciones:</span>
+                            <span>${orden.total_operaciones || (orden.operaciones ? orden.operaciones.length : 0)}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Asignado a:</span>
+                            <span>${orden.asignado_a || 'No asignado'}</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 10px;">Operaciones</h4>
+                        ${operacionesHTML}
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 10px;">Movimientos</h4>
+                        ${movimientosHTML}
+                    </div>
+
+                    <!-- INICIO DE TRABAJO -->
+                    ${(orden.estado === 'en_proceso' || orden.estado === 'aceptada') ? `
+                    <div style="margin-bottom: 20px; padding: 15px; background: #f0fdf4; border-left: 4px solid var(--success); border-radius: 6px;">
+                        <h4 style="margin: 0 0 10px 0; color: var(--success);">👷 Registro de Trabajo</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <div>
+                                <label style="display:block; font-size:12px; font-weight:600; margin-bottom:5px;">Trabajador Inicio</label>
+                                <input type="text" id="trabajadorInicio" placeholder="Nombre del trabajador" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px;" />
+                            </div>
+                            <div>
+                                <label style="display:block; font-size:12px; font-weight:600; margin-bottom:5px;">Hora Inicio</label>
+                                <input type="time" id="horaInicio" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px;" />
+                            </div>
+                        </div>
+                        <button onclick="registrarInicio(${orden.id})" style="width:100%; padding:8px; background: var(--success); color:white; border:none; border-radius:4px; cursor:pointer; font-weight:600; margin-bottom:10px;">
+                            ✓ Registrar Inicio de Trabajo
+                        </button>
+                    </div>
+                    ` : ''}
+
+                    <!-- INCIDENCIAS -->
+                    <div style="margin-bottom: 20px; padding: 15px; background: var(--color-warning-light); border-left: 4px solid var(--warning); border-radius: 6px;">
+                        <h4 style="margin: 0 0 10px 0; color: var(--warning);">⚠️ Reportar Incidencia</h4>
+                        <div style="margin-bottom: 10px;">
+                            <label style="display:block; font-size:12px; font-weight:600; margin-bottom:5px;">Tipo de Incidencia</label>
+                            <select id="tipoIncidencia" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px;">
+                                <option value="">Seleccionar...</option>
+                                <option value="defecto_material">Defecto en material</option>
+                                <option value="herramienta_rota">Herramienta rota</option>
+                                <option value="equipo_falla">Falla de equipo</option>
+                                <option value="material_insuficiente">Material insuficiente</option>
+                                <option value="retraso_planificacion">Retraso en planificación</option>
+                                <option value="problema_calidad">Problema de calidad</option>
+                                <option value="accidente_seguridad">Accidente/Seguridad</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <label style="display:block; font-size:12px; font-weight:600; margin-bottom:5px;">Descripción</label>
+                            <textarea id="descIncidencia" rows="2" placeholder="Describe la incidencia en detalle..." style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px;"></textarea>
+                        </div>
+                        <button onclick="reportarIncidencia(${orden.id})" style="width:100%; padding:8px; background: var(--warning); color:white; border:none; border-radius:4px; cursor:pointer; font-weight:600;">
+                            🔔 Reportar Incidencia
+                        </button>
+                    </div>
+
+                    <!-- SOLICITUD DE MATERIAL -->
+                    <div style="margin-bottom: 20px; padding: 15px; background: var(--color-info-light); border-left: 4px solid var(--primary); border-radius: 6px;">
+                        <h4 style="margin: 0 0 10px 0; color: var(--primary);">📦 Solicitar Material/Repuesto</h4>
+                        <div style="margin-bottom: 10px;">
+                            <label style="display:block; font-size:12px; font-weight:600; margin-bottom:5px;">Producto/Material</label>
+                            <input type="text" id="materialProducto" placeholder="Descripción del material" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px;" />
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <div>
+                                <label style="display:block; font-size:12px; font-weight:600; margin-bottom:5px;">Cantidad</label>
+                                <input type="number" id="materialCantidad" placeholder="Cantidad" step="0.1" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px;" />
+                            </div>
+                            <div>
+                                <label style="display:block; font-size:12px; font-weight:600; margin-bottom:5px;">Urgencia</label>
+                                <select id="materialUrgencia" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px;">
+                                    <option value="normal">Normal</option>
+                                    <option value="urgente">Urgente</option>
+                                    <option value="critica">Crítica</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <label style="display:block; font-size:12px; font-weight:600; margin-bottom:5px;">Motivo de la solicitud</label>
+                            <textarea id="materialMotivo" rows="2" placeholder="¿Por qué se necesita este material?" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px;"></textarea>
+                        </div>
+                        <button onclick="solicitarMaterial(${orden.id})" style="width:100%; padding:8px; background: var(--primary); color:white; border:none; border-radius:4px; cursor:pointer; font-weight:600;">
+                            ✉️ Enviar Solicitud al Almacén
+                        </button>
+                    </div>
+
+                    <!-- COMPRAS ASOCIADAS & FALTANTES -->
+                    <div style="margin-bottom: 20px; padding: 15px; background: #f3e8ff; border-left: 4px solid #8b5cf6; border-radius: 6px;">
+                        <h4 style="margin: 0 0 10px 0; color: #8b5cf6;">🛒 Compras Asociadas a esta Orden</h4>
+                        <div id="comprasContenedor" style="max-height: 300px; overflow-y: auto;">
+                            <div style="text-align: center; color: #999; padding: 20px;">Cargando compras...</div>
+                        </div>
+                        <button onclick="verMasDetallesCompras(${orden.id})" style="width:100%; padding:8px; background: #8b5cf6; color:white; border:none; border-radius:4px; cursor:pointer; font-weight:600; margin-top:10px;">
+                            👁️ Ver Detalles de Compras
+                        </button>
+                    </div>
+
+                    <!-- GESTIÓN DE FALTANTES -->
+                    <div style="margin-bottom: 20px; padding: 15px; background: var(--color-danger-light); border-left: 4px solid var(--danger); border-radius: 6px;">
+                        <h4 style="margin: 0 0 10px 0; color: var(--danger);">❌ Gestión de Faltantes</h4>
+                        <div id="faltantesContenedor" style="max-height: 300px; overflow-y: auto;">
+                            <div style="text-align: center; color: #999; padding: 20px;">Sin faltantes registrados</div>
+                        </div>
+                        <button onclick="anadirFaltante(${orden.id})" style="width:100%; padding:8px; background: var(--danger); color:white; border:none; border-radius:4px; cursor:pointer; font-weight:600; margin-top:10px;">
+                            + Registrar Faltante
+                        </button>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 12px;">Cambiar Estado:</label>
+                            <select id="newStatus" style="width: 100%; padding: 8px;">
+                                <option value="">Seleccionar...</option>
+                                <option value="planificada">Planificada</option>
+                                <option value="en_proceso">En Proceso</option>
+                                <option value="pausada">Pausada</option>
+                                <option value="completada">Completada</option>
+                                <option value="cancelada">Cancelada</option>
+                            </select>
+                            <button onclick="updateOrderStatus(${orden.id})" style="width: 100%; margin-top: 8px; padding: 8px; background-color: var(--primary); color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">Actualizar Estado</button>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 12px;">Cantidad Completada:</label>
+                            <input type="number" id="newQuantity" value="${orden.cantidad_completada}" min="0" max="${orden.cantidad_ordenada}" step="0.1" style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
+                            <button onclick="updateOrderQuantity(${orden.id})" style="width: 100%; margin-top: 8px; padding: 8px; background-color: var(--success); color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">Actualizar Cantidad</button>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 12px;">Cambiar Prioridad:</label>
+                            <select id="newPriority" style="width: 100%; padding: 8px;">
+                                <option value="">Seleccionar...</option>
+                                <option value="muy_baja">Muy baja</option>
+                                <option value="baja">Baja</option>
+                                <option value="media">Media</option>
+                                <option value="alta">Alta</option>
+                                <option value="urgente">Urgente</option>
+                            </select>
+                            <button onclick="updateOrderPriority(${orden.id})" style="width: 100%; margin-top: 8px; padding: 8px; background-color: #8b5cf6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">Actualizar Prioridad</button>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 20px;">
+                        <h4 style="margin-bottom: 10px;">Asignación</h4>
+                        ${orden.estado === 'pendiente_asignacion' ? `
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+                            <div>
+                                <label style="display:block; font-size:12px; font-weight:600; margin-bottom:5px;">Sección de Producción</label>
+                                <select id="seccionSelect" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px;"></select>
+                            </div>
+                            <div>
+                                <label style="display:block; font-size:12px; font-weight:600; margin-bottom:5px;">Asignado a</label>
+                                <input type="text" id="asignadoA" placeholder="Supervisor/Responsable" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px;" />
+                            </div>
+                        </div>
+                        <div style="margin-top:10px;">
+                            <input type="text" id="asignacionNotas" placeholder="Notas de asignación (opcional)" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px;" />
+                        </div>
+                        <button onclick="assignOrder(${orden.id})" style="margin-top:8px; padding: 8px 12px; background: var(--primary); color: white; border: none; border-radius: 4px; cursor: pointer;">Asignar a sección</button>
+                        ` : ''}
+
+                        ${orden.estado === 'asignada' ? `
+                        <div style="margin-top:10px;">
+                            <input type="text" id="aceptacionNotas" placeholder="Notas de aceptación (opcional)" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px;" />
+                        </div>
+                        <button onclick="acceptOrder(${orden.id})" style="margin-top:8px; padding: 8px 12px; background: var(--success); color: white; border: none; border-radius: 4px; cursor: pointer;">Aceptar orden</button>
+                        ` : ''}
+
+                        ${orden.estado === 'aceptada' ? `
+                        <button onclick="startAcquisition(${orden.id})" style="margin-top:8px; padding: 8px 12px; background: var(--warning); color: white; border: none; border-radius: 4px; cursor: pointer;">Iniciar adquisición de materiales</button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('orderDetails').innerHTML = html;
+
+            // Cargar compras y faltantes para mostrar en el modal
+            cargarComprasYFaltantes(orden.id);
+
+            // Load secciones for assignment if needed
+            if (orden.estado === 'pendiente_asignacion') {
+                await loadSecciones();
+                const sel = document.getElementById('seccionSelect');
+                if (sel && Array.isArray(window._secciones)) {
+                    sel.innerHTML = window._secciones.map(s => `<option value="${s.id}">${s.codigo} - ${s.nombre}</option>`).join('');
+                }
+            }
+        }
+
+        async function loadSecciones() {
+            try {
+                const res = await fetch('/api/produccion-ordenes/secciones');
+                if (res.ok) {
+                    window._secciones = await res.json();
+                    return window._secciones;
+                }
+            } catch (e) { console.warn('No se pudo cargar secciones'); }
+            window._secciones = [];
+            return [];
+        }
+
+        async function assignOrder(ordenId) {
+            try {
+                const seccionId = parseInt(document.getElementById('seccionSelect').value);
+                const asignadoA = (document.getElementById('asignadoA').value || '').trim() || null;
+                const notas = (document.getElementById('asignacionNotas').value || '').trim() || null;
+                const res = await fetch(`/api/produccion-ordenes/${ordenId}/asignar-seccion`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ seccion_produccion_id: seccionId, asignado_a: asignadoA, notas })
+                });
+                const result = await res.json();
+                if (!res.ok) throw new Error(result.detail || 'No se pudo asignar');
+                showToast('Asignada', 'Orden asignada correctamente');
+                closeOrderModal();
+                setTimeout(loadOrdenes, 300);
+            } catch (e) {
+                showToast('Error', e.message, true);
+            }
+        }
+
+        async function acceptOrder(ordenId) {
+            try {
+                const notas = (document.getElementById('aceptacionNotas').value || '').trim() || null;
+                const res = await fetch(`/api/produccion-ordenes/${ordenId}/aceptar-supervisor`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ notas })
+                });
+                const result = await res.json();
+                if (!res.ok) throw new Error(result.detail || 'No se pudo aceptar');
+                showToast('Aceptada', 'Orden aceptada');
+                closeOrderModal();
+                setTimeout(loadOrdenes, 300);
+            } catch (e) {
+                showToast('Error', e.message, true);
+            }
+        }
+
+        async function startAcquisition(ordenId) {
+            try {
+                const res = await fetch(`/api/produccion-ordenes/${ordenId}/iniciar-adquisicion`, { method: 'POST' });
+                const result = await res.json();
+                if (!res.ok) throw new Error(result.detail || 'No se pudo iniciar');
+                showToast('Materiales', 'Adquisición iniciada');
+                closeOrderModal();
+                setTimeout(loadOrdenes, 300);
+            } catch (e) {
+                showToast('Error', e.message, true);
+            }
+        }
+
+        async function updateOrderPriority(ordenId) {
+            try {
+                const sel = document.getElementById('newPriority');
+                const prioridad = sel && sel.value ? sel.value : null;
+                if (!prioridad) { showToast('Aviso', 'Selecciona una prioridad', true); return; }
+                const res = await fetch(`/api/produccion-ordenes/${ordenId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prioridad })
+                });
+                const result = await res.json();
+                if (!res.ok) throw new Error(result.detail || 'No se pudo actualizar');
+                showToast('Actualizado', `Prioridad: ${prioridad}`);
+                closeOrderModal();
+                setTimeout(loadOrdenes, 300);
+            } catch (e) {
+                showToast('Error', e.message, true);
+            }
+        }
+
+        async function loadOrderDetail(ordenId, fallbackData) {
+            try {
+                const token = localStorage.getItem('token');
+                if (token) {
+                    const res = await fetch(`/api/produccion-ordenes/${ordenId}`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (res.ok) return { ...(fallbackData || {}), ...(await res.json()) };
+                }
+            } catch (e) {
+                console.log('Detalle auth no disponible, usando demo...');
+            }
+
+            return fallbackData || null;
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').classList.remove('active');
+        }
+
+        function showToast(title, message, isError = false) {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const titleEl = document.getElementById('toastTitle');
+            const msgEl = document.getElementById('toastMessage');
+            
+            icon.textContent = isError ? '❌' : '✅';
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+            
+            toast.style.display = 'flex';
+            toast.style.borderLeftColor = isError ? 'var(--danger)' : 'var(--success)';
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease forwards';
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                    toast.style.animation = '';
+                }, 300);
+            }, 3000);
+        }
+
+        async function updateOrderStatus(ordenId) {
+            const newStatus = document.getElementById('newStatus').value;
+            if (!newStatus) {
+                showToast('Error', 'Selecciona un estado', true);
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/produccion-ordenes/${ordenId}/cambiar-estado`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nuevo_estado: newStatus })
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.detail || 'No se pudo actualizar el estado');
+                showToast('Estado actualizado', `Orden cambiada a ${newStatus}`);
+                setTimeout(() => { loadOrdenes(); closeOrderModal(); }, 500);
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error', 'Error al actualizar estado', true);
+            }
+        }
+
+        async function updateOrderQuantity(ordenId) {
+            const newQuantity = parseFloat(document.getElementById('newQuantity').value);
+            if (isNaN(newQuantity)) {
+                showToast('Error', 'Ingresa una cantidad válida', true);
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/produccion-ordenes/${ordenId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cantidad_completada: newQuantity })
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.detail || 'No se pudo actualizar la cantidad');
+                showToast('Cantidad actualizada', `${newQuantity} unidades completadas`);
+                setTimeout(() => { loadOrdenes(); closeOrderModal(); }, 500);
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error', 'Error al actualizar cantidad', true);
+            }
+        }
+
+        // ============ TAB NAVIGATION ============
+        
+        let currentTab = 'pendientes';
+        let allSecciones = [];
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.borderBottomColor = 'transparent';
+                btn.style.color = 'var(--gray-600)';
+            });
+            
+            const activeBtn = document.getElementById(`tab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.style.borderBottomColor = 'var(--primary)';
+                activeBtn.style.color = 'var(--primary)';
+            }
+            
+            // Show/hide views
+            document.querySelectorAll('.tab-view').forEach(view => {
+                view.style.display = 'none';
+            });
+            
+            const activeView = document.getElementById(`view${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`);
+            if (activeView) {
+                activeView.style.display = 'block';
+            }
+            
+            // Load content for active tab
+            switch(tabName) {
+                case 'pendientes':
+                    loadPendientes();
+                    break;
+                case 'secciones':
+                    loadSecciones();
+                    break;
+                case 'monitoreo':
+                    loadMonitoreo();
+                    break;
+                case 'supervisor':
+                    loadSupervisorView();
+                    break;
+            }
+        }
+
+        // ============ PENDIENTES ASIGNACIÓN ============
+        
+        const selectedOrdenes = new Set();
+
+        async function loadPendientes() {
+            const container = document.getElementById('pendientesContainer');
+            container.innerHTML = '<div class="loading">Cargando órdenes pendientes...</div>';
+            
+            try {
+                console.log('📋 loadPendientes - allOrdenes:', allOrdenes.length, 'órdenes');
+                console.log('📋 Estados disponibles:', allOrdenes.map(o => o.estado));
+                
+                // Filter orders that need assignment: pendiente_asignacion OR planificada
+                const ordenes = allOrdenes.filter(o => 
+                    o.estado === 'pendiente_asignacion' || 
+                    o.estado === 'planificada' ||
+                    o.estado === 'borrador'
+                );
+                
+                console.log('📋 Órdenes filtradas para pendientes:', ordenes.length);
+                
+                if (ordenes.length === 0) {
+                    container.innerHTML = '<div class="no-data">No hay órdenes pendientes de asignación</div>';
+                    return;
+                }
+                
+                const html = ordenes.map(orden => `
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3 style="display:flex; align-items:center; gap:8px;">
+                                    <input type="checkbox" ${selectedOrdenes.has(orden.id) ? 'checked' : ''} onchange="toggleSelectOrden(${orden.id}, this.checked)" />
+                                    ${orden.numero}
+                                </h3>
+                                <p>${orden.producto_nombre || 'Producto'}</p>
+                            </div>
+                            <span class="workflow-badge workflow-${orden.estado}">${orden.estado.replace('_', ' ')}</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-row">
+                                <span class="info-label">Venta:</span>
+                                <span>${orden.venta_numero || orden.venta_id}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Cantidad:</span>
+                                <span>${orden.cantidad_ordenada}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Prioridad:</span>
+                                <span class="priority-${orden.prioridad}">${orden.prioridad}</span>
+                            </div>
+                        </div>
+                        <div class="card-actions" style="margin-top: 10px;">
+                            <button onclick="showAsignarSeccionModal(${orden.id})" class="btn-small" style="background: var(--primary); color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer;">
+                                🏭 Asignar Sección
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading pendientes:', error);
+                container.innerHTML = '<div class="no-data">Error al cargar órdenes pendientes</div>';
+            }
+        }
+
+        function toggleSelectOrden(id, checked){
+            if (checked) selectedOrdenes.add(id); else selectedOrdenes.delete(id);
+        }
+
+        function selectAllPendientes(select=true){
+            const container = document.getElementById('pendientesContainer');
+            const boxes = container.querySelectorAll('input[type="checkbox"]');
+            boxes.forEach(b => { b.checked = select; const id = parseInt(b.getAttribute('onchange').match(/\d+/)[0]); if (select) selectedOrdenes.add(id); else selectedOrdenes.delete(id); });
+        }
+
+        async function applyBulkPriority(){
+            try {
+                const prioridad = document.getElementById('bulkPrioritySelect').value;
+                if (!prioridad) { showToast('Aviso', 'Selecciona una prioridad', true); return; }
+                const ids = Array.from(selectedOrdenes);
+                if (ids.length === 0) { showToast('Aviso', 'Selecciona al menos una orden', true); return; }
+                const res = await fetch('/api/produccion-ordenes/bulk-prioridad', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prioridad, ids })
+                });
+                const result = await res.json();
+                if (!res.ok) throw new Error(result.detail || 'No se pudo actualizar');
+                showToast('Prioridad', `Actualizadas ${result.updated} órdenes`);
+                selectedOrdenes.clear();
+                setTimeout(loadOrdenes, 300);
+            } catch (e) {
+                showToast('Error', e.message, true);
+            }
+        }
+
+        async function showAsignarSeccionModal(ordenId) {
+            // Load secciones
+            await loadSeccionesData();
+            
+            if (allSecciones.length === 0) {
+                showToast('Error', 'No hay secciones activas. Crea una primero.', true);
+                return;
+            }
+            
+            const seccionOptions = allSecciones.map(s => 
+                `<option value="${s.id}">${s.nombre} (${s.tipo}) - ${s.ordenes_activas || 0} órdenes</option>`
+            ).join('');
+            
+            const modal = document.getElementById('orderModal');
+            const content = document.getElementById('orderDetails');
+            
+            content.innerHTML = `
+                <h2>Asignar Orden a Sección</h2>
+                <div style="margin-top: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Sección de Producción:</label>
+                    <select id="seccionSelect" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;">
+                        <option value="">Seleccionar sección...</option>
+                        ${seccionOptions}
+                    </select>
+                </div>
+                <div style="margin-top: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600;">Notas (opcional):</label>
+                    <textarea id="asignarNotas" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;" rows="3"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button onclick="asignarSeccion(${ordenId})" style="flex: 1; padding: 12px; background: var(--success); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                        ✓ Asignar
+                    </button>
+                    <button onclick="closeOrderModal()" style="flex: 1; padding: 12px; background: var(--gray-500); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                        Cancelar
+                    </button>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        async function asignarSeccion(ordenId) {
+            const seccionId = document.getElementById('seccionSelect').value;
+            const notas = document.getElementById('asignarNotas').value;
+            
+            if (!seccionId) {
+                showToast('Error', 'Selecciona una sección', true);
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/produccion-ordenes/${ordenId}/asignar-seccion`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        seccion_produccion_id: parseInt(seccionId),
+                        notas: notas
+                    })
+                });
+                
+                if (res.ok) {
+                    showToast('Asignado', 'Orden asignada a sección correctamente');
+                    closeOrderModal();
+                    loadPendientes();
+                    updateStats(allOrdenes);
+                } else {
+                    const error = await res.json();
+                    showToast('Error', error.detail || 'No se pudo asignar', true);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error', 'Error al asignar sección', true);
+            }
+        }
+
+        // ============ SECCIONES PRODUCCIÓN ============
+        
+        async function loadSeccionesData() {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch('/api/produccion-ordenes/secciones', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    allSecciones = await res.json();
+                }
+            } catch (error) {
+                console.error('Error loading secciones:', error);
+            }
+        }
+
+        async function loadSecciones() {
+            const container = document.getElementById('seccionesContainer');
+            container.innerHTML = '<div class="loading">Cargando secciones...</div>';
+            
+            await loadSeccionesData();
+            
+            if (allSecciones.length === 0) {
+                container.innerHTML = '<div class="no-data">No hay secciones creadas. Haz clic en "+ Nueva Sección"</div>';
+                return;
+            }
+            
+            const html = allSecciones.map(seccion => `
+                <div class="seccion-card">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div>
+                            <h3>${seccion.nombre}</h3>
+                            <p style="color: var(--gray-600); margin: 5px 0;">${seccion.codigo} • ${seccion.tipo}</p>
+                        </div>
+                        <span style="background: ${seccion.activa ? '#dcfce7' : 'var(--color-danger-light)'}; color: ${seccion.activa ? '#065f46' : '#991b1b'}; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 600;">
+                            ${seccion.activa ? 'ACTIVA' : 'INACTIVA'}
+                        </span>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <div class="info-row">
+                            <span class="info-label">Supervisor:</span>
+                            <span>${seccion.supervisor_nombre || 'No asignado'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Ubicación:</span>
+                            <span>${seccion.ubicacion || 'N/A'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Capacidad Diaria:</span>
+                            <span>${seccion.capacidad_diaria || 'N/A'} unidades</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Operarios:</span>
+                            <span>${seccion.capacidad_operarios || 'N/A'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Órdenes Activas:</span>
+                            <span style="font-weight: 700; color: var(--primary);">${seccion.ordenes_activas || 0}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            container.innerHTML = html;
+        }
+
+        function showNewSeccionForm() {
+            const modal = document.getElementById('orderModal');
+            const content = document.getElementById('orderDetails');
+            
+            content.innerHTML = `
+                <h2 style="margin-bottom: 20px;">Nueva Sección de Producción</h2>
+                <p style="margin: 0 0 15px; color: var(--gray-600);">El código se generará automáticamente.</p>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Nombre *</label>
+                    <input type="text" id="newSecNombre" placeholder="Ej: Soldadura y Unión" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Tipo</label>
+                    <select id="newSecTipo" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;">
+                        <option value="corte">Corte</option>
+                        <option value="ensamblaje">Ensamblaje</option>
+                        <option value="soldadura">Soldadura</option>
+                        <option value="pintura">Pintura</option>
+                        <option value="acabado">Acabado</option>
+                        <option value="control_calidad">Control de Calidad</option>
+                        <option value="empaque">Empaque</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">Capacidad Diaria</label>
+                        <input type="number" id="newSecCapacidad" placeholder="Unidades/día" step="0.1" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">Capacidad Operarios</label>
+                        <input type="number" id="newSecOperarios" placeholder="Nº operarios" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;">
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Supervisor</label>
+                    <select id="newSecSupervisor" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;">
+                        <option value="">Seleccionar supervisor...</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Ubicación</label>
+                    <input type="text" id="newSecUbicacion" placeholder="Ej: Planta 1 - Área D" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Descripción</label>
+                    <textarea id="newSecDescripcion" rows="3" placeholder="Descripción opcional de la sección..." style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;"></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <button onclick="crearSeccion()" style="flex: 1; padding: 12px; background: var(--success); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                        ✓ Crear Sección
+                    </button>
+                    <button onclick="closeOrderModal()" style="flex: 1; padding: 12px; background: var(--gray-500); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                        Cancelar
+                    </button>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+            
+            // Load supervisors from HR module
+            loadSupervisoresSelect();
+        }
+        
+        async function loadSupervisoresSelect() {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch('/api/produccion-ordenes/supervisores', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (res.ok) {
+                    const supervisores = await res.json();
+                    const select = document.getElementById('newSecSupervisor');
+                    
+                    supervisores.forEach(sup => {
+                        const option = document.createElement('option');
+                        option.value = sup.username;
+                        option.textContent = `${sup.username} (${sup.email})`;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading supervisores:', error);
+            }
+        }
+        
+        async function crearSeccion() {
+            const nombre = document.getElementById('newSecNombre').value.trim();
+            const tipo = document.getElementById('newSecTipo').value;
+            const capacidad = document.getElementById('newSecCapacidad').value;
+            const operarios = document.getElementById('newSecOperarios').value;
+            const supervisor = document.getElementById('newSecSupervisor').value.trim();
+            const ubicacion = document.getElementById('newSecUbicacion').value.trim();
+            const descripcion = document.getElementById('newSecDescripcion').value.trim();
+            
+            if (!nombre) {
+                showToast('Error', 'Nombre es obligatorio', true);
+                return;
+            }
+            
+            const payload = {
+                nombre: nombre,
+                tipo: tipo,
+                activa: true
+            };
+            
+            if (capacidad) payload.capacidad_diaria = parseFloat(capacidad);
+            if (operarios) payload.capacidad_operarios = parseInt(operarios);
+            if (supervisor) payload.supervisor_nombre = supervisor;
+            if (ubicacion) payload.ubicacion = ubicacion;
+            if (descripcion) payload.descripcion = descripcion;
+            
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch('/api/produccion-ordenes/secciones', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (res.ok) {
+                    showToast('Creada', 'Sección de producción creada correctamente');
+                    closeOrderModal();
+                    loadSecciones();
+                } else {
+                    const error = await res.json();
+                    showToast('Error', error.detail || 'No se pudo crear la sección', true);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error', 'Error al crear sección', true);
+            }
+        }
+
+        // ============ MONITOREO GLOBAL ============
+        
+        async function loadMonitoreo() {
+            const container = document.getElementById('monitoreoContainer');
+            container.innerHTML = '<div class="loading">Cargando monitoreo...</div>';
+            
+            try {
+                console.log('📊 loadMonitoreo - allOrdenes:', allOrdenes.length, 'órdenes');
+                
+                // Use already loaded ordenes from allOrdenes
+                const ordenes = allOrdenes;
+                
+                // Group by estado
+                const grupos = {
+                    'borrador': [],
+                    'planificada': [],
+                    'pendiente_asignacion': [],
+                    'asignada': [],
+                    'aceptada': [],
+                    'adquisicion_materiales': [],
+                    'en_proceso': [],
+                    'completada': [],
+                    'pausada': [],
+                    'cancelada': []
+                };
+                
+                ordenes.forEach(orden => {
+                    const estado = orden.estado || 'sin_estado';
+                    if (!grupos[estado]) {
+                        grupos[estado] = [];
+                    }
+                    grupos[estado].push(orden);
+                });
+                
+                const html = `
+                    <div class="kanban-board">
+                        ${Object.entries(grupos).map(([estado, ordenes]) => `
+                            <div class="kanban-column">
+                                <h3>${estado.replace(/_/g, ' ').toUpperCase()} (${ordenes.length})</h3>
+                                ${ordenes.map(orden => `
+                                    <div class="kanban-item" onclick="openOrderModal(${orden.id})">
+                                        <div style="font-weight: 600; margin-bottom: 5px;">${orden.numero}</div>
+                                        <div style="font-size: 12px; color: var(--gray-600);">
+                                            ${orden.producto_nombre || 'Producto'}<br>
+                                            Cantidad: ${orden.cantidad_ordenada}
+                                        </div>
+                                        <span class="priority-${orden.prioridad}" style="font-size: 11px;">
+                                            ${orden.prioridad}
+                                        </span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading monitoreo:', error);
+                container.innerHTML = '<div class="no-data">Error al cargar monitoreo</div>';
+            }
+        }
+
+        // ============ VISTA SUPERVISOR ============
+        
+        async function loadSupervisorView() {
+            const container = document.getElementById('supervisorContainer');
+            container.innerHTML = '<div class="loading">Cargando órdenes asignadas...</div>';
+            
+            try {
+                // Use already loaded ordenes from allOrdenes
+                const ordenes = allOrdenes.filter(o => o.estado === 'asignada');
+                
+                if (ordenes.length === 0) {
+                    container.innerHTML = '<div class="no-data">No hay órdenes asignadas pendientes de aceptación</div>';
+                    return;
+                }
+                
+                const html = ordenes.map(orden => `
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h3>${orden.numero}</h3>
+                                <p>${orden.producto_nombre || 'Producto'}</p>
+                            </div>
+                            <span class="workflow-badge workflow-${orden.estado}">${orden.estado.replace('_', ' ')}</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-row">
+                                <span class="info-label">Venta:</span>
+                                <span>${orden.venta_numero || orden.venta_id}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Cantidad:</span>
+                                <span>${orden.cantidad_ordenada}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Asignado a:</span>
+                                <span>${orden.asignado_a || 'N/A'}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Fecha Asignación:</span>
+                                <span>${orden.fecha_asignacion ? new Date(orden.fecha_asignacion).toLocaleDateString('es-ES') : 'N/A'}</span>
+                            </div>
+                        </div>
+                        <div class="card-actions" style="margin-top: 10px; display: flex; gap: 10px;">
+                            <button onclick="aceptarOrden(${orden.id})" class="btn-small" style="flex: 1; background: var(--success); color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer;">
+                                ✓ Aceptar Orden
+                            </button>
+                            <button onclick="rechazarOrden(${orden.id})" class="btn-small" style="flex: 1; background: var(--danger); color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer;">
+                                ✗ Rechazar
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading supervisor view:', error);
+                container.innerHTML = '<div class="no-data">Error al cargar vista supervisor</div>';
+            }
+        }
+
+        async function aceptarOrden(ordenId) {
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/produccion-ordenes/${ordenId}/aceptar-supervisor`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({})
+                });
+                
+                if (res.ok) {
+                    showToast('Aceptada', 'Orden aceptada. Pasando a adquisición de materiales.');
+                    loadSupervisorView();
+                    updateStats(allOrdenes);
+                } else {
+                    const error = await res.json();
+                    showToast('Error', error.detail || 'No se pudo aceptar', true);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error', 'Error al aceptar orden', true);
+            }
+        }
+
+        function rechazarOrden(ordenId) {
+            showToast('Info', 'Funcionalidad de rechazo: próximamente', false);
+        }
+
+        // ============ NUEVAS FUNCIONALIDADES SUPERVISOR ============
+
+        // 1. REGISTRAR INICIO DE TRABAJO
+        async function registrarInicio(ordenId) {
+            const trabajador = document.getElementById('trabajadorInicio').value.trim();
+            const hora = document.getElementById('horaInicio').value;
+            
+            if (!trabajador || !hora) {
+                showToast('Error', 'Completa todos los campos de inicio', true);
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/produccion-ordenes/${ordenId}/registrar-inicio`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        trabajador_nombre: trabajador,
+                        hora_inicio: hora,
+                        fecha: new Date().toISOString().split('T')[0]
+                    })
+                });
+                
+                if (res.ok) {
+                    showToast('✓ Registrado', `${trabajador} comenzó a trabajar a las ${hora}`);
+                    setTimeout(() => {
+                        loadOrdenes();
+                        closeOrderModal();
+                    }, 500);
+                } else {
+                    const error = await res.json();
+                    showToast('Error', error.detail || 'No se pudo registrar', true);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error', 'Error al registrar inicio', true);
+            }
+        }
+
+        // 2. REPORTAR INCIDENCIA
+        async function reportarIncidencia(ordenId) {
+            const tipo = document.getElementById('tipoIncidencia').value;
+            const desc = document.getElementById('descIncidencia').value.trim();
+            
+            if (!tipo || !desc) {
+                showToast('Error', 'Completa tipo y descripción de la incidencia', true);
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/produccion-ordenes/${ordenId}/reportar-incidencia`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        tipo_incidencia: tipo,
+                        descripcion: desc,
+                        fecha_reporte: new Date().toISOString()
+                    })
+                });
+                
+                if (res.ok) {
+                    showToast('🔔 Reportada', 'Incidencia registrada y notificada a supervisión');
+                    document.getElementById('tipoIncidencia').value = '';
+                    document.getElementById('descIncidencia').value = '';
+                } else {
+                    const error = await res.json();
+                    showToast('Error', error.detail || 'No se pudo reportar', true);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error', 'Error al reportar incidencia', true);
+            }
+        }
+
+        // 3. SOLICITAR MATERIAL AL ALMACÉN
+        async function solicitarMaterial(ordenId) {
+            const producto = document.getElementById('materialProducto').value.trim();
+            const cantidad = document.getElementById('materialCantidad').value;
+            const urgencia = document.getElementById('materialUrgencia').value;
+            const motivo = document.getElementById('materialMotivo').value.trim();
+            
+            if (!producto || !cantidad || !motivo) {
+                showToast('Error', 'Completa producto, cantidad y motivo', true);
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/produccion-ordenes/${ordenId}/solicitar-material`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        producto_descripcion: producto,
+                        cantidad: parseFloat(cantidad),
+                        urgencia: urgencia,
+                        motivo: motivo,
+                        fecha_solicitud: new Date().toISOString()
+                    })
+                });
+                
+                if (res.ok) {
+                    showToast('✉️ Enviada', `Solicitud de ${cantidad} unidades enviada al almacén`);
+                    document.getElementById('materialProducto').value = '';
+                    document.getElementById('materialCantidad').value = '';
+                    document.getElementById('materialUrgencia').value = 'normal';
+                    document.getElementById('materialMotivo').value = '';
+                } else {
+                    const error = await res.json();
+                    showToast('Error', error.detail || 'No se pudo enviar solicitud', true);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error', 'Error al solicitar material', true);
+            }
+        }
+
+        // 4. VER DETALLES DE COMPRAS ASOCIADAS
+        async function verMasDetallesCompras(ordenId) {
+            const modal = document.getElementById('orderModal');
+            const content = document.getElementById('orderDetails');
+            
+            content.innerHTML = '<div class="loading">Cargando compras...</div>';
+            
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/produccion-ordenes/${ordenId}/compras-asociadas`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!res.ok) throw new Error('No se pudo cargar las compras');
+                
+                const compras = await res.json();
+                
+                const html = `
+                    <h2>Compras Asociadas a la Orden</h2>
+                    ${compras.length === 0 ? '<p style="color: #999;">No hay compras registradas para esta orden</p>' : `
+                        <div style="margin-top: 20px;">
+                            ${compras.map((compra, idx) => `
+                                <div style="padding: 15px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 10px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                        <strong>Compra #${compra.numero || idx + 1}</strong>
+                                        <span style="background: ${compra.estado === 'entregada' ? '#dcfce7' : '#fed7aa'}; color: ${compra.estado === 'entregada' ? '#065f46' : '#92400e'}; padding: 4px 12px; border-radius: 12px; font-size: 12px;">
+                                            ${compra.estado || 'pendiente'}
+                                        </span>
+                                    </div>
+                                    <div style="font-size: 14px; margin-bottom: 8px;">
+                                        <strong>${compra.producto_descripcion || compra.producto}</strong>
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; font-size: 13px;">
+                                        <div>
+                                            <span style="color: var(--gray-600);">Cantidad:</span><br>
+                                            ${compra.cantidad} unidades
+                                        </div>
+                                        <div>
+                                            <span style="color: var(--gray-600);">Proveedor:</span><br>
+                                            ${compra.proveedor_nombre || 'N/A'}
+                                        </div>
+                                        <div>
+                                            <span style="color: var(--gray-600);">Fecha Entrega:</span><br>
+                                            ${compra.fecha_entrega ? new Date(compra.fecha_entrega).toLocaleDateString('es-ES') : 'N/A'}
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `}
+                    <div style="margin-top: 20px;">
+                        <button onclick="closeOrderModal()" style="width:100%; padding:10px; background: var(--gray-500); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600;">
+                            Cerrar
+                        </button>
+                    </div>
+                `;
+                
+                content.innerHTML = html;
+            } catch (error) {
+                console.error('Error:', error);
+                content.innerHTML = '<div style="text-align: center; color: red; padding: 20px;">Error al cargar compras</div>';
+            }
+        }
+
+        // 5. AÑADIR FALTANTE
+        async function anadirFaltante(ordenId) {
+            const modal = document.getElementById('orderModal');
+            const content = document.getElementById('orderDetails');
+            
+            content.innerHTML = `
+                <h2>Registrar Faltante de Material</h2>
+                <div style="margin-top: 20px;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">Producto/Material Faltante *</label>
+                        <input type="text" id="faltanteProducto" placeholder="Descripción del material" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;">
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Cantidad Faltante *</label>
+                            <input type="number" id="faltanteCantidad" placeholder="Unidades" step="0.1" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Impacto</label>
+                            <select id="faltanteImpacto" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;">
+                                <option value="retraso">Retraso en producción</option>
+                                <option value="parada">Parada total</option>
+                                <option value="calidad">Problema de calidad</option>
+                                <option value="seguridad">Riesgo de seguridad</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">Causa del Faltante</label>
+                        <textarea id="faltanteCausa" rows="2" placeholder="¿Por qué falta este material?" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="guardarFaltante(${ordenId})" style="flex: 1; padding: 12px; background: var(--danger); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                            ✓ Registrar Faltante
+                        </button>
+                        <button onclick="closeOrderModal()" style="flex: 1; padding: 12px; background: var(--gray-500); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function guardarFaltante(ordenId) {
+            const producto = document.getElementById('faltanteProducto').value.trim();
+            const cantidad = document.getElementById('faltanteCantidad').value;
+            const impacto = document.getElementById('faltanteImpacto').value;
+            const causa = document.getElementById('faltanteCausa').value.trim();
+            
+            if (!producto || !cantidad) {
+                showToast('Error', 'Completa producto y cantidad', true);
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`/api/produccion-ordenes/${ordenId}/registrar-faltante`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        producto_descripcion: producto,
+                        cantidad_faltante: parseFloat(cantidad),
+                        impacto: impacto,
+                        causa: causa,
+                        fecha_registro: new Date().toISOString()
+                    })
+                });
+                
+                if (res.ok) {
+                    showToast('❌ Faltante', `${cantidad} unidades de ${producto} registrado`);
+                    setTimeout(() => {
+                        loadOrdenes();
+                        closeOrderModal();
+                    }, 500);
+                } else {
+                    const error = await res.json();
+                    showToast('Error', error.detail || 'No se pudo registrar', true);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Error', 'Error al registrar faltante', true);
+            }
+        }
+
+        // Cargar compras y faltantes en el modal de detalles
+        async function cargarComprasYFaltantes(ordenId) {
+            try {
+                // Cargar compras
+                const token = localStorage.getItem('token');
+                const resCompras = await fetch(`/api/produccion-ordenes/${ordenId}/compras-asociadas`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (resCompras.ok) {
+                    const compras = await resCompras.json();
+                    const comprasHTML = compras.length === 0 
+                        ? '<div style="text-align: center; color: #999;">No hay compras aún</div>'
+                        : compras.map(c => `
+                            <div style="padding: 8px; border-bottom: 1px solid var(--border); font-size: 12px;">
+                                <strong>${c.producto_descripcion || c.producto}</strong><br>
+                                ${c.cantidad} unid. • ${c.estado} • ${c.fecha_entrega ? new Date(c.fecha_entrega).toLocaleDateString('es-ES') : 'N/A'}
+                            </div>
+                        `).join('');
+                    document.getElementById('comprasContenedor').innerHTML = comprasHTML;
+                }
+                
+                // Cargar faltantes (similar endpoint para faltantes)
+                const resFaltantes = await fetch(`/api/produccion-ordenes/${ordenId}/faltantes`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (resFaltantes.ok) {
+                    const faltantes = await resFaltantes.json();
+                    const faltantesHTML = faltantes.length === 0
+                        ? '<div style="text-align: center; color: #999;">Sin faltantes</div>'
+                        : faltantes.map(f => `
+                            <div style="padding: 8px; border-bottom: 1px solid var(--border); font-size: 12px;">
+                                <strong>${f.producto_descripcion}</strong><br>
+                                ${f.cantidad_faltante} unid. • ${f.impacto} • ${new Date(f.fecha_registro).toLocaleDateString('es-ES')}
+                            </div>
+                        `).join('');
+                    document.getElementById('faltantesContenedor').innerHTML = faltantesHTML;
+                }
+            } catch (error) {
+                console.error('Error loading compras y faltantes:', error);
+            }
+        }
+
+        // Event listeners for filters (guard if elements not present)
+        const searchEl = document.getElementById('searchInput');
+        const statusEl = document.getElementById('statusFilter');
+        const priorityEl = document.getElementById('priorityFilter');
+        if (searchEl) searchEl.addEventListener('input', () => renderOrdenes(allOrdenes));
+        if (statusEl) statusEl.addEventListener('change', () => renderOrdenes(allOrdenes));
+        if (priorityEl) priorityEl.addEventListener('change', () => renderOrdenes(allOrdenes));
+
+        // Close modal on outside click
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('orderModal');
+            if (e.target === modal) closeOrderModal();
+        });
+
+        // Load orders on page load
+        loadOrdenes();
+        setInterval(() => {
+            loadOrdenes();
+            if (currentTab === 'pendientes') loadPendientes();
+            if (currentTab === 'monitoreo') loadMonitoreo();
+            if (currentTab === 'supervisor') loadSupervisorView();
+        }, 30000); // Refresh every 30 seconds
+    </script>
+    
+    <script src="/static/js/module-tutorial.js?v=2"></script>
+    <script defer src="/static/assistant.js?v=2"></script>
+    <script defer src="/static/assistant-basic-panel.js?v=2"></script>
+    <script defer src="/static/voice-widget.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!-- Barra de asistente básico - Para incluir en todas las páginas -->
+<div class="assistant-panel" id="assistantPanel">
+    <div class="assistant-header">
+        <h3>Asistente básico</h3>
+        <button class="btn btn-secondary" onclick="refreshAssistant()">↻</button>
+    </div>
+    <div class="assistant-body">
+        <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAccordion('acc-compras')">Compras sugeridas <span id="tag-compras"></span></button>
+            <div class="accordion-content" id="acc-compras"><ul id="acc-compras-list"></ul></div>
+        </div>
+        <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAccordion('acc-recordatorios')">Recordatorios <span id="tag-record"></span></button>
+            <div class="accordion-content" id="acc-recordatorios"><ul id="acc-record-list"></ul></div>
+        </div>
+        <div class="accordion-item">
+            <button class="accordion-trigger" onclick="toggleAccordion('acc-resumen')">Resumen asistente</button>
+            <div class="accordion-content" id="acc-resumen"><pre id="acc-resumen-text" style="white-space: pre-wrap; font-family: var(--font-sans); font-size: 13px; color: var(--text-primary); margin: 0;"></pre></div>
+        </div>
+    </div>
+    <div class="assistant-footer">
+        <span id="assistantStatus">Listo</span>
+        <button onclick="refreshAssistant()">Actualizar</button>
+    </div>
+</div>
+
+<style>
+/* Assistant panel styles */
+.assistant-panel {
+    position: fixed;
+    left: 12px;
+    top: 86px;
+    width: 320px;
+    max-height: 70vh;
+    background: var(--bg-primary, #fff);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg, 0 10px 40px rgba(0,0,0,0.1));
+    border: 1px solid var(--border-color, #e2e8f0);
+    display: none !important;
+    flex-direction: column;
+    z-index: 9999;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.assistant-panel.open {
+    display: flex !important;
+}
+
+.assistant-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 14px;
+    background: linear-gradient(135deg, var(--brand-primary, #667eea) 0%, var(--brand-secondary, #764ba2) 100%);
+    color: var(--text-inverse, #fff);
+    border-radius: 12px 12px 0 0;
+    flex-shrink: 0;
+}
+
+.assistant-header h3 { 
+    margin: 0; 
+    font-size: 15px; 
+    font-weight: 600; 
+}
+
+.assistant-body {
+    padding: 0;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 150px;
+}
+
+.accordion-item { 
+    border-bottom: 1px solid var(--border-color-light, #f1f5f9); 
+}
+
+.accordion-trigger {
+    width: 100%;
+    text-align: left;
+    padding: 12px 14px;
+    background: none;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-primary, #1e293b);
+    font-size: 14px;
+}
+
+.accordion-trigger:hover { 
+    background: inherit; 
+}
+
+.accordion-trigger span { 
+    font-size: 12px; 
+    color: var(--text-tertiary, #94a3b8); 
+    font-weight: 400; 
+}
+
+.accordion-content {
+    padding: 0 14px 12px 14px;
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.accordion-content.open { 
+    display: block; 
+}
+
+.accordion-content ul { 
+    list-style: none; 
+    padding-left: 0; 
+    margin: 0; 
+}
+
+.accordion-content li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color-light, #f1f5f9);
+    font-size: 12px;
+    color: var(--text-secondary, #475569);
+    line-height: 1.4;
+}
+
+.accordion-content li:last-child { 
+    border-bottom: none; 
+}
+
+.assistant-footer {
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--text-tertiary, #94a3b8);
+    border-top: 1px solid var(--border-color, #e2e8f0);
+    background: var(--bg-secondary, #f8fafc);
+    border-radius: 0 0 12px 12px;
+    flex-shrink: 0;
+}
+
+.assistant-footer button {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: none;
+    background: var(--brand-primary, #667eea);
+    color: var(--text-inverse, #fff);
+    cursor: pointer;
+    font-size: 12px;
+    transition: background var(--transition-fast, 0.15s);
+}
+
+.assistant-footer button:hover { 
+    background: var(--brand-primary, #667eea); 
+}
+
+@media (max-width: 1400px) {
+    .assistant-panel { width: 300px; }
+}
+@media (max-width: 1200px) {
+    .assistant-panel { width: 280px; }
+}
+@media (max-width: 992px) {
+    .assistant-panel { width: 260px; }
+}
+@media (max-width: 900px) {
+    .assistant-panel { width: calc(100% - 24px); left: 12px; right: 12px; max-height: 50vh; }
+}
+
+.text-muted { color: var(--text-tertiary, #94a3b8); }
+.text-danger { color: var(--color-danger, #ef4444); }
+</style>
+
+<script>
+function toggleAccordion(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+}
+
+function formatCurrency(value) {
+    const num = Number(value) || 0;
+    return num.toLocaleString('es-ES', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 });
+}
+
+async function refreshAssistant() {
+    const statusEl = document.getElementById('assistantStatus');
+    const comprasList = document.getElementById('acc-compras-list');
+    const recList = document.getElementById('acc-record-list');
+    const resumenText = document.getElementById('acc-resumen-text');
+    const tagCompras = document.getElementById('tag-compras');
+    const tagRecord = document.getElementById('tag-record');
+    
+    if (!statusEl || !comprasList) return;
+    
+    statusEl.textContent = 'Cargando...';
+    comprasList.innerHTML = '';
+    recList.innerHTML = '';
+    resumenText.textContent = '';
+    
+    try {
+        const resp = await fetch('/api/ai/sugerencias-basico');
+        if (!resp.ok) throw new Error('No se pudo obtener sugerencias');
+        const data = await resp.json();
+
+        const compras = data.compras_sugeridas || [];
+        tagCompras.textContent = compras.length ? `(${compras.length})` : '';
+        if (compras.length === 0) {
+            comprasList.innerHTML = '<li class="text-muted">Sin compras urgentes</li>';
+        } else {
+            comprasList.innerHTML = compras.map(c => `
+                <li>
+                    <strong>${c.codigo}</strong> · ${c.nombre}<br>
+                    Proveedor: ${c.proveedor || '-'} · Stock ${c.stock_actual}/${c.stock_minimo} · Comprar: ${c.cantidad_sugerida}<br>
+                    ${c.motivo}
+                </li>
+            `).join('');
+        }
+
+        const recs = data.recordatorios || [];
+        tagRecord.textContent = recs.length ? `(${recs.length})` : '';
+        if (recs.length === 0) {
+            recList.innerHTML = '<li class="text-muted">Sin recordatorios</li>';
+        } else {
+            recList.innerHTML = recs.map(r => `
+                <li><strong>${r.tipo}</strong> · ${r.entidad}: ${r.mensaje}</li>
+            `).join('');
+        }
+
+        resumenText.textContent = data.resumen_llm || 'Sin resumen disponible.';
+        statusEl.textContent = 'Actualizado';
+    } catch (err) {
+        statusEl.textContent = 'Error: ' + err.message;
+        comprasList.innerHTML = '<li class="text-danger">Error al cargar</li>';
+    }
+}
+
+// Auto-load on page ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', refreshAssistant);
+} else {
+    refreshAssistant();
+}
+</script>

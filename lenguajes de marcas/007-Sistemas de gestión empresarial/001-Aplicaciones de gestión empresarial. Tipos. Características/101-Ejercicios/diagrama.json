@@ -1,0 +1,148 @@
+{
+  "formas": [
+    {
+      "id": "forma-1",
+      "tipo": "rectangle",
+      "left": "229px",
+      "top": "310px",
+      "width": "",
+      "height": "",
+      "texto": "Admisión (form)"
+    },
+    {
+      "id": "forma-2",
+      "tipo": "rectangle",
+      "left": "365.467px",
+      "top": "308.517px",
+      "width": "",
+      "height": "",
+      "texto": "Validación"
+    },
+    {
+      "id": "forma-3",
+      "tipo": "rectangle",
+      "left": "508.635px",
+      "top": "308.536px",
+      "width": "",
+      "height": "",
+      "texto": "Matrícula"
+    },
+    {
+      "id": "forma-4",
+      "tipo": "text",
+      "left": "239.092px",
+      "top": "284.439px",
+      "width": "",
+      "height": "",
+      "texto": "CRM - Software de gestión de la relación con el cliente"
+    },
+    {
+      "id": "forma-5",
+      "tipo": "rectangle",
+      "left": "689.328px",
+      "top": "223.223px",
+      "width": "",
+      "height": "",
+      "texto": "LMS"
+    },
+    {
+      "id": "forma-6",
+      "tipo": "rectangle",
+      "left": "691.446px",
+      "top": "312.688px",
+      "width": "",
+      "height": "",
+      "texto": "SIS"
+    },
+    {
+      "id": "forma-7",
+      "tipo": "rectangle",
+      "left": "683.531px",
+      "top": "395.323px",
+      "width": "",
+      "height": "",
+      "texto": "Conta/Fact"
+    },
+    {
+      "id": "forma-8",
+      "tipo": "text",
+      "left": "237.757px",
+      "top": "150.582px",
+      "width": "",
+      "height": "",
+      "texto": "Enterprise Resource Planning - Software de gestión empresarial"
+    }
+  ],
+  "flechas": [
+    {
+      "desde": {
+        "shapeId": "forma-1",
+        "propId": null,
+        "side": null
+      },
+      "hasta": {
+        "shapeId": "forma-2",
+        "propId": null,
+        "side": null
+      },
+      "tipo": "simple",
+      "estilo": "straight"
+    },
+    {
+      "desde": {
+        "shapeId": "forma-2",
+        "propId": null,
+        "side": null
+      },
+      "hasta": {
+        "shapeId": "forma-3",
+        "propId": null,
+        "side": null
+      },
+      "tipo": "simple",
+      "estilo": "straight"
+    },
+    {
+      "desde": {
+        "shapeId": "forma-3",
+        "propId": null,
+        "side": null
+      },
+      "hasta": {
+        "shapeId": "forma-5",
+        "propId": null,
+        "side": null
+      },
+      "tipo": "simple",
+      "estilo": "straight"
+    },
+    {
+      "desde": {
+        "shapeId": "forma-3",
+        "propId": null,
+        "side": null
+      },
+      "hasta": {
+        "shapeId": "forma-6",
+        "propId": null,
+        "side": null
+      },
+      "tipo": "simple",
+      "estilo": "straight"
+    },
+    {
+      "desde": {
+        "shapeId": "forma-3",
+        "propId": null,
+        "side": null
+      },
+      "hasta": {
+        "shapeId": "forma-7",
+        "propId": null,
+        "side": null
+      },
+      "tipo": "simple",
+      "estilo": "straight"
+    }
+  ]
+}

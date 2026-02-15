@@ -1,0 +1,59 @@
+=============================INFORME DEL SISTEMA==============================
+Generado: 2025-09-22 14:32:23
+
+1) Información Básica
+   - Sistema: Linux 6.14.0-29-generic (x86_64)
+   - Plataforma: Linux-6.14.0-29-generic-x86_64-with-glibc2.39
+   - Hostname: josevicenteportatil (FQDN: josevicenteportatil)
+   - Nodo ID (MAC): 0xcc28aa49b637
+   - Ejecutable Python: /usr/bin/python3
+
+2) CPU
+   - Procesador (platform): x86_64
+   - Cores (logical): 16, (physical if available): 10
+   - Frecuencia (MHz): current=2736.6073125000003, min=400.0, max=4475.0
+   - Uso de CPU (muestra breve): 23.8%
+
+3) Memoria
+   - RAM total: 16369229824 bytes, disponible: 5532549120 bytes, usado: 7624384512 bytes (66.2%)
+
+4) Discos
+   - Raíz total=1005867986944 used=773759553536 free=180937662464
+   - Particiones montadas (muestra):
+     * / (/dev/nvme0n1p2) tipo=ext4 uso={'total': 1005867986944, 'used': 773759553536, 'free': 180937662464, 'percent': 81.0}
+     * /snap/android-studio/197 (/dev/loop0) tipo=squashfs uso={'total': 1606418432, 'used': 1606418432, 'free': 0, 'percent': 100.0}
+     * /snap/android-studio/205 (/dev/loop1) tipo=squashfs uso={'total': 1626341376, 'used': 1626341376, 'free': 0, 'percent': 100.0}
+     * /snap/ardour-snap/10 (/dev/loop2) tipo=squashfs uso={'total': 95027200, 'used': 95027200, 'free': 0, 'percent': 100.0}
+     * /snap/ardour-snap/4 (/dev/loop3) tipo=squashfs uso={'total': 95027200, 'used': 95027200, 'free': 0, 'percent': 100.0}
+     * /snap/audacity/1196 (/dev/loop4) tipo=squashfs uso={'total': 641728512, 'used': 641728512, 'free': 0, 'percent': 100.0}
+     * /snap/audacity/1208 (/dev/loop5) tipo=squashfs uso={'total': 641728512, 'used': 641728512, 'free': 0, 'percent': 100.0}
+     * /snap/bare/5 (/dev/loop6) tipo=squashfs uso={'total': 131072, 'used': 131072, 'free': 0, 'percent': 100.0}
+
+5) Red
+   - IPs detectadas: 127.0.1.1
+   - Interfaces (muestra):
+     * lo: 3 direcciones
+     * wlo1: 3 direcciones
+     * enp55s0: 1 direcciones
+
+6) Usuarios & procesos
+   - Usuarios logueados: 2
+   - Procesos top por CPU:
+     PID 1 systemd user=root cpu%=0.0 mem%=0.09823856206370044
+     PID 2 kthreadd user=root cpu%=0.0 mem%=0.0
+     PID 3 pool_workqueue_release user=root cpu%=0.0 mem%=0.0
+     PID 4 kworker/R-rcu_gp user=root cpu%=0.0 mem%=0.0
+     PID 5 kworker/R-sync_wq user=root cpu%=0.0 mem%=0.0
+     PID 6 kworker/R-kvfree_rcu_reclaim user=root cpu%=0.0 mem%=0.0
+     PID 7 kworker/R-slub_flushwq user=root cpu%=0.0 mem%=0.0
+     PID 8 kworker/R-netns user=root cpu%=0.0 mem%=0.0
+
+7) GPU
+   - GPUs NVIDIA:
+     NVIDIA GeForce RTX 4060 Laptop GPU, 8188 MiB, 575.64.03
+
+8) Entorno Python
+   - Versión: 3.12.3 (main, Aug 14 2025, 17:47:21) [GCC 13.3.0]
+   - Módulos (muestra): 002-informacion de mi ordenador, CommandNotFound, Crypto, Cryptodome, DistUpgrade, HweSupportStatus, Imath, LanguageSelector, Levenshtein, NvidiaDetector, OpenEXR, OpenSSL
+
+==============================================================================

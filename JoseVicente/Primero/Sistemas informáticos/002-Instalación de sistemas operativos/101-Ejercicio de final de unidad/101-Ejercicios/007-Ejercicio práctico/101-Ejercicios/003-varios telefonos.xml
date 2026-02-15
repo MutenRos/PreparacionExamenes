@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- En este documento voy a describir a un ser humano -->
+<persona>
+  <nombre>Jose Vicente</nombre>
+  <apellido1>Carratalá</apellido1>
+  <apellido2>Sanchis</apellido2>
+  <telefonos>
+    <movil>620891718</movil>
+    <fijo>963778757</fijo>
+  </telefonos>
+  <emails>
+    <empresa>info@jocarsa.com</empresa>
+    <personal>info@josevicentecarratala.com</personal>
+  </emails>
+</persona>
+
+  
+

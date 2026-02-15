@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Proyecto Piero — Web Scraping con Python</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Proyecto Piero</h1>
+  <p class="tagline">De un simple <code>import requests</code> a un scraper completo de Google Images — paso a paso en Python.</p>
+  <div class="scroll-hint">&#8595;</div>
+</div>
+
+<!-- TECNOLOGÍAS -->
+<section id="tech">
+  <h2>Tecnologías utilizadas</h2>
+  <div class="badges">
+    <span class="badge badge--py">Python 3</span>
+    <span class="badge badge--lib">requests</span>
+    <span class="badge badge--lib">BeautifulSoup</span>
+    <span class="badge badge--lib">re (regex)</span>
+    <span class="badge badge--tool">urllib</span>
+    <span class="badge badge--tool">os / time / random</span>
+  </div>
+  <p>El proyecto utiliza exclusivamente librerías de Python para realizar peticiones HTTP, analizar HTML y descargar imágenes de forma automatizada.</p>
+</section>
+
+<!-- PIPELINE -->
+<section id="pipeline">
+  <h2>Pipeline de desarrollo</h2>
+  <p>Cada iteración añade una capa de complejidad sobre la anterior:</p>
+  <div class="pipeline">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Import requests</h3>
+      <p>Verificar que el entorno tiene las dependencias necesarias.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>GET a jocarsa.com</h3>
+      <p>Primera petición real: código de estado, encoding y HTML completo.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Scraper de imágenes</h3>
+      <p>Extraer URLs de &lt;img&gt; y background-image con BeautifulSoup + regex.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h3>Google Images</h3>
+      <p>Adaptar el scraper para buscar imágenes en Google con URL limpia.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <h3>Sesiones avanzadas</h3>
+      <p>Headers realistas, cookies persistentes, retardos aleatorios y tres métodos de extracción.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">6</div>
+      <h3>Input personalizado</h3>
+      <p>El usuario elige el término de búsqueda con validación de entrada.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CÓDIGO DESTACADO -->
+<section id="code">
+  <h2>Código destacado</h2>
+  <p>Extracción de imágenes por dos vías complementarias:</p>
+  <div class="code-block"><pre># Método 1: etiquetas &lt;img&gt;
+for img in soup.find_all("img"):
+    src = img.get("src")
+    if src:
+        full_url = urljoin(URL, src)
+        image_urls.add(full_url)
+
+# Método 2: CSS background-image
+pattern = re.compile(
+    r"background-image\s*:\s*url\(['\"]?(.*?)['\"]?\)",
+    re.IGNORECASE
+)
+for elem in soup.find_all(style=True):
+    matches = pattern.findall(elem["style"])
+    for m in matches:
+        image_urls.add(urljoin(URL, m))</pre></div>
+
+  <p>Sesiones con cabeceras realistas:</p>
+  <div class="code-block"><pre>HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)...',
+    'Accept': 'text/html,application/xhtml+xml,...',
+    'DNT': '1',
+    'Connection': 'keep-alive',
+}
+session = requests.Session()
+session.headers.update(HEADERS)</pre></div>
+</section>
+
+<!-- CARACTERÍSTICAS -->
+<section id="features">
+  <h2>Características del scraper final</h2>
+  <table>
+    <thead><tr><th>Característica</th><th>Detalle</th></tr></thead>
+    <tbody>
+      <tr><td>Sesiones persistentes</td><td>requests.Session() mantiene cookies</td></tr>
+      <tr><td>Cabeceras completas</td><td>User-Agent, Accept, DNT, Connection</td></tr>
+      <tr><td>Retardos aleatorios</td><td>time.sleep(random.uniform(2, 5))</td></tr>
+      <tr><td>3 métodos de extracción</td><td>&lt;img&gt;, URLs en &lt;script&gt;, base64</td></tr>
+      <tr><td>Paginación automática</td><td>Avanza por páginas de resultados</td></tr>
+      <tr><td>Descarga streaming</td><td>iter_content(chunk_size=8192)</td></tr>
+      <tr><td>Validación MIME</td><td>Comprueba content-type antes de guardar</td></tr>
+      <tr><td>Anti-duplicados</td><td>Renombrado automático si el fichero existe</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- GALERÍA -->
+<section id="gallery">
+  <h2>Imágenes descargadas</h2>
+  <p>Resultados reales de la ejecución del scraper — imágenes de jocarsa.com y Google Images:</p>
+
+  <h3 style="margin-top:1.5rem;font-size:1.1rem;color:var(--accent2)">Desde jocarsa.com</h3>
+  <div class="gallery">
+    <figure><img src="img/jocarsa/beige.png" alt="beige"><figcaption>beige.png</figcaption></figure>
+    <figure><img src="img/jocarsa/chartreuse.png" alt="chartreuse"><figcaption>chartreuse.png</figcaption></figure>
+    <figure><img src="img/jocarsa/cornflowerblue.png" alt="cornflowerblue"><figcaption>cornflowerblue.png</figcaption></figure>
+    <figure><img src="img/jocarsa/darksalmon.png" alt="darksalmon"><figcaption>darksalmon.png</figcaption></figure>
+    <figure><img src="img/jocarsa/firebrick.png" alt="firebrick"><figcaption>firebrick.png</figcaption></figure>
+    <figure><img src="img/jocarsa/lightgreen.png" alt="lightgreen"><figcaption>lightgreen.png</figcaption></figure>
+    <figure><img src="img/jocarsa/mediumorchid.png" alt="mediumorchid"><figcaption>mediumorchid.png</figcaption></figure>
+    <figure><img src="img/jocarsa/purple.png" alt="purple"><figcaption>purple.png</figcaption></figure>
+    <figure><img src="img/jocarsa/royalblue.png" alt="royalblue"><figcaption>royalblue.png</figcaption></figure>
+    <figure><img src="img/jocarsa/teal.png" alt="teal"><figcaption>teal.png</figcaption></figure>
+  </div>
+
+  <h3 style="margin-top:2rem;font-size:1.1rem;color:var(--accent3)">Desde Google Images — «ardilla»</h3>
+  <div class="gallery">
+    <figure><img src="img/google/ardilla-roja-tronco-arbol.jpg" alt="Ardilla roja"><figcaption>ardilla-roja-tronco-arbol.jpg</figcaption></figure>
+    <figure><img src="img/google/ardilla-marron.png" alt="Ardilla marrón"><figcaption>ardilla-marron.png</figcaption></figure>
+    <figure><img src="img/google/red-squirrel.jpg" alt="Red squirrel"><figcaption>red-squirrel.jpg</figcaption></figure>
+    <figure><img src="img/google/gigante.jpg" alt="Ardilla gigante"><figcaption>gigante.jpg</figcaption></figure>
+    <figure><img src="img/google/Spermophilus_lateralis_002.jpg" alt="Spermophilus"><figcaption>Spermophilus_lateralis.jpg</figcaption></figure>
+    <figure><img src="img/google/1125550.jpg" alt="Ardilla"><figcaption>1125550.jpg</figcaption></figure>
+  </div>
+</section>
+
+<!-- MEJORAS -->
+<section id="improvements">
+  <h2>Mejoras aplicadas</h2>
+  <ul style="color:var(--muted);padding-left:1.5rem">
+    <li><strong>User-Agent</strong> en todas las peticiones para evitar bloqueos.</li>
+    <li><strong>Timeout</strong> configurable para prevenir bloqueos infinitos.</li>
+    <li><strong>try/except</strong> con excepciones específicas: ConnectionError, Timeout, HTTPError.</li>
+    <li><strong>Validación de input</strong> en la versión interactiva (strip + check vacío).</li>
+    <li><strong>URL limpia de Google</strong> eliminando tokens efímeros.</li>
+    <li><strong>Carpeta correcta</strong> para Google Images (google_images/ en vez de imagenes/).</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Proyecto Piero &mdash; Proyecto Intermodular &mdash; <a href="https://github.com/MutenRos/Proyecto-intermodular-001-Proyecto-Piero">GitHub</a></p>
+</footer>
+
+</body>
+</html>

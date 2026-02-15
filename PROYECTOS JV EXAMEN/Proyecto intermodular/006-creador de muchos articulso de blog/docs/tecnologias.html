@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tecnologías — Blog Generator</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="w-900 card flex fd-col g-16">
+    <div class="flex fd-col g-6">
+      <h1 style="font-size:28px">🤖 Blog Generator</h1>
+      <h2 class="fs-14 c-muted" style="font-weight:normal">Generación masiva de artículos con Ollama + Python + SQLite</h2>
+    </div>
+    <nav class="flex g-10 fa-center fw-wrap">
+      <a href="index.html" class="btn btn-ghost">Inicio</a>
+      <a href="pipeline.html" class="btn btn-ghost">Pipeline</a>
+      <a href="articulos.html" class="btn btn-ghost">Artículos</a>
+      <a href="tecnologias.html" class="btn btn-ghost" style="border-color:var(--brand);color:var(--brand)">Tecnologías</a>
+      <a href="blog.html" class="btn btn-brand">Blog de ejemplo</a>
+    </nav>
+  </header>
+
+  <main class="w-900 flex fd-col g-16" style="margin-top:16px">
+
+    <div class="card flex fd-col g-12">
+      <h2 class="fs-22">Stack tecnológico</h2>
+
+      <div class="markdown ta-justify lh-24">
+
+        <h3>Python 3</h3>
+        <p>Lenguaje principal del script. Se usan módulos estándar (<code>sqlite3</code>, <code>json</code>, <code>re</code>, <code>pathlib</code>, <code>argparse</code>, <code>logging</code>, <code>dataclasses</code>) más <code>requests</code> para la API de Ollama.</p>
+
+        <h3>Ollama</h3>
+        <p>Servidor local de modelos de lenguaje. Ejecuta qwen2.5:7b-instruct-q4_0 exponiendo una API REST en <code>localhost:11434</code>. Genera artículos de 900-1400 palabras con prompt contextualizado.</p>
+
+        <h3>SQLite</h3>
+        <p>Base de datos embebida sin servidor. Tabla <code>posts</code> con columnas <code>id</code>, <code>date</code>, <code>title</code>, <code>content</code> (Markdown) y <code>category</code>. Índices en <code>date DESC</code> y <code>category</code> para consultas eficientes.</p>
+
+        <h3>Markdown</h3>
+        <p>Formato del corpus fuente (60+ cursos de IA) y del contenido generado. Los artículos se almacenan en Markdown en SQLite, listos para renderizar a HTML en el blog.</p>
+
+        <h3>JSON (caché)</h3>
+        <p>Cada artículo generado se persiste como JSON en <code>.cache_articulos/</code> con metadatos (fuente, modelo, fecha, jerarquía H1/H2/H3). Permite reanudar sin regenerar.</p>
+
+        <h3>Regex</h3>
+        <p>Expresiones regulares para extraer headings (<code>^#{1,3}\s+</code>), limpiar numeración de lecciones, parsear front-matter YAML y sanitizar nombres de fichero para caché.</p>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="w-900">© 2026 — Proyecto intermodular · Generador de blog con IA</footer>
+
+</body>
+</html>

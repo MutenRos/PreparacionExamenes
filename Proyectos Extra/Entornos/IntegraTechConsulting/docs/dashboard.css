@@ -1,0 +1,990 @@
+/* Dashboard Variables & Reset */
+:root {
+    --bg-main: #020617;
+    --bg-sidebar: #0f172a;
+    --bg-card: #1e293b;
+    --bg-hover: #334155;
+    
+    --primary: #38bdf8;
+    --secondary: #818cf8;
+    --success: #2dd4bf;
+    --warning: #fbbf24;
+    --danger: #f87171;
+    
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    
+    --border: rgba(255, 255, 255, 0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Manrope', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+}
+
+.sidebar-header {
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--text-main);
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    transition: all 0.2s;
+}
+
+.nav-item:hover, .nav-item.active {
+    background-color: rgba(56, 189, 248, 0.1);
+    color: var(--primary);
+}
+
+.nav-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 32px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.page-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--bg-main);
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background-color: var(--bg-card);
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.stat-trend {
+    font-size: 0.85rem;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.trend-up { color: var(--success); }
+.trend-down { color: var(--danger); }
+
+/* Recent Activity Table */
+.table-container {
+    background-color: var(--bg-card);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 24px;
+}
+
+.section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    color: var(--text-muted);
+    font-weight: 500;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+td {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-main);
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* New Styles for Client Management */
+.breadcrumb {
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+}
+.breadcrumb a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.client-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.info-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 24px;
+    border-radius: 16px;
+}
+
+.info-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+}
+
+.info-card p {
+    margin-bottom: 8px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.info-card strong {
+    color: var(--text-main);
+}
+
+.section-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn-primary, .btn-small {
+    background: var(--primary);
+    color: var(--bg-main);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+
+.progress-bar {
+    width: 100px;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 100px;
+    overflow: hidden;
+}
+
+.progress-bar .fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 100px;
+}
+
+tr.clickable {
+    transition: background-color 0.2s;
+}
+
+tr.clickable:hover {
+    background-color: var(--bg-hover);
+    cursor: pointer;
+}
+
+/* Agenda / Calendar Styles */
+.agenda-container {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 24px;
+    height: calc(100vh - 140px);
+}
+
+.calendar-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    flex: 1;
+}
+
+.calendar-day-header {
+    background: var(--bg-sidebar);
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.calendar-day {
+    background: var(--bg-card);
+    min-height: 100px;
+    padding: 8px;
+    position: relative;
+    transition: background 0.2s;
+}
+
+.calendar-day:hover {
+    background: var(--bg-hover);
+}
+
+.day-number {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    display: block;
+}
+
+.day-today {
+    background: rgba(56, 189, 248, 0.05);
+}
+
+.day-today .day-number {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.event-chip {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.event-meeting { background: rgba(129, 140, 248, 0.2); color: #a5b4fc; border-left: 2px solid #818cf8; }
+.event-deadline { background: rgba(248, 113, 113, 0.2); color: #fca5a5; border-left: 2px solid #f87171; }
+.event-work { background: rgba(45, 212, 191, 0.2); color: #5eead4; border-left: 2px solid #2dd4bf; }
+
+.upcoming-list {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.event-item {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.event-item:last-child {
+    border-bottom: none;
+}
+
+.event-time {
+    font-size: 0.85rem;
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.event-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.event-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Budget Calculator Styles */
+.budget-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 24px;
+    align-items: start;
+}
+
+.form-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.form-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+    color: var(--primary);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+.form-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.form-row label {
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+.form-row .price-tag {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-left: 8px;
+}
+
+.qty-input {
+    width: 80px;
+    padding: 8px;
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-main);
+    text-align: center;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.budget-summary {
+    background: var(--bg-card);
+    border: 1px solid var(--primary);
+    border-radius: 16px;
+    padding: 24px;
+    position: sticky;
+    top: 24px;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+}
+
+.budget-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.budget-total {
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.budget-total .amount {
+    color: var(--primary);
+}
+
+.monthly-fee {
+    background: rgba(56, 189, 248, 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+}
+
+/* Print Styles */
+@media print {
+    @page {
+        margin: 20mm;
+        size: A4;
+    }
+
+    body {
+        background: white !important;
+        color: black !important;
+        font-family: 'Manrope', sans-serif;
+    }
+
+    .sidebar, 
+    .breadcrumb, 
+    .action-buttons,
+    .nav-item,
+    button {
+        display: none !important;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    .budget-layout {
+        display: block !important; /* Stack columns */
+    }
+
+    .budget-summary {
+        position: static !important;
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        margin-top: 24px;
+        page-break-inside: avoid;
+        color: black !important;
+        background: #f9f9f9 !important;
+    }
+
+    .form-section {
+        background: white !important;
+        border: 1px solid #eee !important;
+        color: black !important;
+        page-break-inside: avoid;
+        margin-bottom: 16px;
+    }
+
+    .form-section h3 {
+        color: #000 !important;
+        border-bottom: 1px solid #000 !important;
+    }
+
+    .form-row {
+        border-bottom: 1px solid #eee !important;
+    }
+
+    .form-row label {
+        color: #333 !important;
+    }
+
+    .price-tag {
+        color: #666 !important;
+    }
+
+    input, select, textarea {
+        border: 1px solid #ccc !important;
+        background: white !important;
+        color: black !important;
+    }
+
+    /* Hide unchecked options to save space? 
+       Maybe not, user might want to see what was NOT selected. 
+       But for a clean budget, maybe yes. 
+       Let's keep them for now as it's a "Cuestionario".
+    */
+}
+
+/* PDF Generation Styles (mimic print) */
+.generating-pdf .sidebar, 
+.generating-pdf .breadcrumb, 
+.generating-pdf .action-buttons,
+.generating-pdf .nav-item,
+.generating-pdf button {
+    display: none !important;
+}
+
+.generating-pdf .main-content {
+    margin-left: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+.generating-pdf .budget-layout {
+    display: block !important;
+}
+
+.generating-pdf .budget-summary {
+    position: static !important;
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    margin-top: 24px;
+    color: black !important;
+    background: #f9f9f9 !important;
+}
+
+.generating-pdf .form-section {
+    background: white !important;
+    border: 1px solid #eee !important;
+    color: black !important;
+    margin-bottom: 16px;
+}
+
+.generating-pdf input, 
+.generating-pdf select, 
+.generating-pdf textarea {
+    background: white !important;
+    color: black !important;
+    border: 1px solid #ccc !important;
+}
+
+/* AAA Professional PDF Styles */
+.generating-pdf {
+    background: white !important;
+    font-family: 'Space Grotesk', sans-serif !important; /* More technical/professional font */
+    color: #1a1a1a !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+.generating-pdf .pdf-header {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #000;
+}
+
+.generating-pdf .pdf-brand .pdf-logo {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: #000;
+}
+
+.generating-pdf .pdf-brand .pdf-tagline {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.generating-pdf .pdf-meta {
+    text-align: right;
+}
+
+.generating-pdf .pdf-meta h1 {
+    font-size: 20px;
+    margin: 0 0 10px 0;
+    color: #000;
+}
+
+.generating-pdf .meta-row {
+    font-size: 12px;
+    margin-bottom: 4px;
+    color: #444;
+}
+
+.generating-pdf .page-header,
+.generating-pdf .breadcrumb {
+    display: none !important;
+}
+
+.generating-pdf .form-section {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid #eee !important;
+    margin-bottom: 20px;
+    padding: 0 !important;
+    page-break-inside: avoid;
+}
+
+.generating-pdf .form-section h3 {
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #000 !important;
+    border-bottom: 2px solid #000 !important;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+
+.generating-pdf .form-row {
+    border-bottom: 1px solid #f5f5f5 !important;
+    padding: 8px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.generating-pdf .form-row label {
+    color: #333 !important;
+    font-weight: 500;
+    font-size: 12px;
+}
+
+/* Hide unchecked items in PDF to clean up */
+/* We use a trick: if the input inside is not checked, and it's a checkbox/radio row, maybe hide it? 
+   CSS :has() is supported in modern browsers. 
+*/
+.generating-pdf .form-row:has(input[type="checkbox"]:not(:checked)),
+.generating-pdf .form-row:has(input[type="radio"]:not(:checked)) {
+    display: none !important;
+}
+
+/* Style inputs to look like text */
+.generating-pdf input[type="text"],
+.generating-pdf input[type="date"],
+.generating-pdf select,
+.generating-pdf textarea {
+    border: none !important;
+    background: transparent !important;
+    color: #000 !important;
+    font-weight: 600;
+    text-align: right;
+    padding: 0;
+    font-size: 12px;
+    width: auto;
+    resize: none;
+}
+
+.generating-pdf textarea {
+    text-align: left;
+    width: 100%;
+    height: auto;
+    min-height: 40px;
+}
+
+.generating-pdf .qty-input {
+    width: auto !important;
+    text-align: right;
+}
+
+.generating-pdf .price-tag {
+    color: #000 !important;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+/* Budget Summary in PDF */
+.generating-pdf .budget-summary {
+    margin-top: 40px;
+    background: #f8f9fa !important;
+    border: none !important;
+    padding: 30px !important;
+    page-break-inside: avoid;
+}
+
+.generating-pdf .budget-summary h3 {
+    border-bottom: 2px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.generating-pdf .budget-line {
+    color: #444 !important;
+    font-size: 12px;
+    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+}
+
+.generating-pdf .budget-total {
+    border-top: 2px solid #000 !important;
+    margin-top: 20px;
+    padding-top: 20px;
+    font-size: 24px;
+    color: #000 !important;
+}
+
+.generating-pdf .budget-total .amount {
+    color: #000 !important;
+}
+
+.generating-pdf .monthly-fee {
+    background: transparent !important;
+    border: 1px solid #000;
+    margin-top: 20px;
+    color: #000 !important;
+}
+
+/* Hide 0 quantity rows if possible? 
+   Hard with CSS only unless value="0". 
+   We can rely on the user not filling them or just showing them as 0.
+*/
+
+
+/* Fix for select elements in PDF - they show the arrow and box by default */
+.generating-pdf select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: 0;
+    text-align-last: right; /* Align selected text to right */
+}
+
+/* Hide radio/checkbox inputs themselves, just show label? 
+   Actually, if we hide the unchecked rows, we just need the checked ones to look good.
+   Maybe replace the radio circle with a checkmark or just bold text.
+*/
+.generating-pdf input[type="radio"],
+.generating-pdf input[type="checkbox"] {
+    accent-color: #000; /* Black checkmarks */
+    transform: scale(1.2);
+}
+
+/* Ensure textareas expand to fit content */
+/* This requires JS usually, but for PDF generation we can try to set height auto if possible, 
+   but textarea height is fixed. 
+   Better approach: Copy textarea content to a div for printing? 
+   Or just set a large min-height.
+*/
+
+/* =========================================
+   PROPOSAL DOCUMENT STYLES (Generated PDF)
+   ========================================= */
+.proposal-document {
+    padding: 40px;
+    background: white;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #111;
+    max-width: 800px; /* Simulate A4 width on screen if visible */
+    margin: 0 auto;
+}
+
+.prop-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #000;
+    padding-bottom: 20px;
+    margin-bottom: 40px;
+}
+
+.prop-brand {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.prop-meta {
+    text-align: right;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #444;
+}
+
+.prop-title {
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.prop-title h1 {
+    font-size: 32px;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.prop-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.prop-section {
+    margin-bottom: 30px;
+    page-break-inside: avoid;
+}
+
+.prop-section h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    color: #000;
+    font-weight: 700;
+}
+
+.prop-content {
+    font-size: 13px;
+}
+
+.prop-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding-left: 10px;
+}
+
+.item-name {
+    color: #333;
+}
+
+.item-price {
+    color: #666;
+    font-weight: 500;
+}
+
+.prop-text-block {
+    background: #f9f9f9;
+    padding: 12px;
+    border-left: 3px solid #000;
+    margin-bottom: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre-wrap; /* Preserve line breaks */
+}
+
+.prop-financials {
+    margin-top: 60px;
+    background: #f4f4f4;
+    padding: 30px;
+    border-radius: 4px;
+    page-break-inside: avoid;
+}
+
+.prop-financials h3 {
+    margin-top: 0;
+    border-bottom: 2px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.financial-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.financial-row.main-total {
+    font-size: 20px;
+    font-weight: 700;
+    border-top: 1px solid #ccc;
+    padding-top: 16px;
+    margin-top: 16px;
+}
+
+.financial-note {
+    font-size: 11px;
+    color: #666;
+    margin-top: 20px;
+    font-style: italic;
+}
+
+.prop-footer {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 10px;
+    color: #999;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}

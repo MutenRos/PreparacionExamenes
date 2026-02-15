@@ -1,0 +1,89 @@
+/* JVestilo — Version estatica (subconjunto de clases utilitarias) */
+/* Colores de fondo */
+.b-white{background:white;}
+.b-lightgrey{background:lightgrey;}
+.b-lightgray{background:lightgray;}
+.b-aliceblue{background:aliceblue;}
+.b-dodgerblue{background:dodgerblue;}
+.b-steelblue{background:steelblue;}
+.b-black{background:black;}
+
+/* Colores de texto */
+.c-black{color:black;}
+.c-white{color:white;}
+.c-dodgerblue{color:dodgerblue;}
+.c-steelblue{color:steelblue;}
+
+/* Padding */
+.p-0{padding:0px;}
+.p-10{padding:10px;}
+.p-20{padding:20px;}
+.p-30{padding:30px;}
+
+/* Margin */
+.m-0{margin:0px;}
+.m-10{margin:10px;}
+.m-20{margin:20px;}
+
+/* Width */
+.w-70{width:70px;}
+.w-200{width:200px;}
+.w-400{width:400px;}
+.w-800{width:800px;}
+
+/* Height */
+.h-200{height:200px;}
+.h-400{height:400px;}
+
+/* Font size */
+.fs-10{font-size:10px;}
+.fs-12{font-size:12px;}
+.fs-14{font-size:14px;}
+.fs-16{font-size:16px;}
+.fs-20{font-size:20px;}
+.fs-24{font-size:24px;}
+.fs-36{font-size:36px;}
+
+/* Gap */
+.g-1{gap:1px;}
+.g-10{gap:10px;}
+.g-20{gap:20px;}
+
+/* Flexbox */
+.flex{display:flex;}
+.fd-row{flex-direction:row;}
+.fd-column{flex-direction:column;}
+.fj-center{justify-content:center;}
+.fa-center{align-items:center;}
+
+/* Font families */
+.ff-serif{font-family:serif;}
+.ff-sans-serif{font-family:sans-serif;}
+.ff-monospace{font-family:monospace;}
+.ff-cursive{font-family:cursive;}
+.ff-fantasy{font-family:fantasy;}
+.ff-system-ui{font-family:system-ui;}
+
+/* Grid */
+.grid{display:grid;}
+.gc-2{grid-template-columns:repeat(2,1fr);}
+.gc-3{grid-template-columns:repeat(3,1fr);}
+.gc-4{grid-template-columns:repeat(4,1fr);}
+
+/* Text align */
+.ta-left{text-align:left;}
+.ta-right{text-align:right;}
+.ta-center{text-align:center;}
+.ta-justify{text-align:justify;}
+
+/* Text decoration */
+.td-none{text-decoration:none;}
+
+/* Mejoras añadidas */
+a{transition:color 0.2s ease, background 0.2s ease;}
+a:hover{opacity:0.8;}
+.shadow{box-shadow:0 2px 8px rgba(0,0,0,0.12);}
+.br-8{border-radius:8px;}
+.br-12{border-radius:12px;}
+* {box-sizing:border-box;}
+body{margin:0;}

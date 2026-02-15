@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Bombas Asoin</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/shop.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <!-- Admin Header -->
+    <header class="admin-header">
+        <div class="admin-logo">
+            <a href="index.html">
+                <span class="logo-text">Bombas Asoin</span>
+            </a>
+            <span class="admin-badge">ADMIN</span>
+        </div>
+        <div class="admin-user">
+            <span id="admin-name"></span>
+            <a href="#" onclick="auth.logout(); return false;" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </a>
+        </div>
+    </header>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <nav class="admin-nav">
+                <a href="#" class="active" data-tab="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="#" data-tab="orders">
+                    <i class="fas fa-shopping-bag"></i> Pedidos
+                    <span class="badge" id="pending-badge">0</span>
+                </a>
+                <a href="#" data-tab="users">
+                    <i class="fas fa-users"></i> Usuarios
+                </a>
+                <a href="#" data-tab="products">
+                    <i class="fas fa-boxes"></i> Productos
+                </a>
+                <a href="#" data-tab="settings">
+                    <i class="fas fa-cog"></i> Configuración
+                </a>
+            </nav>
+            
+            <div class="demo-mode-toggle">
+                <label class="switch-label">
+                    <span><i class="fas fa-flask"></i> Modo Demo</span>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="demo-mode" checked>
+                        <span class="slider"></span>
+                    </div>
+                </label>
+                <p class="toggle-hint">Los pagos son simulados</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Dashboard Tab -->
+            <div id="tab-dashboard" class="admin-tab active">
+                <div class="admin-header-row">
+                    <h1>Dashboard</h1>
+                    <span class="date-today"></span>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon"><i class="fas fa-shopping-bag"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-orders">0</span>
+                            <span class="stat-label">Total Pedidos</span>
+                        </div>
+                    </div>
+                    <div class="stat-card success">
+                        <div class="stat-icon"><i class="fas fa-euro-sign"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-revenue">0 €</span>
+                            <span class="stat-label">Ingresos (Demo)</span>
+                        </div>
+                    </div>
+                    <div class="stat-card warning">
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-pending">0</span>
+                            <span class="stat-label">Pendientes</span>
+                        </div>
+                    </div>
+                    <div class="stat-card info">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-users">0</span>
+                            <span class="stat-label">Usuarios</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-clock"></i> Pedidos Recientes</h3>
+                        <div id="recent-orders"></div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3><i class="fas fa-user-plus"></i> Nuevos Usuarios</h3>
+                        <div id="recent-users"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Tab -->
+            <div id="tab-orders" class="admin-tab">
+                <div class="admin-header-row">
+                    <h1>Gestión de Pedidos</h1>
+                    <div class="header-actions">
+                        <select id="order-filter" class="filter-select">
+                            <option value="all">Todos</option>
+                            <option value="pending">Pendientes</option>
+                            <option value="processing">En proceso</option>
+                            <option value="shipped">Enviados</option>
+                            <option value="delivered">Entregados</option>
+                            <option value="cancelled">Cancelados</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID Pedido</th>
+                                <th>Cliente</th>
+                                <th>Fecha</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="tab-users" class="admin-tab">
+                <div class="admin-header-row">
+                    <h1>Gestión de Usuarios</h1>
+                </div>
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Rol</th>
+                                <th>Registro</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Products Tab -->
+            <div id="tab-products" class="admin-tab">
+                <div class="admin-header-row">
+                    <h1>Gestión de Productos</h1>
+                    <button class="btn btn-primary" onclick="showProductModal()">
+                        <i class="fas fa-plus"></i> Nuevo Producto
+                    </button>
+                </div>
+                <div class="products-info">
+                    <p><i class="fas fa-info-circle"></i> Los productos se gestionan desde las páginas de productos. 
+                    Esta sección es para futuras funcionalidades de gestión dinámica.</p>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="tab-settings" class="admin-tab">
+                <div class="admin-header-row">
+                    <h1>Configuración</h1>
+                </div>
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h3><i class="fas fa-credit-card"></i> Pasarela de Pago</h3>
+                        <div class="setting-item">
+                            <label>Modo de operación</label>
+                            <select id="payment-mode">
+                                <option value="demo" selected>Demo (Simulado)</option>
+                                <option value="sandbox">Sandbox (Pruebas)</option>
+                                <option value="live">Producción (Real)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Métodos activos</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" checked> Tarjeta de crédito</label>
+                                <label><input type="checkbox" checked> PayPal</label>
+                                <label><input type="checkbox" checked> Transferencia</label>
+                                <label><input type="checkbox" checked> Bizum</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <h3><i class="fas fa-truck"></i> Envío</h3>
+                        <div class="setting-item">
+                            <label>Coste de envío</label>
+                            <input type="number" value="15" step="0.01"> €
+                        </div>
+                        <div class="setting-item">
+                            <label>Envío gratis a partir de</label>
+                            <input type="number" value="500" step="1"> €
+                        </div>
+                    </div>
+                    <div class="settings-card">
+                        <h3><i class="fas fa-database"></i> Datos Demo</h3>
+                        <p>Gestiona los datos de demostración</p>
+                        <button class="btn btn-outline" onclick="clearDemoData()">
+                            <i class="fas fa-trash"></i> Limpiar datos demo
+                        </button>
+                        <button class="btn btn-primary" onclick="generateDemoData()">
+                            <i class="fas fa-magic"></i> Generar datos demo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div id="order-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalle del Pedido</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="order-modal-content" class="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="js/cart.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Check admin access
+        if (!auth.isAuthenticated() || !auth.isAdmin()) {
+            window.location.href = 'login.html';
+        }
+
+        // Set admin name
+        document.getElementById('admin-name').textContent = auth.currentUser.name;
+
+        // Set today's date
+        document.querySelector('.date-today').textContent = new Date().toLocaleDateString('es-ES', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+
+        // Tab navigation
+        document.querySelectorAll('.admin-nav a[data-tab]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tabId = this.dataset.tab;
+                
+                document.querySelectorAll('.admin-nav a').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                document.getElementById('tab-' + tabId).classList.add('active');
+            });
+        });
+
+        // Load dashboard data
+        function loadDashboard() {
+            const orders = auth.getAllOrders();
+            const users = auth.getAllUsers();
+
+            // Stats
+            document.getElementById('stat-orders').textContent = orders.length;
+            document.getElementById('stat-revenue').textContent = 
+                orders.reduce((sum, o) => sum + o.total, 0).toFixed(2) + ' €';
+            document.getElementById('stat-pending').textContent = 
+                orders.filter(o => o.orderStatus === 'pending').length;
+            document.getElementById('stat-users').textContent = users.length;
+            document.getElementById('pending-badge').textContent = 
+                orders.filter(o => o.orderStatus === 'pending').length;
+
+            // Recent orders
+            const recentOrders = orders.slice(-5).reverse();
+            document.getElementById('recent-orders').innerHTML = recentOrders.length ? 
+                recentOrders.map(o => `
+                    <div class="list-item" onclick="showOrderDetail('${o.id}')">
+                        <span class="item-id">${o.id}</span>
+                        <span class="item-name">${o.customerName}</span>
+                        <span class="item-value">${o.total.toFixed(2)} €</span>
+                        <span class="status-badge status-${o.orderStatus}">${getStatusLabel(o.orderStatus)}</span>
+                    </div>
+                `).join('') : '<p class="no-data">No hay pedidos</p>';
+
+            // Recent users
+            const recentUsers = users.slice(-5).reverse();
+            document.getElementById('recent-users').innerHTML = recentUsers.length ?
+                recentUsers.map(u => `
+                    <div class="list-item">
+                        <span class="item-name">${u.name}</span>
+                        <span class="item-email">${u.email}</span>
+                        <span class="item-date">${new Date(u.createdAt).toLocaleDateString('es-ES')}</span>
+                    </div>
+                `).join('') : '<p class="no-data">No hay usuarios</p>';
+
+            // Orders table
+            loadOrdersTable();
+            loadUsersTable();
+        }
+
+        function loadOrdersTable(filter = 'all') {
+            let orders = auth.getAllOrders().reverse();
+            if (filter !== 'all') {
+                orders = orders.filter(o => o.orderStatus === filter);
+            }
+
+            document.getElementById('orders-table-body').innerHTML = orders.length ?
+                orders.map(o => `
+                    <tr>
+                        <td><strong>${o.id}</strong>${o.isDemo ? ' <span class="demo-tag">Demo</span>' : ''}</td>
+                        <td>${o.customerName}<br><small>${o.customerEmail}</small></td>
+                        <td>${new Date(o.createdAt).toLocaleDateString('es-ES')}</td>
+                        <td><strong>${o.total.toFixed(2)} €</strong></td>
+                        <td>
+                            <select class="status-select status-${o.orderStatus}" 
+                                onchange="updateOrderStatus('${o.id}', this.value)">
+                                <option value="pending" ${o.orderStatus === 'pending' ? 'selected' : ''}>Pendiente</option>
+                                <option value="processing" ${o.orderStatus === 'processing' ? 'selected' : ''}>En proceso</option>
+                                <option value="shipped" ${o.orderStatus === 'shipped' ? 'selected' : ''}>Enviado</option>
+                                <option value="delivered" ${o.orderStatus === 'delivered' ? 'selected' : ''}>Entregado</option>
+                                <option value="cancelled" ${o.orderStatus === 'cancelled' ? 'selected' : ''}>Cancelado</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn-icon" onclick="showOrderDetail('${o.id}')" title="Ver detalle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('') : '<tr><td colspan="6" class="no-data">No hay pedidos</td></tr>';
+        }
+
+        function loadUsersTable() {
+            const users = auth.getAllUsers();
+            document.getElementById('users-table-body').innerHTML = users.map(u => `
+                <tr>
+                    <td>${u.id}</td>
+                    <td>${u.name}</td>
+                    <td>${u.email}</td>
+                    <td><span class="role-badge role-${u.role}">${u.role === 'admin' ? 'Administrador' : 'Cliente'}</span></td>
+                    <td>${new Date(u.createdAt).toLocaleDateString('es-ES')}</td>
+                </tr>
+            `).join('');
+        }
+
+        function updateOrderStatus(orderId, status) {
+            auth.updateOrderStatus(orderId, status);
+            loadDashboard();
+        }
+
+        function showOrderDetail(orderId) {
+            const order = auth.getAllOrders().find(o => o.id === orderId);
+            if (!order) return;
+
+            document.getElementById('order-modal-content').innerHTML = `
+                <div class="order-detail">
+                    <div class="order-detail-header">
+                        <div>
+                            <h3>${order.id}</h3>
+                            <p>${new Date(order.createdAt).toLocaleString('es-ES')}</p>
+                        </div>
+                        <span class="status-badge status-${order.orderStatus}">${getStatusLabel(order.orderStatus)}</span>
+                    </div>
+                    
+                    <div class="order-detail-section">
+                        <h4>Cliente</h4>
+                        <p><strong>${order.customerName}</strong></p>
+                        <p>${order.customerEmail}</p>
+                        <p>${order.customerPhone}</p>
+                    </div>
+                    
+                    <div class="order-detail-section">
+                        <h4>Dirección de envío</h4>
+                        <p>${order.shippingAddress}</p>
+                        <p>${order.shippingPostalCode} ${order.shippingCity}</p>
+                    </div>
+                    
+                    <div class="order-detail-section">
+                        <h4>Productos</h4>
+                        <table class="order-items-table">
+                            ${order.items.map(item => `
+                                <tr>
+                                    <td>${item.name}</td>
+                                    <td>x${item.quantity}</td>
+                                    <td>${(item.price * item.quantity).toFixed(2)} €</td>
+                                </tr>
+                            `).join('')}
+                        </table>
+                    </div>
+                    
+                    <div class="order-detail-section totals">
+                        <div class="total-row"><span>Subtotal:</span><span>${order.subtotal.toFixed(2)} €</span></div>
+                        <div class="total-row"><span>IVA (21%):</span><span>${order.iva.toFixed(2)} €</span></div>
+                        <div class="total-row"><span>Envío:</span><span>${order.shipping.toFixed(2)} €</span></div>
+                        <div class="total-row final"><span>Total:</span><span>${order.total.toFixed(2)} €</span></div>
+                    </div>
+                    
+                    <div class="order-detail-section">
+                        <h4>Pago</h4>
+                        <p>Método: ${getPaymentLabel(order.paymentMethod)}</p>
+                        <p>Estado: <span class="status-badge status-${order.paymentStatus}">${order.paymentStatus === 'completed' ? 'Completado' : 'Pendiente'}</span></p>
+                        ${order.isDemo ? '<p class="demo-notice"><i class="fas fa-flask"></i> Pago simulado (Demo)</p>' : ''}
+                    </div>
+                </div>
+            `;
+            document.getElementById('order-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('order-modal').classList.remove('active');
+        }
+
+        function getStatusLabel(status) {
+            const labels = {
+                'pending': 'Pendiente',
+                'processing': 'En proceso',
+                'shipped': 'Enviado',
+                'delivered': 'Entregado',
+                'cancelled': 'Cancelado'
+            };
+            return labels[status] || status;
+        }
+
+        function getPaymentLabel(method) {
+            const labels = {
+                'card': 'Tarjeta de crédito',
+                'paypal': 'PayPal',
+                'transfer': 'Transferencia',
+                'bizum': 'Bizum'
+            };
+            return labels[method] || method;
+        }
+
+        function clearDemoData() {
+            if (confirm('¿Seguro que quieres eliminar todos los pedidos y usuarios demo?')) {
+                localStorage.removeItem('bb_orders');
+                localStorage.removeItem('bb_users');
+                auth.orders = [];
+                auth.users = [{
+                    id: 'admin',
+                    email: 'admin@asoinbombas.com',
+                    password: 'admin123',
+                    name: 'Administrador',
+                    role: 'admin',
+                    createdAt: new Date().toISOString()
+                }];
+                auth.saveUsers();
+                loadDashboard();
+                alert('Datos demo eliminados');
+            }
+        }
+
+        function generateDemoData() {
+            // Generate demo users
+            const demoUsers = [
+                { name: 'María García', email: 'maria@example.com', password: '123456' },
+                { name: 'Juan Martínez', email: 'juan@example.com', password: '123456' },
+                { name: 'Ana López', email: 'ana@example.com', password: '123456' }
+            ];
+
+            demoUsers.forEach(u => {
+                if (!auth.users.find(existing => existing.email === u.email)) {
+                    auth.register(u);
+                }
+            });
+
+            // Generate demo orders
+            const demoProducts = [
+                { id: 'bc-100', name: 'Bomba Centrífuga BC-100', price: 850 },
+                { id: 'bs-200', name: 'Bomba Sumergible BS-200', price: 1200 },
+                { id: 'bd-50', name: 'Bomba Dosificadora BD-50', price: 450 },
+                { id: 'bips-3000', name: 'BIPS 3000', price: 2800 }
+            ];
+
+            for (let i = 0; i < 5; i++) {
+                const randomProducts = demoProducts
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, Math.floor(Math.random() * 3) + 1);
+                
+                const items = randomProducts.map(p => ({
+                    ...p,
+                    quantity: Math.floor(Math.random() * 3) + 1
+                }));
+
+                const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                const iva = subtotal * 0.21;
+                const shipping = subtotal > 500 ? 0 : 15;
+
+                auth.orders.push({
+                    id: 'ORD-DEMO-' + (1000 + i),
+                    userId: demoUsers[Math.floor(Math.random() * demoUsers.length)].email,
+                    customerName: demoUsers[Math.floor(Math.random() * demoUsers.length)].name,
+                    customerEmail: 'demo@example.com',
+                    customerPhone: '600 123 456',
+                    shippingAddress: 'Calle Ejemplo, 123',
+                    shippingCity: 'Valencia',
+                    shippingPostalCode: '46001',
+                    items: items,
+                    subtotal: subtotal,
+                    iva: iva,
+                    shipping: shipping,
+                    total: subtotal + iva + shipping,
+                    paymentMethod: ['card', 'paypal', 'transfer', 'bizum'][Math.floor(Math.random() * 4)],
+                    paymentStatus: 'completed',
+                    orderStatus: ['pending', 'processing', 'shipped', 'delivered'][Math.floor(Math.random() * 4)],
+                    isDemo: true,
+                    createdAt: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString()
+                });
+            }
+            auth.saveOrders();
+            loadDashboard();
+            alert('Datos demo generados');
+        }
+
+        // Filter orders
+        document.getElementById('order-filter').addEventListener('change', function() {
+            loadOrdersTable(this.value);
+        });
+
+        // Close modal on click outside
+        document.getElementById('order-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        loadDashboard();
+    </script>
+</body>
+</html>

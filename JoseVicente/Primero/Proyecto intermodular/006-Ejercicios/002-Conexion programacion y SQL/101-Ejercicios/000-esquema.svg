@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (1:1.4.2+202505120737+ebf0e940d0)"
+   sodipodi:docname="000-esquema.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.3540965"
+     inkscape:cx="471.53212"
+     inkscape:cy="404.69789"
+     inkscape:window-width="1920"
+     inkscape:window-height="971"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <marker
+       style="overflow:visible"
+       id="ArrowWide"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Wide arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:butt"
+         d="M 3,-3 0,0 3,3"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc"
+         id="path2" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="ArrowWide-1"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Wide arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:butt"
+         d="M 3,-3 0,0 3,3"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc"
+         id="path2-2" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.38;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="rect1-3-7-2-5"
+       width="101.60527"
+       height="127.78815"
+       x="61.353951"
+       y="42.781853"
+       ry="4.8848686" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.38;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="rect1-3-7-2"
+       width="82.847366"
+       height="102.77763"
+       x="70.055573"
+       y="60.523064"
+       ry="4.8848686" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.38;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="rect1-3-7"
+       width="66.238815"
+       height="30.09079"
+       x="77.962509"
+       y="79.125275"
+       ry="4.8848686" />
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:5.30117px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:none;stroke:#000000;stroke-width:2.30413;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       x="81.781769"
+       y="86.901352"
+       id="text1-5-0"><tspan
+         sodipodi:role="line"
+         id="tspan1-6-9"
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.30413"
+         x="81.781769"
+         y="86.901352">lenguajes de marcas</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:5.30117px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:none;stroke:#000000;stroke-width:2.30413;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       x="73.989769"
+       y="69.764908"
+       id="text1-5-0-9"><tspan
+         sodipodi:role="line"
+         id="tspan1-6-9-2"
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.30413"
+         x="73.989769"
+         y="69.764908">entornos de desarrollo</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:5.30117px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:none;stroke:#000000;stroke-width:2.30413;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       x="66.621796"
+       y="50.543858"
+       id="text1-5-0-9-9"><tspan
+         sodipodi:role="line"
+         id="tspan1-6-9-2-7"
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.30413"
+         x="66.621796"
+         y="50.543858">sistemas informáticos</tspan></text>
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:1.38;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;fill-opacity:1"
+       id="rect1-3"
+       width="66.238815"
+       height="30.09079"
+       x="77.962502"
+       y="100.72155"
+       ry="4.8848686" />
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:6.87774px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:none;stroke:#000000;stroke-width:2.98938;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       x="81.666672"
+       y="109.72105"
+       id="text1-5"><tspan
+         sodipodi:role="line"
+         id="tspan1-6"
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.98938"
+         x="81.666672"
+         y="109.72105">programación</tspan></text>
+    <rect
+       style="fill:#ffffff;stroke-width:1.38;stroke-linecap:round;stroke-linejoin:round;stroke:#000000;stroke-opacity:1;fill-opacity:1"
+       id="rect1"
+       width="66.238815"
+       height="30.09079"
+       x="77.962494"
+       y="125.24802"
+       ry="4.8848686" />
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:6.87774px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:none;stroke:#000000;stroke-width:2.98938;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       x="81.666664"
+       y="134.24751"
+       id="text1"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.98938"
+         x="81.666664"
+         y="134.24751">bases de datos</tspan></text>
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.38;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;marker-end:url(#ArrowWide)"
+       d="M 138.14408,147.71842 V 86.950657"
+       id="path1" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.38;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;marker-end:url(#ArrowWide-1)"
+       d="M 73.844264,86.270545 V 147.03831"
+       id="path1-1" />
+  </g>
+</svg>

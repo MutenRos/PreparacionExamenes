@@ -1,0 +1,64 @@
+import mysql.connector
+
+conexion = mysql.connector.connect(
+  host="localhost",
+  user="portafolio",
+  password="portafolio",
+  database="portafolio"
+)
+cursor = conexion.cursor() 
+
+def presentaMenu():
+  print("Escoge una opcion")
+  print("1.-Insertar")
+  print("2.-Listar")
+  print("3.-Actualizar")
+  print("4.-Eliminar")
+  
+def insertar():
+  titulo = input("Introduce el titulo de la nueva pieza: ")
+  descripcion = input("Introduce la descripcion de la nueva pieza: ")
+  fecha = input("Introduce la fecha de la nueva pieza: ")
+  imagen = input("Introduce el nombre de la imagen de la nueva pieza: ")
+  cursor.execute("INSERT INTO piezas VALUES (NULL,'"+titulo+"','"+descripcion+"','"+fecha+"',1,'"+imagen+"');")
+  conexion.commit()
+def seleccionar():
+  cursor.execute("SELECT * FROM piezas;")
+  lineas = cursor.fetchall()
+  for linea in lineas:
+    print(linea)
+def actualizar():
+  identificador = input("Introduce el Identificador a actualizar: ")
+  titulo = input("Introduce el titulo de la nueva pieza: ")
+  descripcion = input("Introduce la descripcion de la nueva pieza: ")
+  fecha = input("Introduce la fecha de la nueva pieza: ")
+  imagen = input("Introduce el nombre de la imagen de la nueva pieza: ")
+  cursor.execute('''
+    UPDATE piezas 
+    SET
+    titulo = "'''+titulo+'''",
+    descripcion = "'''+descripcion+'''",
+    fecha = "'''+fecha+'''",
+    imagen = "'''+imagen+'''"
+    WHERE Identificador = '''+identificador+'''
+  ''')
+  conexion.commit()
+def eliminar():
+  identificador = input("Introduce el Identificador a eliminar: ")
+  cursor.execute("DELETE FROM piezas WHERE Identificador = "+identificador+";")
+  conexion.commit()
+
+
+print("Gestion de portafolio v0.1")
+while True:
+  presentaMenu()
+  opcion = int(input("Escoge una opcion: "))
+  print("La opción que has escogido es: ",opcion)
+  if opcion == 1:
+    insertar()
+  elif opcion == 2:
+    seleccionar()
+  elif opcion == 3:
+    actualizar()
+  elif opcion == 4:
+    eliminar()

@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <title>Currículum · José Vicente Carratalá Sanchis</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <style>
+    :root{
+      --navy:#1f2a38;
+      --paper:#ffffff;
+      --bg:#0e1116;
+      --text:#111827;
+      --muted:#4b5563;
+      --line:#e5e7eb;
+      --chip:#f3f4f6;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      background:var(--bg);
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      font-size:10.5px;
+      line-height:1.25;
+      padding:20px 0;
+    }
+
+    main{
+      width:794px;          /* A4 @ 96dpi */
+      height:1123px;
+      margin:auto;
+      background:var(--paper);
+      display:flex;
+      overflow:hidden;
+    }
+
+    /* =======================
+       COLUMNA IZQUIERDA
+       ======================= */
+    #izquierda{
+      flex:1.05;
+      background:var(--navy);
+      color:white;
+      padding:28px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    #izquierda img{
+      object-fit:cover;
+      border-radius:50%;
+      border:2px solid rgba(255,255,255,.35);
+      margin-bottom:6px;
+    }
+
+    #izquierda article{
+      border-bottom:1px solid rgba(255,255,255,.25);
+      padding-bottom:10px;
+    }
+    #izquierda article:last-child{border-bottom:0}
+
+    #izquierda h3{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      margin-bottom:6px;
+    }
+
+    #izquierda ul{
+      list-style:none;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    #izquierda li::before{content:"• ";}
+
+    /* chips */
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .chip{
+      display:inline-block;
+      padding:4px 6px;
+      border-radius:999px;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.18);
+      color:rgba(255,255,255,.92);
+      font-size:9px;
+      line-height:1;
+      white-space:nowrap;
+    }
+
+    /* (MOVIDO) Logros/Perfil en columna izquierda */
+    .panel-left{
+      border:1px solid rgba(255,255,255,.22);
+      padding:8px 10px;
+      background:rgba(255,255,255,.06);
+      border-radius:8px;
+    }
+    .panel-left h3{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      margin-bottom:6px;
+      color:rgba(255,255,255,.92);
+    }
+    .panel-left ul{
+      list-style:none;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .panel-left li{
+      font-size:9.5px;
+      color:rgba(255,255,255,.86);
+      text-align:left;
+    }
+    .panel-left li::before{content:"• ";}
+
+    /* =======================
+       COLUMNA DERECHA
+       ======================= */
+    #derecha{
+      flex:3;
+      padding:28px 32px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      color:var(--text);
+    }
+
+    #derecha h1{
+      font-size:20px;
+      line-height:1.05;
+    }
+
+    #derecha h2{
+      font-size:11px;
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    #datospersonales ul{
+      list-style:none;
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      border-bottom:1px solid var(--line);
+      padding-bottom:8px;
+    }
+
+    #datospersonales li{
+      font-size:10px;
+      color:var(--muted);
+    }
+
+    section > h2{
+      margin-top:6px;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      color:#374151;
+    }
+
+    #resumenprofesional p{ text-align:justify; }
+
+    /* paneles compactos (derecha) */
+    .panel{
+      border:1px solid var(--line);
+      padding:8px 10px;
+      background:#fff;
+    }
+    .panel h3{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      color:#374151;
+      margin-bottom:4px;
+    }
+    .panel ul{
+      padding-left:14px;
+      margin-top:4px;
+    }
+    .panel li{
+      font-size:9.5px;
+      color:var(--muted);
+      margin:2px 0;
+      text-align:justify;
+    }
+
+    /* =======================
+       ARTÍCULOS CON LOGO
+       ======================= */
+    #historiallaboral,
+    #formacion,
+    #proyectos,
+    #publicaciones{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    #derecha article{
+      border:1px solid var(--line);
+      padding:8px 10px;
+    }
+
+    .article-row{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+
+    .logo{
+      width:42px;
+      height:42px;
+      flex-shrink:0;
+      border:1px solid var(--line);
+      border-radius:6px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:8px;
+      color:var(--muted);
+      background:#fafafa;
+      text-align:center;
+      line-height:1.1;
+    }
+
+    .article-content{ flex:1; }
+
+    .meta{
+      font-size:9.5px;
+      color:var(--muted);
+      margin-bottom:2px;
+    }
+
+    #derecha h4{
+      font-size:10.5px;
+      margin-bottom:2px;
+    }
+
+    #derecha article p{
+      font-size:9.5px;
+      color:var(--muted);
+      text-align:justify;
+    }
+
+    #derecha article ul{
+      margin-top:4px;
+      padding-left:14px;
+    }
+
+    #derecha article li{
+      font-size:9.5px;
+      margin:2px 0;
+      text-align:justify;
+    }
+
+    /* util */
+    .two-col{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:8px;
+    }
+    .small{
+      font-size:9.5px;
+      color:var(--muted);
+      text-align:justify;
+    }
+
+    @media print{
+      body{background:white;padding:0}
+      main{box-shadow:none}
+    }
+
+    .social{ text-align:right; }
+    .social img{ width:15px; }
+    header{
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      gap:10px;
+    }
+  </style>
+</head>
+
+<body>
+<main>
+
+  <!-- =======================
+       COLUMNA IZQUIERDA
+       ======================= -->
+  <section id="izquierda">
+    <img src="josevicente.jpg" alt="José Vicente Carratalá Sanchis">
+
+    <article>
+      <h3>Competencias</h3>
+      <ul>
+        <li>Desarrollo software a medida</li>
+        <li>Docencia presencial y online</li>
+        <li>Gráficos 3D y VR</li>
+        <li>Automatización y scripting</li>
+        <li>Robótica y prototipado</li>
+        <li>IA y analítica de datos</li>
+      </ul>
+    </article>
+
+    <article>
+      <h3>Tecnologías</h3>
+      <div class="chips">
+        <span class="chip">PHP</span>
+        <span class="chip">JavaScript</span>
+        <span class="chip">Python</span>
+        <span class="chip">Java</span>
+        <span class="chip">HTML</span>
+        <span class="chip">CSS</span>
+        <span class="chip">SQL</span>
+        <span class="chip">MySQL</span>
+        <span class="chip">SQLite</span>
+        <span class="chip">MongoDB</span>
+        <span class="chip">Linux</span>
+        <span class="chip">Ubuntu Server</span>
+        <span class="chip">Apache</span>
+      </div>
+    </article>
+
+    <article>
+      <h3>Idiomas</h3>
+      <ul>
+        <li>Español · Nativo</li>
+        <li>Inglés · B2</li>
+        <li>Alemán · Básico</li>
+      </ul>
+    </article>
+
+    <article>
+      <h3>Vehículo</h3>
+      <ul>
+        <li>Carnet de conducir B1</li>
+        <li>Vehículo propio</li>
+      </ul>
+    </article>
+
+    <!-- (PUNTO 2) Logros clave / foco MOVIDO a la izquierda -->
+    <article>
+      <div class="panel-left">
+        <h3>Logros y enfoque</h3>
+        <ul>
+          <li>Diseño y entrega de soluciones completas: análisis → desarrollo → despliegue.</li>
+          <li>Formación orientada a empleabilidad: proyectos, evaluación y seguimiento.</li>
+          <li>Experiencia combinando desarrollo web, automatización y contenidos formativos.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article>
+      <div class="panel-left">
+        <h3>Perfil objetivo</h3>
+        <ul>
+          <li>Docencia (FP / formación técnica) y/o desarrollo de software.</li>
+          <li>Proyectos educativos, plataformas e-learning y automatización.</li>
+          <li>Visualización/3D aplicado a producto o entornos interactivos.</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- (PUNTO 2) Bloque de valor: logros / propuesta -->
+    <article>
+      <h3>Valor aportado</h3>
+      <ul>
+        <li>Orientación a resultados y entregas reales</li>
+        <li>Experiencia transversal: software + docencia + 3D</li>
+        <li>Capacidad de liderar proyectos end-to-end</li>
+      </ul>
+    </article>
+  </section>
+
+  <!-- =======================
+       COLUMNA DERECHA
+       ======================= -->
+  <section id="derecha">
+
+    <header>
+      <div id="identidad">
+        <h1>José Vicente Carratalá Sanchis</h1>
+        <h2>Diseñador industrial · Programador · Docente</h2>
+      </div>
+
+      <div class="social">
+        <a href="https://facebook.com/carratala" aria-label="Facebook de José Vicente Carratalá Sanchis"><img src="https://josevicentecarratala.com/logos/facebook.png" alt="Facebook" loading="lazy" decoding="async"></a>
+        <a href="https://www.instagram.com/jvcarratala/" aria-label="Instagram de José Vicente Carratalá Sanchis"><img src="https://josevicentecarratala.com/logos/instagram.png" alt="Instagram" loading="lazy" decoding="async"></a>
+        <a href="mailto:info@josevicentecarratala.com" aria-label="Enviar correo a José Vicente Carratalá Sanchis"><img src="https://josevicentecarratala.com/logos/email.png" alt="Email" loading="lazy" decoding="async"></a>
+        <a href="https://github.com/jocarsa" aria-label="GitHub de José Vicente Carratalá Sanchis"><img src="https://josevicentecarratala.com/logos/github.png" alt="GitHub" loading="lazy" decoding="async"></a>
+        <a href="https://josevicentecarratala.com" aria-label="Web principal de José Vicente Carratalá Sanchis"><img src="https://josevicentecarratala.com/logos/home.png" alt="Web" loading="lazy" decoding="async"></a>
+        <a href="https://www.linkedin.com/in/jvcarratala/" aria-label="LinkedIn de José Vicente Carratalá Sanchis"><img src="https://josevicentecarratala.com/logos/linkedin.png" alt="LinkedIn" loading="lazy" decoding="async"></a>
+        <a href="https://wa.me/34620891718" aria-label="WhatsApp de José Vicente Carratalá Sanchis"><img src="https://josevicentecarratala.com/logos/whatsapp.png" alt="WhatsApp" loading="lazy" decoding="async"></a>
+        <a href="https://www.youtube.com/@VicenteCarratala" aria-label="YouTube de José Vicente Carratalá Sanchis"><img src="https://josevicentecarratala.com/logos/youtube.png" alt="YouTube" loading="lazy" decoding="async"></a>
+      </div>
+    </header>
+
+    <section id="datospersonales">
+      <ul>
+        <li>Valencia (España)</li>
+        <li>Nacido el 14/04/1978</li>
+        <li>+34 620 89 17 18</li>
+        <li>info@josevicentecarratala.com</li>
+        <li>josevicentecarratala.com · jocarsa.com</li>
+      </ul>
+    </section>
+
+    <section id="resumenprofesional">
+      <h2>Resumen profesional</h2>
+      <p>
+        Diseñador industrial, desarrollador y docente con experiencia en programación, gráficos 3D,
+        visualización interactiva y formación técnica. Fundador de JOCARSA, especializado en desarrollo
+        de software a medida, creación de material formativo y docencia orientada a proyectos reales.
+      </p>
+    </section>
+
+    <!-- (ELIMINADO DE AQUÍ) Bloque logros/perfil para ahorrar espacio -->
+
+    <section id="historiallaboral">
+      <h2>Experiencia</h2>
+
+      <article>
+        <div class="article-row">
+          <div class="logo" style="background:url(https://static.jocarsa.com/logos/jocarsa%20%7C%20Indigo.svg);background-size:cover;"></div>
+          <div class="article-content">
+            <div class="meta">2000 – Actualidad | JOCARSA</div>
+            <h4>Propietario, CEO y Fundador</h4>
+            <p>Desarrollo de aplicaciones a medida, plataformas educativas, gráficos 3D y proyectos de visualización interactiva.</p>
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <div class="article-row">
+          <div class="logo" style="background:url(https://media.licdn.com/dms/image/v2/C4D03AQFr8CA2g_S0Fw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1516965067109?e=2147483647&v=beta&t=XkXqh6W9FR7s79snIgq8aG3Du_R49evMB9OlTiCSvHE);background-size:cover;"></div>
+          <div class="article-content">
+            <div class="meta">2020 – Actualidad | TAME Formación (Mislata)</div>
+            <h4>Profesor de ciclos formativos DAM y SMR</h4>
+            <p>Docencia en ciclos formativos (grado medio SMR y grado superior DAM), con enfoque práctico y evaluación por proyectos.</p>
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <div class="article-row">
+          <div class="logo" style="background:url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3J3hd5Inl8lXzqHjIQl8telURSv-gFsFC7w&s);background-size:cover;"></div>
+          <div class="article-content">
+            <div class="meta">2025 – Actualidad | CEAC - Campus Burjassot</div>
+            <h4>Profesor de ciclos formativos DAM/DAW/ASIR</h4>
+            <p>Docencia en ciclos formativos de grado superior, orientada a prácticas reales y adquisición de competencias profesionales.</p>
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <div class="article-row">
+          <div class="logo" style="background:url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVZYawSdQ8_-5_Y9QcAd4XGnu9IDCvx4yJEQ&s);background-size:cover;"></div>
+          <div class="article-content">
+            <div class="meta">2023 – 2024 | IMF</div>
+            <h4>Profesor de ciclos formativos DAM y DAW</h4>
+            <p>Docencia online en ciclos DAM y DAW con enfoque práctico y orientación a proyectos.</p>
+          </div>
+        </div>
+      </article>
+      
+      <article>
+        <div class="article-row">
+          <div class="logo" style="background:url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGrvGgsH9ToqsrFhkrydPmQ8OlVrCE-q5xEA&s);background-size:cover;"></div>
+          <div class="article-content">
+            <div class="meta">2022 – 2024 | Universidad de Alicante</div>
+            <h4>Profesor en el Master Universitario de Patrimonio Virtual</h4>
+            <p>Docencia en la asignatura de visualización de proyectos arqueológicos mediante técnicas de reconstrucción 3D y realidad virtual con Unreal Engine.</p>
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <div class="article-row">
+          <div class="logo" style="background:url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiccuFatOtl8d0Y6FcNbkrYqWjNinmIuaQBA&s);background-size:cover;"></div>
+          <div class="article-content">
+            <div class="meta">2022 – 2025 | Mastermedia</div>
+            <h4>Profesor en máster de programación web</h4>
+            <p>Impartición de clases y seguimiento académico en un itinerario de programación web.</p>
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <div class="article-row">
+          <div class="logo" style="background:url(https://media.licdn.com/dms/image/v2/D4D0BAQHVfYcRCvrUBw/company-logo_200_200/B4DZo0NFdlKUAM-/0/1761812437246/capitol_formacion_profesional_logo?e=2147483647&v=beta&t=XuzbSuemcKF8A0aNyqAzffbv41ABA1n-FuZ4CXRVLWc);background-size:cover;"></div>
+          <div class="article-content">
+            <div class="meta">2017 – 2024 | Capitol Empresa</div>
+            <h4>Profesor de ciclos formativos DAM, SMR, MkP, CI, AC, AyF</h4>
+            <p>Docencia en ciclos y certificados con enfoque práctico.</p>
+          </div>
+        </div>
+      </article>
+
+      
+
+      <article>
+        <div class="article-row">
+          <div class="logo" style="background:url(https://cdn-icons-png.flaticon.com/512/124/124011.png);background-size:cover;"></div>
+          <div class="article-content">
+            <div class="meta">2010 – 2020 | video2brain -> Lynda.com -> Linkedin Learning</div>
+            <h4>Autor de contenidos</h4>
+            <p>Creación de cursos técnicos (programación, gráficos 3D, bases de datos y sistemas Linux).</p>
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <div class="article-row">
+          <div class="logo" style="background:url(https://media.licdn.com/dms/image/v2/C4D0BAQEkDSakVIhLBw/company-logo_200_200/company-logo_200_200/0/1675248069966/ensenyem_logo?e=2147483647&v=beta&t=fEenCgg3stSVls9BlmMxJ4djy033liqopqXjshYDiXA);background-size:cover;"></div>
+          <div class="article-content">
+            <div class="meta">2009 – 2019 | Ensenyem</div>
+            <h4>Profesor de cursos de especialización</h4>
+            <p>Impartición de cursos de gráficos 3D, modelado de producto industrial y programación informática.</p>
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <div class="article-row">
+          <div class="logo" style="background:url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8HSRvAQO1HbWhiyq_a1rNf5Jl8GnJ1itOCQ&s);background-size:cover;"></div>
+          <div class="article-content">
+            <div class="meta">2006 – 2019 | UA School</div>
+            <h4>Profesor en máster de programación de videojuegos</h4>
+            <p>Creación de cursos técnicos en programación, gráficos 3D, bases de datos y sistemas Linux.</p>
+          </div>
+        </div>
+      </article>
+<article>
+        <div class="article-row">
+          <div class="logo" style="background:url(https://inmoblesxuquer.es/wp-content/uploads/2017/11/marca_UPV_principal_negro300-e1523953550305.png);background-size:cover;"></div>
+          <div class="article-content">
+            <div class="meta">2000 - 2006 & 2010 – 2017 | Universitat Politècnica de Valencia</div>
+            <h4>Profesor de formación de postgrado</h4>
+            <p>Creación de cursos técnicos en programación, gráficos 3D, bases de datos y sistemas Linux.</p>
+          </div>
+        </div>
+      </article>
+      
+    </section>
+
+    
+
+    <section id="formacion">
+      <h2>Formación</h2>
+
+      <article>
+        <div class="article-row">
+          <div class="logo"  style="background:url(https://inmoblesxuquer.es/wp-content/uploads/2017/11/marca_UPV_principal_negro300-e1523953550305.png);background-size:cover;"></div>
+          <div class="article-content">
+            <h4>Ingeniero Técnico en Diseño Industrial</h4>
+            <p>Universitat Politècnica de València · 1997 – 2000</p>
+          </div>
+        </div>
+      </article>
+
+     
+
+  </section>
+
+</main>
+</body>
+</html>
+

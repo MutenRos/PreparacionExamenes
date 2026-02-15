@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MenuSpreader - Automatización de Menús por WhatsApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3B82F6;
+            --primary-dark: #2563EB;
+            --secondary: #1E293B;
+            --text: #0F172A;
+            --text-light: #64748B;
+            --bg: #F8FAFC;
+            --white: #FFFFFF;
+            --paypal: #0070BA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Nav */
+        nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #1E293B, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-donate {
+            background-color: #FFC439;
+            color: #2C2E2F !important;
+            padding: 0.5rem 1.2rem;
+            border-radius: 99px;
+            font-weight: 700 !important;
+            transition: transform 0.2s;
+        }
+        
+        .nav-donate:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 196, 57, 0.4);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 180px 2rem 100px;
+            text-align: center;
+            background: radial-gradient(circle at 50% 0%, #EFF6FF 0%, #FFFFFF 100%);
+        }
+
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, var(--primary), #9333EA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.5);
+            background-color: var(--primary-dark);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: var(--text);
+            box-shadow: none;
+            border: 1px solid #E2E8F0;
+            margin-left: 1rem;
+        }
+        
+        .cta-secondary:hover {
+            background: #F1F5F9;
+            box-shadow: none;
+        }
+
+        /* Features */
+        .features {
+            padding: 100px 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #F1F5F9;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            color: var(--text-light);
+        }
+
+        /* Screenshot Section */
+        .preview {
+            max-width: 1000px;
+            margin: 0 auto 100px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 8px solid #1E293B;
+            background: #1E293B;
+        }
+        
+        .preview img {
+            width: 100%;
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--white);
+            padding: 4rem 2rem;
+            text-align: center;
+            border-top: 1px solid #E2E8F0;
+        }
+
+        footer p {
+            color: var(--text-light);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-container { flex-direction: column; gap: 1rem; }
+            .nav-links a { margin: 0 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">🚀 MenuSpreader</a>
+            <div class="nav-links">
+                <a href="#features">Ventajas</a>
+                <a href="#download">Descargar</a>
+                <a href="dashboard.html">Demo App</a>
+                <a href="https://github.com/MutenRos/MenuSpreader" target="_blank">Cod. Fuente</a>
+                <a href="https://paypal.me/MutenRos" target="_blank" class="nav-donate">☕ Invítame a un café</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Tu Menú del Día,<br>en el WhatsApp de Todos.</h1>
+        <p>La herramienta definitiva para bares y restaurantes. Envía tu carta diaria a cientos de clientes con un solo clic. Sin costes mensuales.</p>
+        <br>
+        <div class="preview">
+            <!-- CSS-only App Mockup -->
+            <div style="background: #0f172a; padding: 20px; border-radius: 10px 10px 0 0; display: flex; gap: 10px; align-items: center;">
+                <div style="width: 12px; height: 12px; border-radius: 50%; background: #ef4444;"></div>
+                <div style="width: 12px; height: 12px; border-radius: 50%; background: #f59e0b;"></div>
+                <div style="width: 12px; height: 12px; border-radius: 50%; background: #10b981;"></div>
+                <div style="flex-grow: 1; text-align: center; color: #64748b; font-size: 0.8rem; font-family: monospace;">MenuSpreader - Desktop</div>
+            </div>
+            <div style="background: #1e293b; height: 400px; position: relative; overflow: hidden; display: flex;">
+                <!-- Sidebar -->
+                <div style="width: 200px; background: #334155; padding: 20px; display: flex; flex-direction: column; gap: 15px;">
+                    <div style="height: 10px; width: 60%; background: #475569; border-radius: 4px;"></div>
+                    <div style="height: 10px; width: 80%; background: #475569; border-radius: 4px;"></div>
+                    <div style="height: 10px; width: 50%; background: #475569; border-radius: 4px;"></div>
+                    <div style="margin-top: auto; height: 40px; background: #3b82f6; border-radius: 6px;"></div>
+                </div>
+                <!-- Main Content -->
+                <div style="flex: 1; padding: 30px; display: flex; flex-direction: column; gap: 20px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div style="height: 30px; width: 200px; background: #475569; border-radius: 6px;"></div>
+                        <div style="height: 30px; width: 100px; background: #10b981; border-radius: 6px;"></div>
+                    </div>
+                    <div style="background: #334155; flex: 1; border-radius: 8px; padding: 20px; display: flex; align-items: center; justify-content: center; border: 2px dashed #475569;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 10px;">📄</div>
+                            <div style="color: #94a3b8;">Arrastra tu Menú Aquí</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="https://github.com/MutenRos/MenuSpreader/releases/latest/download/MenuSpreader_Setup_v1.0.6.exe" class="cta-button">Descargar Instalador Windows</a>
+        <a href="https://github.com/MutenRos/MenuSpreader" class="cta-button cta-secondary">Ver Código Fuente</a>
+
+        <!-- Security Warning Notice -->
+        <div style="margin-top: 1.5rem; background: #fffbeb; border: 1px solid #fcd34d; color: #92400e; padding: 1rem; border-radius: 8px; max-width: 600px; margin-left: auto; margin-right: auto; text-align: left; font-size: 0.9rem;">
+            <strong>⚠️ ¿Aviso de "Windows protegió su PC"?</strong>
+            <p style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.9rem; color: #92400e;">
+                Al ser una aplicación nueva y gratuita, no tenemos certificados costosos de Microsoft. 
+                Si ves este aviso, es normal. Pulsa en <u>"Más información"</u> y luego en <u>"Ejecutar de todas formas"</u>.
+            </p>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <h2 style="text-align: center; font-size: 2.5rem;">Potencia tu Negocio</h2>
+        <div class="grid">
+            <div class="card">
+                <span class="card-icon">↻</span>
+                <h3>Auto-Actualizable</h3>
+                <p>Tu aplicación se mantiene siempre al día automáticamente con las últimas mejoras y correcciones.</p>
+            </div>
+            <div class="card">
+                <span class="card-icon">⚡</span>
+                <h3>Envío Instantáneo</h3>
+                <p>Olvídate de copiar y pegar. Sube tu imagen, escribe el mensaje y MenuSpreader hará el resto.</p>
+            </div>
+            <div class="card">
+                <span class="card-icon">👥</span>
+                <h3>Base de Datos Local</h3>
+                <p>Gestiona tus contactos y empresas cercanas con horarios y nombres. Todo guardado en tu PC.</p>
+            </div>
+            <div class="card">
+                <span class="card-icon">🎨</span>
+                <h3>Plantillas Personalizadas</h3>
+                <p>Guarda tus mensajes favoritos. Usa variables como {nombre} para dar un trato personal.</p>
+            </div>
+            <div class="card">
+                <span class="card-icon">🔒</span>
+                <h3>Seguro y Privado</h3>
+                <p>Utiliza tu propia sesión de WhatsApp Web. Tus datos no pasan por servidores de terceros.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="download" style="background: linear-gradient(135deg, var(--secondary), #0F172A); color: white; padding: 100px 2rem; text-align: center; position: relative; overflow: hidden;">
+        <!-- Background Elements -->
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent 40%); pointer-events: none;"></div>
+        
+        <div style="position: relative; z-index: 10; max-width: 800px; margin: 0 auto;">
+            <h2 style="margin-bottom: 1.5rem; font-size: 3rem; font-weight: 800; letter-spacing: -0.02em;">Digitaliza tu Negocio Hoy</h2>
+            <p style="margin-bottom: 3rem; font-size: 1.2rem; color: #94A3B8;">
+                Descarga el instalador, ejecútalo y olvídate de carpetas o ZIPs complejos. ¡Todo automático!
+            </p>
+            
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="https://github.com/MutenRos/MenuSpreader/releases/latest/download/MenuSpreader_Setup_v1.0.6.exe" style="background: var(--primary); color: white; padding: 1.2rem 3rem; border-radius: 99px; text-decoration: none; font-weight: 700; font-size: 1.1rem; box-shadow: 0 10px 30px -10px var(--primary); transition: transform 0.2s;">
+                    ⬇️ Descargar Gratis
+                </a>
+                <a href="https://paypal.me/MutenRos" target="_blank" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); color: white; padding: 1.2rem 3rem; border-radius: 99px; text-decoration: none; font-weight: 600; font-size: 1.1rem; border: 1px solid rgba(255,255,255,0.2); transition: background 0.2s;">
+                    ❤️ Donar con PayPal
+                </a>
+            </div>
+            <p style="margin-top: 2rem; font-size: 0.9rem; color: #64748B;">
+                Software Open Source. Si te es útil, considera apoyar su desarrollo.
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 MenuSpreader. Código Abierto y Gratuito.</p>
+    </footer>
+
+</body>
+</html>

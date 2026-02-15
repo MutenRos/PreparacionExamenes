@@ -1,0 +1,35 @@
+from flask import Flask  
+
+aplicacion = Flask(__name__)
+
+cabeza = '''
+  <!doctype html>
+  <html><head>
+  <style>
+    body,html{background:grey;font-family:sans-serif;}
+    header,main,footer{background:white;padding:20px;margin:auto;width:600px;}
+    nav a{text-decoration:none;color:inherit;}
+  </style>
+  </head><body>
+  <header><h1>La web de Jose Vicente</h1>
+  <nav>
+    <a href="/">Inicio</a>
+    <a href="/sobremi">Sobre mi</a>
+    <a href="/contacto">Contacto</a>
+  </nav>
+  </header><main>'''
+pie = '</main></body></html>'
+@aplicacion.route("/")
+def raiz():
+  return cabeza+"Esta es la página principal"+pie
+  
+@aplicacion.route("/sobremi")
+def sobremi():
+  return cabeza+"Esta es la página sobre mi"+pie
+  
+@aplicacion.route("/contacto")
+def contacto():
+  return cabeza+"Esta es la página de contacto"+pie
+
+if __name__ == "__main__":
+  aplicacion.run()

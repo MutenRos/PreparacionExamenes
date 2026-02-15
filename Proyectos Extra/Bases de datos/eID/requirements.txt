@@ -1,0 +1,28 @@
+# eID - Dependencias Python
+
+# Framework web
+Flask==3.0.0
+Werkzeug==3.0.1
+
+# Base de datos MySQL
+mysql-connector-python==8.2.0
+
+# Autenticación
+Flask-Login==0.6.3
+
+# HTTP requests para OAuth
+requests==2.31.0
+
+# Web scraping
+beautifulsoup4==4.12.2
+
+# Formularios (opcional para futuras mejoras)
+Flask-WTF==1.2.1
+WTForms==3.1.1
+
+# WebSockets para chat en tiempo real (opcional)
+Flask-SocketIO==5.3.5
+python-socketio==5.10.0
+
+# Utilidades
+python-dotenv==1.0.0

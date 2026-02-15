@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page lang="es" version="1.0">
+  <meta>
+    <title>Sobre nosotros</title>
+  </meta>
+
+  <hero>
+    <media>
+      <image src="https://static.jocarsa.com/demo/edu/hero.jpg" alt="JOCARSA · Software educativo"/>
+    </media>
+    <title>Software educativo, sin complicaciones</title>
+    <subtitle>Diseñamos herramientas de gestión para centros educativos: claras, ágiles y pensadas para el día a día.</subtitle>
+    <badges>
+      <badge>SaaS educativo</badge>
+      <badge>Enfoque práctico</badge>
+      <badge>RGPD</badge>
+    </badges>
+    <actions>
+      <action type="primary" href="contacto.php">Contactar</action>
+      <action type="secondary" href="index.php">Ver productos</action>
+      <action type="tertiary" href="#metodo">Cómo trabajamos</action>
+    </actions>
+  </hero>
+
+  <sections>
+
+    <section id="quienes" layout="text">
+      <media>
+        <image src="https://static.jocarsa.com/demo/edu/trust.jpg" alt="Quiénes somos"/>
+      </media>
+      <title>Quiénes somos</title>
+      <subtitle>Un equipo orientado a resultados.</subtitle>
+      <text>
+        Creamos software especializado para el mundo educativo con una idea simple: reducir carga administrativa y mejorar el control.
+        Priorizamos interfaces claras, automatizaciones útiles y soluciones que encajan con la realidad de un centro.
+      </text>
+    </section>
+
+    <section id="valores" layout="list">
+      <media>
+        <image src="https://static.jocarsa.com/demo/edu/benefits.jpg" alt="Valores"/>
+      </media>
+      <title>Nuestros valores</title>
+      <subtitle>Lo que guía nuestras decisiones.</subtitle>
+      <text>Trabajamos con criterios sencillos que se notan en el producto.</text>
+      <items>
+        <item>Claridad: menos ruido, más control.</item>
+        <item>Utilidad: cada función debe ahorrar tiempo real.</item>
+        <item>Adopción: pensado para equipos con distintos perfiles.</item>
+        <item>Fiabilidad: datos consistentes y procesos estables.</item>
+        <item>Mejora continua: evolución por necesidades reales.</item>
+      </items>
+    </section>
+
+    <section id="metodo" layout="cards">
+      <media>
+        <image src="https://static.jocarsa.com/demo/edu/features.jpg" alt="Cómo trabajamos"/>
+      </media>
+      <title>Cómo trabajamos</title>
+      <subtitle>De la necesidad real a la solución final.</subtitle>
+      <cards>
+        <card>
+          <title>Diagnóstico</title>
+          <text>Entendemos el proceso del centro y detectamos dónde se pierde tiempo o se generan errores.</text>
+        </card>
+        <card>
+          <title>Propuesta clara</title>
+          <text>Definimos una solución concreta, con prioridades y un resultado medible.</text>
+        </card>
+        <card>
+          <title>Implementación</title>
+          <text>Configuramos y adaptamos la herramienta para que encaje con tu operativa real.</text>
+        </card>
+        <card>
+          <title>Puesta en marcha</title>
+          <text>Formación breve y práctica para que el equipo empiece con seguridad.</text>
+        </card>
+      </cards>
+    </section>
+
+    <section id="faq" layout="faq">
+      <media>
+        <image src="https://static.jocarsa.com/demo/edu/faq.jpg" alt="FAQ"/>
+      </media>
+      <title>Preguntas frecuentes</title>
+      <subtitle>Dudas típicas antes de empezar.</subtitle>
+      <faq>
+        <qa>
+          <q>¿Trabajáis solo con centros grandes?</q>
+          <a>No. Nos adaptamos tanto a academias pequeñas como a centros con varias sedes.</a>
+        </qa>
+        <qa>
+          <q>¿Podemos empezar por una parte (matrícula, actas, etc.)?</q>
+          <a>Sí. Podemos implantar por fases para que el cambio sea cómodo y ordenado.</a>
+        </qa>
+        <qa>
+          <q>¿Ofrecéis integraciones con Moodle?</q>
+          <a>Sí, según el caso: sincronización, conexión por API o flujos personalizados.</a>
+        </qa>
+      </faq>
+    </section>
+
+  </sections>
+</page>
+

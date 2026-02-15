@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<!-- LogoGallery — Galeria de logos famosos multiidioma -->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogoGallery — Galería de Logos Famosos</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <!-- Cabecera con titulo, navegacion y selector de idioma -->
+    <header>
+        <h1>Logo<span>Gallery</span></h1>
+        <nav aria-label="Navegación principal">
+            <a href="#galeria"
+               data-es="Galería" data-en="Gallery" data-fr="Galerie">Galería</a>
+            <a href="#informacion"
+               data-es="Información" data-en="Information" data-fr="Information">Información</a>
+            <a href="#contacto"
+               data-es="Contacto" data-en="Contact" data-fr="Contact">Contacto</a>
+        </nav>
+        <!-- Botones para cambiar de idioma -->
+        <div class="selector-idioma">
+            <button data-lang="es" class="activo">ES</button>
+            <button data-lang="en">EN</button>
+            <button data-lang="fr">FR</button>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- Seccion hero: titulo principal -->
+        <section id="heroe">
+            <h2 data-es="Descubre los logos más icónicos del mundo"
+                data-en="Discover the world's most iconic logos"
+                data-fr="Découvrez les logos les plus iconiques du monde">Descubre los logos más icónicos del mundo</h2>
+            <p data-es="Historia, diseño y evolución de las marcas más reconocidas"
+               data-en="History, design and evolution of the most recognized brands"
+               data-fr="Histoire, design et évolution des marques les plus reconnues">Historia, diseño y evolución de las marcas más reconocidas</p>
+        </section>
+
+        <!-- Seccion galeria: tarjetas de logos -->
+        <section id="galeria">
+            <h3 data-es="Galería de logos" data-en="Logo Gallery" data-fr="Galerie de logos">Galería de logos</h3>
+
+            <div class="contenedor-logos">
+
+                <!-- Tarjeta 1: TechCorp — Tecnología -->
+                <article class="tarjeta-logo">
+                    <img src="img/logo-tech.svg" alt="Logo TechCorp">
+                    <h4>TechCorp</h4>
+                    <p class="categoria"
+                       data-es="Tecnología" data-en="Technology" data-fr="Technologie">Tecnología</p>
+                    <p class="anio"
+                       data-es="Fundada en 1976" data-en="Founded in 1976" data-fr="Fondée en 1976">Fundada en 1976</p>
+                    <p class="descripcion"
+                       data-es="Logo minimalista con forma circular que representa innovación y simplicidad tecnológica."
+                       data-en="Minimalist circular logo representing innovation and technological simplicity."
+                       data-fr="Logo minimaliste circulaire représentant l'innovation et la simplicité technologique.">Logo minimalista con forma circular que representa innovación y simplicidad tecnológica.</p>
+                </article>
+
+                <!-- Tarjeta 2: SportMax — Deportes -->
+                <article class="tarjeta-logo">
+                    <img src="img/logo-sport.svg" alt="Logo SportMax">
+                    <h4>SportMax</h4>
+                    <p class="categoria"
+                       data-es="Deportes" data-en="Sports" data-fr="Sports">Deportes</p>
+                    <p class="anio"
+                       data-es="Fundada en 1964" data-en="Founded in 1964" data-fr="Fondée en 1964">Fundada en 1964</p>
+                    <p class="descripcion"
+                       data-es="Emblema dinámico en rojo que transmite energía, movimiento y pasión por el deporte."
+                       data-en="Dynamic red emblem conveying energy, movement and passion for sport."
+                       data-fr="Emblème rouge dynamique transmettant énergie, mouvement et passion du sport.">Emblema dinámico en rojo que transmite energía, movimiento y pasión por el deporte.</p>
+                </article>
+
+                <!-- Tarjeta 3: FoodHub — Alimentación -->
+                <article class="tarjeta-logo">
+                    <img src="img/logo-food.svg" alt="Logo FoodHub">
+                    <h4>FoodHub</h4>
+                    <p class="categoria"
+                       data-es="Alimentación" data-en="Food" data-fr="Alimentation">Alimentación</p>
+                    <p class="anio"
+                       data-es="Fundada en 1955" data-en="Founded in 1955" data-fr="Fondée en 1955">Fundada en 1955</p>
+                    <p class="descripcion"
+                       data-es="Arco dorado sobre fondo cálido que evoca confianza y reconocimiento global."
+                       data-en="Golden arch on warm background evoking trust and global recognition."
+                       data-fr="Arc doré sur fond chaud évoquant confiance et reconnaissance mondiale.">Arco dorado sobre fondo cálido que evoca confianza y reconocimiento global.</p>
+                </article>
+
+                <!-- Tarjeta 4: ShopNet — Comercio -->
+                <article class="tarjeta-logo">
+                    <img src="img/logo-ecommerce.svg" alt="Logo ShopNet">
+                    <h4>ShopNet</h4>
+                    <p class="categoria"
+                       data-es="Comercio" data-en="Commerce" data-fr="Commerce">Comercio</p>
+                    <p class="anio"
+                       data-es="Fundada en 1994" data-en="Founded in 1994" data-fr="Fondée en 1994">Fundada en 1994</p>
+                    <p class="descripcion"
+                       data-es="Diseño cuadrado en verde que simboliza accesibilidad, variedad y compra inteligente."
+                       data-en="Green square design symbolizing accessibility, variety and smart shopping."
+                       data-fr="Design carré vert symbolisant accessibilité, variété et achat intelligent.">Diseño cuadrado en verde que simboliza accesibilidad, variedad y compra inteligente.</p>
+                </article>
+
+                <!-- Tarjeta 5: SoundWave — Música -->
+                <article class="tarjeta-logo">
+                    <img src="img/logo-music.svg" alt="Logo SoundWave">
+                    <h4>SoundWave</h4>
+                    <p class="categoria"
+                       data-es="Música" data-en="Music" data-fr="Musique">Música</p>
+                    <p class="anio"
+                       data-es="Fundada en 2006" data-en="Founded in 2006" data-fr="Fondée en 2006">Fundada en 2006</p>
+                    <p class="descripcion"
+                       data-es="Círculo púrpura vibrante que representa creatividad, ritmo y streaming digital."
+                       data-en="Vibrant purple circle representing creativity, rhythm and digital streaming."
+                       data-fr="Cercle violet vibrant représentant créativité, rythme et streaming numérique.">Círculo púrpura vibrante que representa creatividad, ritmo y streaming digital.</p>
+                </article>
+
+                <!-- Tarjeta 6: AutoDrive — Automoción -->
+                <article class="tarjeta-logo">
+                    <img src="img/logo-auto.svg" alt="Logo AutoDrive">
+                    <h4>AutoDrive</h4>
+                    <p class="categoria"
+                       data-es="Automoción" data-en="Automotive" data-fr="Automobile">Automoción</p>
+                    <p class="anio"
+                       data-es="Fundada en 2003" data-en="Founded in 2003" data-fr="Fondée en 2003">Fundada en 2003</p>
+                    <p class="descripcion"
+                       data-es="Emblema oscuro y elegante que comunica ingeniería de precisión y lujo accesible."
+                       data-en="Dark elegant emblem conveying precision engineering and accessible luxury."
+                       data-fr="Emblème sombre et élégant communiquant ingénierie de précision et luxe accessible.">Emblema oscuro y elegante que comunica ingeniería de precisión y lujo accesible.</p>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Seccion información: datos sobre diseño de logos -->
+        <section id="informacion">
+            <h3 data-es="¿Por qué importa un buen logo?"
+                data-en="Why does a good logo matter?"
+                data-fr="Pourquoi un bon logo est-il important ?">¿Por qué importa un buen logo?</h3>
+
+            <div class="info-contenedor">
+                <div class="info-bloque">
+                    <p class="icono">🎨</p>
+                    <h4 data-es="Identidad visual" data-en="Visual identity" data-fr="Identité visuelle">Identidad visual</h4>
+                    <p data-es="Un logo define la personalidad de una marca y la diferencia de la competencia."
+                       data-en="A logo defines the brand personality and differentiates it from competition."
+                       data-fr="Un logo définit la personnalité de la marque et la différencie de la concurrence.">Un logo define la personalidad de una marca y la diferencia de la competencia.</p>
+                </div>
+                <div class="info-bloque">
+                    <p class="icono">🧠</p>
+                    <h4 data-es="Reconocimiento" data-en="Recognition" data-fr="Reconnaissance">Reconocimiento</h4>
+                    <p data-es="Los logos memorables generan confianza y se recuerdan con facilidad."
+                       data-en="Memorable logos generate trust and are easily remembered."
+                       data-fr="Les logos mémorables génèrent confiance et sont facilement mémorisés.">Los logos memorables generan confianza y se recuerdan con facilidad.</p>
+                </div>
+                <div class="info-bloque">
+                    <p class="icono">🌍</p>
+                    <h4 data-es="Alcance global" data-en="Global reach" data-fr="Portée mondiale">Alcance global</h4>
+                    <p data-es="Un buen diseño trasciende idiomas y culturas, comunicando sin palabras."
+                       data-en="Good design transcends languages and cultures, communicating without words."
+                       data-fr="Un bon design transcende langues et cultures, communiquant sans mots.">Un buen diseño trasciende idiomas y culturas, comunicando sin palabras.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seccion contacto: formulario multiidioma -->
+        <section id="contacto">
+            <h3 data-es="Contacto" data-en="Contact" data-fr="Contact">Contacto</h3>
+
+            <form>
+                <label for="nombre"
+                       data-es="Nombre" data-en="Name" data-fr="Nom">Nombre</label>
+                <input type="text" id="nombre" placeholder="Tu nombre"
+                       data-es="Tu nombre" data-en="Your name" data-fr="Votre nom">
+
+                <label for="email"
+                       data-es="Correo electrónico" data-en="Email" data-fr="E-mail">Correo electrónico</label>
+                <input type="email" id="email" placeholder="correo@ejemplo.com"
+                       data-es="correo@ejemplo.com" data-en="email@example.com" data-fr="courriel@exemple.com">
+
+                <label for="mensaje"
+                       data-es="Mensaje" data-en="Message" data-fr="Message">Mensaje</label>
+                <textarea id="mensaje" placeholder="Escribe tu mensaje aquí..."
+                          data-es="Escribe tu mensaje aquí..." data-en="Write your message here..." data-fr="Écrivez votre message ici..."></textarea>
+
+                <input type="submit"
+                       data-es="Enviar mensaje" data-en="Send message" data-fr="Envoyer le message"
+                       value="Enviar mensaje">
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Pie de pagina -->
+    <footer>
+        <nav aria-label="Enlaces del pie de página">
+            <a href="#" data-es="Acerca de" data-en="About" data-fr="À propos">Acerca de</a>
+            <a href="#" data-es="Privacidad" data-en="Privacy" data-fr="Confidentialité">Privacidad</a>
+            <a href="#" data-es="Términos" data-en="Terms" data-fr="Conditions">Términos</a>
+            <a href="#" data-es="Aviso Legal" data-en="Legal Notice" data-fr="Mentions légales">Aviso Legal</a>
+        </nav>
+        <p class="copyright">&copy; 2026 LogoGallery —
+            <span data-es="Todos los derechos reservados"
+                  data-en="All rights reserved"
+                  data-fr="Tous droits réservés">Todos los derechos reservados</span>
+        </p>
+    </footer>
+
+    <!-- Script de cambio de idioma -->
+    <script src="js/idiomas.js"></script>
+
+</body>
+</html>

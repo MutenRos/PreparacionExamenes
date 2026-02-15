@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Panel de Administración — JocarsaPress</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== LOGIN (visible por defecto) ===== -->
+  <section id="login-section" class="w-900 card flex fd-col g-20" style="margin-top:60px">
+    <h1 class="fs-22" style="text-align:center">🔐 Panel de Administración</h1>
+
+    <form id="login-form" class="flex fd-col g-14" style="max-width:360px;margin:0 auto;width:100%"
+          onsubmit="event.preventDefault();doLogin()">
+      <label class="flex fd-col g-4">
+        <span class="fs-14 c-muted">Usuario</span>
+        <input id="usr" type="text" class="input" placeholder="usuario" required minlength="3">
+      </label>
+      <label class="flex fd-col g-4">
+        <span class="fs-14 c-muted">Contraseña</span>
+        <input id="pwd" type="password" class="input" placeholder="contraseña" required minlength="3">
+      </label>
+      <p id="login-error" style="color:#d32f2f;display:none">Credenciales incorrectas</p>
+      <button type="submit" class="btn btn-brand">Entrar</button>
+    </form>
+  </section>
+
+  <!-- ===== ESCRITORIO (oculto hasta login) ===== -->
+  <section id="desk-section" style="display:none">
+    <div class="admin-wrap">
+
+      <!-- Sidebar -->
+      <aside class="admin-sidebar flex fd-col g-6">
+        <h2 class="fs-18" style="color:#fff">JocarsaPress</h2>
+        <a href="#" class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3)" onclick="showTab('paginas')">Páginas</a>
+        <a href="#" class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3)" onclick="showTab('entradas')">Entradas</a>
+        <a href="#" class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3);margin-top:auto" onclick="doLogout()">Cerrar sesión</a>
+      </aside>
+
+      <!-- Contenido -->
+      <div class="admin-content flex fd-col g-16" style="padding:24px;flex:1">
+
+        <!-- Tab Páginas -->
+        <div id="tab-paginas">
+          <div class="flex fa-center" style="justify-content:space-between">
+            <h2 class="fs-20">Páginas</h2>
+            <button class="btn btn-brand btn-sm">+ Nueva página</button>
+          </div>
+          <table class="admin-table" style="margin-top:12px">
+            <thead><tr><th>ID</th><th>Título</th><th>Contenido</th><th>Acciones</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Sobre mí</td><td>Soy José Vicente Carratalá…</td><td><button class="btn btn-ghost btn-sm">Editar</button> <button class="btn btn-ghost btn-sm" style="color:#d32f2f">Borrar</button></td></tr>
+              <tr><td>2</td><td>Proyectos</td><td>Suite JOCARSA software…</td><td><button class="btn btn-ghost btn-sm">Editar</button> <button class="btn btn-ghost btn-sm" style="color:#d32f2f">Borrar</button></td></tr>
+              <tr><td>3</td><td>Contacto</td><td>Puedes contactarme en…</td><td><button class="btn btn-ghost btn-sm">Editar</button> <button class="btn btn-ghost btn-sm" style="color:#d32f2f">Borrar</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tab Entradas -->
+        <div id="tab-entradas" style="display:none">
+          <div class="flex fa-center" style="justify-content:space-between">
+            <h2 class="fs-20">Entradas del Blog</h2>
+            <button class="btn btn-brand btn-sm">+ Nueva entrada</button>
+          </div>
+          <table class="admin-table" style="margin-top:12px">
+            <thead><tr><th>ID</th><th>Título</th><th>Contenido</th><th>Acciones</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Introducción a Ollama</td><td>Ollama permite ejecutar LLMs…</td><td><button class="btn btn-ghost btn-sm">Editar</button> <button class="btn btn-ghost btn-sm" style="color:#d32f2f">Borrar</button></td></tr>
+              <tr><td>2</td><td>CSS Utility-First con PHP</td><td>Un framework de utilidades…</td><td><button class="btn btn-ghost btn-sm">Editar</button> <button class="btn btn-ghost btn-sm" style="color:#d32f2f">Borrar</button></td></tr>
+              <tr><td>3</td><td>Markdown en PHP</td><td>Implementamos un renderizador…</td><td><button class="btn btn-ghost btn-sm">Editar</button> <button class="btn btn-ghost btn-sm" style="color:#d32f2f">Borrar</button></td></tr>
+              <tr><td>4</td><td>Prepared Statements</td><td>Las sentencias preparadas…</td><td><button class="btn btn-ghost btn-sm">Editar</button> <button class="btn btn-ghost btn-sm" style="color:#d32f2f">Borrar</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function doLogin(){
+      var u=document.getElementById('usr').value;
+      var p=document.getElementById('pwd').value;
+      if(u==='jocarsa'&&p==='jocarsa'){
+        document.getElementById('login-section').style.display='none';
+        document.getElementById('desk-section').style.display='block';
+      }else{
+        document.getElementById('login-error').style.display='block';
+      }
+    }
+    function doLogout(){
+      document.getElementById('desk-section').style.display='none';
+      document.getElementById('login-section').style.display='flex';
+      document.getElementById('usr').value='';
+      document.getElementById('pwd').value='';
+      document.getElementById('login-error').style.display='none';
+    }
+    function showTab(t){
+      document.getElementById('tab-paginas').style.display=t==='paginas'?'block':'none';
+      document.getElementById('tab-entradas').style.display=t==='entradas'?'block':'none';
+    }
+  </script>
+
+</body>
+</html>

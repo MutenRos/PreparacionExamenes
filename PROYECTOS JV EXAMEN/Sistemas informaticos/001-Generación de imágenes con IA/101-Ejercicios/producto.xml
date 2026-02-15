@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<productPage lang="es" type="softwareEducativo" version="1.1">
+  <meta>
+    <slug>gestion-academica-pro</slug>
+    <title>Gestión Académica Pro</title>
+    <category>SaaS educativo</category>
+    <audience>
+      <segment>Dirección</segment>
+      <segment>Secretaría / Administración</segment>
+      <segment>Docentes</segment>
+      <segment>Coordinación académica</segment>
+    </audience>
+    <ctaPrimary>Solicitar demo</ctaPrimary>
+    <ctaSecondary>Ver cómo funciona</ctaSecondary>
+  </meta>
+
+  <hero>
+    <media>
+      <image src="https://static.jocarsa.com/demo/edu/hero.jpg" alt="Gestión académica moderna"/>
+    </media>
+    <name>Gestión Académica Pro</name>
+    <valueProposition>Organiza tu centro y automatiza la gestión educativa en un solo lugar.</valueProposition>
+    <subtitle>Centraliza alumnado, matrículas, asistencia y evaluaciones para reducir carga administrativa y mejorar el seguimiento.</subtitle>
+    <badges>
+      <badge>Para academias y FP</badge>
+      <badge>Acceso web</badge>
+      <badge>RGPD</badge>
+    </badges>
+    <actions>
+      <action type="primary">Solicitar demo</action>
+      <action type="secondary">Ver cómo funciona</action>
+      <action type="tertiary">Contactar</action>
+    </actions>
+  </hero>
+
+  <problem>
+    <media>
+      <image src="https://static.jocarsa.com/demo/edu/problem.jpg" alt="Problemas de gestión educativa"/>
+    </media>
+    <title>Problemas habituales en la gestión educativa</title>
+    <items>
+      <item>Demasiado tiempo dedicado a tareas administrativas repetitivas.</item>
+      <item>Información dispersa entre hojas de cálculo, correos y herramientas inconexas.</item>
+      <item>Dificultad para mantener trazabilidad de alumnos, asistencia y evaluaciones.</item>
+      <item>Errores frecuentes por procesos manuales y duplicidades.</item>
+      <item>Generación lenta de informes para dirección, coordinación o inspección.</item>
+    </items>
+  </problem>
+
+  <solution>
+    <media>
+      <image src="https://static.jocarsa.com/demo/edu/solution.jpg" alt="Solución centralizada"/>
+    </media>
+    <title>La solución</title>
+    <overview>
+      Gestión Académica Pro es un software diseñado para centros educativos que necesitan control y claridad sin complicaciones.
+      Unifica la información clave del centro y automatiza procesos repetitivos para que el equipo pueda centrarse en enseñar y acompañar al alumnado.
+    </overview>
+    <whatChanges>
+      <change>Un único lugar para consultar el estado real del centro (alumnos, cursos, actas, seguimiento).</change>
+      <change>Procesos más rápidos y consistentes, con menos errores.</change>
+      <change>Mejor coordinación interna entre administración, docentes y dirección.</change>
+    </whatChanges>
+  </solution>
+
+  <keyFeatures>
+    <media>
+      <image src="https://static.jocarsa.com/demo/edu/features.jpg" alt="Funcionalidades clave"/>
+    </media>
+    <title>Funcionalidades clave</title>
+    <feature>
+      <name>Gestión de alumnado</name>
+      <benefit>Ficha completa del estudiante y seguimiento centralizado.</benefit>
+    </feature>
+    <feature>
+      <name>Matrículas y cursos</name>
+      <benefit>Organiza altas, bajas y asignaciones de manera ordenada.</benefit>
+    </feature>
+    <feature>
+      <name>Asistencia</name>
+      <benefit>Control de faltas y presencia para seguimiento y comunicación interna.</benefit>
+    </feature>
+    <feature>
+      <name>Evaluaciones y actas</name>
+      <benefit>Registra calificaciones y genera actas con consistencia.</benefit>
+    </feature>
+    <feature>
+      <name>Informes</name>
+      <benefit>Obtén reportes listos para dirección, coordinación o revisiones.</benefit>
+    </feature>
+    <feature>
+      <name>Perfiles de usuario</name>
+      <benefit>Acceso por roles: dirección, administración y profesorado.</benefit>
+    </feature>
+    <feature>
+      <name>Historial y trazabilidad</name>
+      <benefit>Registro claro de cambios y acciones relevantes dentro del sistema.</benefit>
+    </feature>
+  </keyFeatures>
+
+  <targetAudience>
+    <media>
+      <image src="https://static.jocarsa.com/demo/edu/audience.jpg" alt="Público objetivo"/>
+    </media>
+    <title>¿Para quién es?</title>
+    <profiles>
+      <profile>
+        <name>Centros de FP</name>
+        <fit>Ideal para gestionar grupos, evaluaciones y seguimiento en ciclos formativos.</fit>
+      </profile>
+      <profile>
+        <name>Academias privadas</name>
+        <fit>Perfecto para organizar matrículas, asistencia y seguimiento interno.</fit>
+      </profile>
+      <profile>
+        <name>Escuelas de idiomas</name>
+        <fit>Control de niveles, grupos, asistencia y evaluación continua.</fit>
+      </profile>
+      <profile>
+        <name>Formación online</name>
+        <fit>Centraliza datos del alumnado y coordina tutores y procesos.</fit>
+      </profile>
+      <profile>
+        <name>Docentes autónomos</name>
+        <fit>Gestión simple de alumnos y progreso con informes claros.</fit>
+      </profile>
+    </profiles>
+  </targetAudience>
+
+  <useCases>
+    <media>
+      <image src="https://static.jocarsa.com/demo/edu/usecases.jpg" alt="Casos de uso"/>
+    </media>
+    <title>Casos de uso reales</title>
+    <case>
+      <name>Actas trimestrales</name>
+      <description>Preparación y registro de evaluaciones trimestrales con estructura coherente.</description>
+    </case>
+    <case>
+      <name>Seguimiento de asistencia</name>
+      <description>Registro rápido de faltas y consulta histórica por alumno o grupo.</description>
+    </case>
+    <case>
+      <name>Control de matrículas</name>
+      <description>Gestión de altas/bajas y asignación de cursos sin duplicidades.</description>
+    </case>
+    <case>
+      <name>Informes para dirección</name>
+      <description>Reportes listos para toma de decisiones y seguimiento académico.</description>
+    </case>
+    <case>
+      <name>Revisión y auditoría</name>
+      <description>Documentación clara y accesible para inspecciones o revisiones internas.</description>
+    </case>
+  </useCases>
+
+  <benefits>
+    <media>
+      <image src="https://static.jocarsa.com/demo/edu/benefits.jpg" alt="Beneficios"/>
+    </media>
+    <title>Beneficios</title>
+    <items>
+      <item>Ahorro de tiempo administrativo y reducción de tareas repetitivas.</item>
+      <item>Menos errores gracias a procesos guiados y datos centralizados.</item>
+      <item>Mejor coordinación entre administración, docentes y dirección.</item>
+      <item>Seguimiento del alumnado más claro y accesible.</item>
+      <item>Escalabilidad: crece con el centro sin perder control.</item>
+    </items>
+  </benefits>
+
+  <integrations optional="true">
+    <media>
+      <image src="https://static.jocarsa.com/demo/edu/integrations.jpg" alt="Integraciones"/>
+    </media>
+    <title>Integración y compatibilidad</title>
+    <notes>Este apartado puede ajustarse según el producto y el stack del centro.</notes>
+    <items>
+      <item>Moodle (sincronización o conexión según necesidades).</item>
+      <item>Importación de datos desde Excel/CSV.</item>
+      <item>Acceso web multiplataforma (PC, tablet).</item>
+      <item>Integración con herramientas internas del centro (bajo proyecto).</item>
+    </items>
+  </integrations>
+
+  <trust>
+    <media>
+      <image src="https://static.jocarsa.com/demo/edu/trust.jpg" alt="Confianza y cumplimiento"/>
+    </media>
+    <title>Confianza</title>
+    <points>
+      <point>Diseñado específicamente para flujos de trabajo educativos reales.</point>
+      <point>Enfoque en simplicidad, claridad y adopción por parte del equipo.</point>
+      <point>Cumplimiento RGPD y buenas prácticas de seguridad.</point>
+      <point>Software mantenido y evolutivo, con posibilidad de adaptación.</point>
+    </points>
+  </trust>
+
+  <finalCTA>
+    <media>
+      <image src="https://static.jocarsa.com/demo/edu/cta.jpg" alt="Solicitar demo"/>
+    </media>
+    <title>¿Quieres verlo aplicado a tu centro?</title>
+    <description>Cuéntanos tu caso y te mostramos una demostración enfocada en tu día a día.</description>
+    <actions>
+      <action type="primary">Solicitar demo</action>
+      <action type="secondary">Hablemos de tu centro</action>
+    </actions>
+    <contact>
+      <email>contacto@tudominio.com</email>
+      <form>
+        <field name="nombre" type="text" required="true"/>
+        <field name="centro" type="text" required="true"/>
+        <field name="email" type="email" required="true"/>
+        <field name="telefono" type="tel" required="false"/>
+        <field name="mensaje" type="textarea" required="true"/>
+      </form>
+    </contact>
+  </finalCTA>
+
+  <faq>
+    <media>
+      <image src="https://static.jocarsa.com/demo/edu/faq.jpg" alt="Preguntas frecuentes"/>
+    </media>
+    <title>Preguntas frecuentes</title>
+    <qa>
+      <q>¿Necesita instalación?</q>
+      <a>No. Es una solución accesible desde navegador, preparada para uso diario en el centro.</a>
+    </qa>
+    <qa>
+      <q>¿Se adapta a mi centro?</q>
+      <a>Sí. Se configura según tu estructura de cursos, grupos y procesos habituales.</a>
+    </qa>
+    <qa>
+      <q>¿Incluye formación?</q>
+      <a>Sí, podemos incluir una sesión de puesta en marcha para administración y profesorado.</a>
+    </qa>
+    <qa>
+      <q>¿Se puede personalizar?</q>
+      <a>Sí. Se pueden añadir módulos o ajustes para adaptarse a flujos específicos.</a>
+    </qa>
+    <qa>
+      <q>¿Cumple RGPD?</q>
+      <a>Sí. Incluye medidas y prácticas orientadas a la protección de datos.</a>
+    </qa>
+  </faq>
+
+  <footer>
+    <summary>Esta página responde: qué es, para quién es, qué problema resuelve, cómo ayuda y cuál es el siguiente paso.</summary>
+  </footer>
+</productPage>
+

@@ -1,0 +1,23 @@
+INSERT INTO clientes (nombre, apellidos, telefono, email) VALUES
+('Carlos', 'García López',      '612345678', 'carlos.garcia@example.com'),
+('María', 'Martínez Fernández', '623456789', 'maria.martinez@example.com'),
+('José', 'Rodríguez Sánchez',   '634567890', 'jose.rodriguez@example.com'),
+('Laura', 'Gómez Díaz',         '645678901', 'laura.gomez@example.com'),
+('Antonio', 'Fernández Ruiz',   '656789012', 'antonio.fernandez@example.com'),
+('Ana', 'López Jiménez',        '667890123', 'ana.lopez@example.com'),
+('Francisco', 'Díaz Moreno',    '678901234', 'francisco.diaz@example.com'),
+('Lucía', 'Ruiz Hernández',     '689012345', 'lucia.ruiz@example.com'),
+('David', 'Sánchez Torres',     '690123456', 'david.sanchez@example.com'),
+('Elena', 'Romero Ramos',       '601234567', 'elena.romero@example.com'),
+('Manuel', 'Navarro Ortega',    '602345678', 'manuel.navarro@example.com'),
+('Isabel', 'Castro Vargas',     '603456789', 'isabel.castro@example.com'),
+('Pedro', 'Rubio Molina',       '604567890', 'pedro.rubio@example.com'),
+('Sara', 'Ortega Serrano',      '605678901', 'sara.ortega@example.com'),
+('Javier', 'Morales Gil',       '606789012', 'javier.morales@example.com'),
+('Beatriz', 'Hernández Cruz',   '607890123', 'beatriz.hernandez@example.com'),
+('Miguel', 'Torres León',       '608901234', 'miguel.torres@example.com'),
+('Carmen', 'Domínguez Flores',  '609012345', 'carmen.dominguez@example.com'),
+('Raúl', 'Vargas Castillo',     '611223344', 'raul.vargas@example.com'),
+('Patricia', 'Santos Delgado',  '622334455', 'patricia.santos@example.com');
+
+SELECT * FROM clientes;

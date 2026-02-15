@@ -1,0 +1,22 @@
+INSERT INTO entradas (titulo, contenido, fecha, autor) VALUES
+('Introducción a la programación en Python', 'Una guía para comenzar a programar con Python desde cero.', '2025-01-05', 1),
+('Cómo crear tu primera página web con HTML y CSS', 'Aprende los fundamentos del diseño web con ejemplos prácticos.', '2025-01-10', 2),
+('JavaScript moderno: funciones flecha y promesas', 'Exploramos las características modernas del lenguaje JavaScript.', '2025-01-12', 3),
+('Instalar y configurar MySQL en Ubuntu', 'Guía paso a paso para instalar MySQL en sistemas basados en Linux.', '2025-01-15', 4),
+('Buenas prácticas de seguridad en PHP', 'Cómo proteger tu aplicación web frente a ataques comunes.', '2025-01-18', 5),
+('Introducción a Docker para desarrolladores', 'Aprende a crear contenedores para tus proyectos de desarrollo.', '2025-01-20', 6),
+('Versionado de código con Git y GitHub', 'Todo lo que necesitas saber para trabajar en equipo con control de versiones.', '2025-01-22', 7),
+('APIs RESTful con Flask y Python', 'Construye tus propias APIs usando el microframework Flask.', '2025-01-25', 8),
+('Diseño responsivo con CSS Grid y Flexbox', 'Técnicas modernas para crear sitios adaptativos y elegantes.', '2025-01-28', 9),
+('Automatización de tareas con Python', 'Ejemplos de cómo automatizar procesos repetitivos con scripts.', '2025-02-02', 10),
+('Introducción a React.js', 'Cómo empezar a desarrollar interfaces modernas con React.', '2025-02-05', 11),
+('Bases de datos NoSQL: una visión general', 'Compara MongoDB, Redis y otros sistemas de almacenamiento.', '2025-02-07', 12),
+('Optimización de rendimiento en WordPress', 'Consejos para acelerar tu sitio web WordPress.', '2025-02-10', 13),
+('Cómo desplegar una app en la nube con AWS', 'Pasos esenciales para llevar tu aplicación a producción.', '2025-02-12', 14),
+('Aprendiendo Node.js paso a paso', 'Una introducción práctica al entorno de ejecución de JavaScript.', '2025-02-14', 15),
+('Machine Learning con Python y scikit-learn', 'Primeros pasos en el aprendizaje automático.', '2025-02-18', 16),
+('Cómo proteger tu red doméstica', 'Recomendaciones básicas de ciberseguridad para usuarios domésticos.', '2025-02-20', 17),
+('Programación orientada a objetos en Java', 'Conceptos clave como clases, objetos, herencia y polimorfismo.', '2025-02-22', 18),
+('Diseño de bases de datos relacionales', 'Cómo modelar tus datos correctamente con claves primarias y foráneas.', '2025-02-25', 19),
+('Inteligencia artificial en la web moderna', 'Exploramos el papel de la IA en las aplicaciones actuales.', '2025-02-28', 20);
+

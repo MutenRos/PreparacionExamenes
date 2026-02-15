@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ollama Web — Asesor de componentes PC</title>
+  <meta name="description" content="Interfaz web PHP que consulta un modelo LLM local (Ollama) para recomendar componentes de PC según presupuesto y uso.">
+  <style>
+    :root{
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --border: #e6e8ee;
+      --text: #111827;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --accent2:#111827;
+      --shadow: 0 8px 24px rgba(17,24,39,.08);
+      --radius: 14px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .topbar{
+      padding:8px 14px;
+      background:#fff;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .topbar a{color:var(--accent);text-decoration:none;font-size:13px;font-weight:600}
+    .topbar a:hover{text-decoration:underline}
+    .topbar .badge{
+      font-size:11px;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      color:var(--muted);
+    }
+
+    .app{
+      height:calc(100vh - 41px);
+      width:100vw;
+      display:grid;
+      grid-template-columns: minmax(320px, 420px) 1fr;
+      gap: 14px;
+      padding: 14px;
+    }
+
+    .panel{
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+    }
+
+    .panelHeader{
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      background: #fff;
+    }
+
+    .brand{
+      display:flex; align-items:baseline; gap:10px; min-width:0;
+    }
+    .brand h1{
+      font-size: 14px;
+      margin:0;
+      letter-spacing:.2px;
+      font-weight: 750;
+      white-space:nowrap;
+    }
+    .brand p{
+      margin:0;
+      font-size: 12px;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+
+    .toolbar{display:flex; gap:8px; align-items:center}
+
+    .btn{
+      appearance:none;
+      border:1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-weight: 700;
+      transition: background .15s ease, border-color .15s ease, transform .05s ease;
+      user-select:none;
+    }
+    .btn:hover{background:#f3f4f6}
+    .btn:active{transform: translateY(1px)}
+    .btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+    .btnPrimary{
+      background: var(--accent);
+      color: #fff;
+      border-color: rgba(37,99,235,.35);
+    }
+    .btnPrimary:hover{background:#1d4ed8}
+
+    .content{
+      padding: 14px 16px;
+      overflow:auto;
+      min-height:0;
+    }
+
+    label{
+      display:block;
+      margin: 12px 0 6px;
+      font-weight: 750;
+      font-size: 12px;
+      color: var(--accent2);
+      letter-spacing:.2px;
+    }
+
+    textarea, input{
+      width:100%;
+      background: #fff;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px 12px;
+      font: inherit;
+      outline: none;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+    textarea:focus, input:focus{
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.10);
+    }
+    textarea:focus-visible,input:focus-visible{outline:3px solid rgba(37,99,235,.4);outline-offset:1px}
+    textarea{min-height: 44vh; resize: vertical}
+
+    .hint{
+      margin: 8px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .charCount{font-size:11px;color:var(--muted);text-align:right;margin-top:4px}
+
+    details{
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      overflow:hidden;
+    }
+    summary{
+      cursor:pointer;
+      list-style:none;
+      padding: 12px 12px;
+      font-weight: 750;
+      font-size: 12px;
+      color: var(--text);
+    }
+    summary::-webkit-details-marker{display:none}
+    .settings{
+      padding: 0 12px 12px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .badge{
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: #fff;
+      white-space:nowrap;
+    }
+
+    .responseCard{
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow:hidden;
+      background:#fff;
+    }
+
+    .responseHead{
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      background:#fff;
+    }
+
+    .md{
+      padding: 16px 16px 18px;
+      line-height: 1.7;
+      color: var(--text);
+      font-size: 15px;
+    }
+    .md h1,.md h2,.md h3,.md h4,.md h5,.md h6{
+      margin: 16px 0 10px;
+      line-height: 1.2;
+    }
+    .md h1{font-size: 22px}
+    .md h2{font-size: 18px}
+    .md h3{font-size: 16px}
+    .md p{margin: 10px 0}
+    .md ul,.md ol{margin: 10px 0 10px 22px}
+    .md li{margin: 6px 0}
+    .md code{
+      font-family: var(--mono);
+      font-size: .95em;
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #f9fafb;
+    }
+    .md table{
+      width:100%;
+      border-collapse:collapse;
+      margin:12px 0;
+      font-size:14px;
+    }
+    .md th{
+      background:#f3f4f6;
+      border:1px solid var(--border);
+      padding:10px 12px;
+      text-align:left;
+      font-weight:700;
+    }
+    .md td{
+      border:1px solid var(--border);
+      padding:10px 12px;
+    }
+    .md tr:nth-child(even){background:#fafafa}
+    .md .total{
+      font-weight:700;
+      font-size:16px;
+      margin:12px 0;
+      padding:10px;
+      background:#f0f9ff;
+      border:1px solid #bae6fd;
+      border-radius:10px;
+    }
+
+    .note{
+      margin: 14px 16px 16px;
+      font-size:12px;
+      color:var(--muted);
+      padding:10px 12px;
+      background:#fafafa;
+      border:1px solid var(--border);
+      border-radius:10px;
+    }
+
+    @media (max-width: 980px){
+      .app{grid-template-columns: 1fr; height:auto; min-height:100vh}
+      textarea{min-height: 32vh}
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html">← Volver al inicio</a>
+  <span class="badge">Fase 006 — Interfaz clara</span>
+</div>
+
+<div class="app">
+
+  <!-- LEFT: FORM -->
+  <section class="panel">
+    <div class="panelHeader">
+      <div class="brand">
+        <h1>Ollama Web</h1>
+        <p>Configuración PC</p>
+      </div>
+      <div class="toolbar">
+        <button class="btn" type="button" id="clearBtn">Limpiar</button>
+        <button class="btn btnPrimary" type="button" id="submitBtn">Enviar</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <form id="theForm" onsubmit="return false;">
+        <p class="hint">
+          Escribe presupuesto (EUR) + uso. Ej.: "1200€ edición 4K + gaming 1440p".
+        </p>
+
+        <label for="prompt">Petición</label>
+        <textarea id="prompt" name="prompt" placeholder="Ejemplo: Tengo 900€ y quiero un PC para programar y algo de gaming.">Tengo un presupuesto de 1000€ y quiero un ordenador para programar, navegar y algo de gaming casual en 1080p.</textarea>
+        <div class="charCount" id="charCount">0 / 2000</div>
+
+        <details>
+          <summary>Ajustes</summary>
+          <div class="settings">
+            <div>
+              <label for="model">Modelo</label>
+              <input id="model" name="model" value="llama3:latest" placeholder="llama3:latest">
+            </div>
+            <div>
+              <label for="baseUrl">Ollama URL</label>
+              <input id="baseUrl" name="baseUrl" value="http://127.0.0.1:11434" placeholder="http://127.0.0.1:11434">
+            </div>
+          </div>
+        </details>
+      </form>
+    </div>
+  </section>
+
+  <!-- RIGHT: RESPONSE -->
+  <section class="panel">
+    <div class="panelHeader">
+      <div class="brand">
+        <h1>Respuesta</h1>
+        <p>Markdown → HTML</p>
+      </div>
+      <div class="toolbar">
+        <span class="badge">llama3:latest</span>
+        <span class="badge">4.82s</span>
+        <button class="btn" type="button" id="copyBtn">Copiar</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="responseCard">
+        <div class="responseHead">
+          <span class="badge">OK</span>
+        </div>
+
+        <div class="md" id="mdOut">
+          <h2>Configuración PC — Presupuesto 1000€</h2>
+          <h3>Programación + Navegación + Gaming casual 1080p</h3>
+
+          <p>Aquí tienes una configuración equilibrada que prioriza <strong>rendimiento en programación</strong> (compilación rápida, multitarea) y permite <strong>gaming casual en 1080p</strong> a 60fps en títulos no muy exigentes.</p>
+
+          <h3>DESGLOSE</h3>
+          <table>
+            <thead>
+              <tr><th>Componente</th><th>Modelo</th><th>Precio (EUR)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>CPU</td><td>AMD Ryzen 5 5600</td><td>139</td></tr>
+              <tr><td>Placa base</td><td>MSI B550M PRO-VDH WiFi</td><td>99</td></tr>
+              <tr><td>RAM</td><td>Kingston FURY Beast DDR4 2×8GB 3200MHz</td><td>45</td></tr>
+              <tr><td>GPU</td><td>AMD Radeon RX 6600 8GB</td><td>219</td></tr>
+              <tr><td>SSD</td><td>Kingston NV2 1TB NVMe M.2</td><td>65</td></tr>
+              <tr><td>Fuente</td><td>Corsair CV550 80+ Bronze 550W</td><td>49</td></tr>
+              <tr><td>Caja</td><td>Aerocool Bolt RGB</td><td>42</td></tr>
+              <tr><td>Disipador</td><td>Incluido con CPU (AMD Wraith Stealth)</td><td>0</td></tr>
+            </tbody>
+          </table>
+
+          <h3>SUMA</h3>
+          <p>Precios: 139 + 99 + 45 + 219 + 65 + 49 + 42 + 0</p>
+          <div class="total">Total_EUR = 658€</div>
+          <div class="total">Total_verificado_EUR = 658€ ✓</div>
+
+          <p>El total de <strong>658€</strong> deja un margen de <strong>342€</strong> respecto al presupuesto de 1000€, que puedes destinar a:</p>
+          <ul>
+            <li><strong>Monitor</strong>: AOC 24G2 (1080p, 144Hz, IPS) — ~159€</li>
+            <li><strong>Teclado + ratón</strong>: Logitech MK270 — ~25€</li>
+            <li><strong>Envío</strong> y margen para variaciones de precio</li>
+          </ul>
+
+          <h3>Notas</h3>
+          <ul>
+            <li>El Ryzen 5 5600 ofrece 6 núcleos/12 hilos, ideal para compilar código y mover IDEs pesados.</li>
+            <li>La RX 6600 maneja 1080p en gaming casual (Valorant, Minecraft, CS2) a más de 100fps.</li>
+            <li>16GB de RAM son suficientes para programación y navegación con muchas pestañas.</li>
+            <li>El SSD NVMe garantiza arranque rápido del SO y apertura instantánea de proyectos.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note">
+        <strong>Nota:</strong> Esta es una versión estática de demostración. En el proyecto real, esta respuesta la genera
+        un modelo LLM (LLaMA 3) ejecutándose en local mediante Ollama, conectado a PHP vía cURL HTTP API.
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const form = document.getElementById('theForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const clearBtn  = document.getElementById('clearBtn');
+  const promptEl  = document.getElementById('prompt');
+  const copyBtn   = document.getElementById('copyBtn');
+
+  // Ctrl+Enter para enviar
+  promptEl.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); alert('Demo: en el proyecto real, aquí se enviaría la consulta a Ollama.'); }
+  });
+
+  submitBtn.addEventListener('click', () => {
+    alert('Demo: en el proyecto real, aquí se enviaría la consulta a Ollama y se mostraría la respuesta de la IA.');
+  });
+
+  clearBtn.addEventListener('click', () => { promptEl.value=''; updateCount(); promptEl.focus(); });
+
+  // Contador de caracteres
+  const charCountEl = document.getElementById('charCount');
+  function updateCount() {
+    const len = promptEl.value.length;
+    charCountEl.textContent = len + ' / 2000';
+    charCountEl.style.color = len > 2000 ? '#dc2626' : '';
+  }
+  promptEl.addEventListener('input', updateCount);
+  updateCount();
+
+  // Copiar respuesta
+  copyBtn.addEventListener('click', async () => {
+    const mdOut = document.getElementById('mdOut');
+    if (!mdOut) return;
+    try{
+      await navigator.clipboard.writeText(mdOut.innerText);
+      copyBtn.textContent = 'Copiado';
+      setTimeout(()=>copyBtn.textContent='Copiar', 900);
+    }catch(e){
+      copyBtn.textContent = 'No se pudo';
+      setTimeout(()=>copyBtn.textContent='Copiar', 900);
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Service - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <style>
+        :root { /* Using global design tokens; no local overrides */ }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: var(--font-sans); background: var(--bg-primary); color: var(--text-primary); }
+        header { display: flex; align-items: center; justify-content: space-between; padding: 20px 28px; border-bottom: 1px solid var(--border-color); backdrop-filter: blur(8px); position: sticky; top:0; z-index:10; background: var(--bg-secondary); }
+        .logo { font-weight: 700; color: var(--brand-primary); letter-spacing: .6px; }
+        .nav a { color: var(--text-secondary); text-decoration: none; margin-left: 14px; padding: 8px 12px; border-radius: 10px; border:1px solid transparent; }
+        .nav a:hover { border-color: var(--border); background: inherit; }
+        .page { max-width: 1300px; margin: 0 auto; padding: 22px; }
+        h1 { margin: 0; font-size: 28px; }
+        p.lead { margin: 6px 0 14px; color: var(--text-secondary); }
+        .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+        .card { background: linear-gradient(160deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border:1px solid var(--border-color); border-radius: 14px; padding: 18px 18px 20px; box-shadow: 0 10px 28px rgba(0,0,0,0.28); }
+        .card h2 { margin: 0 0 10px; font-size: 18px; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+        .card p.desc { margin: 0 0 12px; color: var(--text-secondary); font-size: 14px; opacity: 0.9; }
+        label { display: block; margin-bottom: 6px; color: var(--text-secondary); font-weight: 600; font-size: 13px; }
+        input, select, textarea { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-primary); color: var(--text-primary); font-size: 14px; }
+        textarea { min-height: 80px; resize: vertical; }
+        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 10px; }
+        button { border: none; background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%); color: var(--text-inverse); padding: 10px 14px; border-radius: 10px; font-weight: 700; cursor: pointer; margin-top: 10px; width: 100%; }
+        button.secondary { background: transparent; color: var(--text-primary); border: 1px solid var(--border-color); }
+        .list { border: 1px solid var(--border-color); border-radius: 10px; padding: 10px; max-height: 240px; overflow-y: auto; background: var(--bg-tertiary); }
+        .list-item { padding: 8px 6px; border-bottom: 1px solid var(--border-color); font-size: 13px; }
+        .list-item:last-child { border-bottom: none; }
+        .pill { padding: 4px 8px; border-radius: 8px; background: var(--primary-light); color: var(--brand-primary); font-size: 12px; margin-right: 6px; }
+        .pill.red { background: var(--color-danger-light); color: var(--color-danger); }
+        .pill.blue { background: var(--color-info-light); color: var(--color-info); }
+        .inline { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; background: var(--color-success); }
+        @media (max-width: 720px) { header { flex-direction: column; align-items: flex-start; gap: 8px; } }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    {% include '_assistant_panel.html' %}
+<header>
+    <div class="logo">🛠️ Field Service</div>
+    <div class="nav">
+        <a href="/app/dashboard">← Dashboard</a>
+        <a href="/api/enterprise/docs">API</a>
+    </div>
+</header>
+
+<main class="page">
+    <h1>Work orders y SLA</h1>
+    <p class="lead">Gestiona órdenes de trabajo, técnicos, activos y tareas de servicio.</p>
+
+    <div class="grid">
+        <div class="card">
+            <h2>🚀 Alta de orden</h2>
+            <p class="desc">Crea work orders con prioridad y SLA.</p>
+            <div class="row">
+                <div><label>Título</label><input id="woTitle" placeholder="Instalar bomba"></div>
+                <div><label>Prioridad</label>
+                    <select id="woPriority">
+                        <option value="medium">Media</option>
+                        <option value="high">Alta</option>
+                        <option value="critical">Crítica</option>
+                        <option value="low">Baja</option>
+                    </select>
+                </div>
+                <div><label>Activo ID</label><input id="woAsset" type="number" placeholder="Opcional"></div>
+                <div><label>Cliente</label><input id="woCliente" placeholder="Nombre"></div>
+                <div><label>Inicio previsto</label><input id="woStart" type="datetime-local"></div>
+                <div><label>Fin previsto</label><input id="woEnd" type="datetime-local"></div>
+                <div><label>SLA límite</label><input id="woSLA" type="datetime-local"></div>
+            </div>
+            <label>Descripción</label>
+            <textarea id="woDesc" placeholder="Detalle del trabajo"></textarea>
+            <div class="inline" style="margin-top:8px;">
+                <input id="woTechName" placeholder="Técnico asignado" style="flex:1; padding:10px 12px; border-radius:10px; border:1px solid var(--border); background: var(--bg-primary); color: var(--text-primary);">
+            </div>
+            <button onclick="createWorkOrder()">Crear work order</button>
+        </div>
+
+        <div class="card">
+            <h2>📋 Ordenes</h2>
+            <p class="desc">Estado y SLA rápido.</p>
+            <div class="inline" style="margin-bottom:8px;">
+                <button class="secondary" onclick="loadWorkOrders()">Refrescar</button>
+                <span id="selectedWO" style="color: var(--text-tertiary); font-size:13px;"></span>
+            </div>
+            <div class="list" id="woList"></div>
+            <div class="inline" style="margin-top:8px;">
+                <input id="woStatus" placeholder="Estado (open/scheduled/in_progress/completed)" style="flex:1; padding:10px 12px; border-radius:10px; border:1px solid var(--border); background: var(--bg-primary); color: var(--text-primary);">
+                <button class="secondary" onclick="updateStatus()">Actualizar estado</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>✅ Tareas</h2>
+            <p class="desc">Checklist por orden seleccionada.</p>
+            <div class="row">
+                <div><label>Título</label><input id="taskTitle" placeholder="Verificar presión"></div>
+                <div><label>Min estimados</label><input id="taskEst" type="number"></div>
+            </div>
+            <button onclick="addTask()">Añadir tarea</button>
+            <div class="list" id="taskList" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="card">
+            <h2>🗓️ Agenda</h2>
+            <p class="desc">Slots asignados a técnicos.</p>
+            <div class="row">
+                <div><label>Técnico</label><input id="schedTech" placeholder="Nombre"></div>
+                <div><label>Inicio</label><input id="schedStart" type="datetime-local"></div>
+                <div><label>Fin</label><input id="schedEnd" type="datetime-local"></div>
+            </div>
+            <button onclick="addSchedule()">Planificar</button>
+            <div class="list" id="schedList" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="card">
+            <h2>🧰 Activos instalados</h2>
+            <p class="desc">Base instalada para servicio.</p>
+            <div class="row">
+                <div><label>Código</label><input id="assetCode" placeholder="AST-001"></div>
+                <div><label>Nombre</label><input id="assetName" placeholder="Bomba modelo X"></div>
+                <div><label>Tipo</label><input id="assetType" placeholder="Bomba"></div>
+                <div><label>Modelo</label><input id="assetModel" placeholder="XB-200"></div>
+                <div><label>Cliente</label><input id="assetClient" placeholder="Cliente"></div>
+                <div><label>Ubicación</label><input id="assetLoc" placeholder="Nave 3"></div>
+            </div>
+            <button onclick="createAsset()">Crear activo</button>
+            <div class="list" id="assetList" style="margin-top:10px; max-height:150px;"></div>
+        </div>
+    </div>
+</main>
+
+<script>
+let currentWO = null;
+
+const api = async (url, options = {}) => {
+    const opts = Object.assign({credentials:'include', headers:{'Content-Type':'application/json'}}, options);
+    const resp = await fetch(url, opts);
+    if (!resp.ok) {
+        const text = await resp.text();
+        throw new Error(text || resp.statusText);
+    }
+    const ct = resp.headers.get('content-type') || '';
+    return ct.includes('application/json') ? resp.json() : resp.text();
+};
+
+function setCurrentWO(id, text){
+    currentWO = id;
+    document.getElementById('selectedWO').textContent = id ? `WO seleccionado: ${text}` : '';
+    loadTasks();
+    loadSchedule();
+}
+
+async function createWorkOrder(){
+    try {
+        const data = await api('/api/field-service/work-orders', {
+            method:'POST',
+            body: JSON.stringify({
+                title: document.getElementById('woTitle').value,
+                descripcion: document.getElementById('woDesc').value,
+                asset_id: document.getElementById('woAsset').value ? Number(document.getElementById('woAsset').value) : null,
+                customer_name: document.getElementById('woCliente').value || null,
+                priority: document.getElementById('woPriority').value,
+                scheduled_start: document.getElementById('woStart').value ? new Date(document.getElementById('woStart').value).toISOString() : null,
+                scheduled_end: document.getElementById('woEnd').value ? new Date(document.getElementById('woEnd').value).toISOString() : null,
+                sla_due: document.getElementById('woSLA').value ? new Date(document.getElementById('woSLA').value).toISOString() : null,
+                assigned_to_name: document.getElementById('woTechName').value || null
+            })
+        });
+        setCurrentWO(data.id, `${data.work_order_number}`);
+        loadWorkOrders();
+    } catch (e) { alert(e.message); }
+}
+
+async function loadWorkOrders(){
+    try {
+        const data = await api('/api/field-service/work-orders');
+        const list = document.getElementById('woList');
+        list.innerHTML = data.map(w => `<div class="list-item" onclick="setCurrentWO(${w.id}, '${w.work_order_number}')" style="cursor:pointer"><span class="pill ${w.priority==='critical'?'red':(w.priority==='high'?'blue':'')}">${w.priority}</span><strong>${w.work_order_number}</strong> · ${w.title}<br><span class="status-dot" style="background:${w.status==='completed'?'var(--color-success)':'var(--color-warning)'}"></span>${w.status} · SLA ${w.sla_due ? new Date(w.sla_due).toLocaleString() : '—'}</div>`).join('') || '<div class="list-item" style="color: var(--text-tertiary)">Sin órdenes</div>';
+    } catch (e) { document.getElementById('woList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+}
+
+async function updateStatus(){
+    if(!currentWO) return alert('Selecciona una orden');
+    try {
+        const status = document.getElementById('woStatus').value || 'in_progress';
+        await api(`/api/field-service/work-orders/${currentWO}/status`, {method:'POST', body: JSON.stringify({status})});
+        loadWorkOrders();
+    } catch (e) { alert(e.message); }
+}
+
+async function addTask(){
+    if(!currentWO) return alert('Selecciona una orden');
+    try {
+        await api(`/api/field-service/work-orders/${currentWO}/tasks`, {
+            method:'POST',
+            body: JSON.stringify({
+                title: document.getElementById('taskTitle').value,
+                estimated_minutes: document.getElementById('taskEst').value ? Number(document.getElementById('taskEst').value) : null
+            })
+        });
+        loadTasks();
+    } catch (e) { alert(e.message); }
+}
+
+async function loadTasks(){
+    if(!currentWO) { document.getElementById('taskList').innerHTML = '<div class="list-item" style="color:var(--muted)">Selecciona una orden</div>'; return; }
+    try {
+        const data = await api(`/api/field-service/work-orders/${currentWO}/tasks`);
+        const list = document.getElementById('taskList');
+        list.innerHTML = data.map(t => `<div class="list-item"><span class="pill">${t.status}</span>${t.title} · Est ${t.estimated_minutes || '-'}m ${t.completed_at ? '· Done' : ''} <button class="secondary" style="width:auto;padding:4px 8px;margin-left:8px" onclick="completeTask(${t.id});event.stopPropagation();">Completar</button></div>`).join('');
+        if(!data.length) list.innerHTML = '<div class="list-item" style="color:var(--text-secondary)">Sin tareas</div>';
+    } catch (e) { document.getElementById('taskList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+}
+
+async function completeTask(id){
+    if(!currentWO) return;
+    try {
+        await api(`/api/field-service/work-orders/${currentWO}/tasks/${id}/complete`, {method:'POST'});
+        loadTasks();
+    } catch (e) { alert(e.message); }
+}
+
+async function addSchedule(){
+    if(!currentWO) return alert('Selecciona una orden');
+    try {
+        await api(`/api/field-service/work-orders/${currentWO}/schedule`, {
+            method:'POST',
+            body: JSON.stringify({
+                technician_name: document.getElementById('schedTech').value || null,
+                start_at: document.getElementById('schedStart').value ? new Date(document.getElementById('schedStart').value).toISOString() : null,
+                end_at: document.getElementById('schedEnd').value ? new Date(document.getElementById('schedEnd').value).toISOString() : null
+            })
+        });
+        loadSchedule();
+    } catch (e) { alert(e.message); }
+}
+
+async function loadSchedule(){
+    if(!currentWO) { document.getElementById('schedList').innerHTML = '<div class="list-item" style="color:var(--text-secondary)">Selecciona una orden</div>'; return; }
+    try {
+        const data = await api(`/api/field-service/work-orders/${currentWO}/schedule`);
+        const list = document.getElementById('schedList');
+        list.innerHTML = data.map(s => `<div class="list-item">${s.technician_name || 'Técnico'} · ${s.start_at ? new Date(s.start_at).toLocaleString() : '—'} - ${s.end_at ? new Date(s.end_at).toLocaleString() : '—'}</div>`).join('') || '<div class="list-item" style="color:var(--muted)">Sin agenda</div>';
+    } catch (e) { document.getElementById('schedList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+}
+
+async function createAsset(){
+    try {
+        await api('/api/field-service/assets', {
+            method:'POST',
+            body: JSON.stringify({
+                asset_code: document.getElementById('assetCode').value,
+                asset_name: document.getElementById('assetName').value,
+                asset_type: document.getElementById('assetType').value,
+                model: document.getElementById('assetModel').value,
+                customer_name: document.getElementById('assetClient').value,
+                location_name: document.getElementById('assetLoc').value
+            })
+        });
+        loadAssets();
+    } catch (e) { alert(e.message); }
+}
+
+async function loadAssets(){
+    try {
+        const data = await api('/api/field-service/assets');
+        const list = document.getElementById('assetList');
+        list.innerHTML = data.map(a => `<div class="list-item"><strong>${a.asset_code}</strong> · ${a.asset_name} · ${a.customer_name || ''} · ${a.location_name || ''}</div>`).join('') || '<div class="list-item" style="color:var(--muted)">Sin activos</div>';
+    } catch (e) { document.getElementById('assetList').innerHTML = `<div class='list-item' style='color:var(--color-danger)'>${e.message}</div>`; }
+}
+
+// Init
+loadWorkOrders();
+loadAssets();
+</script>
+    <script defer src="/static/assistant.js"></script>
+    <script defer src="/static/assistant-basic-panel.js"></script>
+    <script defer src="/static/voice-widget.js"></script>
+</body>
+</html>

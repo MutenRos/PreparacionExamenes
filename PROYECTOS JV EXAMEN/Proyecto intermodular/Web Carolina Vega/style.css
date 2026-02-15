@@ -1,0 +1,739 @@
+/* style.css */
+@font-face{
+  font-family: magiera;
+  src: url("Magiera Script.ttf");
+}
+
+:root{
+  --papel: rgba(255,255,255,.78);
+  --papel2: rgba(255,255,255,.62);
+  --marron: rgba(35,18,12,.72);
+  --marron2: rgba(35,18,12,.52);
+  --negro: rgba(0,0,0,.65);
+  --sombra: 0 10px 30px rgba(0,0,0,.35);
+  --borde: rgba(80,45,30,.25);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0;padding:0}
+body{
+  font-family: ubuntu, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: url("fondo2.png") center top / cover fixed;
+  color: #fff;
+}
+
+/* ---------------------------------------
+   HERO
+--------------------------------------- */
+#heroe{
+  min-height: 660px;
+  background: url("heroe.png") center top / cover no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+#heroe::after{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(1200px 520px at 55% 30%, rgba(255,210,160,.25), transparent 60%),
+    linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.10) 40%, rgba(0,0,0,.18));
+  pointer-events:none;
+}
+
+#heroe > header{
+  position: relative;
+  z-index: 1;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 20px;
+  padding: 22px 22px 0 22px;
+}
+
+#heroe h1{
+  margin: 0;
+  font-family: magiera, cursive;
+  font-size: 58px;
+  line-height: .9;
+  transform: rotate(-10deg);
+  text-shadow: 0 6px 16px rgba(0,0,0,.6);
+  letter-spacing: .5px;
+}
+
+#heroe nav{
+  display:flex;
+  align-items:center;
+  gap: 18px;
+  padding: 22px 22px;
+  background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.50) 28%, rgba(0,0,0,.45) 100%);
+  border-radius: 2px;
+}
+
+#heroe nav a{
+  color: inherit;
+  text-decoration:none;
+  text-transform:uppercase;
+  font-weight:700;
+  font-size: 14px;
+  letter-spacing: .6px;
+  white-space: nowrap;
+  opacity: .95;
+}
+
+#heroe nav a:hover{opacity:1}
+#heroe nav span{flex:1}
+
+#destacado{
+  position: relative;
+  z-index: 1;
+  margin: 60px 0 0 80px;
+  width: min(640px, 92vw);
+  text-shadow: 0 10px 20px rgba(0,0,0,.55);
+}
+
+#destacado h2{
+  margin: 0 0 8px 0;
+  font-family: magiera, cursive;
+  font-size: 84px;
+  line-height: .86;
+  transform: rotate(-6deg);
+}
+
+#destacado p{
+  margin: 10px 0;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+#destacado h3{
+  margin: 10px 0 18px 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 44px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+.boton{
+  display:inline-block;
+  padding: 10px 16px;
+  border-radius: 2px;
+  text-decoration:none;
+  color: #2d1a12;
+  background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.50));
+  border: 1px solid rgba(255,255,255,.35);
+  box-shadow: 0 8px 18px rgba(0,0,0,.25);
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  font-weight: 800;
+  font-size: 13px;
+  margin-right: 10px;
+}
+
+.boton.negro{
+  background: rgba(0,0,0,.42);
+  color:#fff;
+  border: 1px solid rgba(255,255,255,.18);
+}
+
+.boton{
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+.boton:hover{
+  filter: brightness(1.03);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0,0,0,.30);
+}
+.boton:active{
+  transform: translateY(0);
+}
+.plataformas{
+  margin-top: 14px;
+  opacity: .9;
+  font-size: 13px;
+  text-transform:none;
+}
+.plataformas a{
+  color:#fff;
+  text-decoration:none;
+  margin-right: 14px;
+  opacity: .9;
+}
+.plataformas a:hover{opacity:1}
+
+/* ---------------------------------------
+   CONTENIDO "PAPEL"
+--------------------------------------- */
+#contenido{
+  background: linear-gradient(180deg, var(--papel) 0%, var(--papel2) 100%);
+  color: #1e0f0a;
+  border-top: 1px solid var(--borde);
+  box-shadow: var(--sombra);
+}
+
+#contenido > section{
+  width: min(1200px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+/* títulos estilo mockup */
+#albumes > h4,
+#canciones > h4{
+  margin: 26px 0 10px 0;
+  text-align:center;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #2c1710;
+}
+
+/* ---------------------------------------
+   ÁLBUMES (lista)
+--------------------------------------- */
+#albumes{
+  padding: 20px 0 10px 0;
+}
+
+#albumes article{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap: 16px;
+  padding: 14px 14px;
+  background: rgba(255,255,255,.55);
+  border: 1px solid var(--borde);
+  box-shadow: 0 8px 18px rgba(0,0,0,.12);
+  margin: 14px 0;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+#albumes article:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(0,0,0,.18);
+}
+
+#albumes img{
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 10px 18px rgba(0,0,0,.18);
+}
+
+#albumes h5{
+  margin:0;
+  font-size: 22px;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+#albumes p{
+  margin: 6px 0 0 0;
+  opacity: .85;
+  font-weight: 700;
+}
+
+#albumes article .boton{
+  justify-self:end;
+  margin:0;
+}
+
+/* ---------------------------------------
+   BLOQUE 2 columnas: canciones + tienda
+--------------------------------------- */
+#bloques{
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 18px;
+  padding: 10px 0 18px 0;
+  align-items:start;
+}
+
+/* canciones */
+#canciones{
+  padding-bottom: 10px;
+}
+
+#canciones article{
+  display:grid;
+  grid-template-columns: 42px 1fr 180px 44px;
+  align-items:center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,.52);
+  border: 1px solid var(--borde);
+  margin: 10px 0;
+  transition: background .2s ease;
+}
+#canciones article:hover{
+  background: rgba(255,255,255,.72);
+}
+
+#canciones button{
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.18);
+  background: rgba(0,0,0,.08);
+  cursor:pointer;
+  font-weight: 900;
+}
+
+#canciones h5{
+  margin:0;
+  font-size: 16px;
+  letter-spacing: .2px;
+}
+
+#canciones span{
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(0,0,0,.18), rgba(0,0,0,.05));
+}
+
+#canciones a{
+  text-decoration:none;
+  color: inherit;
+  opacity: .7;
+  text-align:center;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+#canciones a:hover{opacity:1}
+
+/* tienda */
+#tienda{
+  background: rgba(255,255,255,.52);
+  border: 1px solid var(--borde);
+  padding: 16px;
+  box-shadow: 0 10px 20px rgba(0,0,0,.12);
+  text-align:center;
+}
+
+#tienda img{
+  width: 100%;
+  height: auto;
+  display:block;
+  border-radius: 2px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.15);
+  margin-bottom: 12px;
+}
+
+.boton.grande{
+  display:inline-block;
+  margin: 0;
+  padding: 12px 18px;
+}
+
+/* ---------------------------------------
+   NEWSLETTER
+--------------------------------------- */
+#sigueme{
+  width: min(1200px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 18px 0 30px 0;
+  border-top: 1px solid var(--borde);
+  text-align:right;
+}
+
+#sigueme h4{
+  margin: 14px 0 6px 0;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color:#2c1710;
+}
+
+#sigueme p{
+  margin: 0 0 10px 0;
+  font-weight: 800;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  opacity: .85;
+}
+
+#sigueme form{
+  display:flex;
+  justify-content:flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#sigueme input{
+  width: min(420px, 90vw);
+  padding: 10px 12px;
+  border: 1px solid rgba(0,0,0,.18);
+  background: rgba(255,255,255,.7);
+  border-radius: 2px;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+#sigueme input:focus{
+  border-color: rgba(35,18,12,.45);
+  box-shadow: 0 0 0 3px rgba(35,18,12,.10);
+}
+
+#sigueme button{
+  padding: 10px 14px;
+  border-radius: 2px;
+  border: 1px solid rgba(0,0,0,.18);
+  background: rgba(0,0,0,.18);
+  cursor: pointer;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+}
+
+#sigueme .social{
+  margin-top: 12px;
+}
+#sigueme .social a{
+  display:inline-flex;
+  width: 34px;
+  height: 34px;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  color:#2c1710;
+  background: rgba(255,255,255,.55);
+  border: 1px solid var(--borde);
+  margin-left: 8px;
+  border-radius: 2px;
+  font-weight: 900;
+}
+
+/* ---------------------------------------
+   FOOTER
+--------------------------------------- */
+footer{
+  background: rgba(0,0,0,.55);
+  color: rgba(255,255,255,.85);
+  text-align:center;
+  padding: 18px 12px;
+  font-weight: 700;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+/* ---------------------------------------
+   RESPONSIVE
+--------------------------------------- */
+@media (max-width: 980px){
+  #heroe > header{flex-direction:column;align-items:flex-start}
+  #destacado{margin: 40px 0 0 22px}
+  #destacado h2{font-size: 64px}
+  #destacado h3{font-size: 34px}
+  #bloques{grid-template-columns: 1fr}
+  #sigueme{text-align:left}
+  #sigueme form{justify-content:flex-start}
+}
+
+@media (max-width: 720px){
+  #albumes article{grid-template-columns: 120px 1fr; grid-template-areas:
+    "img title"
+    "img year"
+    "btn btn";
+  }
+  #albumes article img{width:120px;height:120px}
+  #albumes article .boton{justify-self:start;margin-top: 8px}
+  #canciones article{grid-template-columns: 42px 1fr 44px}
+  #canciones span{display:none}
+  #heroe nav{flex-wrap:wrap}
+}
+/* ============================================================
+   APPEND: soporte para páginas internas (biografia, musica, tour,
+   galeria, contacto) sin romper index
+============================================================ */
+
+/* Variante de hero para páginas */
+#heroe.pagina{
+  min-height: 520px;
+}
+
+#destacado.destacado-pagina{
+  margin: 70px 0 0 80px;
+  width: min(720px, 92vw);
+}
+
+#destacado.destacado-pagina .kicker{
+  margin: 0 0 8px 0;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  opacity: .95;
+}
+
+#destacado.destacado-pagina .lead{
+  margin: 12px 0 18px 0;
+  font-weight: 650;
+  letter-spacing: .2px;
+  text-transform: none;
+  max-width: 62ch;
+}
+
+/* Contenedores tipo “panel” en papel */
+.panel{
+  margin: 18px 0;
+  padding: 16px 16px 18px 16px;
+  background: rgba(255,255,255,.52);
+  border: 1px solid var(--borde);
+  box-shadow: 0 10px 20px rgba(0,0,0,.10);
+}
+
+.panel-compacto{
+  padding: 16px;
+}
+
+/* Tipografía y detalles */
+.muted{opacity:.75}
+.nota{
+  margin: 12px 0 0 0;
+  opacity: .8;
+  font-weight: 700;
+}
+.nota a{color: inherit}
+
+/* Cards */
+.cards{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.card{
+  background: rgba(255,255,255,.55);
+  border: 1px solid var(--borde);
+  padding: 14px;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.card:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(0,0,0,.14);
+}
+.card h5{
+  margin: 0 0 8px 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+}
+.card p{margin: 0 0 12px 0}
+
+/* Biografía layout */
+.bio{
+  display:grid;
+  grid-template-columns: 320px 1fr;
+  gap: 16px;
+  align-items:start;
+}
+.bio-foto img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius: 2px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.14);
+}
+.bio-texto p{margin: 0 0 12px 0}
+.bio-datos{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 14px 0 12px 0;
+}
+.bio-datos .dato{
+  background: rgba(255,255,255,.50);
+  border: 1px solid var(--borde);
+  padding: 10px 10px;
+}
+.bio-datos strong{
+  display:block;
+  margin-bottom: 6px;
+}
+.cta-linea{margin-top: 14px}
+
+/* Música: grid de plataformas */
+.plataformas-grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.plataformas-grid .boton{
+  margin: 0;
+  text-align:center;
+}
+
+/* Separador */
+.separador{
+  border: none;
+  height: 1px;
+  background: rgba(80,45,30,.20);
+  margin: 14px 0;
+}
+
+/* Tour */
+.tour-toolbar{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content:flex-end;
+  margin: 8px 0 12px 0;
+}
+.tour-toolbar input,
+.tour-toolbar select{
+  padding: 10px 12px;
+  border: 1px solid rgba(0,0,0,.18);
+  background: rgba(255,255,255,.7);
+  border-radius: 2px;
+  outline: none;
+}
+.tabla-tour{
+  border: 1px solid var(--borde);
+  background: rgba(255,255,255,.45);
+}
+.tabla-tour .fila{
+  display:grid;
+  grid-template-columns: 160px 180px 1fr 140px 140px;
+  gap: 10px;
+  align-items:center;
+  padding: 10px 12px;
+  border-top: 1px solid rgba(80,45,30,.16);
+}
+.tabla-tour .fila.cabecera{
+  border-top: none;
+  background: rgba(0,0,0,.06);
+  font-weight: 900;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
+.chip{
+  display:inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.16);
+  background: rgba(0,0,0,.06);
+  font-weight: 900;
+}
+.chip.agotado{
+  background: rgba(0,0,0,.12);
+}
+
+/* Galería */
+.galeria-toolbar{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content:flex-start;
+  margin: 8px 0 12px 0;
+}
+.galeria-toolbar .chip{
+  cursor: pointer;
+}
+.grid-galeria{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.grid-galeria .foto{
+  display:block;
+  border-radius: 2px;
+  overflow:hidden;
+  border: 1px solid var(--borde);
+  background: rgba(255,255,255,.40);
+}
+.grid-galeria img{
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  display:block;
+  transition: transform .2s ease;
+}
+.grid-galeria .foto:hover img{transform: scale(1.02)}
+
+/* Contacto */
+.contacto-grid{
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 14px;
+  align-items:start;
+}
+.form-contacto{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.form-contacto label{
+  display:flex;
+  flex-direction:column;
+  gap: 6px;
+  font-weight: 900;
+}
+.form-contacto input,
+.form-contacto select,
+.form-contacto textarea{
+  padding: 10px 12px;
+  border: 1px solid rgba(0,0,0,.18);
+  background: rgba(255,255,255,.7);
+  border-radius: 2px;
+  outline: none;
+  font-weight: 600;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.form-contacto input:focus,
+.form-contacto select:focus,
+.form-contacto textarea:focus{
+  border-color: rgba(35,18,12,.45);
+  box-shadow: 0 0 0 3px rgba(35,18,12,.10);
+}
+.form-contacto .ancho{
+  grid-column: 1 / -1;
+}
+.form-contacto .acciones{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.form-contacto button{
+  padding: 10px 14px;
+  border-radius: 2px;
+  border: 1px solid rgba(0,0,0,.18);
+  background: rgba(0,0,0,.18);
+  cursor: pointer;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+}
+.info-contacto{
+  background: rgba(255,255,255,.50);
+  border: 1px solid var(--borde);
+  padding: 14px;
+}
+.info-contacto h5{
+  margin: 0 0 8px 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+}
+.info-contacto p{margin: 0 0 10px 0}
+.info-contacto a{color: inherit; text-decoration:none}
+.info-contacto a:hover{text-decoration:underline}
+#sigueme .social.grande a{
+  width: 38px;
+  height: 38px;
+  font-size: 16px;
+}
+
+/* Responsive extras */
+@media (max-width: 980px){
+  #destacado.destacado-pagina{margin: 44px 0 0 22px}
+  .bio{grid-template-columns: 1fr}
+  .bio-datos{grid-template-columns: 1fr}
+  .cards{grid-template-columns: 1fr}
+  .tabla-tour .fila{grid-template-columns: 140px 1fr 1fr}
+  .tabla-tour .fila > div:nth-child(4),
+  .tabla-tour .fila > div:nth-child(5){grid-column: auto}
+  .contacto-grid{grid-template-columns: 1fr}
+  .grid-galeria{grid-template-columns: repeat(2, 1fr)}
+}
+
+@media (max-width: 520px){
+  .grid-galeria{grid-template-columns: 1fr}
+  .form-contacto{grid-template-columns: 1fr}
+}
+

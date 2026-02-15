@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="662.4374389648435" height="364.734400699013" viewBox="0 0 662.4374389648435 364.734400699013">
+
+  <defs>
+    <style>
+      text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 12px; fill: #111827; }
+      .shape-rect { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-entity { fill: #ffffff; stroke: #111827; stroke-width: 2; }
+      .shape-circle { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-pill { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .shape-db { fill: #ffffff; stroke: #9ca3af; stroke-width: 1; }
+      .conn { stroke: #111827; stroke-width: 2; fill: none; }
+    </style>
+    <marker id="arrow-end" markerWidth="10" markerHeight="7" refX="10" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#111827"/>
+    </marker>
+    <marker id="arrow-start" markerWidth="10" markerHeight="7" refX="0" refY="3.5"
+            orient="auto" markerUnits="strokeWidth">
+      <polygon points="10 0, 0 3.5, 10 7" fill="#111827"/>
+    </marker>
+  </defs>
+        
+<rect class="shape-rect" x="40" y="199.42188463712986" width="119.99998393811673" height="39.999999999999986" rx="4" ry="4" />
+<text x="99.99999196905836" y="223.42188463712986" text-anchor="middle">Admisión (form)</text>
+<rect class="shape-rect" x="176.45310251336346" y="197.93750963712986" width="119.99999999999994" height="39.999999999999986" rx="4" ry="4" />
+<text x="236.45310251336343" y="221.93750963712986" text-anchor="middle">Validación</text>
+<rect class="shape-rect" x="319.62500321237655" y="197.9531217876233" width="119.99993575246705" height="39.999999999999986" rx="4" ry="4" />
+<text x="379.6249710886101" y="221.9531217876233" text-anchor="middle">Matrícula</text>
+<text x="50.078125" y="187.85936536287002">CRM - Software de gestión de la relación con el cliente</text>
+<rect class="shape-rect" x="500.312516061883" y="112.64063784950653" width="119.99999999999994" height="39.999999999999986" rx="4" ry="4" />
+<text x="560.312516061883" y="136.64063784950653" text-anchor="middle">LMS</text>
+<rect class="shape-rect" x="502.4374389648435" y="202.10939106188314" width="119.99999999999994" height="39.999999999999986" rx="4" ry="4" />
+<text x="562.4374389648435" y="226.10939106188314" text-anchor="middle">SIS</text>
+<rect class="shape-rect" x="494.531266061883" y="284.734400699013" width="119.99999999999994" height="39.999999999999986" rx="4" ry="4" />
+<text x="554.531266061883" y="308.734400699013" text-anchor="middle">Conta/Fact</text>
+<text x="48.75" y="54">Enterprise Resource Planning - Software de gestión empresarial</text>
+<path class="conn" d="M 159.99998393811674 218.76918798753493 L 176.4531025133634 218.59020637408761" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 296.45310251336343 217.94405232626931 L 319.62500321237644 217.9465791019867" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 421.98396396574594 197.95312178762325 L 517.953523184747 152.64063784950653" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 439.6249389648435 219.31723018699896 L 502.4374389648435 220.74528193216875" marker-end="url(#arrow-end)" />
+<path class="conn" d="M 419.93465473636206 237.95312178762325 L 514.2215824141309 284.734400699013" marker-end="url(#arrow-end)" />
+</svg>

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Tienda online</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/estilo.css">
+  </head>
+  <body>
+    <header>
+      <a href="index.html"><h1>Tienda online</h1></a>
+      <div class="header-actions">
+        <a class="carrito-link" href="carrito.html">
+          Carrito
+          <span class="badge">3</span>
+        </a>
+      </div>
+    </header>
+    <main>
+      <section class="carrito">
+        <div class="izquierda">
+          <h3>Datos de entrega</h3>
+          <form action="finalizacion.html" method="GET">
+            <p>Introduce tu nombre</p>
+            <input type="text" name="nombre" required>
+            <p>Introduce tus apellidos</p>
+            <input type="text" name="apellidos" required>
+            <p>Introduce tu email</p>
+            <input type="email" name="email" placeholder="tucorreo@email.com" required>
+            <input type="submit" value="Finalizar compra">
+          </form>
+          <div class="acciones">
+            <a class="boton-secundario" href="index.html" id="vaciar-carrito">Vaciar carrito</a>
+          </div>
+        </div>
+        <div class="derecha">
+          <table>
+            <thead>
+              <tr>
+                <th>Unidades</th>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2</td>
+                <td>Camiseta Azul</td>
+                <td>19,99€</td>
+                <td>39,98€</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>Sudadera Roja</td>
+                <td>29,95€</td>
+                <td>29,95€</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>Gorra Negra</td>
+                <td>12,50€</td>
+                <td>12,50€</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3" class="total-label">Total</td>
+                <td class="total-valor">82,43€</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </section>
+
+      <script>
+        const vaciar = document.getElementById('vaciar-carrito');
+        if (vaciar) {
+          vaciar.addEventListener('click', (event) => {
+            const ok = confirm('Seguro que quieres vaciar el carrito?');
+            if (!ok) event.preventDefault();
+          });
+        }
+      </script>
+    </main>
+    <footer>
+      (c) Jose Vicente Carratala
+    </footer>
+  </body>
+</html>

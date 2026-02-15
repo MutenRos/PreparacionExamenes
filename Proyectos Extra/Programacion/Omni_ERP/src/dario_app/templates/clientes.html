@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes - OmniERP</title>
+    <link rel="stylesheet" href="/static/global.css">
+    <link rel="stylesheet" href="/static/components.css">
+    <link rel="stylesheet" href="/static/aaaaa-animations.css">
+    <link rel="stylesheet" href="/static/assistant.css">
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            color: #667eea;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .table th {
+            background: #667eea;
+            color: white;
+        }
+        .table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .badge-bronce {
+            background: #cd7f32;
+            color: white;
+        }
+        .badge-plata {
+            background: #c0c0c0;
+            color: #333;
+        }
+        .badge-oro {
+            background: #ffd700;
+            color: #333;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+        .success {
+            color: green;
+            margin-top: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/modules-base.css">
+    <link rel="stylesheet" href="/static/components-advanced.css">
+</head>
+<body>
+    <link rel="stylesheet" href="/static/assistant.css">
+    <div class="container">
+        <div class="header">
+            <h1>🙋‍♂️ Gestión de Clientes</h1>
+            <div>
+                <button class="btn btn-primary" onclick="openModal()">➕ Nuevo Cliente</button>
+                <a href="/app/dashboard" class="btn btn-secondary">⬅️ Dashboard</a>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>Lista de Clientes</h2>
+            <div id="message"></div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Nivel</th>
+                        <th>Puntos</th>
+                        <th>Total Compras</th>
+                    </tr>
+                </thead>
+                <tbody id="clientesTable">
+                    <tr>
+                        <td colspan="6" style="text-align: center;">Cargando...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Cliente -->
+    <div class="modal" id="clienteModal">
+        <div class="modal-content">
+            <h2>Nuevo Cliente</h2>
+            <form id="clienteForm" onsubmit="crearCliente(event)">
+                <div class="form-group">
+                    <label>Nombre Completo *</label>
+                    <input type="text" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="tel" name="telefono">
+                </div>
+                <div class="form-group">
+                    <label>Dirección</label>
+                    <input type="text" name="direccion">
+                </div>
+                <div id="formMessage"></div>
+                <div style="margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('clienteModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('clienteModal').classList.remove('active');
+            document.getElementById('clienteForm').reset();
+            document.getElementById('formMessage').innerHTML = '';
+        }
+
+        async function cargarClientes() {
+            try {
+                const response = await fetch('/api/clientes/');
+                if (!response.ok) {
+                    throw new Error('Error al cargar clientes');
+                }
+                const clientes = await response.json();
+
+                const tbody = document.getElementById('clientesTable');
+                if (clientes.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay clientes registrados</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = clientes.map(cliente => `
+                    <tr>
+                        <td>${cliente.nombre}</td>
+                        <td>${cliente.email}</td>
+                        <td>${cliente.telefono || 'N/A'}</td>
+                        <td><span class="badge badge-${cliente.nivel_lealtad.toLowerCase()}">${cliente.nivel_lealtad}</span></td>
+                        <td>${cliente.puntos_lealtad}</td>
+                        <td>$${cliente.total_compras.toFixed(2)}</td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('message').innerHTML = '<p class="error">Error al cargar clientes</p>';
+            }
+        }
+
+        async function crearCliente(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = {
+                nombre: formData.get('nombre'),
+                email: formData.get('email'),
+                telefono: formData.get('telefono') || null,
+                direccion: formData.get('direccion') || null
+            };
+
+            try {
+                const response = await fetch('/api/clientes/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Error al crear cliente');
+                }
+
+                document.getElementById('formMessage').innerHTML = '<p class="success">Cliente creado exitosamente</p>';
+                setTimeout(() => {
+                    closeModal();
+                    cargarClientes();
+                }, 1500);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('formMessage').innerHTML = `<p class="error">${error.message}</p>`;
+            }
+        }
+
+        // Cargar clientes al inicio
+        cargarClientes();
+    </script>
+    <script defer src="/static/assistant.js"></script>
+    <script defer src="/static/assistant-basic-panel.js"></script>
+    <script defer src="/static/voice-assistant-widget.js"></script>
+</body>
+</html>
