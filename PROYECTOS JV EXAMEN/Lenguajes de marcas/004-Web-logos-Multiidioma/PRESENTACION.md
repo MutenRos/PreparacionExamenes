@@ -6,7 +6,7 @@
 
 LogoGallery es una web de galería de logos famosos con soporte multiidioma (español, inglés y francés). El proyecto demuestra el uso combinado de HTML5 semántico, CSS3 con diseño responsive y JavaScript vanilla para implementar un sistema de internacionalización (i18n) basado en atributos data. La web presenta 6 logos ficticios de diferentes sectores (tecnología, deportes, alimentación, comercio, música y automoción), con tarjetas interactivas, una sección informativa y un formulario de contacto con validación.
 
-## Desarrollo
+## Desarrollo de las partes
 
 ### 1. Estructura HTML5 semántica — index.html
 
@@ -197,7 +197,7 @@ Se han incluido atributos `aria-label` en los elementos `<nav>` para diferenciar
 
 **Archivo:** `index.html` · Líneas 17 y 181 · Ruta: `/index.html`
 
-## Presentación
+## Presentación del proyecto
 
 LogoGallery es una galería web interactiva de logos de marcas famosas que he desarrollado con HTML5, CSS3 y JavaScript vanilla. Lo que hace especial a este proyecto es su sistema de internacionalización: toda la interfaz se puede cambiar entre español, inglés y francés con un solo clic, sin recargar la página.
 

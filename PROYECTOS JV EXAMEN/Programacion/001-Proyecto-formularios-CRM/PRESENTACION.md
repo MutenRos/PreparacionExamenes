@@ -6,7 +6,7 @@
 
 Este proyecto es un sistema CRM (Customer Relationship Management) de gestión de clientes desarrollado en Java como aplicación de consola. Permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre una base de datos de clientes mediante formularios de texto interactivos. Los datos se persisten automáticamente en un fichero CSV, lo que permite mantener la información entre sesiones. El proyecto aplica conceptos fundamentales de Programación Orientada a Objetos: encapsulamiento, clases, constructores, ArrayList, entrada/salida de ficheros, validación de datos y estructura modular.
 
-## Desarrollo
+## Desarrollo de las partes
 
 ### 1. Clase Cliente — Modelo de datos con OOP
 
@@ -239,7 +239,7 @@ El fichero `datos/clientes.csv` almacena los clientes en formato texto plano, un
 
 **Archivo:** `datos/clientes.csv` · Líneas 1–6 · Ruta: `/datos/clientes.csv`
 
-## Presentación
+## Presentación del proyecto
 
 Este proyecto es un CRM de gestión de clientes desarrollado completamente en Java como aplicación de consola. El usuario interactúa con el programa a través de un menú con 6 opciones: dar de alta clientes rellenando un formulario con validaciones, listar todos los clientes en una tabla formateada, buscar por nombre o email, modificar datos existentes, eliminar con confirmación, y ver estadísticas por categoría.
 

@@ -8,7 +8,7 @@ Este proyecto consiste en la creación de un **motor de plantillas tipo Pug** es
 
 El proyecto evoluciona en varias fases: desde un parser básico que convierte una plantilla sencilla a HTML, hasta un sistema completo con directivas (`@if`, `@foreach`, `@include`), interpolación de variables, un framework CSS utility-first generado dinámicamente (JVestilo), y un controlador que conecta con MySQL para renderizar una web personal real con páginas y entradas de blog.
 
-## Desarrollo
+## Desarrollo de las partes
 
 ### 1. Parser básico de Pug a HTML (fase 001)
 
@@ -209,7 +209,7 @@ Se han aplicado mejoras mixtas en varias capas:
 - **JVpug (perfil.jvpug)**: Añadido `meta viewport`, comentarios descriptivos de variables esperadas
 - **CSS (JVestilo.php)**: Transiciones suaves en enlaces (`transition`), efecto hover de opacidad, clases utilitarias extra (shadow, border-radius, box-sizing, margin reset)
 
-## Presentación
+## Presentación del proyecto
 
 Este proyecto demuestra cómo se puede construir un motor de plantillas completo desde cero en PHP, inspirado en la filosofía de Pug: escribir HTML de forma más limpia usando indentación en lugar de etiquetas de cierre.
 

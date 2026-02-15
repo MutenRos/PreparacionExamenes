@@ -10,7 +10,7 @@ El resultado es un sistema capaz de tomar una descripción de producto en format
 
 ---
 
-## Desarrollo
+## Desarrollo de las partes
 
 ### 1. Instalación del entorno — AUTOMATIC1111 y Stable Diffusion WebUI
 
@@ -217,7 +217,7 @@ Se aplicaron mejoras de nivel estudiante sobre los scripts originales:
 
 ---
 
-## Presentación
+## Presentación del proyecto
 
 Este proyecto muestra un recorrido progresivo por la generación de imágenes con inteligencia artificial. Empezamos instalando Stable Diffusion y su interfaz web, para entender el modelo por fuera. Después pasamos a controlarlo desde Python con la librería `diffusers`, generando primero una imagen simple y luego un lote de varias imágenes.
 

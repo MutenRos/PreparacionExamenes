@@ -10,7 +10,7 @@ El resultado es una web profesional con landing page, blog con categorías y bú
 
 ---
 
-## Desarrollo
+## Desarrollo de las partes
 
 ### 1. index.php — Motor de plantillas con SEO avanzado
 
@@ -241,7 +241,7 @@ function md_to_html(string $md): string {
 
 ---
 
-## Presentación
+## Presentación del proyecto
 
 CursoIA es una web completa para un curso de Inteligencia Artificial dirigido a programadores. El proyecto parte de una landing page estática (HTML + CSS) y la evoluciona añadiendo capas de backend con PHP y SQLite.
 

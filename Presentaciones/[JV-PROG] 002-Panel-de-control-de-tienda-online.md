@@ -6,7 +6,7 @@
 
 Este proyecto es un panel de control de consola en Java que permite gestionar la tienda online desarrollada en el proyecto de Bases de Datos (Bases-de-datos-001-Proyecto-tienda-online). El panel se conecta a la base de datos MySQL `tiendadam` mediante JDBC y permite realizar operaciones CRUD sobre productos y clientes, consultar pedidos con detalle de líneas (usando JOINs SQL), buscar productos y visualizar estadísticas de facturación. El proyecto demuestra la intermodularidad entre Java y MySQL, aplicando Programación Orientada a Objetos, consultas SQL preparadas y el patrón Singleton para la conexión.
 
-## Desarrollo
+## Desarrollo de las partes
 
 ### 1. Clase Conexion — Patrón Singleton y JDBC
 
@@ -243,7 +243,7 @@ CREATE TABLE IF NOT EXISTS pedido (
 
 Este panel de control demuestra la conexión entre asignaturas: la base de datos fue diseñada y creada en el proyecto de Bases de Datos (tablas, relaciones FK, datos de inserción, usuario MySQL), y aquí se accede desde Java con JDBC. El panel consume la misma BD que utiliza la tienda online PHP, mostrando cómo diferentes tecnologías pueden compartir los mismos datos.
 
-## Presentación
+## Presentación del proyecto
 
 Este es un panel de control de consola desarrollado en Java que gestiona la tienda online creada en el proyecto de Bases de Datos. El panel se conecta a la base de datos `tiendadam` en MySQL mediante JDBC y permite administrar productos, clientes y pedidos desde la línea de comandos.
 

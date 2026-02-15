@@ -10,7 +10,7 @@ El proyecto consta de 12 archivos HTML que representan cada paso iterativo de co
 
 ---
 
-## Desarrollo
+## Desarrollo de las partes
 
 ### 1. 001-inicio.html — El esqueleto HTML vacío
 
@@ -192,7 +192,7 @@ function filtrarRecortables(){
 
 ---
 
-## Presentación
+## Presentación del proyecto
 
 recortabl.es es una web de juguetes recortables de papel para familias y educación. El proyecto demuestra la construcción progresiva de una página web desde cero: empezando por un HTML vacío y añadiendo paso a paso la estructura semántica, el contenido de cada sección, la fuente tipográfica, y finalmente el CSS de cada componente.
 

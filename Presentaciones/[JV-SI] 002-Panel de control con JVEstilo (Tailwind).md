@@ -10,7 +10,7 @@ Con JVEstilo se construye progresivamente un panel de administración de cliente
 
 ---
 
-## Desarrollo
+## Desarrollo de las partes
 
 ### 1. JVEstilo.php — El motor del framework CSS
 
@@ -225,7 +225,7 @@ Se aplicaron mejoras mixtas sobre el código original:
 
 ---
 
-## Presentación
+## Presentación del proyecto
 
 Este proyecto muestra cómo construir un framework CSS desde cero utilizando PHP como generador. JVEstilo funciona como una versión simplificada de Tailwind CSS: en lugar de compilar con Node.js, genera todas las clases utilitarias en tiempo de ejecución mediante bucles PHP que recorren arrays de colores, tamaños y propiedades CSS.
 

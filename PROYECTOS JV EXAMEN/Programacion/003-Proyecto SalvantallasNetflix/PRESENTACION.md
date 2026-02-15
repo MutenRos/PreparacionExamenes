@@ -6,7 +6,7 @@
 
 Este proyecto es una plataforma web tipo Netflix dedicada a salvapantallas gratuitos (screensavers). La aplicación PHP lee un catálogo de playlists y vídeos de YouTube desde un fichero JSON generado automáticamente por un script Python (yt-dlp), y los presenta en una interfaz visual inspirada en las plataformas de streaming: hero slider, filas horizontales desplazables, ventana modal de detalle, grid con búsqueda en tiempo real y SEO optimizado con JSON-LD. El proyecto ha pasado por 6 versiones progresivas (001 a 006), cada una añadiendo funcionalidades sobre la anterior: desde la estructura básica hasta la vista completa con buscador de vídeos.
 
-## Desarrollo
+## Desarrollo de las partes
 
 ### 1. Lectura y decodificación del JSON con PHP
 
@@ -288,7 +288,7 @@ El proyecto muestra la evolución del aprendizaje a través de 6 carpetas numera
 
 **Archivo:** Estructura completa de 001-Ejercicios/ · Ruta: `/001-Ejercicios/`
 
-## Presentación
+## Presentación del proyecto
 
 ScreenSaver.es es una plataforma web tipo Netflix que presenta vídeos de salvapantallas gratuitos organizados por playlists temáticas: Motivational Sentences, Colors, Fish Tank, Matrix, Espirógrafos, Relojes y Fluidos. El catálogo incluye más de 230 vídeos con thumbnails descargadas y un total de 8 playlists.
 

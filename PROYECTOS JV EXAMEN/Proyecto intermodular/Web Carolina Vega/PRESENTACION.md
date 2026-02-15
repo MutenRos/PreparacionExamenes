@@ -10,7 +10,7 @@ El sitio está construido íntegramente con **HTML5 semántico** y **CSS3** avan
 
 ---
 
-## Desarrollo
+## Desarrollo de las partes
 
 ### 1. Estructura HTML semántica y accesibilidad
 
@@ -288,7 +288,7 @@ Se aplicaron mejoras mixtas que tocan CSS, HTML y JavaScript:
 
 ---
 
-## Presentación
+## Presentación del proyecto
 
 La web de Carolina Vega es un sitio de 6 páginas que funciona como carta de presentación profesional de una artista musical. La página principal muestra un hero cinematográfico con tipografía manuscrita, la discografía con portadas, un reproductor integrado de canciones y una sección de newsletter.
 
