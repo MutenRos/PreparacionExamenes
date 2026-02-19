@@ -2,6 +2,8 @@
 
 ![Panel de administración con tabla de clientes](004-vamos%20con%20la%20tabla.php)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Sistemas-informaticos-002-Panel-de-control-con-JVEstilo-Tailwind/](https://mutenros.github.io/Sistemas-informaticos-002-Panel-de-control-con-JVEstilo-Tailwind/)
+
 ## Introducción
 
 Este proyecto desarrolla un **framework CSS tipo Tailwind generado dinámicamente con PHP** llamado **JVEstilo**. A diferencia de Tailwind que se compila con Node.js, JVEstilo genera todas las clases utilitarias (colores, tamaños, flex, grid, bordes, tipografía…) directamente desde PHP, incluyéndolas mediante `<?php include("JVestilo/JVestilo.php"); ?>` dentro de una etiqueta `<style>`.

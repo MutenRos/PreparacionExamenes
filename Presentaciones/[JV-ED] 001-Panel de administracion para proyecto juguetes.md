@@ -2,6 +2,8 @@
 
 ![Vista principal de recortabl.es — Hero con categorías y recortables destacados](docs/img/screenshot-index.png)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Entornos-001-Panel-de-administracin-para-proyecto-juguetes/](https://mutenros.github.io/Entornos-001-Panel-de-administracin-para-proyecto-juguetes/)
+
 ## Introducción
 
 Este proyecto es una **tienda web de recortables de papel** construida con PHP y SQLite. Permite a los usuarios explorar un catálogo de juguetes recortables para imprimir, filtrar por categoría, ver fichas de producto detalladas, registrarse e iniciar sesión, y contactar con la tienda. Además, incluye un **panel de administración** completo con CRUD de categorías y productos. El proyecto pasó por 2 fases: un primer panel de administración básico y luego la adición del sistema de registro de usuarios con autenticación segura (password_hash, CSRF, session_regenerate_id).

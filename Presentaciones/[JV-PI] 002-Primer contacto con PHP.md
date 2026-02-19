@@ -2,6 +2,8 @@
 
 ![Catálogo JOCARSA](docs/img/banner.png)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Proyecto-intermodular-002-Primer-contacto-con-PHP/](https://mutenros.github.io/Proyecto-intermodular-002-Primer-contacto-con-PHP/)
+
 ## Introducción
 
 Este proyecto construye paso a paso un catálogo web de productos de la empresa JOCARSA utilizando PHP y XML. Partiendo de un esqueleto HTML básico, cada iteración añade una funcionalidad nueva: cabecera, lectura dinámica de datos desde XML, estilos CSS, layout en rejilla y tarjetas con color de fondo dinámico. El resultado final es una página de catálogo totalmente funcional que lee sus datos de un fichero XML y los presenta con un diseño visual atractivo.

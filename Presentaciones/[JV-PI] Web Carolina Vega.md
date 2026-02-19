@@ -2,6 +2,8 @@
 
 ![Captura del hero de la web de Carolina Vega](heroe.png)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Proyecto-intermodular-Web-Carolina-Vega/](https://mutenros.github.io/Proyecto-intermodular-Web-Carolina-Vega/)
+
 ## Introducción
 
 Este proyecto consiste en un sitio web completo para la cantautora ficticia **Carolina Vega**. La web funciona como carta de presentación profesional de la artista: muestra su biografía, discografía, próximas fechas de conciertos, galería fotográfica y un formulario de contacto para contrataciones y prensa.

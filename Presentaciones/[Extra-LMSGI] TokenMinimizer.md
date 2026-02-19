@@ -2,6 +2,8 @@
 
 ![Token Minimizer — Dark theme dual-panel interface for optimizing AI prompts](https://img.shields.io/badge/Stack-HTML%20%7C%20CSS%20%7C%20JavaScript%20ES%20Modules-58a6ff?style=for-the-badge)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/TokenMinimizer/](https://mutenros.github.io/TokenMinimizer/)
+
 ## Introducción
 
 Token Minimizer is a client-side web tool that **reduces AI prompt costs by 40-60%** by translating prompts into high-density Chinese (logograms) or stripping filler words. Students and developers who interact frequently with GPT-4 and other token-billed models can paste their prompts, press one button, and get back a compressed version that the AI understands perfectly — at a fraction of the token cost. The entire pipeline runs in the browser with zero backend, leveraging ES module imports, free translation APIs, and the official GPT-4 tokenizer.

@@ -2,6 +2,8 @@
 
 ![Portada del proyecto](101-Ejercicios/005-Proyecto/thumbnails/WeM920s9xHA.jpg)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Programacion-007-Proyecto-dibujantes/](https://mutenros.github.io/Programacion-007-Proyecto-dibujantes/)
+
 ## Introducción
 
 Este proyecto consiste en la creación de un portal web completo dedicado al canal de YouTube **@dibujantes**, que ofrece tutoriales de dibujo a mano alzada. El desarrollo abarca desde la extracción automatizada de datos de YouTube mediante Python y yt-dlp, pasando por el almacenamiento en SQLite, hasta la construcción de una interfaz web en PHP con estética de papel y lápiz. El resultado es un sitio funcional con página de inicio, galería, tutoriales, sección "sobre mí" y páginas legales, alimentado dinámicamente por los datos del canal.

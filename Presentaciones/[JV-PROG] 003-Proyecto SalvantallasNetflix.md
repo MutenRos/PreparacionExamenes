@@ -2,6 +2,8 @@
 
 ![Salvapantallas Netflix](https://mutenros.github.io/Programacion-003-Proyecto-SalvantallasNetflix/)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Programacion-003-Proyecto-SalvantallasNetflix/](https://mutenros.github.io/Programacion-003-Proyecto-SalvantallasNetflix/)
+
 ## Introducción
 
 Este proyecto es una plataforma web tipo Netflix dedicada a salvapantallas gratuitos (screensavers). La aplicación PHP lee un catálogo de playlists y vídeos de YouTube desde un fichero JSON generado automáticamente por un script Python (yt-dlp), y los presenta en una interfaz visual inspirada en las plataformas de streaming: hero slider, filas horizontales desplazables, ventana modal de detalle, grid con búsqueda en tiempo real y SEO optimizado con JSON-LD. El proyecto ha pasado por 6 versiones progresivas (001 a 006), cada una añadiendo funcionalidades sobre la anterior: desde la estructura básica hasta la vista completa con buscador de vídeos.

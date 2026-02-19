@@ -2,6 +2,8 @@
 
 ![JocarsaPress](docs/img/banner.png)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Proyecto-intermodular-005-Web-con-panel-de-control/](https://mutenros.github.io/Proyecto-intermodular-005-Web-con-panel-de-control/)
+
 ## Introducción
 
 Este proyecto construye un CMS (sistema de gestión de contenidos) completo desde cero usando PHP y MySQL. La web pública muestra una página personal con navegación dinámica y un blog con entradas en Markdown que se renderizan a HTML. El panel de administración permite crear, editar y eliminar tanto páginas como entradas del blog. Todo el estilo se genera con un framework CSS propio llamado JVestilo que crea miles de clases de utilidad desde PHP.

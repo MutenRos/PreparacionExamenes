@@ -2,6 +2,8 @@
 
 ![Página principal recortabl.es](imgcategoria.png)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Lenguajes-de-marcas-003-Tienda-de-juguetes/](https://mutenros.github.io/Lenguajes-de-marcas-003-Tienda-de-juguetes/)
+
 ## Introducción
 
 Este proyecto consiste en la creación progresiva de una página web para una tienda online de juguetes recortables llamada **recortabl.es**. A lo largo de 12 ejercicios evolutivos, se construye desde cero una landing page completa utilizando únicamente HTML y CSS (con estilos inline en `<style>`). La web presenta categorías de recortables, productos destacados con valoración, una galería de imágenes, sección informativa y un footer con enlaces legales y redes sociales. Todo el proyecto utiliza una fuente personalizada de Google Fonts (Delius) y un esquema de colores basado en azul (#267eca).

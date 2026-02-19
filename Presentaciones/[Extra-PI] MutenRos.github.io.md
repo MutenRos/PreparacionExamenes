@@ -2,6 +2,8 @@
 
 ![Synthwave Portfolio](https://img.shields.io/badge/Theme-Synthwave-ff2a6d?style=for-the-badge)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/](https://mutenros.github.io/)
+
 ## Introducción
 
 Portfolio personal interactivo con estética **Synthwave/Retrowave** de los años 80. El proyecto es una single-page application que muestra mis habilidades como desarrollador web, integra la API de GitHub para mostrar proyectos en tiempo real, incluye un formulario de contacto con backend PHP y contiene un easter egg temático de Matrix activable mediante el código Konami.

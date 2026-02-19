@@ -2,6 +2,8 @@
 
 ![MenuSpreader Hero](docs/index.html)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/MenuSpreader/](https://mutenros.github.io/MenuSpreader/)
+
 ## Introducción
 
 MenuSpreader es una herramienta completa diseñada para bares y restaurantes que necesitan enviar su menú del día a decenas o cientos de clientes de forma automática a través de WhatsApp. El proyecto combina una app de escritorio con interfaz gráfica en Python/Tkinter, un panel web moderno con Next.js y React, y un servidor bot con Node.js que se conecta a WhatsApp Web. Todo funciona de forma local, sin necesidad de servicios de terceros ni cuotas mensuales — el único requisito es una sesión de WhatsApp del negocio.

@@ -2,6 +2,8 @@
 
 ![Blog de correos con PHP e IMAP](https://img.shields.io/badge/PHP-IMAP-777BB4?style=for-the-badge&logo=php&logoColor=white)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Entornos-003-Recuperacin-de-emails-con-IMAP/](https://mutenros.github.io/Entornos-003-Recuperacin-de-emails-con-IMAP/)
+
 ## Introducción
 
 Este proyecto convierte una bandeja de correo electrónico en un blog personal completamente funcional. Utilizando PHP y la extensión IMAP, nos conectamos a un servidor de correo real (IONOS) y presentamos cada mensaje como una entrada de blog moderna, con imágenes destacadas, extractos, vista de detalle y enlaces a redes sociales. El resultado es una aplicación web dinámica que demuestra cómo aplicar protocolos de red clásicos (IMAP) para construir interfaces actuales con HTML5 y CSS3.

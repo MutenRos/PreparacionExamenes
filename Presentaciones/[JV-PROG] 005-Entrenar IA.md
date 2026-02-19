@@ -2,6 +2,8 @@
 
 ![Fine-tuning LoRA sobre Qwen 2.5 — entrenamiento personalizado de modelo de IA local](https://img.shields.io/badge/Python-LoRA_Fine--tuning-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Programacion-005-Entrenar-IA/](https://mutenros.github.io/Programacion-005-Entrenar-IA/)
+
 ## Introducción
 
 Este proyecto es un recorrido completo por el proceso de personalización de un modelo de inteligencia artificial: desde la preparación de los datos de entrenamiento (JSONL), pasando por el fine-tuning con LoRA/QLoRA en Python, la inferencia del modelo resultante, hasta la construcción de una interfaz web tipo chat que consume el modelo. El proyecto cubre 10 ejercicios progresivos más archivos auxiliares (servidor Flask, módulo de inferencia) y un frontend HTML/CSS/JS. Demuestra que es posible entrenar un modelo de IA con datos propios en un equipo local usando técnicas eficientes como LoRA, sin necesidad de GPUs profesionales ni servicios en la nube.

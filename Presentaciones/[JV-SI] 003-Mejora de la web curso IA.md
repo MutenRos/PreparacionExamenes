@@ -2,6 +2,8 @@
 
 ![Landing page del Curso de Inteligencia Artificial](img/hero.png)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Sistemas-informaticos-003-Mejora-de-la-web-curso-IA/](https://mutenros.github.io/Sistemas-informaticos-003-Mejora-de-la-web-curso-IA/)
+
 ## Introducción
 
 Este proyecto toma la web estática del Curso de Inteligencia Artificial para Programadores (creada en Lenguajes de Marcas) y la transforma en una **aplicación web completa con PHP y SQLite**. Se añade un sistema de plantillas con reemplazo de placeholders, un blog dinámico con Markdown, un panel de analíticas de visitas, un logger GDPR-friendly, envío de correo por SMTP, generación automática de sitemap.xml y SEO avanzado (Open Graph, JSON-LD, ETag caching).

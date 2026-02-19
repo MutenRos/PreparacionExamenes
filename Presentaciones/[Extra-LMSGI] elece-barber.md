@@ -2,6 +2,8 @@
 
 ![ELECE Barber Logo](images/elece-logo.png)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/elece-barber/](https://mutenros.github.io/elece-barber/)
+
 ## Introducción
 
 ELECE Barber es una página web profesional diseñada para una barbería real ubicada en Albuixech, Valencia. El proyecto presenta la imagen de marca de la barbería, sus servicios y precios, reseñas reales de clientes desde Booksy y Google Maps, información de contacto con mapa interactivo y un sistema de reserva de citas online integrado con la plataforma Booksy.

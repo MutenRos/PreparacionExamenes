@@ -2,6 +2,8 @@
 
 ![OpenClaw Header](README-header.png)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Tenacitas/](https://mutenros.github.io/Tenacitas/)
+
 ## Introducción
 
 **OpenClaw** es una plataforma **open-source** de asistente personal de inteligencia artificial que funciona en cualquier dispositivo y se comunica a través de más de 30 canales de mensajería — WhatsApp, Telegram, Discord, Slack, Signal, iMessage, Microsoft Teams, Matrix, Nostr, y más. Este repositorio es la versión pública upstream del proyecto, que incluye un componente exclusivo: **Swabble**, un demonio de activación por voz construido con Swift 6.2 y Speech.framework para macOS 26. El monorepo TypeScript abarca CLI, Gateway WebSocket, panel de control web (Lit), apps nativas iOS/Android/macOS, sistema de plugins, contenedores Docker con sandboxing, y un marco de testing con Vitest. Es, en esencia, un proyecto que toca absolutamente todas las capas del desarrollo de software moderno.

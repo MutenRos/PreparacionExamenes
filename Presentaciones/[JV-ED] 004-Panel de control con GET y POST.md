@@ -2,6 +2,8 @@
 
 ![Panel de control PHP MySQL](https://img.shields.io/badge/PHP-MySQL_Admin-777BB4?style=for-the-badge&logo=php&logoColor=white)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Entornos-004-Panel-de-control-con-GET-y-POST/](https://mutenros.github.io/Entornos-004-Panel-de-control-con-GET-y-POST/)
+
 ## Introducción
 
 Este proyecto construye un panel de administración web que permite explorar cualquier base de datos MySQL de forma visual. Utilizando PHP y el objeto MySQLi, la aplicación lista automáticamente todas las tablas de una base de datos y muestra su contenido en una interfaz con barra lateral y tabla de datos. A lo largo de 7 archivos evolutivos se estudian los métodos GET y POST de HTTP, desde pasar un simple parámetro por URL hasta construir un panel completo con estilos avanzados y protección contra inyecciones.

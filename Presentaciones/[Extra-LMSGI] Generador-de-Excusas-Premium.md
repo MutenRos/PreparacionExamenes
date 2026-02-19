@@ -2,6 +2,8 @@
 
 ![Generador de Excusas Premium](https://img.shields.io/badge/Excusas-Premium-gold)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Generador-de-Excusas-Premium/](https://mutenros.github.io/Generador-de-Excusas-Premium/)
+
 ## Introducción
 
 El Generador de Excusas Premium es una aplicación web interactiva que genera excusas absurdas y creativas combinando aleatoriamente sujetos, verbos, objetos y contextos humorísticos. El usuario puede introducir el motivo para el que necesita la excusa y la aplicación construye una frase completa personalizada. Incluye historial de excusas guardado en localStorage y la posibilidad de copiar cada excusa al portapapeles.

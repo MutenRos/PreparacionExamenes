@@ -4,6 +4,8 @@
 ![SQLite](https://img.shields.io/badge/SQLite-3-green)
 ![SEO](https://img.shields.io/badge/SEO-Schema.org+OpenGraph-orange)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Proyecto-intermodular-007-posicionamiento/](https://mutenros.github.io/Proyecto-intermodular-007-posicionamiento/)
+
 ## Introducción
 
 Este proyecto es una tienda online de recortables infantiles en PDF llamada **recortabl.es**. Permite explorar un catálogo de productos por categorías, ver detalles de cada recortable, descargar PDFs, registrarse, iniciar sesión y contactar. Además, incluye un panel de administración completo (CRUD de categorías y productos) y un sistema de SEO avanzado con Open Graph, JSON-LD Schema.org, canonical URLs, sitemap.xml dinámico y logging de visitas. Todo ello usando PHP con SQLite como base de datos y un diseño visual limpio y responsive.

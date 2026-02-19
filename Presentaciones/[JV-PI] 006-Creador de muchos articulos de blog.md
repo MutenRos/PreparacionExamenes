@@ -4,6 +4,8 @@
 ![Python 3](https://img.shields.io/badge/Python-3.x-blue)
 ![SQLite](https://img.shields.io/badge/SQLite-3-green)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Proyecto-intermodular-006-creador-de-muchos-articulso-de-blog/](https://mutenros.github.io/Proyecto-intermodular-006-creador-de-muchos-articulso-de-blog/)
+
 ## Introducción
 
 Este proyecto automatiza la generación de cientos de artículos de blog sobre Inteligencia Artificial a partir de cursos escritos en Markdown. Utiliza un modelo de lenguaje local (Ollama con qwen2.5:7b-instruct) para redactar cada artículo, y almacena los resultados en una base de datos SQLite. El objetivo es poblar un blog técnico con contenido de calidad sin depender de APIs externas de pago, manteniendo todo el procesamiento en local.

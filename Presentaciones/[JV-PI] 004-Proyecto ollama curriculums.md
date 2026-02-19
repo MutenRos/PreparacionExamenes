@@ -2,6 +2,8 @@
 
 ![Proyecto Ollama Curriculums](docs/img/banner.png)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Proyecto-intermodular-004-Proyecto-ollama-curriculums/](https://mutenros.github.io/Proyecto-intermodular-004-Proyecto-ollama-curriculums/)
+
 ## Introducción
 
 Este proyecto demuestra cómo utilizar inteligencia artificial local (Ollama con el modelo qwen2.5) para analizar currículums vitae de forma automática. El flujo comienza extrayendo texto de un PDF, lo convierte a Markdown y luego lo envía a un modelo LLM que genera un resumen profesional y una valoración de idoneidad para un puesto docente. Todo sin depender de APIs externas ni servicios en la nube.

@@ -2,6 +2,8 @@
 
 ![HomeLab Indexer Dashboard](https://img.shields.io/badge/HomeLab_Indexer-Network_Inventory-667eea?style=for-the-badge&logo=homeassistant&logoColor=white)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/HomeLab-Indexer/](https://mutenros.github.io/HomeLab-Indexer/)
+
 ## Introducción
 
 HomeLab Indexer es una herramienta de inventario de red automático diseñada para entornos homelab. Mientras trabajas en tu laboratorio doméstico, la aplicación escanea tu red local, descubre dispositivos, detecta los servicios que exponen (HTTP, SSH, bases de datos, Docker…), identifica fabricantes por dirección MAC y presenta todo en un dashboard web moderno. Piensa en él como tu "Google Maps de la red local": siempre sabes qué hay conectado, dónde y qué servicios ofrece.

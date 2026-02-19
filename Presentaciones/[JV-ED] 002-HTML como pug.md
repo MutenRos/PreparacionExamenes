@@ -2,6 +2,8 @@
 
 ![Vista de la web personal renderizada con JVpug](img_preview.png)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Entornos-002-HTML-como-pug/](https://mutenros.github.io/Entornos-002-HTML-como-pug/)
+
 ## Introducción
 
 Este proyecto consiste en la creación de un **motor de plantillas tipo Pug** escrito íntegramente en PHP. El objetivo es simplificar la escritura de HTML mediante una sintaxis basada en indentación (sin etiquetas de cierre), similar a lo que hace Pug en el ecosistema Node.js, pero implementado de forma nativa en PHP.

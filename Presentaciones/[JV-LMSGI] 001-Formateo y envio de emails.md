@@ -2,6 +2,8 @@
 
 ![Newsletter JOCARSA](101-Ejercicios/banner.jpg)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Lenguajes-de-marcas-001-Formateo-y-envo-de-emails/](https://mutenros.github.io/Lenguajes-de-marcas-001-Formateo-y-envo-de-emails/)
+
 ## Introducción
 
 Este proyecto aborda la maquetación de newsletters corporativas en formato HTML compatibles con clientes de correo electrónico. A diferencia del desarrollo web moderno, los emails HTML requieren técnicas de maquetación basadas en tablas, ya que la mayoría de clientes de correo (Gmail, Outlook, Thunderbird) no soportan CSS Grid, Flexbox ni muchas propiedades CSS actuales. A lo largo de 10 ejercicios evolutivos, se construye paso a paso un email profesional para la empresa ficticia JOCARSA, desde una tabla básica hasta un newsletter completo con imagen corporativa, sección destacada, banner, bloques de contenido y pie de página normativo RGPD.

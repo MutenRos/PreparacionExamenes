@@ -2,6 +2,8 @@
 
 ![Web de recortables de papel](012-css%20galeria.html)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Sistemas-informaticos-004-Mejora-de-la-web-de-juguetes/](https://mutenros.github.io/Sistemas-informaticos-004-Mejora-de-la-web-de-juguetes/)
+
 ## Introducción
 
 Este proyecto mejora la web de una tienda de juguetes recortables de papel — **recortabl.es** — construida en las asignaturas de Lenguajes de Marcas (maquetación HTML/CSS) y Entornos de Desarrollo (panel de administración). En Sistemas Informáticos se trabaja sobre el front-end, refinando progresivamente la página principal desde un HTML vacío hasta una web completa con hero, categorías, productos destacados, galería de imágenes e información educativa.

@@ -2,6 +2,8 @@
 
 ![Bombas Ideal Hero](assets/images/hero-fabrica.jpg)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/BI/](https://mutenros.github.io/BI/)
+
 ## Introducción
 
 Este proyecto es una propuesta de rediseño completo de la página web corporativa de **Bombas Ideal S.A.U.**, empresa fabricante de bombas de agua fundada en 1902 con presencia en más de 72 países. Se ha construido un sitio moderno, responsive y accesible utilizando únicamente HTML5, CSS3 y JavaScript ES6+ (vanilla, sin frameworks). La web incluye una página principal con hero slider, catálogo de más de 35 series de productos, herramienta innovadora de selección de bombas (BIPS), sistema de noticias, formulario de contacto con validación, y centro de descargas con PDFs reales de catálogos y manuales. La arquitectura ha sido refactorizada a un sistema modular profesional tanto en CSS (design tokens + componentes) como en JavaScript (ES6 modules con patrón init/state).

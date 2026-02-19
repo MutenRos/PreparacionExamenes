@@ -2,6 +2,8 @@
 
 ![Página principal del curso IA](img/destacado1.png)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Lenguajes-de-marcas-002-Web-curso-IA/](https://mutenros.github.io/Lenguajes-de-marcas-002-Web-curso-IA/)
+
 ## Introducción
 
 Este proyecto consiste en la creación progresiva de una web promocional para un curso de Inteligencia Artificial en directo, orientada a la conversión de visitantes en alumnos inscritos. Se parte de una estructura HTML básica con marcadores de posición (placeholders `{{clave}}`) y se evoluciona hasta una web con SEO avanzado, estilos CSS profesionales, datos dinámicos vía JSON y un motor de plantillas PHP que sustituye los placeholders por contenido real. El resultado es una landing page completa con héroe, secciones destacadas, formulario de contacto y pie de página, lista para ser desplegada o servida por un servidor web.

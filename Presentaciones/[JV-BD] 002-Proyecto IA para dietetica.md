@@ -2,6 +2,8 @@
 
 ![Interfaz de la aplicación web Ollama — panel de consulta y respuesta](docs/img/screenshot-interfaz.png)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Bases-de-datos-002-Proyecto-IA-para-diettica/](https://mutenros.github.io/Bases-de-datos-002-Proyecto-IA-para-diettica/)
+
 ## Introducción
 
 Este proyecto consiste en una **aplicación web en PHP** que se conecta a un modelo de lenguaje (LLM) ejecutado en local mediante **Ollama**, un servidor de inferencia de IA. La aplicación evolucionó en 6 fases: desde una simple llamada por terminal hasta una interfaz profesional de dos paneles con renderizado de Markdown, ingeniería de prompts y funcionalidades JavaScript avanzadas. El caso de uso inicial es un **consejero dietético** que genera recetas saludables con los ingredientes que el usuario tiene disponibles, y posteriormente se amplió a un **asesor de componentes de PC** por presupuesto.

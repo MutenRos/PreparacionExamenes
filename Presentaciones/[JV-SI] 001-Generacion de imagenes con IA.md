@@ -2,6 +2,8 @@
 
 ![Imagen generada con Stable Diffusion](101-Ejercicios/generated_images/hero-gestión-académica-moderna.png)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Sistemas-informaticos-001-Generacin-de-imgenes-con-IA/](https://mutenros.github.io/Sistemas-informaticos-001-Generacin-de-imgenes-con-IA/)
+
 ## Introducción
 
 Este proyecto explora la **generación de imágenes con inteligencia artificial** utilizando el modelo **Stable Diffusion** y scripts en **Python**. El trabajo progresa desde la instalación básica del entorno hasta un pipeline automatizado completo que lee un archivo XML de producto, genera prompts inteligentes con **Ollama (LLaMA 3)** y produce imágenes de marketing SaaS con Stable Diffusion.

@@ -2,6 +2,8 @@
 
 ![Panel de Control](https://mutenros.github.io/Programacion-002-Panel-de-control-de-tienda-online/)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Programacion-002-Panel-de-control-de-tienda-online/](https://mutenros.github.io/Programacion-002-Panel-de-control-de-tienda-online/)
+
 ## Introducción
 
 Este proyecto es un panel de control de consola en Java que permite gestionar la tienda online desarrollada en el proyecto de Bases de Datos (Bases-de-datos-001-Proyecto-tienda-online). El panel se conecta a la base de datos MySQL `tiendadam` mediante JDBC y permite realizar operaciones CRUD sobre productos y clientes, consultar pedidos con detalle de líneas (usando JOINs SQL), buscar productos y visualizar estadísticas de facturación. El proyecto demuestra la intermodularidad entre Java y MySQL, aplicando Programación Orientada a Objetos, consultas SQL preparadas y el patrón Singleton para la conexión.

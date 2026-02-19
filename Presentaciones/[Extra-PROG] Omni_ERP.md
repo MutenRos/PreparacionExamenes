@@ -2,6 +2,8 @@
 
 ![OmniERP — 74 módulos, 775+ endpoints, paridad con Microsoft Dynamics 365](https://img.shields.io/badge/Stack-Python%20%7C%20FastAPI%20%7C%20SQLAlchemy%20%7C%20Jinja2-667eea?style=for-the-badge)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Omni_ERP/](https://mutenros.github.io/Omni_ERP/)
+
 ## Introducción
 
 OmniERP es un sistema ERP empresarial completo desarrollado con **Python y FastAPI** que alcanza paridad funcional con Microsoft Dynamics 365. Integra **74 módulos** (inventario, ventas, compras, producción, RRHH, contabilidad, CRM, logística, POS y más), **775+ endpoints REST**, autenticación JWT con 2FA, arquitectura multi-tenant con bases de datos SQLite por organización y un frontend basado en plantillas Jinja2 con un design system CSS propio. Es un proyecto ambicioso que demuestra cómo construir una aplicación empresarial real desde cero.

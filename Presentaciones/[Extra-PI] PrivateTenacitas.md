@@ -2,6 +2,8 @@
 
 ![OpenClaw Logo](docs/images/openclaw-logo.png)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/PrivateTenacitas/](https://mutenros.github.io/PrivateTenacitas/)
+
 ## Introducción
 
 **OpenClaw** es una plataforma de asistente personal de inteligencia artificial de código abierto, diseñada como un sistema **multicanal** que conecta a un único agente IA con más de 30 canales de mensajería distintos — WhatsApp, Telegram, Discord, Slack, Signal, iMessage, Microsoft Teams, Matrix, Nostr, y muchos más. La arquitectura se basa en un **monorepo TypeScript** con Node.js 22+, gestionado con pnpm, que abarca desde la CLI hasta aplicaciones nativas iOS/Android/macOS, pasando por un gateway WebSocket, un panel de control web construido con Lit Web Components y un sistema de plugins extensible. Este proyecto demuestra el dominio de prácticamente todas las capas del desarrollo de software moderno: desde Docker y despliegue en la nube hasta interfaces reactivas y seguridad de nivel empresarial.

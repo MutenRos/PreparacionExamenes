@@ -2,6 +2,8 @@
 
 ![MicroChat con Ollama — interfaz de chat minimalista conectada a IA local](https://img.shields.io/badge/PHP-Ollama_API-777BB4?style=for-the-badge&logo=php&logoColor=white)
 
+> 🔗 **GitHub Pages:** [https://mutenros.github.io/Programacion-004-IA-inicial/](https://mutenros.github.io/Programacion-004-IA-inicial/)
+
 ## Introducción
 
 Este proyecto es un recorrido progresivo de 12 ejercicios que muestra cómo conectar una aplicación web PHP con un modelo de inteligencia artificial local ejecutándose en Ollama. Partiendo de una simple llamada cURL que imprime texto plano, se avanza paso a paso hasta construir un microchat estilizado con spinner de carga, gestión de sesiones, validación de entrada y soporte de modo oscuro automático. El objetivo pedagógico es entender cómo funcionan las APIs de IA generativa, cómo se consumen desde PHP y cómo se construye una interfaz de usuario amigable alrededor de la respuesta del modelo.
