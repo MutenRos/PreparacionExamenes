@@ -1,0 +1,60 @@
+PROMPT — Workflow completo de proyecto para examen
+
+Tengo un proyecto en un repo de GitHub bajo la cuenta MutenRos. El repo es:
+
+https://github.com/MutenRos/HomeLab-Indexer
+
+La carpeta local del proyecto está en:
+
+C:\Users\freak\Preparacion Examenes\PROYECTOS JV EXAMEN\[ASIGNATURA]\[NOMBRE PROYECTO]
+
+La plantilla de examen está en: C:\Users\freak\Preparacion Examenes\PlantillaExamen.md
+
+El path de GitHub CLI es: "C:\Program Files\GitHub CLI\gh.exe"
+
+Haz lo siguiente paso a paso:
+
+PASO 1 — Análisis del proyecto
+
+Analiza la estructura completa del proyecto: archivos, carpetas, tecnologías usadas (HTML, CSS, JS, PHP, SQL, Java, etc.).
+Identifica la fase/versión más avanzada del proyecto (la última carpeta numerada o la más completa).
+Lee el código fuente de los archivos principales para entender qué hace el proyecto.
+PASO 2 — Mejoras pequeñas mixtas
+
+Aplica mejoras pequeñas pero significativas que demuestren aprendizaje del alumno. Deben ser mixtas (tocar varios lenguajes/capas del proyecto: backend, frontend, CSS, JS, SQL…).
+Las mejoras deben ser de nivel estudiante de 1º DAM/DAW, no profesionales.
+NO cambiar la estructura ni el estilo del profesor. Respetar el código existente y añadir mejoras encima.
+Ejemplos de mejoras válidas: htmlspecialchars para seguridad, number_format para precios, fallback de imágenes, mejoras CSS (hover, transitions, responsive), confirmaciones JS, validaciones de input, comentarios explicativos.
+Hacer commit y push de las mejoras.
+PASO 3 — PRESENTACION.md
+
+Lee la plantilla de examen (PlantillaExamen.md) para conocer el formato requerido.
+Crea un archivo PRESENTACION.md dentro de la carpeta del proyecto (NO reemplazar la plantilla original).
+Rellena TODAS las secciones de la plantilla adaptadas a este proyecto concreto.
+En los bullets de código del apartado "Desarrollo", especifica siempre: archivo, línea/s y ruta del código referenciado.
+Cada sección de desarrollo debe corresponder a un archivo o funcionalidad clave del proyecto.
+Incluir introducción, presentación (qué diría el alumno en voz alta) y conclusión.
+Hacer commit y push.
+PASO 4 — Mockup estático en docs/ para GitHub Pages
+
+Crear una carpeta docs/ en la raíz del repo.
+Crear una versión estática (HTML/CSS/JS puro) del proyecto, sin depender de PHP, bases de datos ni servidores.
+Usar datos hardcodeados sacados de los archivos SQL de inserción del proyecto (o inventados si no hay SQL).
+Copiar los CSS e imágenes originales del proyecto a docs/css/ y docs/img/.
+Las páginas deben replicar visualmente el proyecto real: página principal, páginas de detalle, formularios, etc.
+Incluir un archivo docs/.nojekyll para evitar procesamiento Jekyll.
+NO tocar el código original del proyecto, solo crear contenido nuevo en docs/.
+Hacer commit y push.
+PASO 5 — Desplegar en GitHub Pages
+
+Activar GitHub Pages en el repo usando la API de GitHub CLI:
+Source: branch master (o main, comprobar cuál usa el repo), path /docs.
+Build type: legacy.
+Forzar rebuild y verificar que el estado es "built".
+Confirmarme la URL final de Pages.
+Notas importantes:
+
+Usa siempre el path completo de gh.exe: "C:\Program Files\GitHub CLI\gh.exe"
+El idioma del código y comentarios debe coincidir con el que ya usa el proyecto.
+Si el proyecto no tiene base de datos ni PHP (por ejemplo, es solo HTML/CSS o Java), adapta los pasos: el mockup puede ser simplemente copiar los archivos estáticos a docs/, y las mejoras serán en los lenguajes que use el proyecto.
+Si el proyecto es Java o de escritorio, el mockup de Pages puede ser capturas de pantalla o una landing page descriptiva.
